@@ -3,6 +3,7 @@ from enum import Enum
 
 class LoggingPackage(Enum):
     player_detector = "🏃"
+    video_repository = "🎥"
 
 
 class Log:
