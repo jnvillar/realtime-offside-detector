@@ -1,0 +1,27 @@
+{
+  "videos": [
+    {
+      "name": "video_1",
+      "data": [
+        {
+          "frame": 20,
+          "player": {
+            "amount": 4
+          },
+          "field": {
+            "area": 20
+          }
+        },
+        {
+          "frame": 20,
+          "player": {
+            "amount": 4
+          },
+          "field": {
+            "area": 20
+          }
+        }
+      ]
+    }
+  ]
+}
