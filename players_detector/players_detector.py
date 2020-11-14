@@ -4,6 +4,12 @@ import utils.utils as utils
 import log.log as log
 
 
+class Player():
+    def __init__(self, coordinates, team=None):
+        self.coordinates = coordinates
+        self.team = team
+
+
 class PlayerDetector():
 
     def __init__(self, dilatation=False):
@@ -42,12 +48,12 @@ class PlayerDetector():
         cv2.destroyAllWindows()
 
     def find_players(self, frame, area_percentage=0.2):
+        players = []
         (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         for pic, contour in enumerate(contours):
-            epsilon = 0.1 * cv2.arcLength(contours, True)
-
-            approx = cv2.approxPolyDP(contours, epsilon, True)
+            #epsilon = 0.1 * cv2.arcLength(contours, True)
+            #approx = cv2.approxPolyDP(contours, epsilon, True)
             area = cv2.contourArea(contour)
 
             x, y, w, h = cv2.boundingRect(contour)
@@ -57,30 +63,32 @@ class PlayerDetector():
             self.log.log("player area", {'area': area, 'percentage': percentage_of_frame})
 
             if percentage_of_frame > area_percentage:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                cv2.putText(frame, 'People', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
+                #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                #cv2.putText(frame, 'People', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
+                players.append(Player([x, y, w, h]))
+
+        return players
 
     def detect_players_in_frame_2(self, frame):
         frame = frame.get_frame()
-        #frame = cv2.flip(frame), 180)
+        # frame = cv2.flip(frame), 180)
 
         outmask = self.fgbg.apply(frame)
 
         outmask = self.apply_dilatation(outmask)
 
-        self.find_players(outmask)
+        players = self.find_players(outmask)
         cv2.imshow('detect_players_in_frame_2', outmask)
+        return players
 
     def detect_players_in_frame(self, frame):
 
         fgmask = self.fgbg.apply(frame.get_frame())
         fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, self.kernel)
-
         fgmask = self.apply_dilatation(fgmask)
-
-        self.find_players(fgmask, area_percentage=5)
+        players = self.find_players(fgmask, area_percentage=5)
         cv2.imshow('detect_players_in_frame', fgmask)
-
+        return players
 
 '''
 if __name__ == '__main__':

@@ -1,24 +1,26 @@
 {
-  "videos": [
+  "videos_data": [
     {
-      "name": "video_1",
+      "name": "corto.mp4",
       "data": [
         {
           "frame": 20,
-          "player": {
-            "amount": 4
-          },
+          "players": [
+            {
+              "position": {
+                "x": 10,
+                "y": 20
+              }
+            }
+          ],
           "field": {
-            "area": 20
-          }
-        },
-        {
-          "frame": 20,
-          "player": {
-            "amount": 4
-          },
-          "field": {
-            "area": 20
+            "area": 20,
+            "corners": {
+              "up_left": 10,
+              "up_right": 10,
+              "down_left": 10,
+              "down_right": 10
+            }
           }
         }
       ]
