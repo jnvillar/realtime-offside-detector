@@ -1,6 +1,7 @@
 import test.test_utils.test_utils as test_utils
 import players_detector.players_detector as players_detector
 import video_repository.video_repository as video_repository
+import log.log as log
 
 
 class PlayerDetectorTests:
@@ -9,17 +10,33 @@ class PlayerDetectorTests:
         self.test_utils = test_utils.TestUtils("../data.json")
         self.videos_repository = video_repository.VideoRepository()
         self.videos_repository.load_videos("../videos")
+        self.log = log.Log(self, log.LoggingPackage.test)
 
     def test_detect_player(self):
-        detector = players_detector.PlayerDetector()
+        detector_one = players_detector.PlayerDetector()
+        detector_two = players_detector.PlayerDetector()
 
         for video_name, video in self.videos_repository.list_videos():
-            players = detector.detect_players_in_frame(video.get_next_frame())
-            self.check_players(video_name, 0, players)
+            frame = video.get_next_frame()
+            detector_one.detect_players_in_frame(frame)
+            detector_two.detect_players_in_frame_2(frame)
 
-    def check_players(self, video_name, frame, players):
+            frame = video.get_next_frame()
+
+            players = detector_one.detect_players_in_frame(frame)
+            self.check_players("detect players in frame", video_name, 0, players)
+
+            players = detector_two.detect_players_in_frame_2(frame)
+            self.check_players("detect players in frame 2", video_name, 0, players)
+
+    def check_players(self, method, video_name, frame, players_detected):
         players_info = self.test_utils.players_info(video_name, frame)
-        print(players_info['amount'], len(players))
+        self.log.log("result", {
+            'video_name': video_name,
+            'method': method,
+            'amount': players_info['amount'],
+            'amount_detected': len(players_detected)
+        })
 
 
 if __name__ == '__main__':

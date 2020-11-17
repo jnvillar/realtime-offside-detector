@@ -4,10 +4,15 @@ from enum import Enum
 class LoggingPackage(Enum):
     player_detector = "🏃"
     video_repository = "🎥"
+    test = "🧪"
 
 
 class LogLevel(Enum):
-    debug = "debug"
+    debug = 0
+    info = 1
+    warning = 2
+    error = 3
+    critical = 4
 
 
 class Log:
@@ -17,10 +22,13 @@ class Log:
     def __init__(self, class_that_is_logging, package):
         self.class_that_is_logging = class_that_is_logging
         self.package = package
+        self.log_level = LogLevel.debug
 
     # message = string
     # params  = dict
     def log(self, message, params, level=LogLevel.debug):
-        print(
-            str(self.package.value) + ' ' + self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(
-                params))
+        if self.log_level.value <= level.value:
+            print(
+                str(
+                    self.package.value) + ' ' + self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(
+                    params))

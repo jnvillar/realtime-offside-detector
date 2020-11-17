@@ -61,8 +61,8 @@ class PlayerDetector():
             percentage_of_frame = self.frame_utils.percentage_of_frame(frame, area)
 
             if percentage_of_frame > area_percentage:
-                #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                #cv2.putText(frame, 'People', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                cv2.putText(frame, 'People', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
                 players.append(Player([x, y, w, h]))
 
         return players
@@ -70,11 +70,8 @@ class PlayerDetector():
     def detect_players_in_frame_2(self, frame):
         frame = frame.get_frame()
         # frame = cv2.flip(frame), 180)
-
         outmask = self.fgbg.apply(frame)
-
         outmask = self.apply_dilatation(outmask)
-
         players = self.find_players(outmask)
         cv2.imshow('detect_players_in_frame_2', outmask)
         return players
@@ -85,7 +82,7 @@ class PlayerDetector():
         fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, self.kernel)
         fgmask = self.apply_dilatation(fgmask)
         players = self.find_players(fgmask, area_percentage=5)
-        cv2.imshow('detect_players_in_frame', fgmask)
+        #cv2.imshow('detect_players_in_frame', fgmask)
         return players
 
 '''

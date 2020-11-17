@@ -44,7 +44,10 @@ class VideoRepository:
         return self.videos.items()
 
     def get_video(self, video_name):
-        return self.videos.get(video_name)
+        video = self.videos.get(video_name)
+        if video is None:
+            raise Exception("video not found")
+        return video
 
     def load_videos(self, path):
         files = [f for f in listdir(path) if isfile(join(path, f))]
