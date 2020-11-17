@@ -1,6 +1,9 @@
 import log.log as log
 import cv2
 
+from os import listdir
+from os.path import isfile, join
+
 
 class Frame:
     def __init__(self, frame, frame_number, ret):
@@ -35,7 +38,18 @@ class VideoRepository:
     # video_path = string
     def __init__(self):
         self.log = log.Log(self, log.LoggingPackage.player_detector)
+        self.videos = {}
 
-    def get_video(self, video_path):
-        cap = cv2.VideoCapture(video_path)
-        return Video(cap)
+    def list_videos(self):
+        return self.videos.items()
+
+    def get_video(self, video_name):
+        return self.videos.get(video_name)
+
+    def load_videos(self, path):
+        files = [f for f in listdir(path) if isfile(join(path, f))]
+        for file in files:
+            try:
+                self.videos[file] = Video(cv2.VideoCapture(path + "/" + file))
+            except:
+                self.log.log("error loading video", {"file": file})

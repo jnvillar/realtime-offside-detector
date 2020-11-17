@@ -60,8 +60,6 @@ class PlayerDetector():
 
             percentage_of_frame = self.frame_utils.percentage_of_frame(frame, area)
 
-            self.log.log("player area", {'area': area, 'percentage': percentage_of_frame})
-
             if percentage_of_frame > area_percentage:
                 #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
                 #cv2.putText(frame, 'People', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
