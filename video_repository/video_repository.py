@@ -17,6 +17,9 @@ class Frame:
     def get_frame(self):
         return self.frame
 
+    def is_last_frame(self):
+        return not self.ret
+
 
 class Video:
     def __init__(self, video):

@@ -6,6 +6,7 @@ import time
 
 if __name__ == '__main__':
     play = True
+    last_frame = False
     video_path = './test/videos'
 
     video_repository = video_repository.VideoRepository()
@@ -14,9 +15,13 @@ if __name__ == '__main__':
 
     players_detector = players_detector.PlayerDetector(dilatation=True)
 
-    while True:
+    while True and not last_frame:
         while play:
             frame = video.get_next_frame()
+            last_frame = frame.is_last_frame()
+            if last_frame:
+                break
+
             players_detector.detect_players_in_frame_2(frame)
 
             if cv2.waitKey(30) & 0xFF == ord('q'):
