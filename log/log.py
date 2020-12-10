@@ -26,9 +26,8 @@ class Log:
 
     # message = string
     # params  = dict
-    def log(self, message, params, level=LogLevel.debug):
+    def log(self, message: str, params: dict, level: LogLevel = LogLevel.debug):
         if self.log_level.value <= level.value:
             print(
-                str(
-                    self.package.value) + ' ' + self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(
-                    params))
+                str(self.package.value) + ' ' +
+                self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(params))
