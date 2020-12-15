@@ -17,7 +17,8 @@ def play_video(video):
             if last_frame:
                 break
 
-            detector.detect_players_in_frame(frame)
+            players = detector.detect_players_in_frame(frame)
+
 
             if cv2.waitKey(30) & 0xFF == ord('q'):
                 play = not play
