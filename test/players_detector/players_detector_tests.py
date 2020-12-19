@@ -1,5 +1,5 @@
 import test.test_utils.test_utils as test_utils
-import players_detector.players_detector as players_detector
+import player_detector.player_detector as players_detector
 import video_repository.video_repository as video_repository
 import log.log as log
 

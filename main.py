@@ -1,22 +1,39 @@
-import players_detector.players_detector as players_detector
+import player_detector.player_detector as player_detector
+import player_sorter.player_sorter  as player_sorter
 import video_repository.video_repository as video_repository
 import utils.constants as constants
 import cv2
+from domain.player import Player
 
 
-def play_video(video):
+def mark_players(original_frame, players: [Player]):
+    for idx, player in enumerate(players):
+        [x, y, w, h] = player.coordinates
+        cv2.rectangle(original_frame, (x, y), (x + w, y + h), player.team.get_color(), 2)
+        cv2.putText(original_frame, player.team.get_label(), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
+                    player.team.get_color(), 2, cv2.LINE_AA)
+
+    cv2.imshow('final result', original_frame)
+
+
+def play_video(soccer_video):
     play = True
     last_frame = False
 
-    detector = players_detector.PlayerDetector()
+    detector = player_detector.PlayerDetector()
+    sorter = player_sorter.PlayerSorter()
 
     while True and not last_frame:
         while play:
-            frame = video.get_next_frame()
+            frame = soccer_video.get_next_frame()
             if frame is None:
+                last_frame = True
                 break
 
-            detector.detect_players_in_frame(frame, video.get_current_frame_number())
+            frame = cv2.resize(frame, (500, 500))
+            players = detector.detect_players_in_frame(frame, soccer_video.get_current_frame_number())
+            sorter.sort_players(frame, players)
+            mark_players(frame, players)
 
             if cv2.waitKey(30) & 0xFF == ord('q'):
                 play = not play
@@ -30,9 +47,9 @@ def play_video(video):
 if __name__ == '__main__':
 
     video_path = './test/videos'
-    video_repository = video_repository.VideoRepository(video_path)
 
     while True:
         print("start")
-        video = video_repository.get_video(constants.VideoConstants.video_1_from_8_to_12)
+        video_container = video_repository.VideoRepository(video_path)
+        video = video_container.get_video(constants.VideoConstants.video_1_from_8_to_12)
         play_video(video)

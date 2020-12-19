@@ -7,13 +7,13 @@ def random_classifier(players: [Player]):
     for player in players:
         rand_number = random.randint(1, 2)
         if rand_number == 1:
-            player.team = 1
+            player.team = Team.team_one
         else:
-            player.team = 2
+            player.team = Team.team_two
     return players
 
 
-class PlayersSorter:
+class PlayerSorter:
 
     def __init__(self):
         self.log = log.Log(self, log.LoggingPackage.player_sorter)

@@ -39,31 +39,26 @@ class Step:
         else:
             return original_frame
 
-    def show(self, number, frame):
-
-        min_number = 0
-
-        if number < min_number:
+    def show(self, window_number, frame):
+        min_number_to_show = 0
+        if window_number < min_number_to_show:
             return
 
-        number = number - min_number
+        window_number = window_number - min_number_to_show
+        window_name = str(window_number) + " " + self.name
+        cv2.imshow(window_name, frame)
 
-        name = str(number) + " " + self.name
-        cv2.imshow(name, frame)
-        x = number * 500
-        y = int(x / 1500)
-        if x > 1001:
-            x = x - (1500 * y)
-        cv2.moveWindow(name, x, (y * 500))
+        # adjust position of window
+        max_windows_in_x_axis = 3
+        window_max_x_position = len(frame) * max_windows_in_x_axis
 
+        windows_x_position = window_number * len(frame)
+        window_y_position = int(windows_x_position / window_max_x_position)
 
-def mark_players(original_frame, players: [Player]):
-    for idx, player in enumerate(players):
-        [x, y, w, h] = player.coordinates
-        cv2.rectangle(original_frame, (x, y), (x + w, y + h), player.team.get_color(), 2)
-        cv2.putText(original_frame, player.team.get_label(), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, player.team.get_color(), 2, cv2.LINE_AA)
+        if windows_x_position > window_max_x_position - len(frame):
+            windows_x_position = windows_x_position - (window_max_x_position * window_y_position)
 
-    cv2.imshow('final result', original_frame)
+        cv2.moveWindow(window_name, windows_x_position, (window_y_position * 500))
 
 
 class PlayerDetector:
@@ -187,13 +182,9 @@ class PlayerDetector:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        mark_players(original_frame, self.players)
-
         return self.players
 
     def detect_players_in_frame(self, frame, frame_number) -> List[Player]:
         self.log.log("finding players", {"frame": frame_number})
-
-        frame = cv2.resize(frame, (500, 500))
         players = self.find_players(frame)
         return players
