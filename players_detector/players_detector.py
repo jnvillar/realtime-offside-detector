@@ -191,10 +191,9 @@ class PlayerDetector:
 
         return self.players
 
-    def detect_players_in_frame(self, frame: Frame) -> List[Player]:
-        self.log.log("finding players", {"frame": frame.get_frame_number()})
+    def detect_players_in_frame(self, frame, frame_number) -> List[Player]:
+        self.log.log("finding players", {"frame": frame_number})
 
-        frame = frame.get_frame()
         frame = cv2.resize(frame, (500, 500))
         players = self.find_players(frame)
         return players

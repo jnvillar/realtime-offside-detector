@@ -13,12 +13,10 @@ def play_video(video):
     while True and not last_frame:
         while play:
             frame = video.get_next_frame()
-            last_frame = frame.is_last_frame()
-            if last_frame:
+            if frame is None:
                 break
 
-            players = detector.detect_players_in_frame(frame)
-
+            detector.detect_players_in_frame(frame, video.get_current_frame_number())
 
             if cv2.waitKey(30) & 0xFF == ord('q'):
                 play = not play
@@ -32,10 +30,9 @@ def play_video(video):
 if __name__ == '__main__':
 
     video_path = './test/videos'
-    video_repository = video_repository.VideoRepository()
+    video_repository = video_repository.VideoRepository(video_path)
 
     while True:
         print("start")
-        video_repository.load_videos(video_path)
         video = video_repository.get_video(constants.VideoConstants.video_1_from_8_to_12)
         play_video(video)

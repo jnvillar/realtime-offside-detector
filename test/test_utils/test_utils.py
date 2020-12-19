@@ -1,4 +1,3 @@
-import players_detector.players_detector as players_detector
 import video_repository.video_repository as video_repository
 import json
 
@@ -6,6 +5,7 @@ data_key = "videos_data"
 video_name_key = 'name'
 video_data_key = 'data'
 video_players_key = 'players'
+
 
 class TestUtils:
 

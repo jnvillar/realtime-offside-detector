@@ -8,8 +8,7 @@ class PlayerDetectorTests:
 
     def __init__(self):
         self.test_utils = test_utils.TestUtils("../data.json")
-        self.videos_repository = video_repository.VideoRepository()
-        self.videos_repository.load_videos("../videos")
+        self.videos_repository = video_repository.VideoRepository("../videos")
         self.log = log.Log(self, log.LoggingPackage.test)
 
     def test_detect_player(self):
