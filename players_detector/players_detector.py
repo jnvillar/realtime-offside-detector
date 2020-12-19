@@ -1,11 +1,8 @@
-import cv2
 import numpy as np
 from typing import List
 
 import utils.utils as utils
-import log.log as log
 from video_repository.video_repository import *
-import imutils
 
 
 class Step:
@@ -157,10 +154,9 @@ class PlayerDetector:
     #     cv2.imshow('detect_players_in_frame_2', outmask)
     #     return players
 
-    def detect_players_in_frame(self, frame: Frame) -> List[Player]:
-        self.log.log("finding players", {"frame": frame.get_frame_number()})
+    def detect_players_in_frame(self, frame, frame_number) -> List[Player]:
+        self.log.log("finding players", {"frame": frame_number})
 
-        frame = frame.get_frame()
         frame = cv2.resize(frame, (500, 500))
         players = self.find_players(frame)
         return players
