@@ -2,6 +2,7 @@ import numpy as np
 from typing import List
 import utils.utils as utils
 from video_repository.video_repository import *
+from domain.player import *
 
 
 class Step:
@@ -56,10 +57,13 @@ class Step:
         cv2.moveWindow(name, x, (y * 500))
 
 
-class Player:
-    def __init__(self, coordinates, team=None):
-        self.coordinates = coordinates
-        self.team = team
+def mark_players(original_frame, players: [Player]):
+    for idx, player in enumerate(players):
+        [x, y, w, h] = player.coordinates
+        cv2.rectangle(original_frame, (x, y), (x + w, y + h), player.team.get_color(), 2)
+        cv2.putText(original_frame, player.team.get_label(), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, player.team.get_color(), 2, cv2.LINE_AA)
+
+    cv2.imshow('final result', original_frame)
 
 
 class PlayerDetector:
@@ -73,14 +77,6 @@ class PlayerDetector:
 
         self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
         self.kernel_dil = np.ones((1, 1), np.uint8)
-
-    def mark_players(self, original_frame):
-        for idx, player in enumerate(self.players):
-            [x, y, w, h] = player.coordinates
-            cv2.rectangle(original_frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-            cv2.putText(original_frame, 'p', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2, cv2.LINE_AA)
-
-        cv2.imshow('final result', original_frame)
 
     def remove_green(self, frame, params):
         # convert to hsv color space
@@ -99,8 +95,7 @@ class PlayerDetector:
         return dilated_frame
 
     def apply_erosion(self, frame, params):
-        kernel = np.ones((3,), np.uint8)
-        eroded_frame = cv2.erode(frame, None, iterations=1)
+        eroded_frame = cv2.erode(frame, None, iterations=2)
         return eroded_frame
 
     def delete_small_contours(self, frame, params):
@@ -177,8 +172,9 @@ class PlayerDetector:
         pipeline: List[Step] = [
             Step("remove green", self.remove_green, debug=True),
             Step("background substitution", self.background_substitution, debug=True),
-            Step("delete small contours", self.delete_small_contours, params={'percentage_of_frame': 0.01}, debug=True),
             Step("join close contours", self.join_close_contours, debug=True),
+            Step("delete small contours", self.delete_small_contours, params={'percentage_of_frame': 0.01}, debug=True),
+
             Step("erode", self.apply_erosion, debug=True),
 
             # Step("filter by aspect ratio", self.filter_contours_by_aspect_ratio, debug=True),
@@ -191,7 +187,7 @@ class PlayerDetector:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        self.mark_players(original_frame)
+        mark_players(original_frame, self.players)
 
         return self.players
 
