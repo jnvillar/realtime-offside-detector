@@ -1,8 +1,9 @@
 import numpy as np
 from typing import List
-import utils.utils as utils
+import utils.frame_utils as frame_utils
 from video_repository.video_repository import *
 from domain.player import *
+from domain.color import Color
 
 
 class Step:
@@ -32,72 +33,40 @@ class Step:
         frame = self.function(frame, params)
 
         if self.debug:
-            self.show(number, frame)
+            frame_utils.show(frame, self.name, number)
 
         if self.modify_original_frame:
             return frame
         else:
             return original_frame
 
-    def show(self, window_number, frame):
-        min_number_to_show = 0
-        if window_number < min_number_to_show:
-            return
-
-        window_number = window_number - min_number_to_show
-        window_name = str(window_number) + " " + self.name
-        cv2.imshow(window_name, frame)
-
-        # adjust position of window
-        max_windows_in_x_axis = 3
-        window_max_x_position = len(frame) * max_windows_in_x_axis
-
-        windows_x_position = window_number * len(frame)
-        window_y_position = int(windows_x_position / window_max_x_position)
-
-        if windows_x_position > window_max_x_position - len(frame):
-            windows_x_position = windows_x_position - (window_max_x_position * window_y_position)
-
-        cv2.moveWindow(window_name, windows_x_position, (window_y_position * 500))
-
 
 class PlayerDetector:
 
-    def __init__(self):
+    def __init__(self, debug: bool = False):
+        self.debug = debug
         self.last_frame = None
         self.log = log.Log(self, log.LoggingPackage.player_detector)
-        self.frame_utils = utils.FrameUtils()
         self.fgbg = cv2.createBackgroundSubtractorMOG2(history=100, detectShadows=False, varThreshold=50)
         self.players = []
 
-        self.kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-        self.kernel_dil = np.ones((1, 1), np.uint8)
-
-    def remove_green(self, frame, params):
-        # convert to hsv color space
-        green_lower = (29, 86, 6)
-        green_upper = (64, 255, 255)
-
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv, green_lower, green_upper)
-
-        ## mask shows where the green pixels are, so we negate it
-        frame = cv2.bitwise_and(frame, frame, mask=~mask)
+    def remove_green(self, original_frame, params):
+        frame = frame_utils.remove_color(original_frame, Color.green)
         return frame
 
     def apply_dilatation(self, frame, params):
-        dilated_frame = cv2.dilate(frame, None, iterations=1)
+        dilated_frame = frame_utils.apply_dilatation(frame)
         return dilated_frame
 
     def apply_erosion(self, frame, params):
-        eroded_frame = cv2.erode(frame, None, iterations=2)
+        eroded_frame = frame_utils.apply_erosion(frame)
         return eroded_frame
 
     def delete_small_contours(self, frame, params):
         (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         for pic, contour in enumerate(contours):
             area = cv2.contourArea(contour)
-            contour_percentage_of_frame = self.frame_utils.percentage_of_frame(frame, area)
+            contour_percentage_of_frame = frame_utils.percentage_of_frame(frame, area)
             if contour_percentage_of_frame < params['percentage_of_frame']:
                 cv2.fillPoly(frame, pts=[contour], color=0)
                 continue
@@ -139,7 +108,7 @@ class PlayerDetector:
         (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         for pic, c in enumerate(contours):
             area = cv2.contourArea(c)
-            contour_percentage_of_frame = self.frame_utils.percentage_of_frame(original_frame, area)
+            contour_percentage_of_frame = frame_utils.percentage_of_frame(original_frame, area)
             if contour_percentage_of_frame < params['percentage_of_frame']:
                 continue
 
@@ -160,17 +129,16 @@ class PlayerDetector:
         return original_frame
 
     def find_players(self, frame):
-        original_frame = frame.copy()
-
         self.players = []
 
         pipeline: List[Step] = [
-            Step("remove green", self.remove_green, debug=True),
-            Step("background substitution", self.background_substitution, debug=True),
-            Step("join close contours", self.join_close_contours, debug=True),
-            Step("delete small contours", self.delete_small_contours, params={'percentage_of_frame': 0.01}, debug=True),
+            Step("remove green", self.remove_green, debug=self.debug),
+            Step("background substitution", self.background_substitution, debug=self.debug),
+            Step("delete small contours", self.delete_small_contours, params={'percentage_of_frame': 0.01}, debug=self.debug),
+            Step("join close contours", self.join_close_contours, debug=self.debug),
+            Step("delete small contours", self.delete_small_contours, params={'percentage_of_frame': 0.01}, debug=self.debug),
 
-            Step("erode", self.apply_erosion, debug=True),
+            Step("erode", self.apply_erosion, debug=self.debug),
 
             # Step("filter by aspect ratio", self.filter_contours_by_aspect_ratio, debug=True),
             # Step("apply dilatation", self.apply_dilatation, debug=True),

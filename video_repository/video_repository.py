@@ -1,4 +1,3 @@
-import log.log as log
 import cv2
 
 from os import listdir

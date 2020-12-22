@@ -16,6 +16,14 @@ class Video:
     def get_current_frame_number(self):
         return self.current_frame_number
 
+    def get_frame_number(self, frame_number):
+        if frame_number < self.current_frame_number:
+            return None
+        while frame_number > self.current_frame_number + 1 :
+            self.get_next_frame()
+
+        return self.get_next_frame()
+
     def get_next_frame(self):
         successful_read, frame = self.video.read()
         if successful_read:
