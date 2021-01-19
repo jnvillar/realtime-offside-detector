@@ -3,7 +3,7 @@ from typing import List
 import utils.frame_utils as frame_utils
 from video_repository.video_repository import *
 from domain.player import *
-from domain.color import Color
+from domain.color import *
 
 
 class Step:
@@ -51,7 +51,7 @@ class PlayerDetector:
         self.players = []
 
     def remove_green(self, original_frame, params):
-        frame = frame_utils.remove_color(original_frame, Color.green)
+        frame = frame_utils.remove_color(original_frame, Colors.green.colors)
         return frame
 
     def apply_dilatation(self, frame, params):

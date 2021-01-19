@@ -1,5 +1,5 @@
 import player_detector.player_detector as player_detector
-import player_sorter.player_sorter  as player_sorter
+import player_sorter.player_sorter as player_sorter
 import video_repository.video_repository as video_repository
 import utils.constants as constants
 import cv2

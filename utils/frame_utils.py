@@ -8,14 +8,15 @@ def percentage_of_frame(frame, area):
     return (area / total_pixels) * 100
 
 
-def remove_color(frame, color: Color):
+def remove_color(frame, colors: [Color]):
     # convert to hsv color space
-
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, color.lower, color.upper)
 
-    ## mask shows where the green pixels are, so we negate it
-    frame = cv2.bitwise_and(frame, frame, mask=~mask)
+    for color in colors:
+        mask = cv2.inRange(hsv, color.lower, color.upper)
+        ## mask shows where the green pixels are, so we negate it
+        frame = cv2.bitwise_and(frame, frame, mask=~mask)
+
     return frame
 
 

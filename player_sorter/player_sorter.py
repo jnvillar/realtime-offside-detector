@@ -17,7 +17,7 @@ def random_classifier(frame, players: [Player]):
 
 def color_classifier(original_frame, players: [Player]):
 
-    frame = frame_utils.remove_color(original_frame, Color.blue)
+    frame = frame_utils.remove_color(original_frame, Colors.blue.colors)
     frame_utils.show(frame, 'remove blue', 1)
 
     return players
