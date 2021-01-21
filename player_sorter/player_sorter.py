@@ -15,10 +15,17 @@ def random_classifier(frame, players: [Player]):
     return players
 
 
-def color_classifier(original_frame, players: [Player]):
+def color_classifier(original_frame, players: [Player], colors: [Colors]):
+    frame = frame_utils.remove_color(original_frame, Colors.green.colors)
+    frame = frame_utils.remove_color(frame, Colors.blue.colors)
 
-    frame = frame_utils.remove_color(original_frame, Colors.blue.colors)
-    frame_utils.show(frame, 'remove blue', 1)
+    frame_utils.show(frame, 'remove team colors', 1)
+
+    for player in players:
+        if frame_utils.is_area_black(original_frame, player.box()):
+            player.team = Team.team_one
+        else:
+            player.team = Team.team_two
 
     return players
 
@@ -30,6 +37,6 @@ class PlayerSorter:
         self.debug = debug
 
     def sort_players(self, frame, players: [Player]):
-        sorted_players = color_classifier(frame, players)
+        sorted_players = color_classifier(frame, players, [])
         self.log.log("sorted players", {"players": players})
         return sorted_players

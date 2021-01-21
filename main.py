@@ -3,19 +3,8 @@ import player_sorter.player_sorter as player_sorter
 import video_repository.video_repository as video_repository
 import utils.constants as constants
 import cv2
-from domain.player import Player
 from domain.video import Video
-
-
-def mark_players(original_frame, players: [Player]):
-    for idx, player in enumerate(players):
-        [x, y, w, h] = player.coordinates
-        cv2.rectangle(original_frame, (x, y), (x + w, y + h), player.team.get_color(), 2)
-        cv2.putText(original_frame, player.team.get_label(), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
-                    player.team.get_color(), 2, cv2.LINE_AA)
-
-    cv2.imshow('final result', original_frame)
-
+from utils.frame_utils import *
 
 def play_video(soccer_video: Video, stop_in_frame: int = None):
     play = True
@@ -35,6 +24,8 @@ def play_video(soccer_video: Video, stop_in_frame: int = None):
             players = detector.detect_players_in_frame(frame, soccer_video.get_current_frame_number())
             sorter.sort_players(frame, players)
             mark_players(frame, players)
+
+            cv2.imshow('final result', frame)
 
             if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
                 play = not play
