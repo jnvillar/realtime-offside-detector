@@ -22,10 +22,10 @@ def color_classifier(original_frame, players: [Player], colors: [Colors]):
     frame_utils.show(frame, 'remove team colors', 1)
 
     for player in players:
-        if frame_utils.is_area_black(original_frame, player.box()):
-            player.team = Team.team_one
+        if frame_utils.is_area_black(frame, player.box()):
+            player.team = Team.team_boca
         else:
-            player.team = Team.team_two
+            player.team = Team.team_river
 
     return players
 

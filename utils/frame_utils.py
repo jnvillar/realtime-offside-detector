@@ -2,7 +2,10 @@ from domain.color import *
 from domain.player import *
 from domain.aspec_ratio import *
 from domain.box import *
+import log.log as log
 import cv2
+
+log = log.Log(None, log.LoggingPackage.player_sorter)
 
 
 def percentage_of_frame(frame, area):
@@ -27,12 +30,33 @@ def mark_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.box()
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.team.get_color(), 2)
-        cv2.putText(original_frame, player.team.get_label(), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.8, player.team.get_color(), 2, cv2.LINE_AA)
+        cv2.putText(original_frame, str(player_box.get_label()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.8, player.team.get_color(), 2, cv2.LINE_AA)
 
     return original_frame
 
 
 def is_area_black(frame, box: Box):
+    black_pixels = 0
+
+    for x in range(box.x, box.x + box.w):
+        for y in range(box.y, box.y + box.h):
+            frame[x][y] = [0, 0, 0]
+
+            if is_pixel_black(frame[x][y]):
+                black_pixels += 1
+
+    box_pixels = box.w * box.h
+
+    log.log("black pixels of box", {'black_pixels': black_pixels, 'box_pixels': box_pixels, 'box_label': box.label})
+
+    if black_pixels > (box_pixels * 0.4):
+        return True
+    return False
+
+
+def is_pixel_black(pixel):
+    if sum(pixel) == 0:
+        return True
     return False
 
 

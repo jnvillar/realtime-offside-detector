@@ -12,6 +12,9 @@ class Team(Enum):
     team_two = "2️⃣", (0, 0, 255), "2"
     team_other = "🔟", (0, 255, 0), "3"
 
+    team_boca = "boca", (255, 0, 0), "boca"
+    team_river = "river", (0, 0, 255), "river"
+
     def get_color(self):
         return self.color
 

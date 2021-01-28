@@ -6,6 +6,7 @@ class LoggingPackage(Enum):
     player_sorter = "🎨"
     video_repository = "🎥"
     test = "🧪"
+    frame_utils = "🔨"
 
 
 class LogLevel(Enum):
