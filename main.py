@@ -4,7 +4,8 @@ import video_repository.video_repository as video_repository
 import utils.constants as constants
 import cv2
 from domain.video import Video
-from utils.frame_utils import *
+import utils.frame_utils as frame_utils
+
 
 def play_video(soccer_video: Video, stop_in_frame: int = None):
     play = True
@@ -23,7 +24,7 @@ def play_video(soccer_video: Video, stop_in_frame: int = None):
             frame = cv2.resize(frame, (500, 500))
             players = detector.detect_players_in_frame(frame, soccer_video.get_current_frame_number())
             sorter.sort_players(frame, players)
-            mark_players(frame, players)
+            frame_utils.mark_players(frame, players)
 
             cv2.imshow('final result', frame)
 

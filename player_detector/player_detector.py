@@ -88,4 +88,5 @@ class PlayerDetector:
     def detect_players_in_frame(self, frame, frame_number) -> List[Player]:
         self.log.log("finding players", {"frame": frame_number})
         players = self.find_players(frame)
+        self.log.log("detected players", {"amount": len(players), "players": players})
         return players
