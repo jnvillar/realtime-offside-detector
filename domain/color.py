@@ -7,6 +7,12 @@ class Color(Enum):
         self.lower = bgr_lower
         self.upper = bgr_upper
 
+    def __str__(self):
+        return self.color_name
+
+    def __repr__(self):
+        return str(self)
+
     green = "green", (25, 86, 6), (64, 255, 255)
 
     red_1 = "red", (0, 70, 50), (10, 255, 255)
@@ -20,11 +26,22 @@ class Color(Enum):
 
 
 class Colors(Enum):
-    def __init__(self, colors: [Color]):
-        self.colors = colors
+    def __init__(self, name: str, color_range: [Color], color: Color):
+        self.color_name = name
+        self.color_range = color_range
+        self.color = color
 
-    red = [Color.red_1, Color.red_2]
-    green = [Color.green]
-    blue = [Color.blue]
-    gray = [Color.grey, Color.white]
-    yellow = [Color.yellow]
+    def __str__(self):
+        return self.color_name
+
+    def __repr__(self):
+        return str(self)
+
+    def get_color(self):
+        return self.color
+
+    red = 'red', [Color.red_1, Color.red_2], (255, 0, 0)
+    green = 'green', [Color.green], (0, 255, 0)
+    blue = 'blue', [Color.blue], (255, 0, 0)
+    gray = 'grey', [Color.grey, Color.white], (255, 255, 255)
+    yellow = 'yellow', [Color.yellow], (0, 255, 255)

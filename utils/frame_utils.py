@@ -29,13 +29,13 @@ def remove_color(frame, colors: [Color]):
 def mark_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.box()
-        cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.team.get_color(), 2)
-        cv2.putText(original_frame, str(player_box.get_label()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.team.get_color(), 2, cv2.LINE_AA)
+        cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        cv2.putText(original_frame, str(player.color.name), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_color(), 2, cv2.LINE_AA)
 
     return original_frame
 
 
-def is_area_black(frame, box: Box):
+def sum_black_pixels(frame, box):
     black_pixels = 0
 
     for x in range(box.x, box.x + box.w):
@@ -43,6 +43,11 @@ def is_area_black(frame, box: Box):
             if is_pixel_black(frame[y][x]):
                 black_pixels += 1
 
+    return black_pixels
+
+
+def is_area_black(frame, box: Box):
+    black_pixels = sum_black_pixels(frame, box)
     box_pixels = box.w * box.h
 
     log.log("black pixels of box", {'black_pixels': black_pixels, 'box_pixels': box_pixels, 'box_label': box.label})
@@ -108,7 +113,7 @@ def detect_contours_with_params(original_frame, params):
 
 
 def remove_green(original_frame, params):
-    frame = remove_color(original_frame, Colors.green.colors)
+    frame = remove_color(original_frame, Colors.green.color_range)
     return frame
 
 
