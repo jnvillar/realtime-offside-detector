@@ -1,14 +1,6 @@
 import cv2
 
 
-class FrameUtils:
-
-    def percentage_of_frame(self, frame, area):
-        width, height = len(frame), len(frame[0])
-        total_pixels = width * height
-        return (area / total_pixels) * 100
-
-
 class FramePrinter:
 
     def print_text(self, frame, text, bottom_left_point, color):

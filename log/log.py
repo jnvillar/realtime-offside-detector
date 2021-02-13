@@ -3,8 +3,10 @@ from enum import Enum
 
 class LoggingPackage(Enum):
     player_detector = "🏃"
+    player_sorter = "🎨"
     video_repository = "🎥"
     test = "🧪"
+    frame_utils = "🔨"
 
 
 class LogLevel(Enum):
