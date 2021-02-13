@@ -14,7 +14,6 @@ class TestUtils:
             self.config = json.load(outfile)
 
     def video_info(self, video_name):
-        a = 1
         return next((x for x in self.config[data_key] if x[video_name_key] == video_name), None)
 
     def players_info(self, video_name, frame):

@@ -1,106 +1,133 @@
-import cv2
+import json
+from pathlib import Path
 
-import utils.constants as constants
-from video_repository.video_repository import VideoRepository
+import cv2
+import numpy
+
+import test.dataset_generator.parsers as parsers
+import utils.utils as utils
+from test.dataset_generator.domain import FrameDataBuilder
+from test.dataset_generator.mappers import FrameDataDictionaryMapper
+from test.dataset_generator.utils import FrameDataMerger
+from utils import constants
+from video_repository import video_repository
 
 
 class DatasetGenerator:
-    MIN_VERTICES_TO_SELECT = 4
-    WINDOW_NAME = "Dataset generator"
+
+    FRAME_WINDOW_NAME = "Dataset generator"
+    KEYS_HELP_WINDOW_NAME = "Keys help"
+    GENERAL_OPTIONS = [
+        "SPACE = continue to next frame",
+        "DELETE = go back to previous frame",
+        "F = switch to field parsing mode",
+        "P = switch to players parsing mode",
+        "S = save parsed data to file",
+        "ESC = exit without saving",
+    ]
+    TOP_LEFT_FRAME_WINDOW = (1, 1)
 
     def __init__(self):
         self.current_frame = None
         self.previous_frames = []
         self.field_vertices = []
+        self.frame_data_builders = {}
+        self.keyboard_manager = utils.KeyboardManager()
+        self.frame_printer = utils.FramePrinter()
+        self.parsers = {
+            'f': parsers.FieldParser(self.FRAME_WINDOW_NAME),
+            'p': parsers.PlayersParser(self.FRAME_WINDOW_NAME)
+        }
+        self.options = self.GENERAL_OPTIONS
 
-    def generate_dataset(self):
-        videos_path = "../videos/full_videos/"
-        video_name = "video_1.mp4"
-        video = VideoRepository(videos_path).get_video(video_name)
+    def generate_dataset(self, video_path, outfile):
+        video = video_repository.VideoRepository.get_video(video_path, True)
 
-        # read until video is completed
+        print_json = False
         self.current_frame = video.get_next_frame()
         while self.current_frame is not None:
-
+            current_frame_number = video.get_current_frame_number()
             # display frame with some informative text
-            self._print_text(self.current_frame, "Frame: {}".format(video.get_current_frame_number()), (5, 30), constants.BGR_WHITE)
-            cv2.imshow(self.WINDOW_NAME, self.current_frame)
-            cv2.moveWindow(self.WINDOW_NAME, 200, 200)
+            self.frame_printer.print_text(self.current_frame, "Frame: {}".format(current_frame_number), (5, 30), constants.BGR_WHITE)
+            cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
+            cv2.moveWindow(self.FRAME_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[0], self.TOP_LEFT_FRAME_WINDOW[1])
 
-            key_code = cv2.waitKey(0)
-            # RETURN to get into selection mode
-            if self._key_was_pressed(key_code, constants.RETURN_KEY_CODE):
-                self._switch_to_selection_mode()
-            # ESC to exit
-            elif self._key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                break
-            # any other key to get the next frame
+            self._print_available_options()
 
-            # remove mouse callback to prevent selecting more points
-            cv2.setMouseCallback(self.WINDOW_NAME, lambda *args: None)
+            while True:
+                key_code = cv2.waitKey(0)
+                # keys defined in self.parsers to switch to any of the parsing modes
+                if self.keyboard_manager.is_lowercase_alphabet_char_code(key_code) and chr(key_code) in self.parsers:
+                    frame_data_builder = self.frame_data_builders.get(current_frame_number, FrameDataBuilder().set_frame_number(current_frame_number))
+                    # set parser options and print them
+                    self.options = self.parsers.get(chr(key_code)).get_options()
+                    self._print_available_options()
+                    if self.parsers.get(chr(key_code)).parse(self.current_frame.copy(), frame_data_builder):
+                        self.frame_data_builders[current_frame_number] = frame_data_builder
+                    cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
+                    # restore general options and print them
+                    self.options = self.GENERAL_OPTIONS
+                    self._print_available_options()
+                # DELETE to go back to previous frame
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.DELETE_KEY_CODE):
+                    self.current_frame = video.get_previous_frame()
+                    break
+                # SPACE to continue to next frame
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.SPACE_KEY_CODE):
+                    self.current_frame = video.get_next_frame()
+                    break
+                # S to save parsed data to file
+                elif self.keyboard_manager.is_lowercase_alphabet_char_code(key_code) and chr(key_code) == 's':
+                    print_json = True
+                    break
+                # ESC to exit without saving
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                    return
+                # any other key will do nothing
 
-            # get next frame to use on the next iteration
-            self.current_frame = video.get_next_frame()
-
-    def _switch_to_selection_mode(self):
-        self.field_vertices = []
-        height, width = self.current_frame.shape[:2]
-
-        # set mouse callback function to capture pixels clicked
-        cv2.setMouseCallback(self.WINDOW_NAME, self._click_event)
-        while True:
-            # display the frame with the text
-            self._print_text(self.current_frame,
-                             "Delimit field by selecting at least {} points".format(self.MIN_VERTICES_TO_SELECT),
-                             (round(width / 2) - 320, 30), constants.BGR_WHITE)
-            cv2.imshow(self.WINDOW_NAME, self.current_frame)
-
-            key_code = cv2.waitKey(0)
-            # RETURN to confirm selection (only if at least MIN_VERTICES_TO_SELECT vertices were selected)
-            if self._key_was_pressed(key_code, constants.RETURN_KEY_CODE) and len(
-                    self.field_vertices) >= self.MIN_VERTICES_TO_SELECT:
-                print("Selection confirmed: {}.".format(self.field_vertices))
-                break
-            # DELETE to remove last selected vertex (only if at least 1 vertex was selected)
-            elif self._key_was_pressed(key_code, constants.DELETE_KEY_CODE) and len(self.field_vertices) > 0:
-                print("Vertex {} deleted from selection.".format(self.field_vertices[-1]))
-                del self.field_vertices[-1]
-                self.current_frame = self.previous_frames.pop(-1)
-                cv2.imshow(self.WINDOW_NAME, self.current_frame)
-            # ESC to exit selection mode
-            elif self._key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                print("You have exited selection mode.")
-                self.field_vertices = []
+            if print_json:
                 break
 
-        self.previous_frames = []
+        self._print_parsed_data(outfile)
 
-    def _click_event(self, event, x, y, flags, arguments):
-        if event == cv2.EVENT_LBUTTONUP:
-            self.previous_frames.append(self.current_frame.copy())
-            point = (x, y)
-            cv2.circle(self.current_frame, point, radius=3, color=constants.BGR_RED, thickness=-1)
-            if len(self.field_vertices) > 0:
-                cv2.line(self.current_frame, self.field_vertices[-1], point, constants.BGR_RED, thickness=2)
+    def _print_parsed_data(self, outfile):
+        frame_data_mapper = FrameDataDictionaryMapper()
+        frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in self.frame_data_builders.items()]
 
-            self.field_vertices.append(point)
-            print("Vertex {} selected.".format(point))
-            min_remaining_vertices_to_select = self.MIN_VERTICES_TO_SELECT - len(self.field_vertices)
-            if min_remaining_vertices_to_select <= 0:
-                print("You can mark more vertices or confirm your selection by pressing RETURN (press ESC to exit selection mode).".format(point))
-            else:
-                print("You need to mark at least {} more vertices (press ESC to exit selection mode).".format(min_remaining_vertices_to_select))
-            cv2.imshow(self.WINDOW_NAME, self.current_frame)
+        output_path = Path(outfile)
+        if output_path.is_file():
+            # file exists
+            self.options = [
+                "The output file to be written ({}) already exists.".format(outfile),
+                "Do you want to merge parsed frame data or overwrite it?",
+                "1 = Merge",
+                "2 = Overwrite",
+                "ESC = Exit without saving anything"
+            ]
+            self._print_available_options()
+            while True:
+                key_code = cv2.waitKey(0)
+                # ONE to merge frame data list from file and the new frame data
+                if self.keyboard_manager.key_was_pressed(key_code, constants.ONE_KEY_CODE):
+                    with open(outfile, 'r') as file:
+                        frame_data_dictionary_list = json.load(file)
+                        file_frame_data_list = [frame_data_mapper.from_dictionary(frame_data_dictionary) for frame_data_dictionary in frame_data_dictionary_list]
+                        frame_data_list = FrameDataMerger.merge(frame_data_list, file_frame_data_list)
+                        break
+                # TWO to overwrite with the new frame data
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.TWO_KEY_CODE):
+                    break
+                # ESC to exit without saving
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                    return
 
-    def _print_text(self, frame, text, bottom_left_point, color):
-        font = cv2.FONT_HERSHEY_DUPLEX
-        font_scale = 1
-        line_type = 1
-        cv2.putText(frame, text, bottom_left_point, font, font_scale, color, line_type)
+        # save data in file
+        with open(outfile, 'w') as file:
+            json.dump([frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list], file)
 
-    def _key_was_pressed(self, key_code_to_check, expected_key_code):
-        return key_code_to_check & 0xFF == expected_key_code
-
-
-if __name__ == '__main__':
-    DatasetGenerator().generate_dataset()
+    def _print_available_options(self):
+        height, width = [500, 1000] if self.current_frame is None else self.current_frame.shape[:2]
+        black_frame = numpy.zeros((200, width, 3))
+        self.frame_printer.print_multiline_text(black_frame, self.options, (5, 30), constants.BGR_WHITE)
+        cv2.imshow(self.KEYS_HELP_WINDOW_NAME, black_frame)
+        cv2.moveWindow(self.KEYS_HELP_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[1], self.TOP_LEFT_FRAME_WINDOW[0] + height + 100)

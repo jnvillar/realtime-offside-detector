@@ -7,34 +7,57 @@ from os.path import isfile, join
 
 class Video:
 
-    def __init__(self, video):
+    def __init__(self, video, backward_navigation_enabled=False):
         self.log = log.Log(self, log.LoggingPackage.player_detector)
         self.video = video
+        self.backward_navigation_enabled = backward_navigation_enabled
         self.current_frame = None
         self.current_frame_number = 0
+        self.next_frames = []
+        self.previous_frames = []
 
     def get_current_frame(self):
-        return self.current_frame
+        return self.current_frame.copy()
 
     def get_current_frame_number(self):
         return self.current_frame_number
 
     def get_next_frame(self):
-        successful_read, frame = self.video.read()
-        if successful_read:
-            self.current_frame_number += 1
-            self.current_frame = frame
+        if not self.current_frame is None:
+            self.previous_frames.append(self.current_frame)
+
+        if len(self.next_frames) > 0:
+            self.current_frame = self.next_frames.pop()
         else:
-            self.current_frame = None
-        return self.current_frame
+            successful_read, frame = self.video.read()
+            if successful_read:
+                self.current_frame = frame
+            else:
+                self.current_frame = None
+
+        self.current_frame_number += 1
+
+        return None if self.current_frame is None else self.current_frame.copy()
+
+    def get_previous_frame(self):
+        if not self.backward_navigation_enabled:
+            raise Exception("Backward navigation is not enabled")
+
+        if len(self.previous_frames) > 0:
+            if not self.current_frame is None:
+                self.next_frames.append(self.current_frame)
+            self.current_frame = self.previous_frames.pop()
+            self.current_frame_number -= 1
+
+        return self.current_frame.copy()
 
 
 class VideoRepository:
 
-    def __init__(self, path):
+    def __init__(self, path, backward_navigation_enabled=False):
         self.log = log.Log(self, log.LoggingPackage.player_detector)
         self.videos = {}
-        self._load_videos(path)
+        self._load_all_videos(path, backward_navigation_enabled)
 
     def list_videos(self):
         return self.videos.items()
@@ -45,14 +68,15 @@ class VideoRepository:
             raise Exception("Video {} not found".format(video_name))
         return video
 
-    def _load_videos(self, path):
+    @staticmethod
+    def get_video(video_path, backward_navigation_enabled):
+        video_capture = cv2.VideoCapture(video_path)
+        if not video_capture.isOpened():
+            raise Exception("Error loading video {}".format(video_path))
+        return Video(video_capture, backward_navigation_enabled)
+
+    def _load_all_videos(self, path, backward_navigation_enabled):
         # TODO: check if we get a high memory usage by loading everything together
         files = [f for f in listdir(path) if isfile(join(path, f))]
         for file in files:
-            try:
-                video_capture = cv2.VideoCapture(path + "/" + file)
-                if not video_capture.isOpened():
-                    raise Exception()
-                self.videos[file] = Video(video_capture)
-            except:
-                self.log.log("Error loading video", {"file": file})
+            self.videos[file] = VideoRepository.get_video(path + "/" + file, backward_navigation_enabled)
