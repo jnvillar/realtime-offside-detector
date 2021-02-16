@@ -43,9 +43,9 @@ def remove_boca(original_frame):
 
 
 def get_histogram(frame, box: Box):
-    blue_h = [0] * 255
-    green_h = [0] * 255
-    red_h = [0] * 255
+    blue_h = [0] * 256
+    green_h = [0] * 256
+    red_h = [0] * 256
 
     res = (blue_h, green_h, red_h)
 

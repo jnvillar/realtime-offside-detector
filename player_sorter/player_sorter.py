@@ -10,7 +10,7 @@ class PlayerSorter:
         self.debug = debug
 
     def sort_players(self, frame, players: [Player]):
-        cluster_players(players)
+        cluster_players(frame, players)
         sorted_players = automatic_color_classifier(frame, players)
 
         # sorted_players = color_classifier(frame, players, [])

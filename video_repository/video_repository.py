@@ -69,7 +69,7 @@ class VideoRepository:
         return video
 
     @staticmethod
-    def get_video(video_path, backward_navigation_enabled):
+    def get_video(video_path, backward_navigation_enabled=False):
         video_capture = cv2.VideoCapture(video_path)
         if not video_capture.isOpened():
             raise Exception("Error loading video {}".format(video_path))
