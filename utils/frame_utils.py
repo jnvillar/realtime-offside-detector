@@ -28,14 +28,37 @@ def remove_color(frame, colors: [Color]):
 
 def mark_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
-        player_box = player.box()
+        player_box = player.get_box()
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(original_frame, str(player.color.name), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_color(), 2, cv2.LINE_AA)
+        cv2.putText(original_frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_color(), 2, cv2.LINE_AA)
 
     return original_frame
 
 
-def sum_black_pixels(frame, box):
+def remove_boca(original_frame):
+    frame = remove_color(original_frame, ColorRange.green.color_range)
+    frame = remove_color(frame, ColorRange.blue.color_range)
+    frame = remove_color(frame, ColorRange.yellow.color_range)
+    return frame
+
+
+def get_histogram(frame, box: Box):
+    blue_h = [0] * 255
+    green_h = [0] * 255
+    red_h = [0] * 255
+
+    res = (blue_h, green_h, red_h)
+
+    for x in range(box.x, box.x + box.w):
+        for y in range(box.y, box.y + box.h):
+            pixel = frame[y][x]
+            for idx, color in enumerate(pixel):
+                res[idx][color] += 1
+
+    return res
+
+
+def sum_black_pixels(frame, box: Box):
     black_pixels = 0
 
     for x in range(box.x, box.x + box.w):
@@ -113,7 +136,7 @@ def detect_contours_with_params(original_frame, params):
 
 
 def remove_green(original_frame, params):
-    frame = remove_color(original_frame, Colors.green.color_range)
+    frame = remove_color(original_frame, ColorRange.green.color_range)
     return frame
 
 

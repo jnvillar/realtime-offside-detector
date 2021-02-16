@@ -25,7 +25,7 @@ class FrameUtilsTests:
                 if frame is None:
                     break
 
-                frame = frame_utils.remove_color(frame, Colors.yellow.colors)
+                frame = frame_utils.remove_color(frame, ColorRange.yellow.colors)
 
                 frame_utils.show(frame, 'remove color', 1)
 

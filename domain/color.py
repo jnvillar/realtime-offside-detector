@@ -25,7 +25,7 @@ class Color(Enum):
     black = "black", (0, 0, 0), (50, 50, 100)
 
 
-class Colors(Enum):
+class ColorRange(Enum):
     def __init__(self, name: str, color_range: [Color], color: Color):
         self.color_name = name
         self.color_range = color_range

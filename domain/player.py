@@ -1,12 +1,12 @@
 from domain.team import *
 from domain.box import *
-from domain.color import Colors
+from domain.color import ColorRange
 
 number = 0
 
 
 class Player:
-    def __init__(self, bounding_box, number, team: Team = Team.unclassified, color: Colors = None):
+    def __init__(self, bounding_box, number, team: Team = Team.unclassified, color: ColorRange = None):
         x, y, w, h = bounding_box
         self.bounding_box = bounding_box
         self.x_coordinate = x
@@ -23,8 +23,17 @@ class Player:
     def __repr__(self):
         return str(self)
 
-    def box(self):
+    def get_box(self):
         return box_from_player(self)
+
+    def get_name(self):
+        if self.team is not Team.unclassified:
+            return self.team.id
+
+        if self.color is not None:
+            return 'test'
+
+        return None
 
     def get_color(self):
         if self.team is not Team.unclassified:
