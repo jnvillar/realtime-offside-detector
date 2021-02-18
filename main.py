@@ -47,4 +47,4 @@ if __name__ == '__main__':
     while True:
         print("start")
         video = video_repository.VideoRepository.get_video(video_path + '/' + constants.VideoConstants.video_1_from_8_to_12)
-        play_video(video, stop_in_frame=59)
+        play_video(video, stop_in_frame=65)

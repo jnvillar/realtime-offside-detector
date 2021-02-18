@@ -28,7 +28,7 @@ class Player:
 
     def get_name(self):
         if self.team is not Team.unclassified:
-            return self.team.id
+            return self.team.label
 
         if self.color is not None:
             return 'test'

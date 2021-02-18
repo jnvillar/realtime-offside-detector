@@ -1,20 +1,27 @@
 from domain.player import *
-from pyclustering.cluster.bsas import bsas, bsas_visualizer
+from pyclustering.cluster.bsas import bsas
+from log.log import *
 import utils.frame_utils as frame_utils
 
 
-def cluster_players(original_frame, players: [Player]):
-    player_histograms = get_player_histograms(original_frame, players)
-    bsas_instance = bsas(data=player_histograms, maximum_clusters=2, threshold=1.0)
-    bsas_instance = bsas_instance.process()
+class PlayerSorterBSAS:
+    def __init__(self, debug: bool = False):
+        self.log = Log(self, LoggingPackage.player_sorter)
+        self.debug = debug
 
-    print('clusters', bsas_instance.get_clusters())
-    print('representatives',  bsas_instance.get_representatives())
-    bsas_visualizer.show_clusters(player_histograms, bsas_instance.get_clusters(), bsas_instance.get_representatives())
+    def sort_players(self, original_frame, players: [Player]):
+        player_histograms = frame_utils.get_player_histograms(original_frame, players)
+        bsas_instance = bsas(data=player_histograms, maximum_clusters=2, threshold=75)
+        bsas_instance = bsas_instance.process()
 
+        clusters = bsas_instance.get_clusters()
+        self.log.log('bsas_clusters', {'clusters': clusters})
 
-def get_player_histograms(original_frame, players: [Player]):
-    player_histograms = []
-    for player in players:
-        player_histograms.append(frame_utils.get_histogram(original_frame, player.get_box()))
-    return player_histograms
+        for idx, cluster in enumerate(clusters):
+            for player_number in cluster:
+                if idx == 0:
+                    players[player_number].team = Team.team_one
+                else:
+                    players[player_number].team = Team.team_two
+
+        return players

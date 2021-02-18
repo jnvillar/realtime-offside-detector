@@ -26,6 +26,13 @@ def remove_color(frame, colors: [Color]):
     return frame
 
 
+def get_player_histograms(original_frame, players: [Player]):
+    player_histograms = []
+    for player in players:
+        player_histograms.append(get_histogram_one_d(original_frame, player.get_box()))
+    return player_histograms
+
+
 def mark_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.get_box()
@@ -58,6 +65,11 @@ def get_histogram(frame, box: Box):
     return res
 
 
+def get_histogram_one_d(frame, box: Box):
+    histogram = get_histogram(frame, box)
+    return histogram[0] + histogram[1] + histogram[2]
+
+
 def sum_black_pixels(frame, box: Box):
     black_pixels = 0
 
@@ -72,8 +84,6 @@ def sum_black_pixels(frame, box: Box):
 def is_area_black(frame, box: Box):
     black_pixels = sum_black_pixels(frame, box)
     box_pixels = box.w * box.h
-
-    log.log("black pixels of box", {'black_pixels': black_pixels, 'box_pixels': box_pixels, 'box_label': box.label})
 
     if black_pixels > (box_pixels * 0.48):
         return True
