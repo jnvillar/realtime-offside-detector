@@ -110,7 +110,7 @@ def is_pixel_black(pixel):
     return False
 
 
-def detect_contours_with_params(original_frame, params):
+def detect_contours(original_frame, params):
     (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
     for pic, c in enumerate(contours):

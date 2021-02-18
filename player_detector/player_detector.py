@@ -55,7 +55,7 @@ class PlayerDetector:
         return frame
 
     def save_players(self, original_frame, params):
-        contours = frame_utils.detect_contours_with_params(original_frame, {
+        contours = frame_utils.detect_contours(original_frame, {
             'percentage_of_frame': params['percentage_of_frame'],
             'aspect_ratio': AspectRatio.taller
         })
