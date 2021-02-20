@@ -6,7 +6,7 @@ from player_sorter.imp_color_given import *
 
 class PlayerSorter:
 
-    def __init__(self, debug: bool = False):
+    def __init__(self, debug: bool = False, **kwargs):
         self.log = log.Log(self, log.LoggingPackage.player_sorter)
         self.debug = debug
         self.methods = {
