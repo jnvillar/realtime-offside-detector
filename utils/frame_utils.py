@@ -221,3 +221,7 @@ def show(frame, window_name, window_number):
         windows_x_position = windows_x_position - (window_max_x_position * window_y_position)
 
     cv2.moveWindow(window_name, windows_x_position, (window_y_position * 500))
+
+
+def detect_edges(original_frame, params):
+    return cv2.Canny(original_frame, params["threshold1"], params["threshold2"], apertureSize=3)
