@@ -21,7 +21,7 @@ class Box:
         return self.label
 
 
-def box_from_player(player):
+def box_from_player(player) -> Box:
     x, y, w, h = player.bounding_box
     label = player.number
 

@@ -4,6 +4,8 @@ import utils.frame_utils as frame_utils
 from video_repository.video_repository import *
 from domain.player import *
 from domain.aspec_ratio import *
+from domain.orientation import *
+from domain.box import *
 
 
 class Step:
@@ -43,7 +45,7 @@ class Step:
 
 class PlayerDetector:
 
-    def __init__(self, debug: bool = False):
+    def __init__(self, debug: bool = False, **kwargs):
         self.debug = debug
         self.last_frame = None
         self.log = log.Log(self, log.LoggingPackage.player_detector)
@@ -61,6 +63,26 @@ class PlayerDetector:
         })
         self.players = players_from_contours(contours)
         return original_frame
+
+    def mark_last_defending_player(self, players: [Player], orientation: Orientation):
+        player = None
+        if orientation == Orientation.left:
+            leftmost_player = None
+            for player in players:
+                if leftmost_player is None:
+                    leftmost_player = player
+                elif player.get_box().x < leftmost_player.get_box().x:
+                    leftmost_player = player
+            player = leftmost_player
+        else:
+            rightmost_player = None
+            for player in players:
+                if rightmost_player is None:
+                    rightmost_player = player
+                elif player.get_box().x + player.get_box().w > rightmost_player.get_box().x + rightmost_player.get_box().w:
+                    rightmost_player = player
+            player = rightmost_player
+        player.is_last_defending_player = True
 
     def find_players(self, frame):
         self.players = []

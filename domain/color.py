@@ -23,6 +23,7 @@ class Color(Enum):
     yellow = "yellow", (15, 100, 100), (35, 255, 255)
     grey = "grey", (0, 0, 50), (179, 50, 255)
     black = "black", (0, 0, 0), (50, 50, 100)
+    violet = 'violet', (0, 0, 0), (50, 50, 100)  # change this
 
 
 class ColorRange(Enum):
@@ -45,3 +46,4 @@ class ColorRange(Enum):
     blue = 'blue', [Color.blue], (255, 0, 0)
     gray = 'grey', [Color.grey, Color.white], (255, 255, 255)
     yellow = 'yellow', [Color.yellow], (0, 255, 255)
+    violet = 'violet', [Color.violet], (127, 0, 255)

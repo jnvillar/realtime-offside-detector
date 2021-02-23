@@ -16,6 +16,7 @@ class Player:
         self.team = team
         self.color = color
         self.number = number
+        self.is_last_defending_player = False
 
     def __str__(self):
         return 'Player:' + str(self.number)
@@ -23,12 +24,12 @@ class Player:
     def __repr__(self):
         return str(self)
 
-    def get_box(self):
+    def get_box(self) -> Box:
         return box_from_player(self)
 
     def get_name(self):
         if self.team is not Team.unclassified:
-            return self.team.label
+            return self.team.get_label()
 
         if self.color is not None:
             return 'test'
@@ -36,6 +37,9 @@ class Player:
         return None
 
     def get_color(self):
+        if self.is_last_defending_player:
+            return ColorRange.violet.get_color()
+
         if self.team is not Team.unclassified:
             return self.team.get_color()
 
