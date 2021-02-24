@@ -4,7 +4,7 @@ from domain.orientation import *
 
 class ByParameter:
     def __init__(self, **kwargs):
-        self.args = kwargs['orientation_detector']['by_parameter']
+        self.args = kwargs
 
     def detect_orientation(self, frame, players: [Player]) -> Orientation:
         orientation = self.args['orientation']

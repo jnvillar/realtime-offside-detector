@@ -1,16 +1,14 @@
-import numpy as np
 from typing import List
 import utils.frame_utils as frame_utils
-from video_repository.video_repository import *
+from log.log import *
 from domain.player import *
 from domain.aspec_ratio import *
 from domain.orientation import *
-from domain.box import *
-
+import cv2
 
 class Step:
     def __init__(self, name: str, function, params=None, debug: bool = False, modify_original_frame=True):
-        self.log = log.Log(self, log.LoggingPackage.player_detector)
+        self.log = Log(self, LoggingPackage.player_detector)
         self.name = name
         self.function = function
         self.debug = debug
@@ -48,7 +46,7 @@ class PlayerDetector:
     def __init__(self, debug: bool = False, **kwargs):
         self.debug = debug
         self.last_frame = None
-        self.log = log.Log(self, log.LoggingPackage.player_detector)
+        self.log = Log(self, LoggingPackage.player_detector)
         self.fgbg = cv2.createBackgroundSubtractorMOG2(history=100, detectShadows=False, varThreshold=50)
         self.players = []
 

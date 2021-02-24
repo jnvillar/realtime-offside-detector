@@ -49,6 +49,14 @@ class Player:
         return None
 
 
+def get_players_bb(players: [Player]):
+    bb = []
+    for player in players:
+        bb.append(player.bounding_box)
+
+    return bb
+
+
 def players_from_contours(contours):
     players = []
     global number

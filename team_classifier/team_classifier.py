@@ -7,10 +7,11 @@ class TeamClassifier:
     def __init__(self, debug: bool = False, **kwargs):
         self.log = Log(self, LoggingPackage.player_sorter)
         self.debug = debug
-        self.methods = {
-            'by_parameter': ByParameter(**kwargs),
+        methods = {
+            'by_parameter': ByParameter(**kwargs['by_parameter']),
         }
+        self.method = methods['by_parameter']
 
-    def classify_teams(self, frame, players: [Player], method='by_parameter'):
-        self.methods[method].classify_teams(frame, players)
+    def classify_teams(self, frame, players: [Player]):
+        self.method.classify_teams(frame, players)
         return players

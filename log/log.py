@@ -4,9 +4,10 @@ from enum import Enum
 class LoggingPackage(Enum):
     player_detector = "🏃"
     player_sorter = "👕"
+    player_tracker = "🎥"
     team_classifier = "🤼"
     orientation_detector = "🧭"
-    video_repository = "🎥"
+    video_repository = "🗄️"
     test = "🧪"
     frame_utils = "🔨"
 

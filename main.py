@@ -1,21 +1,36 @@
-from player_detector.player_detector import *
-from player_sorter.player_sorter import *
-from domain.video import *
-from domain.orientation import *
-from orientation_detector.orientation_detector import *
-from team_classifier.team_classifier import *
 import video_repository.video_repository as video_repository
-import utils.constants as constants
-import cv2
+from orientation_detector.orientation_detector import *
+from player_detector.player_detector import *
+from team_classifier.team_classifier import *
+from player_tracker.player_tracker import *
+from player_sorter.player_sorter import *
 import utils.frame_utils as frame_utils
+import utils.constants as constants
+from domain.video import *
+import cv2
 
 
 class OffsideLineDetector:
     def __init__(self, **kwargs):
-        self.player_detector = PlayerDetector(debug=False, **kwargs)
-        self.player_sorter = PlayerSorter(**kwargs)
-        self.team_detector = TeamClassifier(**kwargs)
-        self.orientation_detector = OrientationDetector(**kwargs)
+        self.player_detector = PlayerDetector(debug=False, **kwargs['player_detector'])
+        self.player_sorter = PlayerSorter(**kwargs['player_sorter'])
+        self.team_classifier = TeamClassifier(**kwargs['team_classifier'])
+        self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
+        self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
+        self.players = []
+
+    def track_players(self, frame, frame_number):
+        frame = cv2.resize(frame, (500, 500))
+
+        if frame_number < 3 or frame_number % 5 == 0:
+            players = self.player_detector.detect_players_in_frame(frame, frame_number)
+            self.players = players
+            frame = frame_utils.mark_players(frame, players)
+            return frame
+        else:
+            frame = self.player_tracker.track_players(frame, self.players)
+
+        return frame
 
     def detect_offside_line(self, frame, soccer_video):
         frame = cv2.resize(frame, (500, 500))
@@ -24,7 +39,7 @@ class OffsideLineDetector:
         # classify players
         players = self.player_sorter.sort_players(frame, players)
         # detect and attacking team
-        players = self.team_detector.classify_teams(frame, players)
+        players = self.team_classifier.classify_teams(frame, players)
         # detect orientation
         orientation = self.orientation_detector.detect_orientation(frame, players)
         self.player_detector.mark_last_defending_player(players, orientation)
@@ -42,7 +57,8 @@ class OffsideLineDetector:
                     last_frame = True
                     break
 
-                frame = self.detect_offside_line(frame, soccer_video)
+                # frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
+                frame = self.track_players(frame, soccer_video.get_current_frame_number())
                 cv2.imshow('final result', frame)
 
                 if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
@@ -58,16 +74,29 @@ class OffsideLineDetector:
 if __name__ == '__main__':
 
     params = {
+
         'team_classifier': {  # params for team classifier
             'method': 'by_parameter',
             'by_parameter': {  # params used in by parameter method
                 'attacking_team': Team.team_river
             }
         },
+        'player_sorter': {
+            'method': 'bsas',
+        },
+        'player_detector': {
+
+        },
         'orientation_detector': {
             'method': 'by_parameter',
             'by_parameter': {  # params used in by parameter method
                 'orientation': Orientation.left
+            }
+        },
+        'player_tracker': {
+            'method': 'opencv',
+            'opencv': {  # params used in by opencv method
+                'tracker': 'kcf'
             }
         }
     }
