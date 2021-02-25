@@ -19,6 +19,7 @@ class PlayerSorter:
         self.method = methods[kwargs['method']]
 
     def sort_players(self, frame, players: [Player]):
+        self.log.log("sorting players", {"players": players})
         sorted_players = self.method.sort_players(frame, players)
         self.log.log("sorted players", {"players": players})
         return sorted_players

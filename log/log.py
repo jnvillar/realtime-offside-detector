@@ -6,6 +6,7 @@ class LoggingPackage(Enum):
     player_sorter = "👕"
     player_tracker = "🎥"
     team_classifier = "🤼"
+    player_finder = "🔍"
     orientation_detector = "🧭"
     video_repository = "🗄️"
     test = "🧪"
@@ -31,7 +32,9 @@ class Log:
 
     # message = string
     # params  = dict
-    def log(self, message: str, params: dict, level: LogLevel = LogLevel.debug):
+    def log(self, message: str, params: dict = None, level: LogLevel = LogLevel.debug):
+        if params is None:
+            params = ''
         if self.log_level.value <= level.value:
             print(
                 str(self.package.value) + ' ' +

@@ -13,5 +13,7 @@ class TeamClassifier:
         self.method = methods['by_parameter']
 
     def classify_teams(self, frame, players: [Player]):
+        self.log.log("classyfing teams")
         self.method.classify_teams(frame, players)
+        self.log.log("teams classified")
         return players

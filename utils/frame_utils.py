@@ -110,6 +110,15 @@ def is_pixel_black(pixel):
     return False
 
 
+def save_players(self, original_frame, params):
+    contours = detect_contours(original_frame, {
+        'percentage_of_frame': params['percentage_of_frame'],
+        'aspect_ratio': AspectRatio.taller
+    })
+
+    return original_frame
+
+
 def detect_contours(original_frame, params):
     (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []

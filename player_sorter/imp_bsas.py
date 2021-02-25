@@ -10,6 +10,9 @@ class PlayerSorterBSAS:
         self.debug = debug
 
     def sort_players(self, original_frame, players: [Player]):
+        if len(players) < 2:
+            return players
+
         player_histograms = frame_utils.get_player_histograms(original_frame, players)
         bsas_instance = bsas(data=player_histograms, maximum_clusters=2, threshold=75)
         bsas_instance = bsas_instance.process()

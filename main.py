@@ -4,6 +4,7 @@ from player_detector.player_detector import *
 from team_classifier.team_classifier import *
 from player_tracker.player_tracker import *
 from player_sorter.player_sorter import *
+from player_finder.player_finder import *
 import utils.frame_utils as frame_utils
 import utils.constants as constants
 from domain.video import *
@@ -17,6 +18,7 @@ class OffsideLineDetector:
         self.team_classifier = TeamClassifier(**kwargs['team_classifier'])
         self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
         self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
+        self.player_finder = PlayerFinder()
         self.players = []
 
     def track_players(self, frame, frame_number):
@@ -32,17 +34,19 @@ class OffsideLineDetector:
 
         return frame
 
-    def detect_offside_line(self, frame, soccer_video):
+    def detect_offside_line(self, frame, frame_number):
         frame = cv2.resize(frame, (500, 500))
         # find players
-        players = self.player_detector.detect_players_in_frame(frame, soccer_video.get_current_frame_number())
+        players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # classify players
         players = self.player_sorter.sort_players(frame, players)
         # detect and attacking team
         players = self.team_classifier.classify_teams(frame, players)
         # detect orientation
         orientation = self.orientation_detector.detect_orientation(frame, players)
-        self.player_detector.mark_last_defending_player(players, orientation)
+
+        self.player_finder.mark_last_defending_player(players, orientation)
+
         frame = frame_utils.mark_players(frame, players)
         return frame
 
@@ -57,8 +61,7 @@ class OffsideLineDetector:
                     last_frame = True
                     break
 
-                # frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
-                frame = self.track_players(frame, soccer_video.get_current_frame_number())
+                frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
                 cv2.imshow('final result', frame)
 
                 if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
@@ -85,7 +88,14 @@ if __name__ == '__main__':
             'method': 'bsas',
         },
         'player_detector': {
-
+            'method': 'background_subtraction',
+            'background_subtraction': {
+                'history': 100,
+                'detect_shadows': False,
+                'var_threshold': 50,
+                'ignore_contours_smaller_than': 0.01,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller
+            }
         },
         'orientation_detector': {
             'method': 'by_parameter',
