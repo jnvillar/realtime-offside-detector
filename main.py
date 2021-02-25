@@ -19,10 +19,11 @@ class OffsideLineDetector:
         self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
         self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
         self.player_finder = PlayerFinder()
+        self.params = kwargs['app']
         self.players = []
 
     def track_players(self, frame, frame_number):
-        frame = cv2.resize(frame, (500, 500))
+        frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
 
         if frame_number < 3 or frame_number % 5 == 0:
             players = self.player_detector.detect_players_in_frame(frame, frame_number)
@@ -35,7 +36,7 @@ class OffsideLineDetector:
         return frame
 
     def detect_offside_line(self, frame, frame_number):
-        frame = cv2.resize(frame, (500, 500))
+        frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # classify players
@@ -50,7 +51,7 @@ class OffsideLineDetector:
         frame = frame_utils.mark_players(frame, players)
         return frame
 
-    def mark_offside_line(self, soccer_video: Video, stop_in_frame: int = None):
+    def mark_offside_line(self, soccer_video: Video):
         play = True
         last_frame = False
 
@@ -64,6 +65,7 @@ class OffsideLineDetector:
                 frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
                 cv2.imshow('final result', frame)
 
+                stop_in_frame = self.params['stop_in_frame']
                 if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
                     play = not play
 
@@ -77,7 +79,11 @@ class OffsideLineDetector:
 if __name__ == '__main__':
 
     params = {
-
+        'app': {
+            'stop_in_frame': 10,
+            'size_h': 500,
+            'size_w': 500,
+        },
         'team_classifier': {  # params for team classifier
             'method': 'by_parameter',
             'by_parameter': {  # params used in by parameter method
@@ -88,11 +94,18 @@ if __name__ == '__main__':
             'method': 'bsas',
         },
         'player_detector': {
-            'method': 'background_subtraction',
+            # background_subtraction, edges
+            'method': 'edges',
             'background_subtraction': {
                 'history': 100,
                 'detect_shadows': False,
                 'var_threshold': 50,
+                'ignore_contours_smaller_than': 0.01,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller
+            },
+            'edges': {
+                'threshold1': 50,
+                'threshold2': 70,
                 'ignore_contours_smaller_than': 0.01,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             }
@@ -116,4 +129,4 @@ if __name__ == '__main__':
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path + '/' + constants.VideoConstants.video_1_from_8_to_12)
-        offside_line_detector.mark_offside_line(video, stop_in_frame=65)
+        offside_line_detector.mark_offside_line(video)

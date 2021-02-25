@@ -1,4 +1,5 @@
 from player_detector.imp_background_subtraction import *
+from player_detector.imp_edges import *
 from domain.player import *
 from log.log import *
 
@@ -10,10 +11,10 @@ class PlayerDetector:
     def __init__(self, debug: bool = False, **kwargs):
         self.debug = debug
         self.log = Log(self, LoggingPackage.player_detector)
-        self.fgbg = cv2.createBackgroundSubtractorMOG2(history=100, detectShadows=False, varThreshold=50)
-        self.players = []
+
         methods = {
             'background_subtraction': BackgroundSubtractionPlayerDetector(**kwargs['background_subtraction']),
+            'edges': EdgesPlayerDetector(**kwargs['edges'])
         }
 
         self.method = methods[kwargs['method']]
