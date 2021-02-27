@@ -107,7 +107,8 @@ if __name__ == '__main__':
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.01,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
             }
         },
         'orientation_detector': {
