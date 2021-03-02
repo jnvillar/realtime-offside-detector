@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     params = {
         'app': {
-            'stop_in_frame': 10,
+            'stop_in_frame': 65,
             'size_h': 500,
             'size_w': 500,
         },
@@ -100,13 +100,13 @@ if __name__ == '__main__':
                 'history': 100,
                 'detect_shadows': False,
                 'var_threshold': 50,
-                'ignore_contours_smaller_than': 0.01,
+                'ignore_contours_smaller_than': 0.02,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
                 'threshold1': 50,
                 'threshold2': 70,
-                'ignore_contours_smaller_than': 0.01,
+                'ignore_contours_smaller_than': 0.02,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
                 'filter_contour_inside_other': True
             }

@@ -6,12 +6,19 @@ import cv2
 
 class EdgesPlayerDetector:
 
-    def __init__(self, debug: bool = False, **kwargs):
-        self.debug = True
+    def __init__(self, debug: bool = True, **kwargs):
+        self.debug = debug
         self.log = Log(self, LoggingPackage.player_detector)
         self.params = kwargs
 
     def find_players(self, frame):
+        params = {
+            # 'ignore_contours_bigger_than': 0.25,
+            'ignore_contours_smaller_than': 0.04,
+            'keep_contours_by_aspect_ratio': AspectRatio.taller,
+            'filter_contour_inside_other': True
+        }
+
         pipeline: [Step] = [
             Step(
                 "remove green",
@@ -28,11 +35,23 @@ class EdgesPlayerDetector:
                 debug=self.debug),
 
             Step(
-                "detect contours",
-                mark_contours, {
-                    'threshold1': self.params['threshold1'],
-                    'threshold2': self.params['threshold2']
-                },
+                "dilatate",
+                apply_dilatation, {},
+                debug=self.debug),
+
+            Step(
+                "fill contours",
+                fill_contours, {},
+                debug=self.debug),
+
+            Step(
+                "erode",
+                apply_erosion, {'iterations': 3},
+                debug=self.debug),
+
+            Step(
+                "dilatate",
+                apply_dilatation, {'iterations': 2},
                 debug=self.debug),
 
             # Step(
@@ -91,11 +110,6 @@ class EdgesPlayerDetector:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        players = detect_contours(frame, params={
-            # 'ignore_contours_bigger_than': 2,
-            'ignore_contours_smaller_than': 0.01,
-            # 'keep_contours_by_aspect_ratio': AspectRatio.taller,
-            'filter_contour_inside_other': True
-        })
+        players = detect_contours(frame, params=params)
 
         return players_from_contours(players)

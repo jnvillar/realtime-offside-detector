@@ -111,14 +111,9 @@ def is_pixel_black(pixel):
 
 
 def mark_contours(original_frame, params):
-    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_FLOODFILL, cv2.CHAIN_APPROX_NONE)
+    contours = detect_contours(original_frame, params)
 
-    res = []
-    for c in contours:
-        x, y, w, h = cv2.boundingRect(c)
-        res.append([x, y, w, h])
-
-    for idx, player in enumerate(players_from_contours(res)):
+    for idx, player in enumerate(players_from_contours(contours)):
         player_box = player.get_box()
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, (255, 255, 255), 2)
 
@@ -128,7 +123,7 @@ def mark_contours(original_frame, params):
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
-    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
     for idx, c in enumerate(contours):
 
@@ -140,7 +135,6 @@ def detect_contours(original_frame, params):
             if params['filter_contour_inside_other'] and hierarchy[0, idx, 3] != -1:
                 valid_contour = False
 
-        contour_percentage_of_frame = None
         if 'ignore_contours_smaller_than' in params:
             area = cv2.contourArea(c)
             contour_percentage_of_frame = percentage_of_frame(original_frame, area)
@@ -149,30 +143,25 @@ def detect_contours(original_frame, params):
 
         if 'ignore_contours_bigger_than' in params:
             area = cv2.contourArea(c)
-
-            # do not recalculate
-            if contour_percentage_of_frame is None:
-                contour_percentage_of_frame = percentage_of_frame(original_frame, area)
+            contour_percentage_of_frame = percentage_of_frame(original_frame, area)
 
             if contour_percentage_of_frame > params['ignore_contours_bigger_than']:
                 valid_contour = False
 
         if 'keep_contours_by_aspect_ratio' in params:
             # Assume player must be more tall than narrow, so, filter the ones that has more width than height
-            aspect_ratio = h / w
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.taller:
-                if aspect_ratio < 1:
+                aspect_ratio = h / w
+                # we dont want boxes that are too thin
+                if aspect_ratio < 1 or aspect_ratio > 6:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
-                if aspect_ratio > 1:
+                aspect_ratio = w / h
+                # we dont want boxes that are too wide
+                if aspect_ratio < 1 or aspect_ratio > 6:
                     valid_contour = False
-
-            # Assume player bb must be a rectangle, so, the division of larger side / shorter side must be more than 1
-            # aspect_ratio = max(w, h) / max(min(w, h), 1)
-            # if aspect_ratio < 0.9:
-            #     continue
 
         if valid_contour:
             detected_contours.append([x, y, w, h])
@@ -186,18 +175,26 @@ def remove_green(original_frame, params):
 
 
 def apply_dilatation(frame, params):
-    dilated_frame = cv2.dilate(frame, None, iterations=1)
+    dilated_frame = cv2.dilate(frame, None, iterations=params.get('iterations', 1))
     return dilated_frame
 
 
 def apply_erosion(frame, params):
-    eroded_frame = cv2.erode(frame, None, iterations=1)
+    eroded_frame = cv2.erode(frame, None, iterations=params.get('iterations', 1))
     return eroded_frame
 
 
 def apply_blur(frame, params):
     blurred_frame = cv2.GaussianBlur(frame, (3, 3), 0)
     return blurred_frame
+
+
+def fill_contours(frame, params):
+    (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    for pic, contour in enumerate(contours):
+        cv2.fillPoly(frame, pts=[contour], color=255)
+
+    return frame
 
 
 def delete_small_contours(frame, params):
@@ -214,7 +211,7 @@ def delete_small_contours(frame, params):
 
 # https://stackoverflow.com/questions/52247821/find-width-and-height-of-rotatedrect
 def filter_contours_by_aspect_ratio(frame, params):
-    (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     for pic, c in enumerate(contours):
         rect = cv2.minAreaRect(c)
@@ -237,7 +234,9 @@ def filter_contours_by_aspect_ratio(frame, params):
 # Use "close" morphological operation to close the gaps between contours
 # https://stackoverflow.com/questions/18339988/implementing-imcloseim-se-in-opencv
 def morphological_closing(original_frame, params):
-    frame = cv2.morphologyEx(original_frame, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (6, 6)))
+    frame = cv2.morphologyEx(original_frame, cv2.MORPH_CLOSE, cv2.getStructuringElement(
+        params.get('element', cv2.MORPH_ELLIPSE),
+        params.get('element_size', (6, 6))))
     return frame
 
 

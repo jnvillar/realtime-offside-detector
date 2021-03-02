@@ -6,7 +6,7 @@ import cv2
 
 class BackgroundSubtractionPlayerDetector:
 
-    def __init__(self, debug: bool = False, **kwargs):
+    def __init__(self, debug: bool = True, **kwargs):
         self.debug = debug
         self.log = Log(self, LoggingPackage.player_detector)
         self.fgbg = cv2.createBackgroundSubtractorMOG2(
@@ -38,8 +38,8 @@ class BackgroundSubtractionPlayerDetector:
             frame = step.apply(idx, frame)
 
         players = detect_contours(frame, params={
-            'percentage_of_frame': self.params['ignore_contours_smaller_than'],
-            'aspect_ratio': self.params['keep_contours_by_aspect_ratio']
+            'ignore_contours_smaller_than': self.params['ignore_contours_smaller_than'],
+            'keep_contours_by_aspect_ratio': self.params['keep_contours_by_aspect_ratio']
         })
 
         return players_from_contours(players)
