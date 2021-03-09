@@ -17,6 +17,7 @@ class Player:
         self.color = color
         self.number = number
         self.is_last_defending_player = False
+        self.tracking_process_iteration = 0
 
     def __str__(self):
         return 'Player:' + str(self.number)

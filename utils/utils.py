@@ -33,12 +33,13 @@ class KeyboardManager:
 
 class ScreenManager:
 
-    def __init__(self, screen_number=0, max_windows=6, rows=2):
+    def __init__(self, screen_number=0, max_windows=6, rows=2, show_previous_frame=False):
         """
         Constructor.
         :param screen_number: screen number where images should be printed (default = 0)
         :param max_windows: maximum number of windows that we are going to print (default = 6)
         :param rows: rows to use to print all the windows (default = 2)
+        :param show_previous_frame: shows the previous frame
         """
         self.nextWindow = 0
         self.screen = self._get_screen_to_use(screen_number)
@@ -47,8 +48,19 @@ class ScreenManager:
         self.rows = rows
         self.window_height, self.window_width = self._calculate_window_dimensions()
         self.window_names = []
+        self.last_frame = None
+        self.show_previous_frame = show_previous_frame
 
-    def show_frame(self, frame, window_name):
+    def show_frame(self, frame, window_name, is_previous_frame=False):
+        if self.show_previous_frame and \
+                self.last_frame is not None \
+                and not is_previous_frame:
+            self.last_frame = frame
+            self.show_frame(self.last_frame, 'last frame', True)
+
+        if self.last_frame is None:
+            self.last_frame = frame
+
         frame = cv2.resize(frame, (self.window_width, self.window_height - 100))
 
         # existing window
@@ -88,7 +100,7 @@ class ScreenManager:
         # percent by which the image is resized, on each step
         decrement_step_pct = 3
 
-        while self.screen.width < current_width * math.ceil(self.max_windows/self.rows) or self.screen.height < current_height * self.rows:
+        while self.screen.width < current_width * math.ceil(self.max_windows / self.rows) or self.screen.height < current_height * self.rows:
             # calculate the (100 - decrement_step_pct) percent of current dimensions (we keep ratio of the initial values)
             current_width = int(current_width * (100 - decrement_step_pct) / 100)
             current_height = int(current_height * (100 - decrement_step_pct) / 100)

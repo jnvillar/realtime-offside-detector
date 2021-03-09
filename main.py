@@ -7,6 +7,7 @@ from player_sorter.player_sorter import *
 from player_finder.player_finder import *
 import utils.frame_utils as frame_utils
 import utils.constants as constants
+from utils.utils import *
 from domain.video import *
 import cv2
 
@@ -21,6 +22,7 @@ class OffsideLineDetector:
         self.player_finder = PlayerFinder()
         self.params = kwargs['app']
         self.players = []
+        self.screen_manager = ScreenManager(max_windows=1, rows=1)
 
     def track_players(self, frame, frame_number):
         frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
@@ -37,7 +39,8 @@ class OffsideLineDetector:
 
     def detect_offside_line(self, frame, frame_number):
         if self.params['resize']['apply']:
-            frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
+            resize_params = self.params['resize']
+            frame = cv2.resize(frame, (resize_params['size_h'], resize_params['size_w']))
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players
@@ -66,7 +69,7 @@ class OffsideLineDetector:
                     break
 
                 frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
-                cv2.imshow('final result', frame)
+                self.screen_manager.show_frame(frame, 'final result')
 
                 stop_in_frame = self.params['stop_in_frame']
                 if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
@@ -85,9 +88,9 @@ if __name__ == '__main__':
         'app': {
             'stop_in_frame': 2,
             'resize': {
-                'apply': False,
-                'size_h': 500,
-                'size_w': 500,
+                'apply': True,
+                'size_h': 1000,
+                'size_w': 1000,
             }
         },
         'team_classifier': {  # params for team classifier
@@ -137,7 +140,7 @@ if __name__ == '__main__':
             'opencv': {  # params used in by opencv method
                 'tracker': 'kcf'
             },
-            'distance':{
+            'distance': {
 
             }
         }

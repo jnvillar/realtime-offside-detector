@@ -24,6 +24,12 @@ class Box:
     def get_center(self):
         return self.center
 
+    def get_width(self):
+        return self.w
+
+    def get_height(self):
+        return self.h
+
 
 def box_from_player(player) -> Box:
     x, y, w, h = player.bounding_box
