@@ -29,17 +29,26 @@ class Player:
 
     def get_name(self):
         if self.team is not Team.unclassified:
-            return self.team.get_label()
+            return self.team.get_label() + ': ' + str(self.number)
 
         if self.color is not None:
             return 'test'
 
         return None
 
-    def get_color(self):
+    def get_label_color(self):
         if self.is_last_defending_player:
             return ColorRange.violet.get_color()
 
+        if self.team is not Team.unclassified:
+            return self.team.get_color()
+
+        if self.color is not None:
+            return self.color.get_color()
+
+        return None
+
+    def get_color(self):
         if self.team is not Team.unclassified:
             return self.team.get_color()
 

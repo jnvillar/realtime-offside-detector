@@ -16,7 +16,7 @@ OPENCV_OBJECT_TRACKERS = {
 class OpenCVTracker:
 
     def __init__(self, debug: bool = False, **kwargs):
-        self.log = Log(self, LoggingPackage.player_sorter)
+        self.log = Log(self, LoggingPackage.player_tracker)
         self.tracking = False
         self.trackers = []
         self.debug = debug
@@ -39,7 +39,7 @@ class OpenCVTracker:
 
         if not self.tracking or len(players) != len(self.trackers):
             self.init_trackers(frame, players)
-            return frame
+            return players
 
         for tracker in self.trackers:
             (success, box) = tracker.update(frame)

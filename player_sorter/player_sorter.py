@@ -11,7 +11,7 @@ class PlayerSorter:
         self.debug = debug
 
         methods = {
-            'bsas': PlayerSorterBSAS(),
+            'bsas': PlayerSorterBSAS(**kwargs['bsas']),
             'automatic_by_color': PlayerSorterByColorAutomatic(),
             'by_color': PlayerSorterByColor()
         }

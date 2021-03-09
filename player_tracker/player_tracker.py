@@ -1,4 +1,5 @@
 from player_tracker.imp_opencv_tracker import *
+from player_tracker.imp_tracker_by_distance import *
 
 
 class PlayerTracker:
@@ -8,8 +9,12 @@ class PlayerTracker:
         self.debug = debug
         methods = {
             'opencv': OpenCVTracker(**kwargs['opencv']),
+            'distance': DistanceTracker(**kwargs['distance']),
         }
         self.method = methods[kwargs['method']]
 
     def track_players(self, frame, players: [Player]):
-        return self.method.track_players(frame, players)
+        self.log.log("tracking players")
+        players = self.method.track_players(frame, players)
+        self.log.log("tracking players")
+        return players

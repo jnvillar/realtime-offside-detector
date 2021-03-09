@@ -36,9 +36,12 @@ class OffsideLineDetector:
         return frame
 
     def detect_offside_line(self, frame, frame_number):
-        frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
+        if self.params['resize']['apply']:
+            frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
+        # track players
+        players = self.player_tracker.track_players(frame, players)
         # classify players
         players = self.player_sorter.sort_players(frame, players)
         # detect and attacking team
@@ -80,9 +83,12 @@ if __name__ == '__main__':
 
     params = {
         'app': {
-            'stop_in_frame': 65,
-            'size_h': 500,
-            'size_w': 500,
+            'stop_in_frame': 2,
+            'resize': {
+                'apply': False,
+                'size_h': 500,
+                'size_w': 500,
+            }
         },
         'team_classifier': {  # params for team classifier
             'method': 'by_parameter',
@@ -92,11 +98,18 @@ if __name__ == '__main__':
         },
         'player_sorter': {
             'method': 'bsas',
+            'bsas': {
+                'threshold': 75,
+                'clusters': 2,
+                'team_one': Team.team_boca,
+                'team_two': Team.team_river
+            }
         },
         'player_detector': {
             # background_subtraction, edges
             'method': 'edges',
             'background_subtraction': {
+                'debug': False,
                 'history': 100,
                 'detect_shadows': False,
                 'var_threshold': 50,
@@ -104,9 +117,10 @@ if __name__ == '__main__':
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
+                'debug': False,
                 'threshold1': 50,
                 'threshold2': 70,
-                'ignore_contours_smaller_than': 0.02,
+                'ignore_contours_smaller_than': 0.04,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
                 'filter_contour_inside_other': True
             }
@@ -118,9 +132,13 @@ if __name__ == '__main__':
             }
         },
         'player_tracker': {
-            'method': 'opencv',
+            # opencv, distance
+            'method': 'distance',
             'opencv': {  # params used in by opencv method
                 'tracker': 'kcf'
+            },
+            'distance':{
+
             }
         }
     }

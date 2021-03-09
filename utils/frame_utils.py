@@ -37,7 +37,7 @@ def mark_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.get_box()
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(original_frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_color(), 2, cv2.LINE_AA)
+        cv2.putText(original_frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
 
     return original_frame
 

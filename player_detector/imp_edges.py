@@ -1,24 +1,16 @@
 from player_detector.step import *
 from utils.frame_utils import *
 from log.log import *
-import cv2
 
 
 class EdgesPlayerDetector:
 
-    def __init__(self, debug: bool = True, **kwargs):
-        self.debug = debug
+    def __init__(self, **kwargs):
+        self.debug = kwargs['debug']
         self.log = Log(self, LoggingPackage.player_detector)
         self.params = kwargs
 
     def find_players(self, frame):
-        params = {
-            # 'ignore_contours_bigger_than': 0.25,
-            'ignore_contours_smaller_than': 0.04,
-            'keep_contours_by_aspect_ratio': AspectRatio.taller,
-            'filter_contour_inside_other': True
-        }
-
         pipeline: [Step] = [
             Step(
                 "remove green",
@@ -110,6 +102,6 @@ class EdgesPlayerDetector:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        players = detect_contours(frame, params=params)
+        players = detect_contours(frame, params=self.params)
 
         return players_from_contours(players)

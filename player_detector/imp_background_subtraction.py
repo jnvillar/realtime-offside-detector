@@ -6,8 +6,8 @@ import cv2
 
 class BackgroundSubtractionPlayerDetector:
 
-    def __init__(self, debug: bool = True, **kwargs):
-        self.debug = debug
+    def __init__(self, **kwargs):
+        self.debug = kwargs['debug']
         self.log = Log(self, LoggingPackage.player_detector)
         self.fgbg = cv2.createBackgroundSubtractorMOG2(
             history=kwargs['history'],
