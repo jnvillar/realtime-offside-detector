@@ -32,11 +32,12 @@ class DistanceTracker:
         self.previous_players = []
         self.initialized = False
         self.debug = kwargs.get('debug', False)
+        self.params = kwargs
 
     def lost_players(self, players: [Player]):
         lost_players = []
         for player in self.previous_players:
-            if player.tracking_process_iteration > 1:
+            if player.tracking_process_iteration > self.params['history']:
                 continue
 
             distance, closest_player = find_closest_player(player, players)
