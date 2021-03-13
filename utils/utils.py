@@ -33,6 +33,22 @@ class KeyboardManager:
 
 class ScreenManager:
 
+    INSTANCE = None
+
+    @staticmethod
+    def initialize(screen_number=0, max_windows=6, rows=2, show_previous_frame=False):
+        if ScreenManager.INSTANCE is not None:
+            raise Exception("You can initialize the screen manager only once. If you want multiple instances consider using the class constructor")
+        ScreenManager.INSTANCE = ScreenManager(screen_number=screen_number, max_windows=max_windows, rows=rows, show_previous_frame=show_previous_frame)
+        return ScreenManager.INSTANCE
+
+    @staticmethod
+    def get_manager():
+        # if the screen manager wasn't initialized yet, then we do it with the default arguments
+        if ScreenManager is None:
+            ScreenManager.initialize()
+        return ScreenManager.INSTANCE
+
     def __init__(self, screen_number=0, max_windows=6, rows=2, show_previous_frame=False):
         """
         Constructor.
