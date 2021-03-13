@@ -13,7 +13,7 @@ class Color(Enum):
     def __repr__(self):
         return str(self)
 
-    green = "green", (25, 86, 6), (64, 255, 255)
+    green = "green", (25, 10, 6), (64, 255, 255)
 
     red_1 = "red", (0, 70, 50), (10, 255, 255)
     red_2 = "red", (170, 70, 50), (180, 255, 255)

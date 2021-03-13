@@ -38,9 +38,6 @@ class OffsideLineDetector:
         return frame
 
     def detect_offside_line(self, frame, frame_number):
-        if self.params['resize']['apply']:
-            resize_params = self.params['resize']
-            frame = cv2.resize(frame, (resize_params['size_h'], resize_params['size_w']))
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players
@@ -68,12 +65,18 @@ class OffsideLineDetector:
                     last_frame = True
                     break
 
-                frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
-                self.screen_manager.show_frame(frame, 'final result')
+                if self.params['resize']['apply']:
+                    resize_params = self.params['resize']
+                    frame = cv2.resize(frame, (resize_params['size_h'], resize_params['size_w']))
 
-                stop_in_frame = self.params['stop_in_frame']
-                if stop_in_frame is not None and stop_in_frame == soccer_video.get_current_frame_number():
-                    play = not play
+                frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
+
+                if self.params['show_result']:
+                    self.screen_manager.show_frame(frame, 'final result')
+
+                if self.params['stop_in_frame']:
+                    if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():
+                        play = not play
 
                 if cv2.waitKey(30) & 0xFF == ord('q'):
                     play = not play
@@ -86,6 +89,7 @@ if __name__ == '__main__':
 
     params = {
         'app': {
+            'show_result': True,
             'stop_in_frame': 2,
             'resize': {
                 'apply': True,
@@ -120,7 +124,7 @@ if __name__ == '__main__':
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
-                'debug': False,
+                'debug': True,
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.04,

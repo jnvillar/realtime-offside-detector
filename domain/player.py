@@ -6,7 +6,7 @@ number = 0
 
 
 class Player:
-    def __init__(self, bounding_box, number, team: Team = Team.unclassified, color: ColorRange = None):
+    def __init__(self, bounding_box, id, team: Team = Team.unclassified, color: ColorRange = None, debug=False):
         x, y, w, h = bounding_box
         self.bounding_box = bounding_box
         self.x_coordinate = x
@@ -15,9 +15,10 @@ class Player:
         self.height = h
         self.team = team
         self.color = color
-        self.number = number
+        self.number = id
         self.is_last_defending_player = False
         self.tracking_process_iteration = 0
+        self.debug = debug
 
     def __str__(self):
         return 'Player:' + str(self.number)
@@ -29,13 +30,19 @@ class Player:
         return box_from_player(self)
 
     def get_name(self):
+        name = ''
+        if self.debug:
+            name = "W: {width} H:{height}".format(width=self.width, height=self.height)
+
         if self.team is not Team.unclassified:
-            return self.team.get_label() + ': ' + str(self.number)
+            name = " {label}: {number}".format(label=self.team.get_label(), number=self.number)
+            return name
 
         if self.color is not None:
-            return 'test'
+            name += ' test'
+            return name
 
-        return None
+        return name
 
     def get_label_color(self):
         if self.is_last_defending_player:
@@ -67,11 +74,11 @@ def get_players_bb(players: [Player]):
     return bb
 
 
-def players_from_contours(contours):
+def players_from_contours(contours, debug):
     players = []
     global number
 
     for contour in contours:
-        players.append(Player(contour, number))
+        players.append(Player(contour, number, debug=debug))
         number += 1
     return players

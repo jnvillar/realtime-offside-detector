@@ -8,6 +8,12 @@ import cv2
 log = log.Log(None, log.LoggingPackage.player_sorter)
 
 
+def get_h_component(original_frame, params):
+    hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
+    frame = hsv_img[:, :, 0]
+    return frame
+
+
 def percentage_of_frame(frame, area):
     width, height = len(frame), len(frame[0])
     total_pixels = width * height
@@ -153,14 +159,14 @@ def detect_contours(original_frame, params):
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.taller:
                 aspect_ratio = h / w
-                # we dont want boxes that are too thin
-                if aspect_ratio < 1 or aspect_ratio > 6:
+                # keep taller contours h / w >> 1. We dont want boxes that are too thin
+                if aspect_ratio < 1.51 or aspect_ratio > 6:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
                 aspect_ratio = w / h
-                # we dont want boxes that are too wide
-                if aspect_ratio < 1 or aspect_ratio > 6:
+                # keep wider contours w / h >> 1. Obs: we dont want boxes that are too wide
+                if aspect_ratio < 1.51 or aspect_ratio > 6:
                     valid_contour = False
 
         if valid_contour:
@@ -231,6 +237,13 @@ def filter_contours_by_aspect_ratio(frame, params):
     return frame
 
 
+def morphological_opening(original_frame, params):
+    frame = cv2.morphologyEx(original_frame, cv2.MORPH_OPEN, cv2.getStructuringElement(
+        params.get('element', cv2.MORPH_ELLIPSE),
+        params.get('element_size', (6, 6))))
+    return frame
+
+
 # Use "close" morphological operation to close the gaps between contours
 # https://stackoverflow.com/questions/18339988/implementing-imcloseim-se-in-opencv
 def morphological_closing(original_frame, params):
@@ -241,6 +254,8 @@ def morphological_closing(original_frame, params):
 
 
 def show(frame, window_name, window_number):
+    frame = cv2.resize(frame, (500, 500))
+
     min_number_to_show = 0
     if window_number < min_number_to_show:
         return
