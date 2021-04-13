@@ -9,7 +9,7 @@ class PlayerFinder:
         self.log = Log(self, LoggingPackage.player_finder)
         self.debug = debug
 
-    def mark_last_defending_player(self, players: [Player], orientation: Orientation):
+    def find_last_defending_player(self, players: [Player], orientation: Orientation):
         self.log.log("finding leftmost player", {"players": players})
 
         if not players:
@@ -35,3 +35,4 @@ class PlayerFinder:
 
         self.log.log("player found", {"player": players})
         player.is_last_defending_player = True
+        return player

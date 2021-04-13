@@ -9,6 +9,7 @@ class LoggingPackage(Enum):
     player_finder = "🔍"
     orientation_detector = "🧭"
     video_repository = "🗄️"
+    vanishing_point = "📏"
     test = "🧪"
     frame_utils = "🔨"
 

@@ -3,8 +3,6 @@ from player_detector.imp_edges import *
 from domain.player import *
 from log.log import *
 
-import cv2
-
 
 class PlayerDetector:
 

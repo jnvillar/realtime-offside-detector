@@ -1,4 +1,5 @@
 import video_repository.video_repository as video_repository
+from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
 from player_detector.player_detector import *
 from team_classifier.team_classifier import *
@@ -20,6 +21,7 @@ class OffsideLineDetector:
         self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
         self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
         self.player_finder = PlayerFinder()
+        self.vanishing_point_finder = VanishingPointFinder(**kwargs['vanishing_point_finder'])
         self.params = kwargs['app']
         self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)
@@ -37,7 +39,10 @@ class OffsideLineDetector:
 
         return frame
 
-    def detect_offside_line(self, frame, frame_number):
+    def detect_offside_line(self, soccer_video):
+        frame = soccer_video.get_next_frame()
+        frame_number = soccer_video.get_current_frame_number()
+
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players
@@ -48,8 +53,10 @@ class OffsideLineDetector:
         players = self.team_classifier.classify_teams(frame, players)
         # detect orientation
         orientation = self.orientation_detector.detect_orientation(frame, players)
-
-        self.player_finder.mark_last_defending_player(players, orientation)
+        # paint last defending player
+        last_defending_player = self.player_finder.find_last_defending_player(players, orientation)
+        # get vanishing point
+        vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
 
         frame = frame_utils.mark_players(frame, players)
         return frame
@@ -69,7 +76,7 @@ class OffsideLineDetector:
                     resize_params = self.params['resize']
                     frame = cv2.resize(frame, (resize_params['size_h'], resize_params['size_w']))
 
-                frame = self.detect_offside_line(frame, soccer_video.get_current_frame_number())
+                frame = self.detect_offside_line(soccer_video)
 
                 if self.params['show_result']:
                     self.screen_manager.show_frame(frame, 'final result')
@@ -92,9 +99,9 @@ if __name__ == '__main__':
             'show_result': True,
             'stop_in_frame': 2,
             'resize': {
-                'apply': True,
-                'size_h': 1000,
-                'size_w': 1000,
+                'apply': False,
+                'size_h': 500,
+                'size_w': 500,
             }
         },
         'team_classifier': {  # params for team classifier
@@ -124,7 +131,7 @@ if __name__ == '__main__':
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
-                'debug': True,
+                'debug': False,
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.04,
@@ -146,6 +153,14 @@ if __name__ == '__main__':
             },
             'distance': {
                 'history': 1,
+            }
+        },
+        'vanishing_point_finder': {
+            # hough
+            'method': 'hough',
+            'hough': {
+                'debug': True,
+                'calculate_every_x_amount_of_frames': 1
             }
         }
     }
