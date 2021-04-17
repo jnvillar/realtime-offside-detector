@@ -5,9 +5,8 @@ import utils.frame_utils as frame_utils
 
 
 class PlayerSorterByColorAutomatic:
-    def __init__(self, debug: bool = False):
+    def __init__(self):
         self.log = Log(self, LoggingPackage.player_sorter)
-        self.debug = debug
 
     def sort_players(self, original_frame, players: [Player]):
         player_by_color = {}

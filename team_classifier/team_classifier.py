@@ -1,12 +1,12 @@
-from log.log import *
 from team_classifier.imp_by_parameter import *
+from timer.timer import *
+from log.log import *
 
 
 class TeamClassifier:
 
-    def __init__(self, debug: bool = False, **kwargs):
-        self.log = Log(self, LoggingPackage.player_sorter)
-        self.debug = debug
+    def __init__(self, **kwargs):
+        self.log = Log(self, LoggingPackage.team_classifier)
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),
         }
@@ -14,6 +14,8 @@ class TeamClassifier:
 
     def classify_teams(self, frame, players: [Player]):
         self.log.log("classifying teams")
+        Timer.start()
         self.method.classify_teams(frame, players)
-        self.log.log("teams classified")
+        elapsed_time = Timer.stop()
+        self.log.log("teams classified", {'cost': elapsed_time})
         return players

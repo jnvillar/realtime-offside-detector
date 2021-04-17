@@ -25,7 +25,7 @@ class ByHough:
         for line in lines:
 
             if len(parallel_lines) == 2:
-                self.log.log('Found paralell lines', {'lines': parallel_lines})
+                self.log.log('Found parallel lines', {'lines': parallel_lines}) if self.args['debug'] else None
                 break
 
             for line_args in line:
@@ -44,7 +44,7 @@ class ByHough:
                         parallel_lines.pop()
 
         if len(parallel_lines) != 2:
-            self.log.log('Could not found two parallel lines', {})
+            self.log.log('Could not found two parallel lines', {}) if self.args['debug'] else None
             return None
 
         if self.args['debug']:

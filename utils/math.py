@@ -10,18 +10,15 @@ def distance_between_points(point_one, point_two):
     )
 
 
-def is_point_in_image(p, img_h, img_w):
-    return 0 <= p[0] < img_w and 0 <= p[1] < img_h
-
-
 def get_lines_intersection(line1, line2):
     if line1.__class__.__name__ in ('list', 'tuple'):
         p1, p2, p3, p4 = line1[0], line1[1], line2[0], line2[1]
     else:
         p1, p2, p3, p4 = line1['p1'], line1['p2'], line2['p1'], line2['p2']
 
-    x = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[0] - p4[0]) - (p1[0] - p2[0]) * (p3[0] * p4[1] - p3[1] * p4[0])) / (
-            (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
+    x = (
+                (p1[0] * p2[1] - p1[1] * p2[0]) * (p3[0] - p4[0]) - (p1[0] - p2[0]) * (p3[0] * p4[1] - p3[1] * p4[0])) / \
+        ((p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
     y = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] * p4[1] - p3[1] * p4[0])) / (
             (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
 

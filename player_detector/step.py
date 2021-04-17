@@ -19,7 +19,7 @@ class Step:
             "number": number,
             "name": self.name,
             "params": self.params
-        })
+        }) if self.debug else None
 
         frame = original_frame
 

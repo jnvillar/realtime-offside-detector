@@ -19,7 +19,7 @@ class PlayerSorterBSAS:
         bsas_instance = bsas_instance.process()
 
         clusters = bsas_instance.get_clusters()
-        self.log.log('bsas_clusters', {'clusters': clusters})
+        self.log.log('bsas_clusters', {'clusters': clusters}) if self.debug else None
 
         for idx, cluster in enumerate(clusters):
             for player_number in cluster:

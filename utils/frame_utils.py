@@ -1,7 +1,8 @@
-from domain.color import *
-from domain.player import *
 from domain.aspec_ratio import *
+from domain.player import *
+from domain.color import *
 from domain.box import *
+from utils.math import *
 import log.log as log
 import cv2
 
@@ -251,6 +252,30 @@ def morphological_closing(original_frame, params):
         params.get('element', cv2.MORPH_ELLIPSE),
         params.get('element_size', (6, 6))))
     return frame
+
+
+def is_point_in_image(frame, point):
+    img_h, img_w = frame.shape[:2]
+    return 0 <= point[0] < img_w and 0 <= point[1] < img_h
+
+
+def get_line_intersection_with_frame(frame, line):
+    img_h, img_w = frame.shape[:2]
+    intersections_with_frame = []
+
+    frame_limits = [
+        ((0, 0), (0, img_h - 1)),
+        ((0, 0), (img_w - 1, 0)),
+        ((0, img_h - 1), (img_w - 1, img_h - 1)),
+        ((img_w - 1, 0), (img_w - 1, img_h - 1))
+    ]
+
+    for image_limit in frame_limits:
+        intersection = get_lines_intersection(line, image_limit)
+        if is_point_in_image(frame, intersection):
+            intersections_with_frame.append(intersection)
+
+    return intersections_with_frame
 
 
 def show(frame, window_name, window_number):

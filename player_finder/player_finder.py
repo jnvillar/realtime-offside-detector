@@ -1,19 +1,26 @@
 from domain.orientation import *
 from domain.player import *
+from timer.timer import *
 from log.log import *
 
 
 class PlayerFinder:
 
-    def __init__(self, debug: bool = False, **kwargs):
+    def __init__(self, **kwargs):
+        self.args = kwargs
         self.log = Log(self, LoggingPackage.player_finder)
-        self.debug = debug
 
     def find_last_defending_player(self, players: [Player], orientation: Orientation):
         self.log.log("finding leftmost player", {"players": players})
+        Timer.start()
+        player = self._find_last_defending_player(players, orientation)
+        elapsed_time = Timer.stop()
+        self.log.log("player found", {"cost": elapsed_time, "player": players})
+        return player
 
+    def _find_last_defending_player(self, players: [Player], orientation: Orientation):
         if not players:
-            self.log.log("no players to mark", {})
+            self.log.log("no players to mark", {}) if self.args['debug'] else None
             return
 
         if orientation == Orientation.left:
@@ -33,6 +40,5 @@ class PlayerFinder:
                     rightmost_player = player
             player = rightmost_player
 
-        self.log.log("player found", {"player": players})
         player.is_last_defending_player = True
         return player

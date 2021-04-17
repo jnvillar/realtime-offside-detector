@@ -15,11 +15,10 @@ OPENCV_OBJECT_TRACKERS = {
 
 class OpenCVTracker:
 
-    def __init__(self, debug: bool = False, **kwargs):
+    def __init__(self, **kwargs):
         self.log = Log(self, LoggingPackage.player_tracker)
         self.tracking = False
         self.trackers = []
-        self.debug = debug
         self.tracker_name = kwargs['tracker']
 
     def init_trackers(self, frame, players: [Player]):

@@ -1,6 +1,7 @@
 import video_repository.video_repository as video_repository
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
+from offside_line_drawer.offside_line import *
 from player_detector.player_detector import *
 from team_classifier.team_classifier import *
 from player_tracker.player_tracker import *
@@ -15,13 +16,14 @@ import cv2
 
 class OffsideLineDetector:
     def __init__(self, **kwargs):
-        self.player_detector = PlayerDetector(debug=False, **kwargs['player_detector'])
+        self.player_detector = PlayerDetector(**kwargs['player_detector'])
         self.player_sorter = PlayerSorter(**kwargs['player_sorter'])
         self.team_classifier = TeamClassifier(**kwargs['team_classifier'])
         self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
         self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
-        self.player_finder = PlayerFinder()
+        self.player_finder = PlayerFinder(**kwargs['player_finder'])
         self.vanishing_point_finder = VanishingPointFinder(**kwargs['vanishing_point_finder'])
+        self.offside_line_drawer = OffsideLineDrawer(**kwargs['offside_line_drawer'])
         self.params = kwargs['app']
         self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)
@@ -57,6 +59,8 @@ class OffsideLineDetector:
         last_defending_player = self.player_finder.find_last_defending_player(players, orientation)
         # get vanishing point
         vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
+        # draw offside line
+        self.offside_line_drawer.draw_offside_line(frame, last_defending_player, orientation, vanishing_point)
 
         frame = frame_utils.mark_players(frame, players)
         return frame
@@ -103,6 +107,9 @@ if __name__ == '__main__':
                 'size_h': 500,
                 'size_w': 500,
             }
+        },
+        'player_finder': {
+            'debug': False
         },
         'team_classifier': {  # params for team classifier
             'method': 'by_parameter',
@@ -159,9 +166,12 @@ if __name__ == '__main__':
             # hough
             'method': 'hough',
             'hough': {
-                'debug': True,
+                'debug': False,
                 'calculate_every_x_amount_of_frames': 1
             }
+        },
+        'offside_line_drawer': {
+            'debug': False
         }
     }
 

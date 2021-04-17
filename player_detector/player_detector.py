@@ -1,13 +1,13 @@
 from player_detector.imp_background_subtraction import *
 from player_detector.imp_edges import *
 from domain.player import *
+from timer.timer import *
 from log.log import *
 
 
 class PlayerDetector:
 
-    def __init__(self, debug: bool = False, **kwargs):
-        self.debug = debug
+    def __init__(self,  **kwargs):
         self.log = Log(self, LoggingPackage.player_detector)
 
         methods = {
@@ -19,6 +19,8 @@ class PlayerDetector:
 
     def detect_players_in_frame(self, frame, frame_number) -> [Player]:
         self.log.log("finding players", {"frame": frame_number})
+        Timer.start()
         players = self.method.find_players(frame)
-        self.log.log("detected players", {"amount": len(players), "players": players})
+        elapsed_time = Timer.stop()
+        self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
         return players

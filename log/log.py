@@ -4,14 +4,15 @@ from enum import Enum
 class LoggingPackage(Enum):
     player_detector = "🏃"
     player_sorter = "👕"
-    player_tracker = "🎥"
+    player_tracker = "🕵🏽‍"
     team_classifier = "🤼"
     player_finder = "🔍"
     orientation_detector = "🧭"
     video_repository = "🗄️"
-    vanishing_point = "📏"
+    vanishing_point = "🖼️"
     test = "🧪"
     frame_utils = "🔨"
+    offside_line_drawer = "📏"
 
 
 class LogLevel(Enum):

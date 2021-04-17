@@ -5,9 +5,8 @@ from log.log import *
 
 
 class PlayerSorterByColor:
-    def __init__(self, debug: bool = False):
+    def __init__(self):
         self.log = Log(self, LoggingPackage.player_sorter)
-        self.debug = debug
 
     def sort_players(self, original_frame, players: [Player], colors: [ColorRange] = []):
         # these should use colors parameter
