@@ -1,3 +1,4 @@
+from player_detector.step import *
 from utils.frame_utils import *
 from utils.math import *
 from log.log import *
@@ -10,22 +11,48 @@ class ByHough:
         self.args = kwargs
         self.vanishing_point = None
 
+    def steps(self):
+        return [
+            Step(
+                "gray scale",
+                gray_scale, {},
+                debug=self.args.get('debug', False)
+            ),
+            Step(
+                "blur",
+                apply_blur, {'blur': (5, 5)},
+                debug=self.args.get('debug', False)
+            ),
+            Step(
+                "sobel",
+                sobel, {},
+                debug=self.args.get('debug', False)
+            )
+        ]
+
     def find_vanishing_point(self, frame, frame_number):
 
         if self.vanishing_point is not None and frame_number % self.args['calculate_every_x_amount_of_frames'] != 0:
             return self.vanishing_point
 
-        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        blur = cv2.GaussianBlur(gray_frame, (5, 5), 0)
-        sobelx = cv2.Sobel(blur, cv2.CV_8U, 1, 0, ksize=-1)
-        lines = cv2.HoughLines(sobelx, 1, np.pi / 180, 200)
+        pipeline: [Step] = self.steps()
+
+        for idx, step in enumerate(pipeline):
+            frame = step.apply(idx, frame)
+
+        Timer.start()
+        lines = cv2.HoughLines(frame, 1, np.pi / 180, 500)
+        elapsed_time = Timer.stop()
+        self.log.log('Found lines', {'cost': elapsed_time, 'lines': len(lines)}) if self.args['debug'] else None
 
         parallel_lines = []
 
-        for line in lines:
+        Timer.start()
+        for idx, line in enumerate(lines):
 
             if len(parallel_lines) == 2:
-                self.log.log('Found parallel lines', {'lines': parallel_lines}) if self.args['debug'] else None
+                elapsed_time = Timer.stop()
+                self.log.log('Found parallel lines', {'iteration': idx, 'cost': elapsed_time, 'lines': parallel_lines}) if self.args['debug'] else None
                 break
 
             for line_args in line:

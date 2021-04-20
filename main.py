@@ -27,22 +27,18 @@ class OffsideLineDetector:
         self.params = kwargs['app']
         self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)
+        self.log = Log(self, LoggingPackage.offside_detector)
 
-    def track_players(self, frame, frame_number):
-        frame = cv2.resize(frame, (self.params['size_h'], self.params['size_w']))
-
-        if frame_number < 3 or frame_number % 5 == 0:
-            players = self.player_detector.detect_players_in_frame(frame, frame_number)
-            self.players = players
-            frame = frame_utils.mark_players(frame, players)
+    def pre_process(self, original_frame):
+        if self.params['resize']['apply']:
+            resize_params = self.params['resize']
+            frame = cv2.resize(original_frame, (resize_params['size_h'], resize_params['size_w']))
             return frame
-        else:
-            frame = self.player_tracker.track_players(frame, self.players)
 
-        return frame
+        return original_frame
 
     def detect_offside_line(self, soccer_video):
-        frame = soccer_video.get_next_frame()
+        frame = self.pre_process(soccer_video.get_current_frame())
         frame_number = soccer_video.get_current_frame_number()
 
         # find players
@@ -76,11 +72,10 @@ class OffsideLineDetector:
                     last_frame = True
                     break
 
-                if self.params['resize']['apply']:
-                    resize_params = self.params['resize']
-                    frame = cv2.resize(frame, (resize_params['size_h'], resize_params['size_w']))
-
+                Timer.start()
                 frame = self.detect_offside_line(soccer_video)
+                elapsed_time = Timer.stop()
+                self.log.log('offside line detected', {'cost': elapsed_time})
 
                 if self.params['show_result']:
                     self.screen_manager.show_frame(frame, 'final result')
@@ -101,7 +96,7 @@ if __name__ == '__main__':
     params = {
         'app': {
             'show_result': True,
-            'stop_in_frame': 2,
+            'stop_in_frame': 1,
             'resize': {
                 'apply': False,
                 'size_h': 500,
@@ -118,7 +113,8 @@ if __name__ == '__main__':
             }
         },
         'player_sorter': {
-            'method': 'bsas',
+            # bsas, automatic_by_color, by_color
+            'method': 'automatic_by_color',
             'bsas': {
                 'threshold': 75,
                 'clusters': 2,

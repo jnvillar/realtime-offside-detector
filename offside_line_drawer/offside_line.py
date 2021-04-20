@@ -13,7 +13,7 @@ class OffsideLineDrawer:
         self.args = kwargs
 
     def draw_offside_line(self, frame, last_defending_player: Player, orientation: Orientation, vanishing_point):
-
+        # TODO improve by seeing if any defending player is above offside line
         self.log.log("drawing offside line")
         Timer.start()
         self._draw_offside_line(frame, last_defending_player, orientation, vanishing_point)

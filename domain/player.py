@@ -21,7 +21,7 @@ class Player:
         self.debug = debug
 
     def __str__(self):
-        return 'Player:' + str(self.number)
+        return 'Player:' + str(self.number) + ' (' + str(self.x_coordinate) + ',' + str(self.y_coordinate) + ')'
 
     def __repr__(self):
         return str(self)

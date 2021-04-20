@@ -1,5 +1,5 @@
 from enum import Enum
-
+import datetime
 
 class LoggingPackage(Enum):
     player_detector = "🏃"
@@ -13,14 +13,15 @@ class LoggingPackage(Enum):
     test = "🧪"
     frame_utils = "🔨"
     offside_line_drawer = "📏"
+    offside_detector = "🎛️"
 
 
 class LogLevel(Enum):
-    debug = 0
-    info = 1
-    warning = 2
-    error = 3
-    critical = 4
+    debug = (0, 'DEBUG')
+    info = (1, 'INFO')
+    warning = (2, 'WARNING')
+    error = (3, 'ERROR')
+    critical = (4, 'CRITICAL')
 
 
 class Log:
@@ -39,5 +40,7 @@ class Log:
             params = ''
         if self.log_level.value <= level.value:
             print(
+                '[' + str(datetime.datetime.now()) + ']' + ' ' +
+                '[' + str(self.log_level.value[1]) + ']' + ' ' +
                 str(self.package.value) + ' ' +
                 self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(params))

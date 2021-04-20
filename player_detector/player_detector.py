@@ -22,5 +22,7 @@ class PlayerDetector:
         Timer.start()
         players = self.method.find_players(frame)
         elapsed_time = Timer.stop()
+        players = [player for player in players if player.y_coordinate > 240]
         self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
+
         return players

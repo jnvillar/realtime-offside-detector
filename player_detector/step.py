@@ -1,4 +1,4 @@
-from log.log import *
+from timer.timer import *
 from utils.frame_utils import *
 
 
@@ -15,21 +15,23 @@ class Step:
         if params is None:
             params = self.params
 
-        self.log.log('applying', {
-            "number": number,
-            "name": self.name,
-            "params": self.params
-        }) if self.debug else None
-
         frame = original_frame
 
         if not self.modify_original_frame:
             frame = original_frame.copy()
 
+        Timer.start()
         frame = self.function(frame, params)
+        elapsed_time = Timer.stop()
 
-        if self.debug:
-            show(frame, self.name, number)
+        show(frame, self.name, number) if self.debug else None
+
+        self.log.log('applying', {
+            "number": number,
+            "name": self.name,
+            "params": self.params,
+            "cost": elapsed_time
+        }) if self.debug else None
 
         if self.modify_original_frame:
             return frame

@@ -16,6 +16,7 @@ class OrientationDetector:
         self.method = methods[kwargs['method']]
 
     def detect_orientation(self, frame, players: [Player]) -> Orientation:
+        # TODO automate by seeing offside line angle
         self.log.log("detecting orientation")
         Timer.start()
         orientation = self.method.detect_orientation(frame, players)

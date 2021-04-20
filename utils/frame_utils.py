@@ -192,7 +192,7 @@ def apply_erosion(frame, params):
 
 
 def apply_blur(frame, params):
-    blurred_frame = cv2.GaussianBlur(frame, (3, 3), 0)
+    blurred_frame = cv2.GaussianBlur(frame, params.get('blur', (3, 3)), 0)
     return blurred_frame
 
 
@@ -305,3 +305,13 @@ def show(frame, window_name, window_number):
 
 def detect_edges(original_frame, params):
     return cv2.Canny(original_frame, params["threshold1"], params["threshold2"], apertureSize=3)
+
+
+def gray_scale(original_frame, params):
+    frame = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
+    return frame
+
+
+def sobel(original_frame, params):
+    frame = cv2.Sobel(original_frame, cv2.CV_8U, 1, 0, ksize=-1)
+    return frame
