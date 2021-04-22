@@ -41,6 +41,8 @@ class OffsideLineDetector:
         frame = self.pre_process(soccer_video.get_current_frame())
         frame_number = soccer_video.get_current_frame_number()
 
+        # get vanishing point
+        vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players
@@ -51,12 +53,10 @@ class OffsideLineDetector:
         players = self.team_classifier.classify_teams(frame, players)
         # detect orientation
         orientation = self.orientation_detector.detect_orientation(frame, players)
-        # paint last defending player
-        last_defending_player = self.player_finder.find_last_defending_player(players, orientation)
-        # get vanishing point
-        vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
+        # mark last defending player
+        self.player_finder.find_last_defending_player(players, orientation)
         # draw offside line
-        self.offside_line_drawer.draw_offside_line(frame, last_defending_player, orientation, vanishing_point)
+        self.offside_line_drawer.draw_offside_line(frame, players, orientation, vanishing_point)
 
         frame = frame_utils.mark_players(frame, players)
         return frame

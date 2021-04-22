@@ -1,6 +1,7 @@
-import math
-import numpy as np
 from numpy.linalg import lstsq
+from domain.line import *
+import numpy as np
+import math
 
 
 def distance_between_points(point_one, point_two):
@@ -50,3 +51,15 @@ def same_lines(line1, line2):
     rho1, theta1 = line1
     rho2, theta2 = line2
     return abs(rho1 - rho2) < 20 and abs(theta1 - theta2) < 0.1
+
+
+#  If the line equation is y = ax + b and the coordinates of a point is (x0, y0)
+#  then compare y0 and ax0 + b, for example if y0 > ax0 + b then the point is above the line
+def is_point_above_line(point, line: Line):
+    line_slope = line.get_slope()
+    line_y_interception = line.get_y_intercept()
+    # print('player_point', point)
+    # print('slope', line_slope)
+    # print('interception', line_y_interception)
+    # print('line', line)
+    return point[1] > point[0] * line_slope + line_y_interception

@@ -1,6 +1,6 @@
+from domain.color import ColorRange
 from domain.team import *
 from domain.box import *
-from domain.color import ColorRange
 
 number = 0
 
@@ -72,6 +72,21 @@ def get_players_bb(players: [Player]):
         bb.append(player.bounding_box)
 
     return bb
+
+
+def get_defending_players(players: [Player]):
+    res = []
+    for player in players:
+        if not player.team.isAttacking:
+            res.append(player)
+    return res
+
+
+def get_last_defending_player(players: [Player]):
+    for player in players:
+        if player.is_last_defending_player:
+            return player
+    return None
 
 
 def players_from_contours(contours, debug):
