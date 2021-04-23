@@ -78,6 +78,5 @@ class OffsideLineDrawer:
             if is_point_above_line(player_point, offside_line):
                 self.log.log('player is above offside line re-calculating', {'players': player, 'offside_line': str(offside_line)})
                 offside_line = self._get_offside_line(frame, player_point, vanishing_point)
-                cv2.line(frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
 
         return offside_line

@@ -114,7 +114,7 @@ if __name__ == '__main__':
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color
-            'method': 'automatic_by_color',
+            'method': 'bsas',
             'bsas': {
                 'threshold': 75,
                 'clusters': 2,

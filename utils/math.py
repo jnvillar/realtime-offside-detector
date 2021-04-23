@@ -58,8 +58,5 @@ def same_lines(line1, line2):
 def is_point_above_line(point, line: Line):
     line_slope = line.get_slope()
     line_y_interception = line.get_y_intercept()
-    # print('player_point', point)
-    # print('slope', line_slope)
-    # print('interception', line_y_interception)
-    # print('line', line)
-    return point[1] > point[0] * line_slope + line_y_interception
+    # < is used instead of > because frame is inverted
+    return point[1] < point[0] * line_slope + line_y_interception
