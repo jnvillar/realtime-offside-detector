@@ -50,7 +50,7 @@ class OffsideLineDetector:
         # detect and attacking team
         players = self.team_classifier.classify_teams(frame, players)
         # detect orientation
-        orientation = self.orientation_detector.detect_orientation(frame, players)
+        orientation = self.orientation_detector.detect_orientation(frame, vanishing_point)
         # mark last defending player
         self.player_finder.find_last_defending_player(players, orientation)
         # draw offside line

@@ -51,10 +51,11 @@ default_config = {
         }
     },
     'orientation_detector': {
-        'method': 'by_parameter',
+        # methods: by_parameter, by_vanishing_point
+        'method': 'by_vanishing_point',
         'by_parameter': {  # params used in by parameter method
             'orientation': Orientation.left
-        }
+        },
     },
     'player_tracker': {
         # opencv, distance

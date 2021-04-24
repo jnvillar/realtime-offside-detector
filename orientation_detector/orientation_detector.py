@@ -1,4 +1,5 @@
 from orientation_detector.imp_by_parameter import *
+from orientation_detector.imp_by_vanishing_point import *
 from domain.orientation import *
 from timer.timer import *
 from log.log import *
@@ -11,15 +12,15 @@ class OrientationDetector:
 
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),
+            'by_vanishing_point': ByVanishingPoint(),
         }
 
         self.method = methods[kwargs['method']]
 
-    def detect_orientation(self, frame, players: [Player]) -> Orientation:
-        # TODO automate by seeing offside line angle
+    def detect_orientation(self, frame, vanishing_point) -> Orientation:
         self.log.log("detecting orientation")
         Timer.start()
-        orientation = self.method.detect_orientation(frame, players)
+        orientation = self.method.detect_orientation(frame, vanishing_point)
         elapsed_time = Timer.stop()
         self.log.log("orientation detected", {"cost": elapsed_time, "orientation": orientation})
         return orientation
