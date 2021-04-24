@@ -30,20 +30,29 @@ class Box:
     def get_height(self):
         return self.h
 
+    def __str__(self):
+        return 'Box: ' + ' ul:' + str(self.upper_left) + ' ur: ' + str(self.upper_right) + ' dl: ' + str(self.down_left) + ' dr: ' + str(self.down_right)
 
-def box_from_player(player) -> Box:
+
+def box_from_player(player, focused=False) -> Box:
     x, y, w, h = player.bounding_box
     label = player.number
+
+    resize_x = 0
+    resize_y = 0
+    if focused:
+        resize_x = int(w / 3)
+        resize_y = int(h / 3)
 
     return Box(
         label=label,
         bounding_box=player.bounding_box,
 
-        upper_left=(x, y + h),
-        down_left=(x, y),
+        upper_left=(x + resize_x, y + h - resize_y),
+        down_left=(x + resize_x, y + resize_y),
 
-        upper_right=(x + w, y + h),
-        down_right=(x + w, y),
+        upper_right=(x - resize_x + w, y + h - resize_y),
+        down_right=(x + w - resize_x, y + resize_y),
 
         center=(x + (w / 2), y + (h / 2))
     )
