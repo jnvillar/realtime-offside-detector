@@ -41,7 +41,10 @@ class ByHough:
             frame = step.apply(idx, frame)
 
         Timer.start()
-        lines = cv2.HoughLines(frame, 1, np.pi / 180, 500)
+        rho = 1
+        theta = np.pi / 180
+        threshold = 500
+        lines = cv2.HoughLines(frame, rho, theta, threshold)
         elapsed_time = Timer.stop()
         self.log.log('Found lines', {'cost': elapsed_time, 'lines': len(lines)}) if self.args['debug'] else None
 
@@ -61,7 +64,7 @@ class ByHough:
                 if not (len(parallel_lines) == 1 and same_lines((rho, theta), (first_rho, first_theta))):
                     p1, p2 = get_line_points(rho, theta)
                     first_rho, first_theta = rho, theta
-                    parallel_lines.append({'p1': p1, 'p2': p2})
+                    parallel_lines.append(Line(p1, p2))
 
                     try:
                         if len(parallel_lines) == 2 and get_lines_intersection(parallel_lines[0], parallel_lines[1])[1] > 0:
@@ -71,7 +74,7 @@ class ByHough:
                         parallel_lines.pop()
 
         if len(parallel_lines) != 2:
-            self.log.log('Could not found two parallel lines', {}) if self.args['debug'] else None
+            self.log.log('Could not found two parallel lines')
             return None
 
         if self.args['debug']:

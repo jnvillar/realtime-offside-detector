@@ -40,7 +40,12 @@ def get_player_histograms(original_frame, players: [Player]):
     return player_histograms
 
 
-def mark_players(original_frame, players: [Player]):
+def draw_offside_line(original_frame, offside_line: Line):
+    cv2.line(original_frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
+    return original_frame
+
+
+def draw_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.get_box()
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
@@ -259,15 +264,15 @@ def is_point_in_image(frame, point):
     return 0 <= point[0] < img_w and 0 <= point[1] < img_h
 
 
-def get_line_intersection_with_frame(frame, line):
+def get_line_intersection_with_frame(frame, line: Line):
     img_h, img_w = frame.shape[:2]
     intersections_with_frame = []
 
     frame_limits = [
-        ((0, 0), (0, img_h - 1)),
-        ((0, 0), (img_w - 1, 0)),
-        ((0, img_h - 1), (img_w - 1, img_h - 1)),
-        ((img_w - 1, 0), (img_w - 1, img_h - 1))
+        Line((0, 0), (0, img_h - 1)),
+        Line((0, 0), (img_w - 1, 0)),
+        Line((0, img_h - 1), (img_w - 1, img_h - 1)),
+        Line((img_w - 1, 0), (img_w - 1, img_h - 1))
     ]
 
     for image_limit in frame_limits:

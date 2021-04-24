@@ -4,7 +4,6 @@ from domain.player import *
 from domain.line import *
 from timer.timer import *
 from log.log import *
-import cv2
 
 
 class OffsideLineDrawer:
@@ -13,12 +12,12 @@ class OffsideLineDrawer:
         self.log = Log(self, LoggingPackage.offside_line_drawer)
         self.args = kwargs
 
-    def draw_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
+    def get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
         self.log.log("drawing offside line")
         Timer.start()
-        offside_line = self._draw_offside_line(frame, players, orientation, vanishing_point)
+        offside_line = self._get_offside_line(frame, players, orientation, vanishing_point)
         elapsed_time = Timer.stop()
-        self.log.log("offside line draw", {"cost": elapsed_time, "offside_line": str(offside_line)})
+        self.log.log("offside line", {"cost": elapsed_time, "offside_line": str(offside_line)})
         return offside_line
 
     def _get_player_point(self, last_defending_player: Player, orientation: Orientation):
@@ -32,8 +31,8 @@ class OffsideLineDrawer:
 
         return player_point
 
-    def _get_offside_line(self, frame, player_point, vanishing_point):
-        offside_line = (player_point, vanishing_point)
+    def _calculate_offside_line(self, frame, player_point, vanishing_point):
+        offside_line = Line(player_point, vanishing_point)
 
         self.log.log('offside line', {'offside line': offside_line}) if self.args['debug'] else None
 
@@ -52,18 +51,16 @@ class OffsideLineDrawer:
 
         return offside_line
 
-    def _draw_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
+    def _get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
         last_defending_player = get_last_defending_player(players)
-        if last_defending_player is None:
+        if last_defending_player is None or vanishing_point is None:
             return
 
         player_point = self._get_player_point(last_defending_player, orientation)
-        offside_line = self._get_offside_line(frame, player_point, vanishing_point)
+        offside_line = self._calculate_offside_line(frame, player_point, vanishing_point)
         offside_line = self._adjust_offside_line(frame, players, orientation, offside_line, vanishing_point)
 
         self.log.log('offside line points', {'points': offside_line}) if self.args['debug'] else None
-
-        cv2.line(frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
 
         return offside_line
 
@@ -77,6 +74,6 @@ class OffsideLineDrawer:
             player_point = self._get_player_point(player, orientation)
             if is_point_above_line(player_point, offside_line):
                 self.log.log('player is above offside line re-calculating', {'players': player, 'offside_line': str(offside_line)})
-                offside_line = self._get_offside_line(frame, player_point, vanishing_point)
+                offside_line = self._calculate_offside_line(frame, player_point, vanishing_point)
 
         return offside_line
