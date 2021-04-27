@@ -1,3 +1,4 @@
+from field_detector.field_detector import FieldDetector
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
 from offside_line_drawer.offside_line import *
@@ -22,6 +23,7 @@ class OffsideLineDetector:
         self.player_finder = PlayerFinder(**kwargs['player_finder'])
         self.vanishing_point_finder = VanishingPointFinder(**kwargs['vanishing_point_finder'])
         self.offside_line_drawer = OffsideLineDrawer(**kwargs['offside_line_drawer'])
+        self.field_detector = FieldDetector(**kwargs['field_detector'])
         self.params = kwargs['app']
         self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)
@@ -41,6 +43,8 @@ class OffsideLineDetector:
 
         # get vanishing point
         vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
+        # detect field
+        frame = self.field_detector.detect_field(frame)
         # find players
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players

@@ -77,5 +77,8 @@ default_config = {
     },
     'offside_line_drawer': {
         'debug': False
+    },
+    'field_detector': {
+        'debug': False
     }
 }
