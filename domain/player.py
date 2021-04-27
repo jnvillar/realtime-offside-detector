@@ -26,8 +26,8 @@ class Player:
     def __repr__(self):
         return str(self)
 
-    def get_box(self) -> Box:
-        return box_from_player(self)
+    def get_box(self, focused=False) -> Box:
+        return box_from_player(self, focused)
 
     def get_name(self):
         name = ''
