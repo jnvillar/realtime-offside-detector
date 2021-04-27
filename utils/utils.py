@@ -44,7 +44,7 @@ class ScreenManager:
     @staticmethod
     def get_manager():
         # if the screen manager wasn't initialized yet, then we do it with the default arguments
-        if ScreenManager is None:
+        if ScreenManager.INSTANCE is None:
             ScreenManager.initialize()
         return ScreenManager.INSTANCE
 
