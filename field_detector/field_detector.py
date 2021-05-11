@@ -66,7 +66,7 @@ class FieldDetector:
                         theta_to_draw = theta
 
             if max_rho != -1:
-                print("max rho: {}".format(max_rho))
+
                 a = np.cos(theta_to_draw)
                 b = np.sin(theta_to_draw)
                 x0 = a * max_rho

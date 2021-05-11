@@ -2,6 +2,7 @@ from numpy.linalg import lstsq
 from domain.line import *
 import numpy as np
 import math
+import numpy
 
 
 def distance_between_points(point_one, point_two):
@@ -28,6 +29,9 @@ def get_line(p1, p2):
     A = np.vstack([x_coords, np.ones(len(x_coords))]).T
     m, c = lstsq(A, y_coords)[0]
     return m, c
+
+def euclidean_distance(a, b):
+    return numpy.linalg.norm(numpy.subtract(a, b))
 
 
 def get_line_points(rho, theta):

@@ -28,10 +28,6 @@ class BackgroundSubtractionPlayerDetector:
             Step("join close contours", morphological_closing, debug=self.debug),
             Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),
             Step("erode", apply_erosion, debug=self.debug),
-
-            # Step("filter by aspect ratio", self.filter_contours_by_aspect_ratio, debug=True),
-            # Step("apply dilatation", self.apply_dilatation, debug=True),
-            # Step("mark players", mark_players, params={'label': 'players'}, debug=True, modify_original_frame=False),
         ]
 
         for idx, step in enumerate(pipeline):

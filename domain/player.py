@@ -1,4 +1,4 @@
-from domain.color import ColorRange
+from domain.color import Color
 from domain.team import *
 from domain.box import *
 
@@ -6,9 +6,11 @@ number = 0
 
 
 class Player:
-    def __init__(self, bounding_box, id, team: Team = Team.unclassified, color: ColorRange = None, debug=False):
+    def __init__(self, contour, id, team: Team = Team.unclassified, color: Color = None, debug=False):
+        contour, bounding_box = contour
         x, y, w, h = bounding_box
         self.bounding_box = bounding_box
+        self.contour = contour
         self.x_coordinate = x
         self.y_coordinate = y
         self.width = w
@@ -39,14 +41,14 @@ class Player:
             return name
 
         if self.color is not None:
-            name += ' test'
+            name += ' test {}'.format(self.number)
             return name
 
         return name
 
     def get_label_color(self):
         if self.is_last_defending_player:
-            return ColorRange.violet.get_color()
+            return Color.violet.get_color()
 
         if self.team is not Team.unclassified:
             return self.team.get_color()

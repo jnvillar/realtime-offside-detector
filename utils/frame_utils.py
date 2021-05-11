@@ -21,6 +21,11 @@ def percentage_of_frame(frame, area):
     return (area / total_pixels) * 100
 
 
+def to_hsv(original_frame):
+    hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
+    return hsv
+
+
 def remove_color(frame, colors: [Color]):
     # convert to hsv color space
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -48,6 +53,8 @@ def draw_offside_line(original_frame, offside_line: Line):
 def draw_players(original_frame, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.get_box()
+        cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        player_box = player.get_box(focused=True)
         cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
         cv2.putText(original_frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
 
@@ -80,6 +87,63 @@ def get_histogram(frame, box: Box):
 def get_histogram_one_d(frame, box: Box):
     histogram = get_histogram(frame, box)
     return histogram[0] + histogram[1] + histogram[2]
+
+
+def get_predominant_color(frame, box: Box, colors: [ColorRange]):
+    pixels_by_color = {}
+
+    for x in range(box.x, box.x + box.w):
+        for y in range(box.y, box.y + box.h):
+            pixel_color = get_pixel_color(frame[y][x], colors)
+            if pixel_color in pixels_by_color:
+                pixels_by_color[pixel_color] += 1
+            else:
+                pixels_by_color[pixel_color] = 1
+
+    return find_predominant_color(pixels_by_color)
+
+
+def get_box_mean_color(original_frame, box: Box):
+    box_mask = np.zeros(original_frame.shape[:2], np.uint8)
+    x, y, w, h = box.x, box.y, box.w, box.h
+    box_mask = cv2.rectangle(box_mask, (x, y), (x + w, y + h), (255, 255, 255), -1)
+    box_mean_color = cv2.mean(original_frame, mask=box_mask)
+    return box_mean_color
+
+
+def get_pixel_color(pixel, colors_range: [ColorRange]) -> ColorRange:
+    distances = {}
+
+    for color_range in colors_range:
+        for color in color_range.color_range:
+            color_distance = euclidean_distance(pixel[0:3], color.hsv)
+            current_distance = distances.get(color_range, None)
+            if current_distance is None or current_distance > color_distance:
+                distances[color_range] = color_distance
+
+    color_range = None
+    value = None
+    for k, v in distances.items():
+        if color_range is None:
+            color_range = k
+            value = v
+        elif v < value:
+            color_range = k
+            value = v
+
+    return color_range.color
+
+
+def find_predominant_color(pixels_by_color) -> Color:
+    most_predominant_color = None
+    color_amount = 0
+
+    for color, amount in pixels_by_color.items():
+        if amount > color_amount:
+            most_predominant_color = color
+            color_amount = amount
+
+    return most_predominant_color
 
 
 def sum_black_pixels(frame, box: Box):
@@ -176,7 +240,7 @@ def detect_contours(original_frame, params):
                     valid_contour = False
 
         if valid_contour:
-            detected_contours.append([x, y, w, h])
+            detected_contours.append((c, [x, y, w, h]))
 
     return detected_contours
 

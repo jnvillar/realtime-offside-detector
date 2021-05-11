@@ -1,5 +1,6 @@
 from player_sorter.imp_color_automatic import *
 from player_sorter.imp_color_given import *
+from player_sorter.imp_kmean import *
 from player_sorter.imp_bsas import *
 from timer.timer import *
 from log.log import *
@@ -12,8 +13,9 @@ class PlayerSorter:
 
         methods = {
             'bsas': PlayerSorterBSAS(**kwargs['bsas']),
-            'automatic_by_color': PlayerSorterByColorAutomatic(),
-            'by_color': PlayerSorterByColor()
+            'automatic_by_color': PlayerSorterByColorAutomatic(**kwargs['automatic_by_color']),
+            'by_color': PlayerSorterByColor(),
+            'kmeans': PlayerSorterByKMeans(**kwargs['kmeans'])
         }
 
         self.method = methods[kwargs['method']]

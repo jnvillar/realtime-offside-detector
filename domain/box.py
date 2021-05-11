@@ -16,7 +16,7 @@ class Box:
         self.upper_right = upper_right
         self.down_left = down_left
         self.down_right = down_right
-        self.center = (x + (w / 2), y + (h / 2))
+        self.center = (int(x + (w / 2)), int(y + (h / 2)))
 
     def get_label(self):
         return self.label
@@ -40,19 +40,24 @@ def box_from_player(player, focused=False) -> Box:
 
     resize_x = 0
     resize_y = 0
+
+    move_y = 0
+
+    # this is an attempt to focus the shorts/down part of the t-shirt
     if focused:
         resize_x = int(w / 3)
-        resize_y = int(h / 3)
+        resize_y = int(h / 2.2)
+        move_y = - int(h / 20)
 
     return Box(
         label=label,
-        bounding_box=player.bounding_box,
+        bounding_box=(x + resize_x, y + resize_y + move_y, w - (2 * resize_x), h - 2 * resize_y),
 
-        upper_left=(x + resize_x, y + h - resize_y),
-        down_left=(x + resize_x, y + resize_y),
+        upper_left=(x + resize_x, y + h - resize_y - move_y),
+        down_left=(x + resize_x, y + resize_y - move_y),
 
-        upper_right=(x - resize_x + w, y + h - resize_y),
-        down_right=(x + w - resize_x, y + resize_y),
+        upper_right=(x - resize_x + w, y + h - resize_y - move_y),
+        down_right=(x + w - resize_x, y + resize_y - move_y),
 
         center=(x + (w / 2), y + (h / 2))
     )

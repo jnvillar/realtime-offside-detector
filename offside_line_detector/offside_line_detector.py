@@ -49,7 +49,7 @@ class OffsideLineDetector:
         players = self.player_detector.detect_players_in_frame(frame, frame_number)
         # track players
         players = self.player_tracker.track_players(frame, players)
-        # classify players
+        # classify players in teams
         players = self.player_sorter.sort_players(frame, players)
         # detect and attacking team
         players = self.team_classifier.classify_teams(frame, players)

@@ -4,7 +4,7 @@ from player_finder.player_finder import *
 default_config = {
     'app': {
         'show_result': True,
-        'stop_in_frame': 1,
+        'stop_in_frame': 2,
         'resize': {
             'apply': False,
             'size_h': 500,
@@ -21,13 +21,22 @@ default_config = {
         }
     },
     'player_sorter': {
-        # bsas, automatic_by_color, by_color
-        'method': 'bsas',
+        # bsas, automatic_by_color, by_color, kmeans
+        'method': 'kmeans',
         'bsas': {
             'threshold': 75,
             'clusters': 2,
             'team_one': Team.team_boca,
             'team_two': Team.team_river
+        },
+        'kmeans': {
+            'team_one': Team.team_boca,
+            'team_two': Team.team_river
+        },
+        'automatic_by_color': {
+            Color.white.color_name: Team.team_river,
+            Color.red.color_name: Team.team_river,
+            # Color.blue.color_name: Team.team_boca
         }
     },
     'player_detector': {
