@@ -88,6 +88,7 @@ default_config = {
         'debug': False
     },
     'field_detector': {
-        'debug': False
+        'debug': False,
+        'method': 'green_detection'
     }
 }
