@@ -8,8 +8,12 @@ class FieldDetector:
 
     def __init__(self, **kwargs):
         self.debug = kwargs['debug']
-        self.screen_manager = ScreenManager.initialize(screen_number=1, max_windows=6, rows=2)
-        a = 1
+        self.method = kwargs['method']
+        self.method_implementations = {
+            'green_detection': self.by_green_detection,
+            'lines_detection': self.by_lines_detection
+        }
+        self.screen_manager = ScreenManager.initialize(screen_number=2, max_windows=6, rows=2)
 
     def print_line(self, rho, theta, color):
         a = np.cos(theta)
@@ -37,11 +41,13 @@ class FieldDetector:
         # cv2.imshow("Field detection", frame)
         bounding_polygon = [(10, 10), (10, 400), (400, 400), (400, 10)]
 
-        self.sarasa(frame)
-        return frame
+        self.frame = frame
+        return self.method_implementations[self.method]()
+        # return frame
 
-    def sarasa(self, img):
+    def by_lines_detection(self):
         screen_manager = self.screen_manager
+        img = self.frame
         hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
         kernel = np.ones((5, 5), np.uint8)
         if self.debug:
@@ -93,6 +99,63 @@ class FieldDetector:
             screen_manager.show_frame(img, "Field detection")
 
         return img
+
+    def by_green_detection(self):
+        # green color range in HSV
+        COLOR_MIN = np.array([0, int(0.12 * 255), int(0.27 * 255)])
+        COLOR_MAX = np.array([int(0.5 * 255), 255, 255])
+
+        # frame converted to hsv
+        frame_hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+
+        # create mask which will set as white only pixels that are included in the color range
+        green_mask = cv2.inRange(frame_hsv, COLOR_MIN, COLOR_MAX)
+
+        if self.debug:
+            self.screen_manager.show_frame(green_mask, "Green mask")
+
+        # search connected components over the mask, and get the biggest one
+        num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(green_mask, connectivity=4)
+        biggest_component_label = stats.argmax(axis=0)[cv2.CC_STAT_AREA]
+
+        # get a mask which includes only the biggest component
+        biggest_component_mask = np.zeros_like(labels, np.uint8)
+        biggest_component_mask[labels == biggest_component_label] = 255
+
+        if self.debug:
+            self.screen_manager.show_frame(biggest_component_mask, "Biggest green component mask")
+
+        eroded_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_ERODE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)))
+
+        if self.debug:
+            self.screen_manager.show_frame(eroded_label_mask, "After erosion")
+
+        # search again for the biggest connected component over the eroded mask
+        num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(eroded_label_mask, connectivity=8)
+        biggest_component_label = stats.argmax(axis=0)[cv2.CC_STAT_AREA]
+
+        # get a mask which includes only the biggest component over the eroded mask
+        biggest_component_mask = np.zeros_like(labels, np.uint8)
+        biggest_component_mask[labels == biggest_component_label] = 255
+
+        if self.debug:
+            self.screen_manager.show_frame(biggest_component_mask, "Biggest green component after erosion")
+
+        # apply close operation to remove players from the mask, and then dilate to avoid covering players
+        # which are near the field borders
+        closed_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
+        dilated_label_mask = cv2.morphologyEx(closed_label_mask, cv2.MORPH_DILATE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
+
+        if self.debug:
+            self.screen_manager.show_frame(dilated_label_mask, "After closing and then dilatation")
+
+        # apply the mask over the frame
+        final = cv2.bitwise_and(self.frame, self.frame, mask=dilated_label_mask)
+
+        if self.debug:
+            self.screen_manager.show_frame(final, "Final")
+
+        return final
 
     def degrees_to_radians(self, degrees):
         return degrees * np.pi / 180

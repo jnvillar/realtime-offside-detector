@@ -21,6 +21,9 @@ class PlayerSorter:
         self.method = methods[kwargs['method']]
 
     def sort_players(self, frame, players: [Player]):
+        if len(players) == 0:
+            return players
+
         self.log.log("sorting players")
         Timer.start()
         sorted_players = self.method.sort_players(frame, players)
