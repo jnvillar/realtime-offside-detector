@@ -9,7 +9,7 @@ class ByVanishingPoint:
         img_h, img_w = frame.shape[:2]
         middle_frame = img_h / 2
         if vanishing_point[0] > middle_frame:
-            orientation = Orientation.right
-        else:
             orientation = Orientation.left
+        else:
+            orientation = Orientation.right
         return orientation

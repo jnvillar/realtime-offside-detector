@@ -13,12 +13,15 @@ class OffsideLineDrawer:
         self.args = kwargs
 
     def get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
-        if len(players) == 0:
-            return None
-        self.log.log("drawing offside line")
+        self.log.log("detecting offside line")
+
         Timer.start()
-        offside_line = self._get_offside_line(frame, players, orientation, vanishing_point)
+        if len(players) == 0:
+            offside_line = None
+        else:
+            offside_line = self._get_offside_line(frame, players, orientation, vanishing_point)
         elapsed_time = Timer.stop()
+
         self.log.log("offside line", {"cost": elapsed_time, "offside_line": str(offside_line)})
         return offside_line
 
@@ -75,6 +78,7 @@ class OffsideLineDrawer:
         for player in defending_players:
             player_point = self._get_player_point(player, orientation)
             if is_point_above_line(player_point, offside_line):
+                update_last_defending_player(player, players)
                 self.log.log('player is above offside line re-calculating', {'players': player, 'offside_line': str(offside_line)})
                 offside_line = self._calculate_offside_line(frame, player_point, vanishing_point)
 

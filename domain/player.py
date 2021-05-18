@@ -84,6 +84,12 @@ def get_defending_players(players: [Player]):
     return res
 
 
+def update_last_defending_player(last_defending_player: Player, players: [Player]):
+    for player in players:
+        player.is_last_defending_player = False
+    last_defending_player.is_last_defending_player = True
+
+
 def get_last_defending_player(players: [Player]):
     for player in players:
         if player.is_last_defending_player:

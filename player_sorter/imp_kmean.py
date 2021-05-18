@@ -13,6 +13,22 @@ class PlayerSorterByKMeans:
         self.params = kwargs
         self.previous_centroids = None
 
+    def sort_players(self, original_frame, players: [Player]):
+        if len(players) < 2:
+            return players
+
+        hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
+        player_mean_colors = frame_utils.get_players_mean_colors(hsv_img, players)
+        player_labels = self.get_players_labels(player_mean_colors)
+
+        for itx, label in enumerate(player_labels):
+            if label == 0:
+                players[itx].team = self.params.get('team_one', Team.unclassified)
+            else:
+                players[itx].team = self.params.get('team_two', Team.unclassified)
+
+        return players
+
     def sort_centroids(self, current_centroids):
         if self.previous_centroids is None:
             return current_centroids, False
@@ -36,19 +52,6 @@ class PlayerSorterByKMeans:
             player_labels = invert_player_labels(player_labels)
 
         return player_labels
-
-    def sort_players(self, original_frame, players: [Player]):
-        hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-        player_mean_colors = frame_utils.get_players_mean_colors(hsv_img, players)
-        player_labels = self.get_players_labels(player_mean_colors)
-
-        for itx, label in enumerate(player_labels):
-            if label == 0:
-                players[itx].team = self.params.get('team_one', Team.unclassified)
-            else:
-                players[itx].team = self.params.get('team_two', Team.unclassified)
-
-        return players
 
 
 def reverse(array):
