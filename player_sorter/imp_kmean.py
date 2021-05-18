@@ -11,35 +11,49 @@ class PlayerSorterByKMeans:
         self.log = Log(self, LoggingPackage.player_sorter)
         self.debug = kwargs.get('debug', False)
         self.params = kwargs
-        self.previous_centers = None
+        self.previous_centroids = None
+
+    def sort_centroids(self, current_centroids):
+        if self.previous_centroids is None:
+            return current_centroids, False
+
+        previous_centroids = self.previous_centroids
+
+        # this heavily assumes that new centroids will be close to previous centroids
+        if math.euclidean_distance(previous_centroids[0], current_centroids[0]) > math.euclidean_distance(previous_centroids[0], current_centroids[1]):
+            self.log.log('centroids inverted') if self.debug else None
+            # reverse array
+            return reverse(current_centroids), True
+
+        return current_centroids, False
+
+    def get_players_labels(self, player_mean_colors):
+        k_means_result = KMeans(n_clusters=2, random_state=0).fit(player_mean_colors)
+        self.previous_centroids, centroids_were_inverted = self.sort_centroids(k_means_result.cluster_centers_)
+
+        player_labels = k_means_result.labels_
+        if centroids_were_inverted:
+            player_labels = invert_player_labels(player_labels)
+
+        return player_labels
 
     def sort_players(self, original_frame, players: [Player]):
         hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-        player_mean_colors = []
+        player_mean_colors = frame_utils.get_players_mean_colors(hsv_img, players)
+        player_labels = self.get_players_labels(player_mean_colors)
 
-        for itx, player in enumerate(players):
-            player_box = player.get_box(focused=True)
-            player_mean_color = frame_utils.get_box_mean_color(hsv_img, player_box)
-            player_mean_colors.append(list(player_mean_color)[0:3])
-
-        result = KMeans(n_clusters=2, random_state=0).fit(player_mean_colors)
-        labels = result.labels_
-        if self.previous_centers is None:
-            self.previous_centers = result.cluster_centers_
-        else:
-            centroid = self.previous_centers[0]
-            if math.euclidean_distance(centroid, result.cluster_centers_[0]) > math.euclidean_distance(centroid, result.cluster_centers_[1]):
-                print('labels inverted')
-                labels = [1 if x == 0 else 0 for x in labels]
-                # reverse array
-                self.previous_centers = result.cluster_centers_[::-1]
-            else:
-                self.previous_centers = result.cluster_centers_
-
-        for itx, label in enumerate(labels):
+        for itx, label in enumerate(player_labels):
             if label == 0:
                 players[itx].team = self.params.get('team_one', Team.unclassified)
             else:
                 players[itx].team = self.params.get('team_two', Team.unclassified)
 
         return players
+
+
+def reverse(array):
+    return array[::-1]
+
+
+def invert_player_labels(player_labels):
+    return [1 if x == 0 else 0 for x in player_labels]

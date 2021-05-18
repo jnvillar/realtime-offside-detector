@@ -31,7 +31,8 @@ default_config = {
         },
         'kmeans': {
             'team_one': Team.team_boca,
-            'team_two': Team.team_river
+            'team_two': Team.team_river,
+            'debug': True
         },
         'automatic_by_color': {
             Color.white.color_name: Team.team_river,

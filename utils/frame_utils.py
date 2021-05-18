@@ -103,6 +103,15 @@ def get_predominant_color(frame, box: Box, colors: [ColorRange]):
     return find_predominant_color(pixels_by_color)
 
 
+def get_players_mean_colors(frame, players: [Player]):
+    res = []
+    for itx, player in enumerate(players):
+        player_box = player.get_box(focused=True)
+        player_mean_color = get_box_mean_color(frame, player_box)
+        res.append(list(player_mean_color)[0:3])  # [0:3] do not include aplha
+    return res
+
+
 def get_box_mean_color(original_frame, box: Box):
     box_mask = np.zeros(original_frame.shape[:2], np.uint8)
     x, y, w, h = box.x, box.y, box.w, box.h
