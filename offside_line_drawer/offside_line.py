@@ -13,6 +13,8 @@ class OffsideLineDrawer:
         self.args = kwargs
 
     def get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
+        if len(players) == 0:
+            return None
         self.log.log("drawing offside line")
         Timer.start()
         offside_line = self._get_offside_line(frame, players, orientation, vanishing_point)

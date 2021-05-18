@@ -46,6 +46,8 @@ def get_player_histograms(original_frame, players: [Player]):
 
 
 def draw_offside_line(original_frame, offside_line: Line):
+    if offside_line is None:
+        return original_frame
     cv2.line(original_frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
     return original_frame
 
