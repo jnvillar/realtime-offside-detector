@@ -12,6 +12,7 @@ class PlayerSorterByKMeans:
         self.debug = kwargs.get('debug', False)
         self.params = kwargs
         self.previous_centroids = None
+        self.k_means = KMeans(n_clusters=2, random_state=0)
 
     def sort_players(self, original_frame, players: [Player]):
         if len(players) < 2:
@@ -44,7 +45,7 @@ class PlayerSorterByKMeans:
         return current_centroids, False
 
     def get_players_labels(self, player_mean_colors):
-        k_means_result = KMeans(n_clusters=2, random_state=0).fit(player_mean_colors)
+        k_means_result = self.k_means.fit(player_mean_colors)
         self.previous_centroids, centroids_were_inverted = self.sort_centroids(k_means_result.cluster_centers_)
 
         player_labels = k_means_result.labels_

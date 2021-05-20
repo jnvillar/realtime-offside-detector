@@ -7,3 +7,6 @@ class Orientation(Enum):
 
     left = 'left'
     right = 'right'
+
+    def __str__(self):
+        return self.id

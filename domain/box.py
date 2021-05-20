@@ -47,7 +47,7 @@ def box_from_player(player, focused=False) -> Box:
     if focused:
         resize_x = int(w / 3)
         resize_y = int(h / 2.2)
-        move_y = - int(h / 20)
+        move_y = int(h / 25)
 
     return Box(
         label=label,
