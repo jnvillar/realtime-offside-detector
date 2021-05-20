@@ -14,10 +14,9 @@ class PlayerSorterBSAS:
         if len(players) < 2:
             return players
 
-        player_histograms = frame_utils.get_player_histograms(original_frame, players)
-        bsas_instance = bsas(data=player_histograms, maximum_clusters=self.params['clusters'], threshold= self.params['threshold'])
+        player_histograms = frame_utils.get_players_mean_colors(original_frame, players)
+        bsas_instance = bsas(data=player_histograms, maximum_clusters=self.params['clusters'], threshold=self.params['threshold'])
         bsas_instance = bsas_instance.process()
-
         clusters = bsas_instance.get_clusters()
         self.log.log('bsas_clusters', {'clusters': clusters}) if self.debug else None
 

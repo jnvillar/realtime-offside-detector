@@ -22,12 +22,13 @@ default_config = {
     },
     'player_sorter': {
         # bsas, automatic_by_color, by_color, kmeans
-        'method': 'kmeans',
+        'method': 'bsas',
         'bsas': {
-            'threshold': 75,
+            'threshold': 0,
             'clusters': 2,
             'team_one': Team.team_boca,
-            'team_two': Team.team_river
+            'team_two': Team.team_river,
+            'debug': True
         },
         'kmeans': {
             'team_one': Team.team_boca,
