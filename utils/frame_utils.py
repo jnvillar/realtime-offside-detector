@@ -4,6 +4,7 @@ from domain.color import *
 from domain.box import *
 from utils.math import *
 import log.log as log
+import statistics
 import cv2
 
 log = log.Log(None, log.LoggingPackage.player_sorter)
@@ -112,6 +113,27 @@ def get_players_mean_colors(frame, players: [Player]):
         player_mean_color = get_box_mean_color(frame, player_box)
         res.append(list(player_mean_color)[0:3])  # [0:3] do not include aplha
     return res
+
+
+def get_players_median_colors(frame, players: [Player]):
+    res = []
+    for itx, player in enumerate(players):
+        player_box = player.get_box(focused=False)
+        player_median_color = get_box_median_color(frame, player_box)
+        res.append(list(player_median_color))
+    return res
+
+
+def get_box_median_color(original_frame, box: Box):
+    a, b, c = [], [], []
+    for x in range(box.x, box.x + box.w):
+        for y in range(box.y, box.y + box.h):
+            pixel = original_frame[y][x]
+            a.append(pixel[0])
+            b.append(pixel[1])
+            c.append(pixel[2])
+
+    return [statistics.median(a), statistics.median(b), statistics.median(c)]
 
 
 def get_box_mean_color(original_frame, box: Box):

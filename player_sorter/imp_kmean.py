@@ -18,9 +18,13 @@ class PlayerSorterByKMeans:
         if len(players) < 2:
             return players
 
-        hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-        player_mean_colors = frame_utils.get_players_mean_colors(hsv_img, players)
-        player_labels = self.get_players_labels(player_mean_colors)
+        if self.params.get('median', False):
+            player_representative_pixel = frame_utils.get_players_median_colors(original_frame, players)
+        else:
+            hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
+            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players)
+
+        player_labels = self.get_players_labels(player_representative_pixel)
 
         for itx, label in enumerate(player_labels):
             if label == 0:
