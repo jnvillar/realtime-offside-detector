@@ -1,5 +1,6 @@
 from domain.aspec_ratio import *
 from domain.player import *
+from domain.video import *
 from domain.color import *
 from domain.box import *
 from utils.math import *
@@ -46,22 +47,24 @@ def get_player_histograms(original_frame, players: [Player]):
     return player_histograms
 
 
-def draw_offside_line(original_frame, offside_line: Line):
+def draw_offside_line(video: Video, offside_line: Line):
     if offside_line is None:
-        return original_frame
-    cv2.line(original_frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
-    return original_frame
+        return video
+    frame = video.get_current_frame()
+    cv2.line(frame, offside_line.p0, offside_line.p1, (255, 255, 0), 2)
+    return video.set_frame(frame)
 
 
-def draw_players(original_frame, players: [Player]):
+def draw_players(video:Video, players: [Player]):
+    frame = video.get_current_frame()
     for idx, player in enumerate(players):
         player_box = player.get_box()
-        cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
         player_box = player.get_box(focused=True)
-        cv2.rectangle(original_frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(original_frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
+        cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        cv2.putText(frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
 
-    return original_frame
+    return video.set_frame(frame)
 
 
 def remove_boca(original_frame):

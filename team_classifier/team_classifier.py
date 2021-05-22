@@ -1,4 +1,5 @@
 from team_classifier.imp_by_parameter import *
+from domain.video import *
 from timer.timer import *
 from log.log import *
 
@@ -13,7 +14,7 @@ class TeamClassifier:
         }
         self.method = methods['by_parameter']
 
-    def classify_teams(self, frame, players: [Player]):
+    def classify_teams(self, frame:Video, players: [Player]):
         self.log.log("classifying teams")
         Timer.start()
         self.method.classify_teams(frame, players)

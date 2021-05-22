@@ -38,33 +38,30 @@ class OffsideLineDetector:
 
         return original_frame
 
-    def detect_offside_line(self, soccer_video):
-        frame = self.pre_process(soccer_video.get_current_frame())
-        frame_number = soccer_video.get_current_frame_number()
-
+    def detect_offside_line(self, soccer_video: Video):
         # get vanishing point
-        vanishing_point = self.vanishing_point_finder.find_vanishing_point(frame, frame_number)
+        vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
         # detect field
-        frame = self.field_detector.detect_field(frame)
+        soccer_video = self.field_detector.detect_field(soccer_video)
         # find players
-        players = self.player_detector.detect_players_in_frame(frame, frame_number)
+        players = self.player_detector.detect_players_in_frame(soccer_video)
         # track players
-        players = self.player_tracker.track_players(frame, players)
+        players = self.player_tracker.track_players(soccer_video, players)
         # classify players in teams
-        players = self.player_sorter.sort_players(frame, players)
+        players = self.player_sorter.sort_players(soccer_video, players)
         # detect and attacking team
-        players = self.team_classifier.classify_teams(frame, players)
+        players = self.team_classifier.classify_teams(soccer_video, players)
         # detect orientation
-        orientation = self.orientation_detector.detect_orientation(frame, vanishing_point)
+        orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
         # mark last defending player
         self.player_finder.find_last_defending_player(players, orientation)
         # draw offside line
-        offside_line = self.offside_line_drawer.get_offside_line(frame, players, orientation, vanishing_point)
+        offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
 
-        frame = frame_utils.draw_offside_line(frame, offside_line)
-        frame = frame_utils.draw_players(frame, players)
+        soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
+        soccer_video = frame_utils.draw_players(soccer_video, players)
 
-        return frame
+        return soccer_video
 
     def detect_and_draw_offside_line(self, soccer_video: Video):
         play = True
@@ -78,12 +75,12 @@ class OffsideLineDetector:
                     break
 
                 Timer.start()
-                frame = self.detect_offside_line(soccer_video)
+                soccer_video = self.detect_offside_line(soccer_video)
                 elapsed_time = Timer.stop()
                 self.log.log('offside line detected', {'cost': elapsed_time})
 
                 if self.params['show_result']:
-                    self.screen_manager.show_frame(frame, 'final result')
+                    self.screen_manager.show_frame(soccer_video.get_current_frame(), 'final result')
 
                 if self.params['stop_in_frame']:
                     if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():

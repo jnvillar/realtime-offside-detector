@@ -1,5 +1,6 @@
-from player_tracker.imp_opencv_tracker import *
 from player_tracker.imp_tracker_by_distance import *
+from player_tracker.imp_opencv_tracker import *
+from domain.video import *
 from timer.timer import *
 
 
@@ -16,10 +17,10 @@ class PlayerTracker:
 
         self.method = methods[kwargs['method']]
 
-    def track_players(self, frame, players: [Player]):
+    def track_players(self, frame: Video, players: [Player]):
         self.log.log("tracking players")
         Timer.start()
-        players = self.method.track_players(frame, players)
+        players = self.method.track_players(frame.get_current_frame(), players)
         elapsed_time = Timer.stop()
         self.log.log("players tracked", {'cost': elapsed_time})
         return players

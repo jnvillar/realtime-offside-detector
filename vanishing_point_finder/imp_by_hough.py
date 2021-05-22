@@ -1,5 +1,6 @@
 from player_detector.step import *
 from utils.frame_utils import *
+from domain.video import *
 from utils.math import *
 from log.log import *
 import cv2
@@ -30,13 +31,14 @@ class ByHough:
             )
         ]
 
-    def find_vanishing_point(self, frame, frame_number):
+    def find_vanishing_point(self, video: Video):
 
-        if self.vanishing_point is not None and frame_number % self.args['calculate_every_x_amount_of_frames'] != 0:
+        if self.vanishing_point is not None and video.get_current_frame_number() % self.args['calculate_every_x_amount_of_frames'] != 0:
             return self.vanishing_point
 
         pipeline: [Step] = self.steps()
 
+        frame = video.get_current_frame()
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 

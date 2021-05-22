@@ -1,13 +1,14 @@
+from utils.utils import ScreenManager
+from domain.video import *
 import numpy as np
 import cv2 as cv2
-
-from utils.utils import ScreenManager
 
 
 class FieldDetector:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
+        self.video = None
         self.debug = kwargs['debug']
         self.method = kwargs['method']
         self.method_implementations = {
@@ -30,7 +31,7 @@ class FieldDetector:
         cv2.imshow('img', self.img)
         cv2.waitKey(0)
 
-    def detect_field(self, frame):
+    def detect_field(self, video: Video):
         # height, width = frame.shape[:2]
         # bounding_polygon = {
         #     'top_left': (10, 10),
@@ -42,13 +43,13 @@ class FieldDetector:
         # cv2.imshow("Field detection", frame)
         bounding_polygon = [(10, 10), (10, 400), (400, 400), (400, 10)]
 
-        self.frame = frame
+        self.video = video
         return self.method_implementations[self.method]()
         # return frame
 
     def by_lines_detection(self):
         screen_manager = self.screen_manager
-        img = self.frame
+        img = self.video.get_current_frame()
         hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
         kernel = np.ones((5, 5), np.uint8)
         if self.debug:
@@ -99,7 +100,8 @@ class FieldDetector:
         if self.debug:
             screen_manager.show_frame(img, "Field detection")
 
-        return img
+        self.video.set_frame(img)
+        return self.video
 
     def by_green_detection(self):
         # green color range in HSV
@@ -107,7 +109,7 @@ class FieldDetector:
         COLOR_MAX = np.array([int(0.5 * 255), 255, 255])
 
         # frame converted to hsv
-        frame_hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+        frame_hsv = cv2.cvtColor(self.video.get_current_frame(), cv2.COLOR_BGR2HSV)
 
         # create mask which will set as white only pixels that are included in the color range
         green_mask = cv2.inRange(frame_hsv, COLOR_MIN, COLOR_MAX)
@@ -151,12 +153,13 @@ class FieldDetector:
             self.screen_manager.show_frame(dilated_label_mask, "After closing and then dilatation")
 
         # apply the mask over the frame
-        final = cv2.bitwise_and(self.frame, self.frame, mask=dilated_label_mask)
+        final = cv2.bitwise_and(self.video.get_current_frame(), self.video.get_current_frame(), mask=dilated_label_mask)
 
         if self.debug:
             self.screen_manager.show_frame(final, "Final")
 
-        return final
+        self.video.set_frame(final)
+        return self.video
 
     def degrees_to_radians(self, degrees):
         return degrees * np.pi / 180

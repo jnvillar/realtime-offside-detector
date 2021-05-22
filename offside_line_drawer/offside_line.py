@@ -1,6 +1,7 @@
 from domain.orientation import *
 from utils.frame_utils import *
 from domain.player import *
+from domain.video import *
 from domain.line import *
 from timer.timer import *
 from log.log import *
@@ -13,14 +14,14 @@ class OffsideLineDrawer:
         self.log = Log(self, LoggingPackage.offside_line_drawer)
         self.args = kwargs
 
-    def get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
+    def get_offside_line(self, video: Video, players: [Player], orientation: Orientation, vanishing_point):
         self.log.log("detecting offside line")
 
         Timer.start()
         if len(players) == 0:
             offside_line = None
         else:
-            offside_line = self._get_offside_line(frame, players, orientation, vanishing_point)
+            offside_line = self._get_offside_line(video.get_current_frame(), players, orientation, vanishing_point)
         elapsed_time = Timer.stop()
 
         self.log.log("offside line", {"cost": elapsed_time, "offside_line": str(offside_line)})
