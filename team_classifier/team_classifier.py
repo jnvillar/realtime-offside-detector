@@ -14,10 +14,12 @@ class TeamClassifier:
         }
         self.method = methods['by_parameter']
 
-    def classify_teams(self, frame:Video, players: [Player]):
+    def classify_teams(self, video: Video, players: [Player]):
         self.log.log("classifying teams")
         Timer.start()
-        self.method.classify_teams(frame, players)
+        self.method.classify_teams(video, players)
         elapsed_time = Timer.stop()
         self.log.log("teams classified", {'cost': elapsed_time})
         return players
+
+

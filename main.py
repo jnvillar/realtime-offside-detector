@@ -16,3 +16,4 @@ if __name__ == '__main__':
         video = video_repository.VideoRepository.get_video(video_path + '/' + video_name)
         offside_line_detector.detect_and_draw_offside_line(video)
         analytics.store()
+        exit()

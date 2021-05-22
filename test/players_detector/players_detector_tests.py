@@ -17,12 +17,12 @@ class PlayerDetectorTests:
 
         for video_name, video in self.videos_repository.list_videos():
             frame = video.get_next_frame()
-            detector_one.detect_players_in_frame(frame)
+            detector_one.detect_players(frame)
             detector_two.detect_players_in_frame_2(frame)
 
             frame = video.get_next_frame()
 
-            players = detector_one.detect_players_in_frame(frame)
+            players = detector_one.detect_players(frame)
             self.check_players("detect players in frame", video_name, 0, players)
 
             players = detector_two.detect_players_in_frame_2(frame)

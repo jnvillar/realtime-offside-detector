@@ -26,17 +26,8 @@ class OffsideLineDetector:
         self.offside_line_drawer = OffsideLineDrawer(analytics, **kwargs['offside_line_drawer'])
         self.field_detector = FieldDetector(analytics, **kwargs['field_detector'])
         self.params = kwargs['app']
-        self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)
         self.log = Log(self, LoggingPackage.offside_detector)
-
-    def pre_process(self, original_frame):
-        if self.params['resize']['apply']:
-            resize_params = self.params['resize']
-            frame = cv2.resize(original_frame, (resize_params['size_h'], resize_params['size_w']))
-            return frame
-
-        return original_frame
 
     def detect_offside_line(self, soccer_video: Video):
         # get vanishing point
@@ -44,7 +35,7 @@ class OffsideLineDetector:
         # detect field
         soccer_video = self.field_detector.detect_field(soccer_video)
         # find players
-        players = self.player_detector.detect_players_in_frame(soccer_video)
+        players = self.player_detector.detect_players(soccer_video)
         # track players
         players = self.player_tracker.track_players(soccer_video, players)
         # classify players in teams
@@ -55,10 +46,11 @@ class OffsideLineDetector:
         orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
         # mark last defending player
         self.player_finder.find_last_defending_player(players, orientation)
-        # draw offside line
+        # detect offside line
         offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
-
+        # dray offside line
         soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
+        # draw players
         soccer_video = frame_utils.draw_players(soccer_video, players)
 
         return soccer_video

@@ -22,10 +22,16 @@ class PlayerSorter:
 
         self.method = methods[kwargs['method']]
 
-    def sort_players(self, frame: Video, players: [Player]):
+    def sort_players(self, video: Video, players: [Player]):
         self.log.log("sorting players")
         Timer.start()
-        sorted_players = self.method.sort_players(frame.get_current_frame(), players)
+        sorted_players = self.method.sort_players(video.get_current_frame(), players)
         elapsed_time = Timer.stop()
-        self.log.log("sorted players", {"cost": elapsed_time, "players": players})
+        self.save_event(video, sorted_players)
+        self.log.log("sorted players", {"cost": elapsed_time, "players": sorted_players})
         return sorted_players
+
+    def save_event(self, video: Video, players: [Player]):
+        self.analytics.save({
+            'frame': video.get_current_frame_number(),
+            'players': [player.get_data() for player in players]})

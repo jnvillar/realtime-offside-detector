@@ -28,6 +28,16 @@ class Player:
     def __repr__(self):
         return str(self)
 
+    def get_data(self):
+        return {
+            'id': self.number,
+            'team': self.team,
+            'x': self.x_coordinate,
+            'y': self.y_coordinate,
+            'w': self.width,
+            'h': self.height
+        }
+
     def get_box(self, focused=False) -> Box:
         return box_from_player(self, focused)
 

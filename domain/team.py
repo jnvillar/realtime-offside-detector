@@ -23,6 +23,9 @@ class Team(Enum):
         attitude = 'atk' if self.isAttacking else 'def'
         return self.label + ' ' + attitude
 
+    def __dict__(self):
+        return {'name': self.label}
+
 
 def set_attacking_team(attackingTeam):
     for team in Team:
