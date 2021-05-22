@@ -5,7 +5,8 @@ from log.log import *
 
 class TeamClassifier:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.team_classifier)
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),

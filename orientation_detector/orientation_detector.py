@@ -7,7 +7,8 @@ from log.log import *
 
 class OrientationDetector:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.orientation_detector)
 
         methods = {

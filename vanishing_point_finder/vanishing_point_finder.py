@@ -4,7 +4,8 @@ from timer.timer import *
 
 class VanishingPointFinder:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.vanishing_point)
 
         methods = {

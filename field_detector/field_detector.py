@@ -6,7 +6,8 @@ from utils.utils import ScreenManager
 
 class FieldDetector:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.debug = kwargs['debug']
         self.method = kwargs['method']
         self.method_implementations = {
@@ -61,7 +62,7 @@ class FieldDetector:
             screen_manager.show_frame(edges_v, "Canny V")
             screen_manager.show_frame(edges_v_non_dilated, "Canny V non dilated")
 
-        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi/180, 450, min_theta=self.degrees_to_radians(85), max_theta=self.degrees_to_radians(95))
+        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=self.degrees_to_radians(85), max_theta=self.degrees_to_radians(95))
         max_rho = -1
         theta_to_draw = -1
         if lines is not None:
@@ -89,7 +90,7 @@ class FieldDetector:
                 offset = 30
                 height, width = img.shape[:2]
                 int_rho = int(max_rho)
-                img_tmp = img[(int_rho-offset):height, :]
+                img_tmp = img[(int_rho - offset):height, :]
                 # img = np.zeros((height, width, 3), np.uint8)
                 # img[:(int_rho - offset), :] = np.zeros(((int_rho - offset), width, 3), np.uint8)
                 # img[(int_rho - offset):height, :] = img_tmp
@@ -364,9 +365,9 @@ class FieldDetector:
         # calcula interseccion entre dos lineas (las lineas se representan mediante 2 puntos)
         p1, p2, p3, p4 = line1['p1'], line1['p2'], line2['p1'], line2['p2']
         x = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[0] - p4[0]) - (p1[0] - p2[0]) * (p3[0] * p4[1] - p3[1] * p4[0])) / (
-                    (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
+                (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
         y = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] * p4[1] - p3[1] * p4[0])) / (
-                    (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
+                (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
         return (x, y)
 
     def filter_outside_bounding_boxes(self, bounding_boxes):

@@ -7,7 +7,8 @@ from log.log import *
 
 class PlayerDetector:
 
-    def __init__(self,  **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.player_detector)
 
         methods = {

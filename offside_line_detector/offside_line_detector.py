@@ -14,16 +14,17 @@ import cv2
 
 
 class OffsideLineDetector:
-    def __init__(self, **kwargs):
-        self.player_detector = PlayerDetector(**kwargs['player_detector'])
-        self.player_sorter = PlayerSorter(**kwargs['player_sorter'])
-        self.team_classifier = TeamClassifier(**kwargs['team_classifier'])
-        self.orientation_detector = OrientationDetector(**kwargs['orientation_detector'])
-        self.player_tracker = PlayerTracker(**kwargs['player_tracker'])
-        self.player_finder = PlayerFinder(**kwargs['player_finder'])
-        self.vanishing_point_finder = VanishingPointFinder(**kwargs['vanishing_point_finder'])
-        self.offside_line_drawer = OffsideLineDrawer(**kwargs['offside_line_drawer'])
-        self.field_detector = FieldDetector(**kwargs['field_detector'])
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
+        self.player_detector = PlayerDetector(analytics, **kwargs['player_detector'])
+        self.player_sorter = PlayerSorter(analytics, **kwargs['player_sorter'])
+        self.team_classifier = TeamClassifier(analytics, **kwargs['team_classifier'])
+        self.orientation_detector = OrientationDetector(analytics, **kwargs['orientation_detector'])
+        self.player_tracker = PlayerTracker(analytics, **kwargs['player_tracker'])
+        self.player_finder = PlayerFinder(analytics, **kwargs['player_finder'])
+        self.vanishing_point_finder = VanishingPointFinder(analytics, **kwargs['vanishing_point_finder'])
+        self.offside_line_drawer = OffsideLineDrawer(analytics, **kwargs['offside_line_drawer'])
+        self.field_detector = FieldDetector(analytics, **kwargs['field_detector'])
         self.params = kwargs['app']
         self.players = []
         self.screen_manager = ScreenManager(max_windows=1, rows=1)

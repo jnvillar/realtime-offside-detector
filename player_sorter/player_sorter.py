@@ -8,7 +8,8 @@ from log.log import *
 
 class PlayerSorter:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.player_sorter)
 
         methods = {

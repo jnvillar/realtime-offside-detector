@@ -1,5 +1,6 @@
 import video_repository.video_repository as video_repository
 from offside_line_detector.offside_line_detector import *
+from analytics.analytics import *
 import config.config as confg
 import utils.constants as constants
 
@@ -7,8 +8,11 @@ if __name__ == '__main__':
 
     config = confg.default_config
     video_path = './test/videos'
-    offside_line_detector = OffsideLineDetector(**config)
+    video_name = constants.VideoConstants.video_1_from_8_to_12
+    analytics = Analytics(video_name)
+    offside_line_detector = OffsideLineDetector(analytics, **config)
 
     while True:
-        video = video_repository.VideoRepository.get_video(video_path + '/' + constants.VideoConstants.video_1_from_8_to_12)
+        video = video_repository.VideoRepository.get_video(video_path + '/' + video_name)
         offside_line_detector.detect_and_draw_offside_line(video)
+        analytics.store()

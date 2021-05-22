@@ -8,7 +8,8 @@ from log.log import *
 
 class OffsideLineDrawer:
 
-    def __init__(self, **kwargs):
+    def __init__(self, analytics, **kwargs):
+        self.analytics = analytics
         self.log = Log(self, LoggingPackage.offside_line_drawer)
         self.args = kwargs
 
