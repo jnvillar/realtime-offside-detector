@@ -1,10 +1,12 @@
 from timer.timer import *
 from utils.frame_utils import *
+from utils.utils import ScreenManager
 
 
 class Step:
     def __init__(self, name: str, function, params=None, debug: bool = False, modify_original_frame=True):
         self.log = Log(self, LoggingPackage.player_detector)
+        self.screen_manager = ScreenManager.get_manager()
         self.name = name
         self.function = function
         self.debug = debug
@@ -24,7 +26,7 @@ class Step:
         frame = self.function(frame, params)
         elapsed_time = Timer.stop()
 
-        show(frame, self.name, number) if self.debug else None
+        self.screen_manager.show_frame(frame, self.name) if self.debug else None
 
         self.log.log('applying', {
             "number": number,

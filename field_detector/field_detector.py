@@ -15,7 +15,7 @@ class FieldDetector:
             'green_detection': self.by_green_detection,
             'lines_detection': self.by_lines_detection
         }
-        self.screen_manager = ScreenManager.initialize(screen_number=2, max_windows=6, rows=2)
+        self.screen_manager = ScreenManager.get_manager()
 
     def print_line(self, rho, theta, color):
         a = np.cos(theta)
@@ -48,20 +48,19 @@ class FieldDetector:
         # return frame
 
     def by_lines_detection(self):
-        screen_manager = self.screen_manager
         img = self.video.get_current_frame()
         hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
         kernel = np.ones((5, 5), np.uint8)
         if self.debug:
-            screen_manager.show_frame(hsv_img[:, :, 2], "V channel")
+            self.screen_manager.show_frame(hsv_img[:, :, 2], "V channel")
         open_img_v = cv2.morphologyEx(hsv_img[:, :, 2], cv2.MORPH_DILATE, kernel)
         # if self.debug:
-        #     screen_manager.show_frame(open_img_v, "Dilated img V")
+        #     self.screen_manager.show_frame(open_img_v, "Dilated img V")
         edges_v = cv2.Canny(open_img_v, 10, 30, apertureSize=3)
         edges_v_non_dilated = cv2.Canny(hsv_img[:, :, 2], 10, 30, apertureSize=3)
         if self.debug:
-            screen_manager.show_frame(edges_v, "Canny V")
-            screen_manager.show_frame(edges_v_non_dilated, "Canny V non dilated")
+            self.screen_manager.show_frame(edges_v, "Canny V")
+            self.screen_manager.show_frame(edges_v_non_dilated, "Canny V non dilated")
 
         lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=self.degrees_to_radians(85), max_theta=self.degrees_to_radians(95))
         max_rho = -1
@@ -98,7 +97,7 @@ class FieldDetector:
                 img[0:(int_rho - offset), :] = np.zeros(((int_rho - offset), width, 1), np.uint8)
 
         if self.debug:
-            screen_manager.show_frame(img, "Field detection")
+            self.screen_manager.show_frame(img, "Field detection")
 
         self.video.set_frame(img)
         return self.video

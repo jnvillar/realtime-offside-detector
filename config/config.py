@@ -7,6 +7,7 @@ default_config = {
         'status': Status.inactive
     },
     'app': {
+        'debug_screen': 0,
         'show_result': True,
         'stop_in_frame': 2,
         'resize': {

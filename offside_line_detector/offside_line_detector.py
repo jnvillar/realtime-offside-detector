@@ -26,7 +26,7 @@ class OffsideLineDetector:
         self.offside_line_drawer = OffsideLineDrawer(analytics, **kwargs['offside_line_drawer'])
         self.field_detector = FieldDetector(analytics, **kwargs['field_detector'])
         self.params = kwargs['app']
-        self.screen_manager = ScreenManager(max_windows=1, rows=1)
+        self.screen_manager = ScreenManager.initialize(self.params['debug_screen'])
         self.log = Log(self, LoggingPackage.offside_detector)
 
     def detect_offside_line(self, soccer_video: Video):
