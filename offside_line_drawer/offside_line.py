@@ -18,7 +18,7 @@ class OffsideLineDrawer:
         self.log.log("detecting offside line")
 
         Timer.start()
-        if len(players) == 0:
+        if len(players) == 0 or orientation is None:
             offside_line = None
         else:
             offside_line = self._get_offside_line(video.get_current_frame(), players, orientation, vanishing_point)
@@ -47,7 +47,7 @@ class OffsideLineDrawer:
 
         self.log.log('offside line intersection with frame', {'points': intersections_with_frame}) if self.args['debug'] else None
 
-        if len(intersections_with_frame) != 2:
+        if len(intersections_with_frame) < 2:
             self.log.log('offside line cant be drawn') if self.args['debug'] else None
             return
 

@@ -34,6 +34,7 @@ class ByHough:
     def find_vanishing_point(self, video: Video):
 
         if self.vanishing_point is not None and video.get_current_frame_number() % self.args['calculate_every_x_amount_of_frames'] != 0:
+            self.log.log('Returning previous vanishing point', {'vanishing_point': self.vanishing_point}) if self.args['debug'] else None
             return self.vanishing_point
 
         pipeline: [Step] = self.steps()
@@ -47,6 +48,10 @@ class ByHough:
         theta = np.pi / 180
         threshold = 500
         lines = cv2.HoughLines(frame, rho, theta, threshold)
+
+        if lines is None:
+            lines = []
+
         elapsed_time = Timer.stop()
         self.log.log('Found lines', {'cost': elapsed_time, 'lines': len(lines)}) if self.args['debug'] else None
 
@@ -56,8 +61,6 @@ class ByHough:
         for idx, line in enumerate(lines):
 
             if len(parallel_lines) == 2:
-                elapsed_time = Timer.stop()
-                self.log.log('Found parallel lines', {'iteration': idx, 'cost': elapsed_time, 'lines': parallel_lines}) if self.args['debug'] else None
                 break
 
             for line_args in line:
@@ -75,18 +78,23 @@ class ByHough:
                         ## lines are parallel
                         parallel_lines.pop()
 
+        elapsed_time = Timer.stop()
+        self.log.log('find parallel lines cost', {'iteration': idx, 'cost': elapsed_time, 'lines': parallel_lines}) if self.args['debug'] else None
+
         if len(parallel_lines) != 2:
             self.log.log('Could not found two parallel lines')
             return None
 
         if self.args['debug']:
-            x1, y1 = parallel_lines[0]['p1']
-            x2, y2 = parallel_lines[0]['p2']
+            frame = video.get_current_frame()
+            x1, y1 = parallel_lines[0].p0
+            x2, y2 = parallel_lines[0].p1
             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 255), 2)
 
-            x1, y1 = parallel_lines[1]['p1']
-            x2, y2 = parallel_lines[1]['p2']
+            x1, y1 = parallel_lines[1].p0
+            x2, y2 = parallel_lines[1].p1
             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 255), 2)
+            video.set_frame(frame)
 
         self.vanishing_point = get_lines_intersection(parallel_lines[0], parallel_lines[1])
         return self.vanishing_point

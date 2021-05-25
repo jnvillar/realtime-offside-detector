@@ -24,6 +24,10 @@ class PlayerFinder:
             self.log.log("no players to mark", {}) if self.args['debug'] else None
             return
 
+        if orientation is None:
+            self.log.log("orientation is None", {}) if self.args['debug'] else None
+            return
+
         if orientation == Orientation.left:
             leftmost_player = None
             for player in players:

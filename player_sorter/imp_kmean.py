@@ -18,19 +18,28 @@ class PlayerSorterByKMeans:
         if len(players) < 2:
             return players
 
+        players_to_be_sorted = []
+        if self.params.get('only_unclassified_players', False):
+            for player in players:
+                if player.team == Team.unclassified:
+                    players_to_be_sorted.append(player)
+
+        if len(players_to_be_sorted) == 0:
+            return players
+
         if self.params.get('median', False):
-            player_representative_pixel = frame_utils.get_players_median_colors(original_frame, players)
+            player_representative_pixel = frame_utils.get_players_median_colors(original_frame, players_to_be_sorted)
         else:
             hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players)
+            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players_to_be_sorted)
 
         player_labels = self.get_players_labels(player_representative_pixel)
 
         for itx, label in enumerate(player_labels):
             if label == 0:
-                players[itx].team = self.params.get('team_one', Team.unclassified)
+                players_to_be_sorted[itx].team = self.params.get('team_one', Team.unclassified)
             else:
-                players[itx].team = self.params.get('team_two', Team.unclassified)
+                players_to_be_sorted[itx].team = self.params.get('team_two', Team.unclassified)
 
         return players
 

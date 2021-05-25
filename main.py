@@ -9,8 +9,8 @@ if __name__ == '__main__':
     config = confg.default_config
     video_path = './test/videos'
     video_name = constants.VideoConstants.video_1_from_8_to_12
-    analytics = Analytics(video_name)
-    offside_line_detector = OffsideLineDetector(analytics, **config)
+    analytics = Analytics(video_name, **config['analytics_conf'])
+    offside_line_detector = OffsideLineDetector(analytics=analytics, **config)
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path + '/' + video_name)

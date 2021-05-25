@@ -1,7 +1,11 @@
 from player_detector.player_detector import *
 from player_finder.player_finder import *
+from domain.status import *
 
 default_config = {
+    'analytics_conf': {
+        'status': Status.inactive
+    },
     'app': {
         'show_result': True,
         'stop_in_frame': 2,
@@ -34,12 +38,12 @@ default_config = {
             'team_one': Team.team_boca,
             'team_two': Team.team_river,
             'debug': True,
+            'only_unclassified_players': True,
             'median': False
         },
         'automatic_by_color': {
             Color.white.color_name: Team.team_river,
             Color.red.color_name: Team.team_river,
-            # Color.blue.color_name: Team.team_boca
         }
     },
     'player_detector': {
@@ -83,8 +87,8 @@ default_config = {
         # hough
         'method': 'hough',
         'hough': {
-            'debug': False,
-            'calculate_every_x_amount_of_frames': 1
+            'debug': True,
+            'calculate_every_x_amount_of_frames': 10
         }
     },
     'offside_line_drawer': {

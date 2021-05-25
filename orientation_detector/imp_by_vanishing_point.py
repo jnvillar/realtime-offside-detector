@@ -6,6 +6,9 @@ class ByVanishingPoint:
         self.args = kwargs
 
     def detect_orientation(self, frame, vanishing_point) -> Orientation:
+        if vanishing_point is None:
+            return None
+
         img_h, img_w = frame.shape[:2]
         middle_frame = img_h / 2
         if vanishing_point[0] > middle_frame:
