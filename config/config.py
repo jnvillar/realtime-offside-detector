@@ -87,7 +87,7 @@ default_config = {
         # hough
         'method': 'hough',
         'hough': {
-            'debug': True,
+            'debug': False,
             'calculate_every_x_amount_of_frames': 10
         }
     },

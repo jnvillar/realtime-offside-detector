@@ -76,12 +76,12 @@ class OffsideLineDrawer:
     #  then compare y0 and ax0 + b, for example if y0 > ax0 + b then the point is above the line
     def _adjust_offside_line(self, frame, players: [Player], orientation: Orientation, offside_line: Line, vanishing_point):
         defending_players = get_defending_players(players)
-        self.log.log('checking if players are above offside line', {'players': defending_players})
+        self.log.log('checking if players are above offside line', {'players': defending_players}) if self.args['debug'] else None
         for player in defending_players:
             player_point = self._get_player_point(player, orientation)
             if is_point_above_line(player_point, offside_line):
                 update_last_defending_player(player, players)
-                self.log.log('player is above offside line re-calculating', {'players': player, 'offside_line': str(offside_line)})
+                self.log.log('player is above offside line re-calculating', {'players': player, 'offside_line': str(offside_line)}) if self.args['debug'] else None
                 offside_line = self._calculate_offside_line(frame, player_point, vanishing_point)
 
         return offside_line
