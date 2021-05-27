@@ -9,7 +9,7 @@ default_config = {
     'app': {
         'debug_screen': 0,
         'show_result': True,
-        'stop_in_frame': 2,
+        'stop_in_frame': 1,
         'resize': {
             'apply': False,
             'size_h': 500,
