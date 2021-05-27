@@ -9,6 +9,7 @@ if __name__ == '__main__':
     config = config.default_config
     video_path = './test/videos'
     video_name = constants.VideoConstants.video_1_from_8_to_12
+    ScreenManager.initialize(config['app']['debug_screen'])
     analytics = Analytics(video_name, **config['analytics_conf'])
     offside_line_detector = OffsideLineDetector(analytics, **config)
 
