@@ -1,4 +1,5 @@
 from field_detector.field_detector import FieldDetector
+from utils import constants
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
 from offside_line_drawer.offside_line import *
@@ -27,6 +28,7 @@ class OffsideLineDetector:
         self.field_detector = FieldDetector(analytics, **kwargs['field_detector'])
         self.params = kwargs['app']
         self.screen_manager = ScreenManager.get_manager()
+        self.keyboard_manager = KeyboardManager()
         self.log = Log(self, LoggingPackage.offside_detector)
 
     def detect_offside_line(self, soccer_video: Video):
@@ -37,19 +39,19 @@ class OffsideLineDetector:
         # find players
         players = self.player_detector.detect_players(soccer_video)
         # track players
-        players = self.player_tracker.track_players(soccer_video, players)
-        # classify players in teams
-        players = self.player_sorter.sort_players(soccer_video, players)
-        # detect and attacking team
-        players = self.team_classifier.classify_teams(soccer_video, players)
-        # detect orientation
-        orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
-        # mark last defending player
-        self.player_finder.find_last_defending_player(players, orientation)
-        # detect offside line
-        offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
-        # dray offside line
-        soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
+        # players = self.player_tracker.track_players(soccer_video, players)
+        # # classify players in teams
+        # players = self.player_sorter.sort_players(soccer_video, players)
+        # # detect and attacking team
+        # players = self.team_classifier.classify_teams(soccer_video, players)
+        # # detect orientation
+        # orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
+        # # mark last defending player
+        # self.player_finder.find_last_defending_player(players, orientation)
+        # # detect offside line
+        # offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
+        # # dray offside line
+        # soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
         # draw players
         soccer_video = frame_utils.draw_players(soccer_video, players)
 
@@ -57,29 +59,41 @@ class OffsideLineDetector:
 
     def detect_and_draw_offside_line(self, soccer_video: Video):
         play = True
-        last_frame = False
+        pause = True
 
-        while True and not last_frame:
-            while play:
-                frame = soccer_video.get_next_frame()
-                if frame is None:
-                    last_frame = True
-                    break
+        while True:
+            frame = soccer_video.get_next_frame()
+            if frame is None:
+                break
 
-                Timer.start()
-                soccer_video = self.detect_offside_line(soccer_video)
-                elapsed_time = Timer.stop()
-                self.log.log('offside line detected', {'cost': elapsed_time})
+            Timer.start()
+            soccer_video = self.detect_offside_line(soccer_video)
+            elapsed_time = Timer.stop()
+            self.log.log('offside line detected', {'cost': elapsed_time})
 
-                if self.params['show_result']:
-                    self.screen_manager.show_frame(soccer_video.get_current_frame(), 'final result')
+            if self.params['show_result']:
+                self.screen_manager.show_frame(soccer_video.get_current_frame(), 'final result')
 
-                if self.params['stop_in_frame']:
-                    if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():
-                        play = not play
+            if self.params['stop_in_frame']:
+                if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():
+                    pause = True
 
-                if cv2.waitKey(30) & 0xFF == ord('q'):
-                    play = not play
+            pause = self.parse_keyboard_action(pause)
 
-            if cv2.waitKey(30) & 0xFF == ord('q'):
-                play = not play
+    def parse_keyboard_action(self, pause):
+        if pause:
+            key_code = cv2.waitKey(0)
+        else:
+            key_code = cv2.waitKey(30)
+
+        if self.keyboard_manager.key_was_pressed(key_code, ord('q')):
+            # Q key to pause / restart
+            pause = not pause
+        elif self.keyboard_manager.key_was_pressed(key_code, constants.SPACE_KEY_CODE):
+            # SPACE key to move to the next frame and stop
+            pause = True
+        elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+            # ESC key to exit
+            exit(0)
+
+        return pause
