@@ -1,5 +1,5 @@
 import video_repository.video_repository as video_repository
-import log.log as log
+import log.logger as log
 import utils.constants as constants
 import utils.frame_utils as frame_utils
 from domain.color import *
@@ -9,7 +9,7 @@ import cv2
 class FrameUtilsTests:
     def __init__(self):
         self.videos_repository = video_repository.VideoRepository("../videos")
-        self.log = log.Log(self, log.LoggingPackage.test)
+        self.log = log.Logger(self, log.LoggingPackage.test)
 
     def test_remove_color(self):
 

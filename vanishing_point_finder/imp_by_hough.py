@@ -2,13 +2,13 @@ from player_detector.step import *
 from utils.frame_utils import *
 from domain.video import *
 from utils.math import *
-from log.log import *
+from log.logger import *
 import cv2
 
 
 class ByHough:
     def __init__(self, **kwargs):
-        self.log = Log(self, LoggingPackage.vanishing_point)
+        self.log = Logger(self, LoggingPackage.vanishing_point)
         self.args = kwargs
         self.vanishing_point = None
 

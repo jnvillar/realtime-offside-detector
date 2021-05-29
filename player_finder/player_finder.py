@@ -1,7 +1,7 @@
 from domain.orientation import *
 from domain.player import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class PlayerFinder:
@@ -9,7 +9,7 @@ class PlayerFinder:
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
         self.args = kwargs
-        self.log = Log(self, LoggingPackage.player_finder)
+        self.log = Logger(self, LoggingPackage.player_finder)
 
     def find_last_defending_player(self, players: [Player], orientation: Orientation):
         self.log.log("finding leftmost player", {"players": players})

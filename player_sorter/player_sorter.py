@@ -4,14 +4,14 @@ from player_sorter.imp_kmean import *
 from player_sorter.imp_bsas import *
 from domain.video import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class PlayerSorter:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.player_sorter)
+        self.log = Logger(self, LoggingPackage.player_sorter)
 
         methods = {
             'bsas': PlayerSorterBSAS(**kwargs['bsas']),

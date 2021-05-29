@@ -29,7 +29,7 @@ class OffsideLineDetector:
         self.params = kwargs['app']
         self.screen_manager = ScreenManager.get_manager()
         self.keyboard_manager = KeyboardManager()
-        self.log = Log(self, LoggingPackage.offside_detector)
+        self.log = Logger(self, LoggingPackage.offside_detector)
 
     def detect_offside_line(self, soccer_video: Video):
         # get vanishing point
@@ -39,19 +39,19 @@ class OffsideLineDetector:
         # find players
         players = self.player_detector.detect_players(soccer_video)
         # track players
-        # players = self.player_tracker.track_players(soccer_video, players)
-        # # classify players in teams
-        # players = self.player_sorter.sort_players(soccer_video, players)
-        # # detect and attacking team
-        # players = self.team_classifier.classify_teams(soccer_video, players)
-        # # detect orientation
-        # orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
+        players = self.player_tracker.track_players(soccer_video, players)
+        # classify players in teams
+        players = self.player_sorter.sort_players(soccer_video, players)
+        # detect and attacking team
+        players = self.team_classifier.classify_teams(soccer_video, players)
+        # detect orientation
+        orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
         # # mark last defending player
-        # self.player_finder.find_last_defending_player(players, orientation)
-        # # detect offside line
-        # offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
-        # # dray offside line
-        # soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
+        self.player_finder.find_last_defending_player(players, orientation)
+        # detect offside line
+        offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
+        # dray offside line
+        soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
         # draw players
         soccer_video = frame_utils.draw_players(soccer_video, players)
 

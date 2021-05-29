@@ -1,5 +1,5 @@
 from domain.player import *
-from log.log import *
+from log.logger import *
 import cv2
 
 OPENCV_OBJECT_TRACKERS = {
@@ -16,7 +16,7 @@ OPENCV_OBJECT_TRACKERS = {
 class OpenCVTracker:
 
     def __init__(self, **kwargs):
-        self.log = Log(self, LoggingPackage.player_tracker)
+        self.log = Logger(self, LoggingPackage.player_tracker)
         self.tracking = False
         self.trackers = []
         self.tracker_name = kwargs['tracker']

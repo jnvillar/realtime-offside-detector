@@ -3,14 +3,14 @@ from player_detector.imp_edges import *
 from domain.player import *
 from domain.video import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class PlayerDetector:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.player_detector)
+        self.log = Logger(self, LoggingPackage.player_detector)
 
         methods = {
             'background_subtraction': BackgroundSubtractionPlayerDetector(**kwargs['background_subtraction']),

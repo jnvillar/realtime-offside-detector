@@ -1,6 +1,6 @@
 from domain.player import *
 from utils.math import *
-from log.log import *
+from log.logger import *
 
 
 def has_no_player_close(distance, player: Player):
@@ -32,7 +32,7 @@ def find_closest_player(player: Player, players: [Player]):
 class DistanceTracker:
 
     def __init__(self, **kwargs):
-        self.log = Log(self, LoggingPackage.player_tracker)
+        self.log = Logger(self, LoggingPackage.player_tracker)
         self.previous_players = []
         self.initialized = False
         self.debug = kwargs.get('debug', False)

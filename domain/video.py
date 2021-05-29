@@ -1,11 +1,11 @@
 from domain.frame import *
-import log.log as log
+import log.logger as log
 
 
 class Video:
 
     def __init__(self, video, backward_navigation_enabled=False):
-        self.log = log.Log(self, log.LoggingPackage.player_detector)
+        self.log = log.Logger(self, log.LoggingPackage.player_detector)
         self.video = video
         self.backward_navigation_enabled = backward_navigation_enabled
         self.current_frame = None

@@ -1,3 +1,4 @@
+from domain.status import *
 from enum import Enum
 import datetime
 import json
@@ -26,7 +27,12 @@ class LogLevel(Enum):
     critical = (4, 'CRITICAL')
 
 
-class Log:
+class Logger:
+    STATUS = None
+
+    @staticmethod
+    def initialize(config):
+        Logger.STATUS = config['status']
 
     # class_that_is_logging = class
     # package = LoggingPackage
@@ -38,6 +44,9 @@ class Log:
     # message = string
     # params  = dict
     def log(self, message: str, params: dict = {}, level: LogLevel = LogLevel.debug):
+        if self.STATUS != Status.active:
+            return
+
         if self.log_level.value <= level.value:
             print(
                 '[' + str(datetime.datetime.now()) + ']' + ' ' +

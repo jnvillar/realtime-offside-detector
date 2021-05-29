@@ -1,7 +1,7 @@
 import test.test_utils.test_utils as test_utils
 import player_detector.player_detector as players_detector
 import video_repository.video_repository as video_repository
-import log.log as log
+import log.logger as log
 
 
 class PlayerDetectorTests:
@@ -9,7 +9,7 @@ class PlayerDetectorTests:
     def __init__(self):
         self.test_utils = test_utils.TestUtils("../data.json")
         self.videos_repository = video_repository.VideoRepository("../videos")
-        self.log = log.Log(self, log.LoggingPackage.test)
+        self.log = log.Logger(self, log.LoggingPackage.test)
 
     def test_detect_player(self):
         detector_one = players_detector.PlayerDetector()

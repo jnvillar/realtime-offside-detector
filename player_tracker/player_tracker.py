@@ -8,7 +8,7 @@ class PlayerTracker:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.player_tracker)
+        self.log = Logger(self, LoggingPackage.player_tracker)
 
         methods = {
             'opencv': OpenCVTracker(**kwargs['opencv']),

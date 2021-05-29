@@ -1,10 +1,10 @@
-from log.log import *
+from log.logger import *
 import time
 
 
 class Timer:
     TIME = []
-    log = Log(None, LoggingPackage.offside_line_drawer)
+    log = Logger(None, LoggingPackage.offside_line_drawer)
 
     @staticmethod
     def start():

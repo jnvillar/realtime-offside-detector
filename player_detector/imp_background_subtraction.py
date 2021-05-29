@@ -1,6 +1,6 @@
 from player_detector.step import *
 from utils.frame_utils import *
-from log.log import *
+from log.logger import *
 import cv2
 
 
@@ -8,7 +8,7 @@ class BackgroundSubtractionPlayerDetector:
 
     def __init__(self, **kwargs):
         self.debug = kwargs['debug']
-        self.log = Log(self, LoggingPackage.player_detector)
+        self.log = Logger(self, LoggingPackage.player_detector)
         self.fgbg = cv2.createBackgroundSubtractorMOG2(
             history=kwargs['history'],
             detectShadows=kwargs['detect_shadows'],

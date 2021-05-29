@@ -1,14 +1,14 @@
 from os.path import isfile, join
 from domain.video import *
 from os import listdir
-import log.log as log
+import log.logger as log
 import cv2
 
 
 class VideoRepository:
 
     def __init__(self, path, backward_navigation_enabled=False):
-        self.log = log.Log(self, log.LoggingPackage.player_detector)
+        self.log = log.Logger(self, log.LoggingPackage.player_detector)
         self.videos = {}
         self._load_all_videos(path, backward_navigation_enabled)
 

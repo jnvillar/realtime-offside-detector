@@ -1,13 +1,13 @@
 from player_detector.step import *
 from utils.frame_utils import *
-from log.log import *
+from log.logger import *
 
 
 class EdgesPlayerDetector:
 
     def __init__(self, **kwargs):
         self.debug = kwargs['debug']
-        self.log = Log(self, LoggingPackage.player_detector)
+        self.log = Logger(self, LoggingPackage.player_detector)
         self.params = kwargs
 
     def find_players(self, frame):

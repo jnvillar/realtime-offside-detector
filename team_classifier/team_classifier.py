@@ -1,14 +1,14 @@
 from team_classifier.imp_by_parameter import *
 from domain.video import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class TeamClassifier:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.team_classifier)
+        self.log = Logger(self, LoggingPackage.team_classifier)
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),
         }

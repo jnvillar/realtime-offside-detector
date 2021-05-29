@@ -7,7 +7,7 @@ class VanishingPointFinder:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.vanishing_point)
+        self.log = Logger(self, LoggingPackage.vanishing_point)
 
         methods = {
             'hough': ByHough(**kwargs['hough']),

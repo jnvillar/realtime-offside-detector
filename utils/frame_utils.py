@@ -4,11 +4,11 @@ from domain.video import *
 from domain.color import *
 from domain.box import *
 from utils.math import *
-import log.log as log
+import log.logger as log
 import statistics
 import cv2
 
-log = log.Log(None, log.LoggingPackage.player_sorter)
+log = log.Logger(None, log.LoggingPackage.player_sorter)
 
 
 def get_h_component(original_frame, params):

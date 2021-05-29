@@ -6,6 +6,9 @@ default_config = {
     'analytics_conf': {
         'status': Status.inactive
     },
+    'logger': {
+        'status': Status.active
+    },
     'app': {
         'debug_screen': 0,
         'show_result': True,

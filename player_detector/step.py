@@ -5,7 +5,7 @@ from utils.utils import ScreenManager
 
 class Step:
     def __init__(self, name: str, function, params=None, debug: bool = False, modify_original_frame=True):
-        self.log = Log(self, LoggingPackage.player_detector)
+        self.log = Logger(self, LoggingPackage.player_detector)
         self.screen_manager = ScreenManager.get_manager()
         self.name = name
         self.function = function

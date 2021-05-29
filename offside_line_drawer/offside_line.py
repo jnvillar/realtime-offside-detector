@@ -4,14 +4,14 @@ from domain.player import *
 from domain.video import *
 from domain.line import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class OffsideLineDrawer:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.offside_line_drawer)
+        self.log = Logger(self, LoggingPackage.offside_line_drawer)
         self.args = kwargs
 
     def get_offside_line(self, video: Video, players: [Player], orientation: Orientation, vanishing_point):

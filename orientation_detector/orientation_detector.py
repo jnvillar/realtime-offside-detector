@@ -3,14 +3,14 @@ from orientation_detector.imp_by_parameter import *
 from domain.orientation import *
 from domain.video import *
 from timer.timer import *
-from log.log import *
+from log.logger import *
 
 
 class OrientationDetector:
 
     def __init__(self, analytics, **kwargs):
         self.analytics = analytics
-        self.log = Log(self, LoggingPackage.orientation_detector)
+        self.log = Logger(self, LoggingPackage.orientation_detector)
 
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),

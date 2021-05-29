@@ -2,13 +2,13 @@ import utils.frame_utils as frame_utils
 import utils.math as math
 from sklearn.cluster import KMeans
 from domain.player import *
-from log.log import *
+from log.logger import *
 import cv2
 
 
 class PlayerSorterByKMeans:
     def __init__(self, **kwargs):
-        self.log = Log(self, LoggingPackage.player_sorter)
+        self.log = Logger(self, LoggingPackage.player_sorter)
         self.debug = kwargs.get('debug', False)
         self.params = kwargs
         self.previous_centroids = None
