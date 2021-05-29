@@ -32,7 +32,7 @@ class Logger:
 
     @staticmethod
     def initialize(config):
-        Logger.STATUS = config['status']
+        Logger.STATUS = config.get('status', Status.inactive)
 
     # class_that_is_logging = class
     # package = LoggingPackage
@@ -59,5 +59,5 @@ def print_dict(params: dict):
     if len(params) == 0:
         return ''
 
-    json_object = json.dumps(params, default=lambda o: o.__repr__(), indent=4)
-    return "\n" + str(json_object)
+    json_object = json.dumps(params, default=lambda o: o.__repr__(), separators=(',', ': '))
+    return str(json_object)

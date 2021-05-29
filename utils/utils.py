@@ -31,15 +31,14 @@ class KeyboardManager:
 
 
 class ScreenManager:
-
     INSTANCE = None
     MAX_WINDOWS = 50
 
     @staticmethod
-    def initialize(screen_number=0):
+    def initialize(config={}):
         if ScreenManager.INSTANCE is not None:
             raise Exception("You can initialize the screen manager only once. If you want multiple instances consider using the class constructor")
-        ScreenManager.INSTANCE = ScreenManager(screen_number=screen_number)
+        ScreenManager.INSTANCE = ScreenManager(screen_number=config.get('debug_screen', 0))
         return ScreenManager.INSTANCE
 
     @staticmethod

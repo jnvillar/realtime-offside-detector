@@ -9,9 +9,12 @@ default_config = {
     'logger': {
         'status': Status.active
     },
-    'app': {
+    'screen_manager': {
         'debug_screen': 0,
+    },
+    'app': {
         'show_result': True,
+        'show_players': True,
         'stop_in_frame': 1,
         'resize': {
             'apply': False,
@@ -36,12 +39,12 @@ default_config = {
             'clusters': 2,
             'team_one': Team.team_boca,
             'team_two': Team.team_river,
-            'debug': True
+            'debug': False
         },
         'kmeans': {
             'team_one': Team.team_boca,
             'team_two': Team.team_river,
-            'debug': True,
+            'debug': False,
             'only_unclassified_players': True,
             'median': False
         },

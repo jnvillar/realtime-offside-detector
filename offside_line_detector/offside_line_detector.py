@@ -52,8 +52,10 @@ class OffsideLineDetector:
         offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
         # dray offside line
         soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
-        # draw players
-        soccer_video = frame_utils.draw_players(soccer_video, players)
+
+        if self.params.get('show_players', False):
+            # draw players
+            soccer_video = frame_utils.draw_players(soccer_video, players)
 
         return soccer_video
 
