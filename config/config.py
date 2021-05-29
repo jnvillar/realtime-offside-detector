@@ -25,7 +25,7 @@ default_config = {
     'player_finder': {
         'debug': False
     },
-    'team_classifier': {  # params for team classifier
+    'team_classifier': { # params for team classifier
         'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
             'attacking_team': Team.team_river
