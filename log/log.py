@@ -1,5 +1,7 @@
 from enum import Enum
 import datetime
+import json
+
 
 class LoggingPackage(Enum):
     player_detector = "🏃"
@@ -35,12 +37,18 @@ class Log:
 
     # message = string
     # params  = dict
-    def log(self, message: str, params: dict = None, level: LogLevel = LogLevel.debug):
-        if params is None:
-            params = ''
+    def log(self, message: str, params: dict = {}, level: LogLevel = LogLevel.debug):
         if self.log_level.value <= level.value:
             print(
                 '[' + str(datetime.datetime.now()) + ']' + ' ' +
                 '[' + str(self.log_level.value[1]) + ']' + ' ' +
                 str(self.package.value) + ' ' +
-                self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + str(params))
+                self.class_that_is_logging.__class__.__name__ + ': ' + message + " " + print_dict(params))
+
+
+def print_dict(params: dict):
+    if len(params) == 0:
+        return ''
+
+    json_object = json.dumps(params, default=lambda o: o.__repr__(), indent=4)
+    return "\n" + str(json_object)

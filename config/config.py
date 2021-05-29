@@ -81,7 +81,8 @@ default_config = {
             'tracker': 'kcf'
         },
         'distance': {
-            'history': 1,
+            'history': 2,
+            'team_history': 3,
         }
     },
     'vanishing_point_finder': {

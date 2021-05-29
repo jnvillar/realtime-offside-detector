@@ -23,7 +23,7 @@ class Team(Enum):
         attitude = 'atk' if self.isAttacking else 'def'
         return self.label + ' ' + attitude
 
-    def __dict__(self):
+    def __repr__(self):
         return {'name': self.label}
 
 

@@ -3,10 +3,14 @@ from utils.math import *
 from log.log import *
 
 
-def is_new_player(min_distance, player: Player):
-    if min_distance > player.get_box().get_width() * 1.5:
+def has_no_player_close(distance, player: Player):
+    if distance > player.get_box().get_width() * 1.2:
         return True
     return False
+
+
+def has_player_close(distance, player: Player):
+    return not has_no_player_close(distance, player)
 
 
 def find_closest_player(player: Player, players: [Player]):
@@ -37,15 +41,24 @@ class DistanceTracker:
     def lost_players(self, players: [Player]):
         lost_players = []
         for player in self.previous_players:
-            if player.tracking_process_iteration > self.params['history']:
+            if player.tracking_process_iteration > self.params.get('history', 3):
                 continue
 
-            distance, closest_player = find_closest_player(player, players)
-            if is_new_player(distance, player):
+            distance, _ = find_closest_player(player, players)
+            # is new player means that nobody is close to him
+            if distance is not None and has_no_player_close(distance, player):
                 player.tracking_process_iteration += 1
                 lost_players.append(player)
 
         return lost_players
+
+    def restore_player_info(self, detected_player, previous_player):
+        detected_player.number = previous_player.number
+        detected_player.living_time = previous_player.living_time + 1
+        if detected_player.living_time <= self.params.get('team_history', 5):
+            detected_player.team = previous_player.team
+        else:
+            detected_player.living_time = 0
 
     def track_players(self, frame, players: [Player]):
         # if there are too few players, do not start tracker
@@ -55,18 +68,25 @@ class DistanceTracker:
             return players
 
         # add lost players first
-        tracked_players = players + self.lost_players(players)
+        current_detected_players = players + self.lost_players(players)
+        previous_players = self.previous_players
 
         # try to find closest previous player bounding box
-        for player in tracked_players:
-            distance, closest_player = find_closest_player(player, self.previous_players)
+        for player in current_detected_players:
+            distance, closest_player = find_closest_player(player, previous_players)
 
-            # if distance is low, previous bb was found, retain player number
-            if not is_new_player(distance, player):
-                player.number = closest_player.number
+            # if distance is low, previous bb was found, retain player number and team
+            if distance is not None and has_player_close(distance, player):
+                self.restore_player_info(player, closest_player)
+
+                new_previous_players = []
+                for previous_player in previous_players:
+                    if previous_player.number != closest_player.number:
+                        new_previous_players.append(previous_player)
+                previous_players = new_previous_players
 
         # save info
-        self.previous_players = tracked_players
+        self.previous_players = current_detected_players
 
         # return info
         return self.previous_players

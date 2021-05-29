@@ -20,13 +20,17 @@ class Player:
         self.number = id
         self.is_last_defending_player = False
         self.tracking_process_iteration = 0
+        self.living_time = 0
         self.debug = debug
 
     def __str__(self):
         return 'Player:' + str(self.number) + ' (' + str(self.x_coordinate) + ',' + str(self.y_coordinate) + ')'
 
     def __repr__(self):
-        return str(self)
+        return {
+            'id': self.number,
+            'team': self.team,
+        }
 
     def get_data(self):
         return {

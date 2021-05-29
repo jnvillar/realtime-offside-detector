@@ -112,7 +112,7 @@ def get_predominant_color(frame, box: Box, colors: [ColorRange]):
 def get_players_mean_colors(frame, players: [Player]):
     res = []
     for itx, player in enumerate(players):
-        player_box = player.get_box(focused=True)
+        player_box = player.get_box(focused=False)
         player_mean_color = get_box_mean_color(frame, player_box)
         res.append(list(player_mean_color)[0:3])  # [0:3] do not include aplha
     return res
@@ -121,7 +121,7 @@ def get_players_mean_colors(frame, players: [Player]):
 def get_players_median_colors(frame, players: [Player]):
     res = []
     for itx, player in enumerate(players):
-        player_box = player.get_box(focused=False)
+        player_box = player.get_box(focused=True)
         player_median_color = get_box_median_color(frame, player_box)
         res.append(list(player_median_color))
     return res
