@@ -19,8 +19,8 @@ class PlayerTracker:
 
     def track_players(self, frame: Video, players: [Player]):
         self.log.log("tracking players")
-        Timer.start()
+        Timer.start('tracking players')
         players = self.method.track_players(frame.get_current_frame(), players)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('tracking players')
         self.log.log("players tracked", {'cost': elapsed_time})
         return players

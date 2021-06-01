@@ -16,9 +16,9 @@ class TeamClassifier:
 
     def classify_teams(self, video: Video, players: [Player]):
         self.log.log("classifying teams")
-        Timer.start()
+        Timer.start('classifying teams')
         self.method.classify_teams(video, players)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('classifying teams')
         self.log.log("teams classified", {'cost': elapsed_time})
         return players
 

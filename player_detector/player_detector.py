@@ -21,9 +21,9 @@ class PlayerDetector:
 
     def detect_players(self, video: Video) -> [Player]:
         self.log.log("finding players", {"frame": video.get_current_frame_number()})
-        Timer.start()
+        Timer.start('finding players')
         players = self.method.find_players(video.get_current_frame())
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('finding players')
         self.save_event(video, players)
         self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
         return players

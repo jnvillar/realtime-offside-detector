@@ -17,12 +17,12 @@ class OffsideLineDrawer:
     def get_offside_line(self, video: Video, players: [Player], orientation: Orientation, vanishing_point):
         self.log.log("detecting offside line")
 
-        Timer.start()
+        Timer.start('get_offside_line')
         if len(players) == 0 or orientation is None:
             offside_line = None
         else:
             offside_line = self._get_offside_line(video.get_current_frame(), players, orientation, vanishing_point)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('get_offside_line')
 
         self.log.log("offside line", {"cost": elapsed_time, "offside_line": str(offside_line)})
         return offside_line

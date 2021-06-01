@@ -43,7 +43,7 @@ class ByHough:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        Timer.start()
+        Timer.start('HoughLines')
         rho = 1
         theta = np.pi / 180
         threshold = 500
@@ -52,12 +52,12 @@ class ByHough:
         if lines is None:
             lines = []
 
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('HoughLines')
         self.log.log('Found lines', {'cost': elapsed_time, 'lines': len(lines)}) if self.args['debug'] else None
 
         parallel_lines = []
 
-        Timer.start()
+        Timer.start('process lines')
         for idx, line in enumerate(lines):
 
             if len(parallel_lines) == 2:
@@ -78,7 +78,7 @@ class ByHough:
                         ## lines are parallel
                         parallel_lines.pop()
 
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('process lines')
         self.log.log('find parallel lines cost', {'iteration': idx, 'cost': elapsed_time, 'lines': parallel_lines}) if self.args['debug'] else None
 
         if len(parallel_lines) != 2:

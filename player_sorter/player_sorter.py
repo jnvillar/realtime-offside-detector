@@ -24,9 +24,9 @@ class PlayerSorter:
 
     def sort_players(self, video: Video, players: [Player]):
         self.log.log("sorting players")
-        Timer.start()
+        Timer.start('sorting players')
         sorted_players = self.method.sort_players(video.get_current_frame(), players)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('sorting players')
         self.save_event(video, sorted_players)
         self.log.log("sorted players", {"cost": elapsed_time, "players": sorted_players})
         return sorted_players

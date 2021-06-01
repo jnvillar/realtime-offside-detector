@@ -17,8 +17,8 @@ class VanishingPointFinder:
 
     def find_vanishing_point(self, frame: Video):
         self.log.log("finding vanishing point")
-        Timer.start()
+        Timer.start('finding vanishing point')
         vanishing_point = self.method.find_vanishing_point(frame)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('finding vanishing point')
         self.log.log("vanishing point found", {'cost': elapsed_time, 'vanishing_point': vanishing_point})
         return vanishing_point

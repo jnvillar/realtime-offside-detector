@@ -3,18 +3,22 @@ import time
 
 
 class Timer:
-    TIME = []
+    TIME = {}
     log = Logger(None, LoggingPackage.offside_line_drawer)
 
     @staticmethod
-    def start():
-        Timer.TIME.append(time.time())
+    def start(id: str):
+        if Timer.TIME.get(id, None) is not None:
+            Timer.log.log('stop not called with {}'.format(id))
+            exit()
+        Timer.TIME[id] = (time.time())
 
     @staticmethod
-    def stop():
-        if len(Timer.TIME) == 0:
-            Timer.log.log('start not called')
+    def stop(id: str):
+        if Timer.TIME.get(id, None) is None:
+            Timer.log.log('start not called with {}'.format(id))
+            exit()
 
-        elapsed_time = time.time() - Timer.TIME[-1]
-        Timer.TIME.pop()
+        elapsed_time = time.time() - Timer.TIME[id]
+        del Timer.TIME[id]
         return str(round(elapsed_time * 1000, 2)) + 'ms'

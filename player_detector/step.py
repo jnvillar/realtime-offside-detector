@@ -22,9 +22,9 @@ class Step:
         if not self.modify_original_frame:
             frame = original_frame.copy()
 
-        Timer.start()
+        Timer.start('step {}'.format(number))
         frame = self.function(frame, params)
-        elapsed_time = Timer.stop()
+        elapsed_time = Timer.stop('step {}'.format(number))
 
         self.screen_manager.show_frame(frame, self.name) if self.debug else None
 
