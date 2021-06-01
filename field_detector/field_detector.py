@@ -1,5 +1,6 @@
 from utils.utils import ScreenManager
 from domain.video import *
+from timer.timer import *
 import numpy as np
 import cv2 as cv2
 
@@ -16,6 +17,7 @@ class FieldDetector:
             'lines_detection': self.by_lines_detection
         }
         self.screen_manager = ScreenManager.get_manager()
+        self.log = Logger(self, LoggingPackage.field_detector)
 
     def print_line(self, rho, theta, color):
         a = np.cos(theta)
@@ -43,9 +45,13 @@ class FieldDetector:
         # cv2.imshow("Field detection", frame)
         bounding_polygon = [(10, 10), (10, 400), (400, 400), (400, 10)]
 
+        self.log.log("detecting field")
+        Timer.start('detecting field')
         self.video = video
-        return self.method_implementations[self.method]()
-        # return frame
+        res = self.method_implementations[self.method]()
+        elapsed_time = Timer.stop('detecting field')
+        self.log.log("detecting field", {"cost": elapsed_time})
+        return res
 
     def by_lines_detection(self):
         img = self.video.get_current_frame()

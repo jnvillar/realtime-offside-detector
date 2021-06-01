@@ -5,6 +5,7 @@ import json
 
 
 class LoggingPackage(Enum):
+    field_detector = "🏟️"
     player_detector = "🏃"
     player_sorter = "👕"
     player_tracker = "🕵🏽‍"
