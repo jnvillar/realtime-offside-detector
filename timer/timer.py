@@ -15,10 +15,12 @@ class Timer:
 
     @staticmethod
     def stop(id: str):
-        if Timer.TIME.get(id, None) is None:
+
+        try:
+            elapsed_time = time.time() - Timer.TIME[id]
+        except:
             Timer.log.log('start not called with {}'.format(id))
             exit()
 
-        elapsed_time = time.time() - Timer.TIME[id]
         del Timer.TIME[id]
         return str(round(elapsed_time * 1000, 2)) + 'ms'
