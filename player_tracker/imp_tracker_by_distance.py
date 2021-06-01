@@ -3,14 +3,14 @@ from utils.math import *
 from log.logger import *
 
 
-def has_no_player_close(distance, player: Player):
+def distance_is_not_close(distance, player: Player):
     if distance > player.get_box().get_width() * 1.2:
         return True
     return False
 
 
-def has_player_close(distance, player: Player):
-    return not has_no_player_close(distance, player)
+def distance_is_close(distance, player: Player):
+    return not distance_is_not_close(distance, player)
 
 
 def find_closest_player(player: Player, players: [Player]):
@@ -46,7 +46,7 @@ class DistanceTracker:
 
             distance, _ = find_closest_player(player, players)
             # is new player means that nobody is close to him
-            if distance is not None and has_no_player_close(distance, player):
+            if distance is not None and distance_is_not_close(distance, player):
                 player.tracking_process_iteration += 1
                 lost_players.append(player)
 
@@ -67,23 +67,30 @@ class DistanceTracker:
             self.previous_players = players
             return players
 
-        # add lost players first
+        # add players from before frame that may be lost
         current_detected_players = players + self.lost_players(players)
         previous_players = self.previous_players
 
-        # try to find closest previous player bounding box
+        # calculate distances from current players to previous players. Save possible disputes
+        previous_player_disputes_with_current_detected_players = {}
         for player in current_detected_players:
             distance, closest_player = find_closest_player(player, previous_players)
+            # if distance is close enough, save that this player may be a previous player
+            if distance is not None and distance_is_close(distance, player):
+                closest_player_disputes = previous_player_disputes_with_current_detected_players.get(closest_player, [])
+                closest_player_disputes.append({'player': player, 'distance': distance})
+                previous_player_disputes_with_current_detected_players[closest_player] = closest_player_disputes
 
-            # if distance is low, previous bb was found, retain player number and team
-            if distance is not None and has_player_close(distance, player):
-                self.restore_player_info(player, closest_player)
+        # see disputes for previous players. If there is more than one, the player with the closest distance wins and keeps the previous player info
+        for closest_player, disputes in previous_player_disputes_with_current_detected_players.items():
+            min_distance = None
+            player = None
+            for dispute in disputes:
+                if min_distance is None or dispute['distance'] < min_distance:
+                    min_distance = dispute['distance']
+                    player = dispute['player']
 
-                new_previous_players = []
-                for previous_player in previous_players:
-                    if previous_player.number != closest_player.number:
-                        new_previous_players.append(previous_player)
-                previous_players = new_previous_players
+            self.restore_player_info(player, closest_player)
 
         # save info
         self.previous_players = current_detected_players
