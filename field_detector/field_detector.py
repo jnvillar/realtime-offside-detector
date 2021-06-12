@@ -1,8 +1,12 @@
 from utils.utils import ScreenManager
+from player_detector.step import *
 from domain.video import *
 from timer.timer import *
 import numpy as np
 import cv2 as cv2
+
+COLOR_MIN = np.array([0, int(0.12 * 255), int(0.27 * 255)])
+COLOR_MAX = np.array([int(0.5 * 255), 255, 255])
 
 
 class FieldDetector:
@@ -108,7 +112,62 @@ class FieldDetector:
         self.video.set_frame(img)
         return self.video
 
+    def steps_field(self):
+        return [
+            Step(
+                "to hsv",
+                to_hsv, {},
+                debug=self.debug
+            ),
+            Step(
+                "remove green",
+                color_mask, {'min': COLOR_MIN, 'max': COLOR_MAX},
+                debug=self.debug
+            ),
+            Step(
+                "biggest component mask",
+                get_biggest_component_mask, {'connectivity': 4},
+                debug=self.debug
+            ),
+            Step(
+                "biggest component mask",
+                apply_erosion, {'element': cv2.MORPH_RECT, 'element_size': (50, 50)},
+                debug=self.debug
+            ),
+            Step(
+                "biggest component mask",
+                get_biggest_component_mask, {'connectivity': 8},
+                debug=self.debug
+            ),
+            Step(
+                "closening on field",
+                morphological_closing, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
+                debug=self.debug
+            ),
+            Step(
+                "dilate on field",
+                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
+                debug=self.debug
+            ),
+        ]
+
     def by_green_detection(self):
+        pipeline: [Step] = self.steps_field()
+        mask = self.video.get_current_frame()
+        for idx, step in enumerate(pipeline):
+            mask = step.apply(idx, mask)
+
+        # apply the mask over the frame
+        final = cv2.bitwise_and(self.video.get_current_frame(), self.video.get_current_frame(), mask=mask)
+
+        if self.debug:
+            self.screen_manager.show_frame(final, "Final")
+
+        self.video.set_frame(final)
+        return self.video, mask
+
+    #deprecated
+    def by_green_detection2(self):
         # green color range in HSV
         COLOR_MIN = np.array([0, int(0.12 * 255), int(0.27 * 255)])
         COLOR_MAX = np.array([int(0.5 * 255), 255, 255])
@@ -164,7 +223,7 @@ class FieldDetector:
             self.screen_manager.show_frame(final, "Final")
 
         self.video.set_frame(final)
-        return self.video
+        return self.video, dilated_label_mask
 
     def degrees_to_radians(self, degrees):
         return degrees * np.pi / 180

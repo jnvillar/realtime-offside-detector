@@ -1,5 +1,6 @@
 from player_detector.imp_background_subtraction import *
 from player_detector.imp_edges import *
+from player_detector.imp_adhoc import *
 from domain.player import *
 from domain.video import *
 from timer.timer import *
@@ -14,7 +15,8 @@ class PlayerDetector:
 
         methods = {
             'background_subtraction': BackgroundSubtractionPlayerDetector(**kwargs['background_subtraction']),
-            'edges': EdgesPlayerDetector(**kwargs['edges'])
+            'edges': EdgesPlayerDetector(**kwargs['edges']),
+            'adhoc': AdHoc(**kwargs['adhoc'])
         }
 
         self.method = methods[kwargs['method']]

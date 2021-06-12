@@ -25,7 +25,7 @@ default_config = {
     'player_finder': {
         'debug': False
     },
-    'team_classifier': { # params for team classifier
+    'team_classifier': {  # params for team classifier
         'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
             'attacking_team': Team.team_river
@@ -37,16 +37,17 @@ default_config = {
         'bsas': {
             'threshold': 0,
             'clusters': 2,
-            'team_one': Team.team_boca,
-            'team_two': Team.team_river,
+            'team_one': Team.team_river,
+            'team_two': Team.team_boca,
             'debug': False
         },
         'kmeans': {
-            'team_one': Team.team_boca,
-            'team_two': Team.team_river,
+            'team_one': Team.team_river,
+            'team_two': Team.team_boca,
             'debug': False,
             'only_unclassified_players': True,
-            'median': False
+            'median': False,
+            'focused': True
         },
         'automatic_by_color': {
             Color.white.color_name: Team.team_river,
@@ -54,21 +55,31 @@ default_config = {
         }
     },
     'player_detector': {
-        # background_subtraction, edges
-        'method': 'edges',
+        # background_subtraction, edges, adhoc
+        'method': 'adhoc',
+        'adhoc': {
+            'debug': False,
+            'threshold1': 50,
+            'threshold2': 70,
+            'ignore_contours_smaller_than': 0.1,
+            'ignore_contours_bigger_than': 0.5,
+            'keep_contours_by_aspect_ratio': AspectRatio.taller,
+            'filter_contour_inside_other': True
+        },
         'background_subtraction': {
             'debug': False,
-            'history': 100,
+            'history': 1,
             'detect_shadows': False,
             'var_threshold': 50,
             'ignore_contours_smaller_than': 0.02,
             'keep_contours_by_aspect_ratio': AspectRatio.taller
         },
         'edges': {
-            'debug': False,
+            'debug': True,
             'threshold1': 50,
             'threshold2': 70,
             'ignore_contours_smaller_than': 0.04,
+            'ignore_contours_bigger_than': 0.5,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             'filter_contour_inside_other': True
         }
@@ -96,7 +107,7 @@ default_config = {
         'method': 'hough',
         'hough': {
             'debug': False,
-            'calculate_every_x_amount_of_frames': 10
+            'calculate_every_x_amount_of_frames': 5
         }
     },
     'offside_line_drawer': {

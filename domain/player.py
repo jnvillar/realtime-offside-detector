@@ -111,7 +111,7 @@ def get_last_defending_player(players: [Player]):
     return None
 
 
-def players_from_contours(contours, debug):
+def players_from_contours(contours, debug=False):
     players = []
     global number
 

@@ -4,7 +4,7 @@ from utils.utils import ScreenManager
 
 
 class Step:
-    def __init__(self, name: str, function, params=None, debug: bool = False, modify_original_frame=True):
+    def __init__(self, name: str, function, params={}, debug: bool = False, modify_original_frame=True):
         self.log = Logger(self, LoggingPackage.player_detector)
         self.screen_manager = ScreenManager.get_manager()
         self.name = name
@@ -16,6 +16,9 @@ class Step:
     def apply(self, number, original_frame, params=None):
         if params is None:
             params = self.params
+        else:
+            # merge
+            params = {**params, **self.params}
 
         frame = original_frame
 

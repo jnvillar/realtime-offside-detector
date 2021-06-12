@@ -24,12 +24,12 @@ class EdgesPlayerDetector:
         return [
             Step(
                 "get h component",
-                get_h_component, {},
+                get_hsv_component, {'component': 'h'},
                 debug=self.debug
             ),
             Step(
                 "detect edges",
-                detect_edges, self.params,
+                detect_edges, {'threshold1': self.params.get('threshold1', 50), 'threshold2': self.params.get('threshold2', 60)},
                 debug=self.debug),
             Step(
                 "dilate",
