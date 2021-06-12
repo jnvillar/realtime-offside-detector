@@ -57,6 +57,7 @@ default_config = {
     'player_detector': {
         # background_subtraction, edges, adhoc
         'method': 'adhoc',
+        'detect_every_amount_of_frames': 2,
         'adhoc': {
             'debug': False,
             'threshold1': 50,

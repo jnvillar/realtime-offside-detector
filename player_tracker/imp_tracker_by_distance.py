@@ -4,6 +4,8 @@ from log.logger import *
 
 
 def distance_is_not_close(distance, player: Player):
+    if distance is None:
+        return True
     if distance > player.get_box().get_width() * 1.2:
         return True
     return False
@@ -46,7 +48,7 @@ class DistanceTracker:
 
             distance, _ = find_closest_player(player, players)
             # is new player means that nobody is close to him
-            if distance is not None and distance_is_not_close(distance, player):
+            if distance_is_not_close(distance, player):
                 player.tracking_process_iteration += 1
                 lost_players.append(player)
 

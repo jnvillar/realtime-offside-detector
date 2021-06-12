@@ -20,11 +20,16 @@ class PlayerDetector:
         }
 
         self.method = methods[kwargs['method']]
+        self.params = kwargs
 
     def detect_players(self, video: Video) -> [Player]:
         self.log.log("finding players", {"frame": video.get_current_frame_number()})
         Timer.start('finding players')
-        players = self.method.find_players(video.get_current_frame())
+        detect_every_amount_of_frames = self.params.get('detect_every_amount_of_frames', 1)
+        if (video.get_current_frame_number() % detect_every_amount_of_frames == 0) or video.get_current_frame_number() < 3:
+            players = self.method.find_players(video.get_current_frame())
+        else:
+            players = []
         elapsed_time = Timer.stop('finding players')
         self.save_event(video, players)
         self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
