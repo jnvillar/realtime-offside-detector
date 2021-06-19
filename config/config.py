@@ -42,8 +42,8 @@ default_config = {
             'debug': False
         },
         'kmeans': {
-            'team_one': Team.team_river,
-            'team_two': Team.team_boca,
+            'team_one': Team.team_boca,
+            'team_two': Team.team_river,
             'debug': False,
             'only_unclassified_players': True,
             'median': False,
@@ -59,7 +59,7 @@ default_config = {
         'method': 'adhoc',
         'detect_every_amount_of_frames': 2,
         'adhoc': {
-            'debug': False,
+            'debug': True,
             'threshold1': 50,
             'threshold2': 70,
             'ignore_contours_smaller_than': 0.1,

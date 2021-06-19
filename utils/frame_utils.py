@@ -415,6 +415,11 @@ def morphological_opening(original_frame, params={}):
 # Use "close" morphological operation to close the gaps between contours
 # https://stackoverflow.com/questions/18339988/implementing-imcloseim-se-in-opencv
 def morphological_closing(original_frame, params={}):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+    if percentage_of_frame is not None:
+        width = int(len(original_frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
         params.get('element_size', (10, 10)))

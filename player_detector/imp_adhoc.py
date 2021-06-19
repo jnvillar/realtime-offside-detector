@@ -71,12 +71,17 @@ class AdHoc:
             ),
             Step(
                 "closing on green mask",
-                morphological_closing, {'element_size': (60, 60), 'iterations': 1},
+                morphological_closing, {'percentage_of_frame': 6, 'iterations': 1},
                 debug=self.debug
             ),
             Step(
                 "fill on green mask",
                 fill_contours, {},
+                debug=self.debug
+            ),
+            Step(
+                "erosion on green mask again",
+                apply_erosion, {'iterations': 2},
                 debug=self.debug
             ),
         ]
