@@ -75,8 +75,8 @@ def draw_players(video: Video, players: [Player]):
         player_box = player.get_box()
         cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
         player_box = player.get_box(focused=True)
-        #cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_SIMPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
+        # cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        cv2.putText(frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
 
     return video.set_frame(frame)
 
@@ -291,14 +291,14 @@ def detect_contours(original_frame, params):
                 aspect_ratio = h / w
                 # keep taller (h/w > 1) or slightly wider ( h/w > 0.9) contours
                 # h / w >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.9 or aspect_ratio > 6:
+                if aspect_ratio < 0.9 or aspect_ratio > 3:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
                 aspect_ratio = w / h
                 # keep wider (w/h > 1) or slightly taller ( w/h > 0.9) contours
                 # w / h >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.6 or aspect_ratio > 6:
+                if aspect_ratio < 0.6 or aspect_ratio > 3:
                     valid_contour = False
 
         if valid_contour:
@@ -323,6 +323,26 @@ def get_biggest_component_mask(original_frame, params):
     return biggest_component_mask
 
 
+def nothing(original_frame, params):
+    return original_frame
+
+
+def color_mask_bgr(original_frame, params):
+    color_label = params.get('label', '')
+    color = params.get(color_label)
+    mask = cv2.inRange(original_frame, np.array(color.get_bgr_lower()), np.array(color.get_bgr_upper()))
+    return mask
+
+
+def color_mask_hsv(original_frame, params):
+    hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
+    color_label = params.get('label', '')
+    color = params.get(color_label)
+    print(color.get_hsv_lower(), color.get_hsv_upper())
+    mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
+    return mask
+
+
 def color_mask(original_frame, params):
     green_mask = cv2.inRange(original_frame, params.get('min'), params.get('max'))
     return green_mask
@@ -331,6 +351,13 @@ def color_mask(original_frame, params):
 def apply_mask(frame, params):
     mask = params.get('mask')
     mask = cv2.bitwise_and(params.get(mask), params.get(mask), mask=frame)
+    return mask
+
+
+def join_masks(frame, params):
+    label = params.get('label', 'mask')
+    mask = params.get(label)
+    mask = cv2.add(frame, mask)
     return mask
 
 
@@ -357,7 +384,7 @@ def apply_erosion(frame, params):
 
 
 def apply_blur(frame, params):
-    blurred_frame = cv2.GaussianBlur(frame, params.get('blur', (3, 3)), 0)
+    blurred_frame = cv2.blur(frame, params.get('blur', (10, 10)))
     return blurred_frame
 
 

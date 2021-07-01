@@ -60,7 +60,6 @@ class OffsideLineDetector:
         return soccer_video
 
     def detect_and_draw_offside_line(self, soccer_video: Video):
-        play = True
         pause = True
 
         while True:

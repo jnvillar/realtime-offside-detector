@@ -21,7 +21,7 @@ class PlayerSorterByColorAutomatic:
             player_box = player.get_box(focused=True)
             player_mean_color = frame_utils.get_box_mean_color(hsv_img, player_box)
             player_color = frame_utils.get_pixel_color(player_mean_color, colors)
-            player.color = player_color
+            player.bgr = player_color
             player.team = self.get_team_by_color(player_color.color_name)
 
         return players
@@ -32,7 +32,7 @@ class PlayerSorterByColorAutomatic:
         for player in players:
             player_box = player.get_box(focused=True)
             player_color = frame_utils.get_predominant_color(hsv_frame, player_box, list(ColorRange))
-            player.color = player_color
+            player.bgr = player_color
             player.team = self.get_team_by_color(player_color.color_name)
 
         return players

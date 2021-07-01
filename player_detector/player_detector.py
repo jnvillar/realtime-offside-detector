@@ -1,4 +1,5 @@
 from player_detector.imp_background_subtraction import *
+from player_detector.imp_by_color import *
 from player_detector.imp_edges import *
 from player_detector.imp_adhoc import *
 from domain.player import *
@@ -16,7 +17,8 @@ class PlayerDetector:
         methods = {
             'background_subtraction': BackgroundSubtractionPlayerDetector(**kwargs['background_subtraction']),
             'edges': EdgesPlayerDetector(**kwargs['edges']),
-            'adhoc': AdHoc(**kwargs['adhoc'])
+            'adhoc': AdHoc(**kwargs['adhoc']),
+            'by_color': ByColor(**kwargs['by_color'])
         }
 
         self.method = methods[kwargs['method']]

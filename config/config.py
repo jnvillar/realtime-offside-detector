@@ -50,14 +50,21 @@ default_config = {
             'focused': True
         },
         'automatic_by_color': {
-            Color.white.color_name: Team.team_river,
-            Color.red.color_name: Team.team_river,
+            white.color_name: Team.team_river,
+            red.color_name: Team.team_river,
         }
     },
     'player_detector': {
         # background_subtraction, edges, adhoc
-        'method': 'adhoc',
+        'method': 'by_color',
         'detect_every_amount_of_frames': 2,
+        'by_color': {
+            'debug': False,
+            'ignore_contours_smaller_than': 0.05,
+            'ignore_contours_bigger_than': 0.5,
+            'keep_contours_by_aspect_ratio': AspectRatio.taller,
+            'filter_contour_inside_other': True
+        },
         'adhoc': {
             'debug': True,
             'threshold1': 50,

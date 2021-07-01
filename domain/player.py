@@ -1,4 +1,4 @@
-from domain.color import Color
+from domain.color import *
 from domain.team import *
 from domain.box import *
 
@@ -6,7 +6,7 @@ number = 0
 
 
 class Player:
-    def __init__(self, contour, id, team: Team = Team.unclassified, color: Color = None, debug=False):
+    def __init__(self, contour, id, team: Team = Team.unclassified, color: Color = None, debug=True):
         contour, bounding_box = contour
         x, y, w, h = bounding_box
         self.bounding_box = bounding_box
@@ -21,7 +21,7 @@ class Player:
         self.is_last_defending_player = False
         self.tracking_process_iteration = 0
         self.living_time = 0
-        self.debug = debug
+        self.debug = True
 
     def __str__(self):
         return 'Player:' + str(self.number) + ' (' + str(self.x_coordinate) + ',' + str(self.y_coordinate) + ')'
@@ -48,7 +48,8 @@ class Player:
     def get_name(self):
         name = ''
         if self.debug:
-            name = "W: {width} H:{height}".format(width=self.width, height=self.height)
+            name = "W: {} H:{} AR:{:.2f}".format(self.width, self.height, self.height / self.width)
+            return name
 
         if self.team is not Team.unclassified:
             name = " {label}: {number}".format(label=self.team.get_label(), number=self.number)
@@ -62,7 +63,7 @@ class Player:
 
     def get_label_color(self):
         if self.is_last_defending_player:
-            return Color.violet.get_color()
+            return violet.get_color()
 
         if self.team is not Team.unclassified:
             return self.team.get_color()
