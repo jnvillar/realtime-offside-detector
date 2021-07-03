@@ -30,6 +30,11 @@ class OffsideLineDetector:
         self.screen_manager = ScreenManager.get_manager()
         self.keyboard_manager = KeyboardManager()
         self.log = Logger(self, LoggingPackage.offside_detector)
+        self.set_teams(kwargs['app']['team_names'])
+
+    def set_teams(self, params):
+        team_one.label = params.get(team_one.id, team_one.label)
+        team_two.label = params.get(team_two.id, team_two.label)
 
     def detect_offside_line(self, soccer_video: Video):
         # get vanishing point

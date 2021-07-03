@@ -38,15 +38,15 @@ class ByColor:
         self.color_one = Color('first team color', tuple(pixel_one))
         self.color_two = Color('second team color', tuple(pixel_two))
 
+    def set_team_colors(self):
+        team_one.color = tuple([int(v) for v in self.color_one.bgr])
+        team_two.color = tuple([int(v) for v in self.color_two.bgr])
+
     def find_players(self, original_frame):
         if not self.init:
             self.get_team_colors(original_frame)
+            self.set_team_colors()
             self.init = True
-
-        # field_mask = original_frame
-        # pipeline: [Step] = self.steps_field()
-        # for idx, step in enumerate(pipeline):
-        #     field_mask = step.apply(idx, field_mask)
 
         blur_image = original_frame
         pipeline: [Step] = self.steps_pre_process()
@@ -67,10 +67,12 @@ class ByColor:
                 'color': self.color_two,
             })
 
-        players_first_team = detect_contours(first_team_mask, params=self.params)
-        players_second_team = detect_contours(second_team_mask, params=self.params)
+        contours_players_first_team = detect_contours(first_team_mask, params=self.params)
+        contours_players_second_team = detect_contours(second_team_mask, params=self.params)
 
-        return players_from_contours(players_first_team + players_second_team, self.debug)
+        fist_team_players = players_from_contours(contours_players_first_team, self.debug, team=team_one)
+        second_team_players = players_from_contours(contours_players_second_team, self.debug, team=team_two)
+        return fist_team_players + second_team_players
 
     def step_detection(self, name="detection"):
         return [

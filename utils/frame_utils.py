@@ -76,7 +76,7 @@ def draw_players(video: Video, players: [Player]):
         cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
         player_box = player.get_box(focused=True)
         # cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(frame, str(player.get_name()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
+        cv2.putText(frame, str(player.get_label()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
 
     return video.set_frame(frame)
 
@@ -338,7 +338,6 @@ def color_mask_hsv(original_frame, params):
     hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
     color_label = params.get('label', '')
     color = params.get(color_label)
-    print(color.get_hsv_lower(), color.get_hsv_upper())
     mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
     return mask
 

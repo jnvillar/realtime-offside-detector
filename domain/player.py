@@ -6,7 +6,7 @@ number = 0
 
 
 class Player:
-    def __init__(self, contour, id, team: Team = Team.unclassified, color: Color = None, debug=True):
+    def __init__(self, contour, id, team: Team = team_unclassified, color: Color = None, debug=False):
         contour, bounding_box = contour
         x, y, w, h = bounding_box
         self.bounding_box = bounding_box
@@ -21,7 +21,7 @@ class Player:
         self.is_last_defending_player = False
         self.tracking_process_iteration = 0
         self.living_time = 0
-        self.debug = True
+        self.debug = debug
 
     def __str__(self):
         return 'Player:' + str(self.number) + ' (' + str(self.x_coordinate) + ',' + str(self.y_coordinate) + ')'
@@ -45,13 +45,13 @@ class Player:
     def get_box(self, focused=False) -> Box:
         return box_from_player(self, focused)
 
-    def get_name(self):
+    def get_label(self):
         name = ''
         if self.debug:
-            name = "W: {} H:{} AR:{:.2f}".format(self.width, self.height, self.height / self.width)
+            name = "T: {} W: {} H:{} AR:{:.2f}".format(self.team.get_label(), self.width, self.height, self.height / self.width)
             return name
 
-        if self.team is not Team.unclassified:
+        if self.team is not team_unclassified:
             name = " {label}: {number}".format(label=self.team.get_label(), number=self.number)
             return name
 
@@ -65,16 +65,10 @@ class Player:
         if self.is_last_defending_player:
             return violet.get_color()
 
-        if self.team is not Team.unclassified:
-            return self.team.get_color()
-
-        if self.color is not None:
-            return self.color.get_color()
-
-        return None
+        return 0, 0, 0
 
     def get_color(self):
-        if self.team is not Team.unclassified:
+        if self.team is not team_unclassified:
             return self.team.get_color()
 
         if self.color is not None:
@@ -112,11 +106,11 @@ def get_last_defending_player(players: [Player]):
     return None
 
 
-def players_from_contours(contours, debug=False):
+def players_from_contours(contours, debug=False, team=team_unclassified):
     players = []
     global number
 
     for contour in contours:
-        players.append(Player(contour, number, debug=debug))
+        players.append(Player(contour, number, debug=debug, team=team))
         number += 1
     return players

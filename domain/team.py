@@ -1,20 +1,12 @@
 from enum import Enum
 
 
-class Team(Enum):
-    def __init__(self, id, color, label, isAttacking):
+class Team:
+    def __init__(self, id, color, label, isAttacking=False):
         self.id = id
         self.color = color
         self.label = label
         self.isAttacking = isAttacking
-
-    unclassified = "*️⃣", (0, 0, 0), "?", False
-    team_one = "1️⃣", (255, 0, 0), "1", False
-    team_two = "2️⃣", (0, 0, 255), "2", False
-    team_other = "🔟", (0, 255, 0), "3", False
-
-    team_boca = "boca", (255, 0, 0), "boca", False
-    team_river = "river", (0, 0, 255), "river", False
 
     def get_color(self):
         return self.color
@@ -28,8 +20,15 @@ class Team(Enum):
 
 
 def set_attacking_team(attackingTeam):
-    for team in Team:
+    for team in all_teams:
         if attackingTeam.id == team.id:
             team.isAttacking = True
         else:
             team.isAttacking = False
+
+
+team_one = Team("1️⃣", (255, 0, 0), "1")
+team_two = Team("2️⃣", (0, 0, 255), "2")
+team_unclassified = Team("❓", (0, 0, 255), "?")
+
+all_teams = [team_one, team_two, team_unclassified]

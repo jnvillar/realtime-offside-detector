@@ -21,7 +21,7 @@ class PlayerSorterByKMeans:
         players_to_be_sorted = []
         if self.params.get('only_unclassified_players', False):
             for player in players:
-                if player.team == Team.unclassified:
+                if player.team == team_unclassified:
                     players_to_be_sorted.append(player)
         else:
             players_to_be_sorted = players
@@ -45,9 +45,9 @@ class PlayerSorterByKMeans:
 
         for itx, label in enumerate(player_labels):
             if label == 0:
-                players_to_be_sorted[itx].team = self.params.get('team_one', Team.unclassified)
+                players_to_be_sorted[itx].team = self.params.get('first_cluster_team', team_unclassified)
             else:
-                players_to_be_sorted[itx].team = self.params.get('team_two', Team.unclassified)
+                players_to_be_sorted[itx].team = self.params.get('second_cluster_team', team_unclassified)
 
         return players
 

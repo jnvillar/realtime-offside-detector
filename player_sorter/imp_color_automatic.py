@@ -48,7 +48,7 @@ class PlayerSorterByColorAutomatic:
             frame = frame_utils.remove_color(original_frame, color.color_range)
 
             for idx, player in enumerate(players):
-                if player.team == Team.unclassified:
+                if player.team == team_unclassified:
                     count_of_colors = player_by_color.get(player, {})
                     count_of_colors[color] = frame_utils.sum_black_pixels(frame, player.get_box(focused=True))
                     player_by_color[player] = count_of_colors

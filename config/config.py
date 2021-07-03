@@ -20,6 +20,10 @@ default_config = {
             'apply': False,
             'size_h': 500,
             'size_w': 500,
+        },
+        'team_names': {
+            team_one.id: "boca",
+            team_two.id: "river",
         }
     },
     'player_finder': {
@@ -28,7 +32,7 @@ default_config = {
     'team_classifier': {  # params for team classifier
         'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
-            'attacking_team': Team.team_river
+            'attacking_team': team_two
         }
     },
     'player_sorter': {
@@ -37,25 +41,25 @@ default_config = {
         'bsas': {
             'threshold': 0,
             'clusters': 2,
-            'team_one': Team.team_river,
-            'team_two': Team.team_boca,
+            'team_one': team_two,
+            'team_two': team_one,
             'debug': False
         },
         'kmeans': {
-            'team_one': Team.team_boca,
-            'team_two': Team.team_river,
+            'first_cluster_team': team_two,
+            'second_cluster_team': team_one,
             'debug': False,
             'only_unclassified_players': True,
             'median': False,
             'focused': True
         },
         'automatic_by_color': {
-            white.color_name: Team.team_river,
-            red.color_name: Team.team_river,
+            white.color_name: team_two,
+            red.color_name: team_two
         }
     },
     'player_detector': {
-        # background_subtraction, edges, adhoc
+        # background_subtraction, edges, adhoc, by_color
         'method': 'by_color',
         'detect_every_amount_of_frames': 2,
         'by_color': {
@@ -66,7 +70,7 @@ default_config = {
             'filter_contour_inside_other': True
         },
         'adhoc': {
-            'debug': True,
+            'debug': False,
             'threshold1': 50,
             'threshold2': 70,
             'ignore_contours_smaller_than': 0.1,
