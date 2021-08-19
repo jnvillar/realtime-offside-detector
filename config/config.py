@@ -59,9 +59,12 @@ default_config = {
         }
     },
     'player_detector': {
-        # background_subtraction, edges, adhoc, by_color
-        'method': 'by_color',
+        # background_subtraction, edges, adhoc,posta=by_color, otsu
+        'method': 'otsu',
         'detect_every_amount_of_frames': 2,
+        'otsu': {
+            'debug': True
+        },
         'by_color': {
             'debug': False,
             'ignore_contours_smaller_than': 0.05,
