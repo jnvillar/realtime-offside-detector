@@ -14,6 +14,9 @@ class Line:
     def __str__(self):
         return 'Line: (' + str(self.p0) + ',' + str(self.p1) + ')'
 
+    def __repr__(self):
+        return self.__str__()
+
 
 def calculate_slope(diff_y, diff_x):
     if diff_x == 0:
