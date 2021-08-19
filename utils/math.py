@@ -14,11 +14,15 @@ def distance_between_points(point_one, point_two):
 
 def get_lines_intersection(line1: Line, line2: Line):
     p1, p2, p3, p4 = line1.p0, line1.p1, line2.p0, line2.p1
+    denominator = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0])
+    # lines are parallel or coincident
+    if denominator == 0:
+        return None
 
-    x = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[0] - p4[0]) - (p1[0] - p2[0]) * (p3[0] * p4[1] - p3[1] * p4[0])) / \
-        ((p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
-    y = ((p1[0] * p2[1] - p1[1] * p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] * p4[1] - p3[1] * p4[0])) / (
-            (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]))
+    a = (p1[0] * p2[1] - p1[1] * p2[0])
+    b = (p3[0] * p4[1] - p3[1] * p4[0])
+    x = (a * (p3[0] - p4[0]) - (p1[0] - p2[0]) * b) / denominator
+    y = (a * (p3[1] - p4[1]) - (p1[1] - p2[1]) * b) / denominator
 
     return x, y
 
@@ -60,3 +64,8 @@ def is_point_above_line(point, line: Line):
     line_y_interception = line.get_y_intercept()
     # < is used instead of > because frame is inverted
     return point[1] < point[0] * line_slope + line_y_interception
+
+
+# Unit conversion function that converts degrees to radians
+def degrees_to_radians(degrees):
+    return degrees * np.pi / 180

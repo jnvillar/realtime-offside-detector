@@ -72,7 +72,7 @@ class FieldDetector:
             self.screen_manager.show_frame(edges_v, "Canny V")
             self.screen_manager.show_frame(edges_v_non_dilated, "Canny V non dilated")
 
-        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=self.degrees_to_radians(85), max_theta=self.degrees_to_radians(95))
+        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=math.radians(85), max_theta=math.radians(95))
         max_rho = -1
         theta_to_draw = -1
         if lines is not None:
@@ -225,8 +225,6 @@ class FieldDetector:
         self.video.set_frame(final)
         return self.video, dilated_label_mask
 
-    def degrees_to_radians(self, degrees):
-        return degrees * np.pi / 180
 
     def detect_field_posta(self, frame):
         self.vp = (50, 50)
