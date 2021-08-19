@@ -20,6 +20,9 @@ class FramePrinter:
             cv2.putText(frame, line, (bottom_left_point_first_line[0], bottom_left_point_first_line[1] + offset), font, font_scale, color, line_type)
             offset += 20
 
+    def print_point(self, frame, coordinates, color):
+        cv2.circle(frame, coordinates, radius=3, color=color, thickness=-1)
+
 
 class KeyboardManager:
 
