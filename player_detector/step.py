@@ -4,7 +4,7 @@ from utils.utils import ScreenManager
 
 
 class Step:
-    def __init__(self, name: str, function, params={}, debug: bool = False, modify_original_frame=True):
+    def __init__(self, name: str, function, params={}, debug: bool = False, modify_original_frame=True, print_frame_on_debug=True):
         self.log = Logger(self, LoggingPackage.player_detector)
         self.screen_manager = ScreenManager.get_manager()
         self.name = name
@@ -12,6 +12,8 @@ class Step:
         self.debug = debug
         self.params = params
         self.modify_original_frame = modify_original_frame
+        # use this argument as False when the step you are defining does not modify the frame
+        self.print_frame_on_debug = print_frame_on_debug
 
     def apply(self, number, original_frame, params=None):
         if params is None:
@@ -29,7 +31,7 @@ class Step:
         frame = self.function(frame, params)
         elapsed_time = Timer.stop('step {}'.format(number))
 
-        self.screen_manager.show_frame(frame, self.name) if self.debug else None
+        self.screen_manager.show_frame(frame, self.name) if self.print_frame_on_debug and self.debug else None
 
         self.log.log('applying', {
             "number": number,
