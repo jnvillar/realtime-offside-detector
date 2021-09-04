@@ -353,6 +353,11 @@ def apply_mask(frame, params):
     return mask
 
 
+def apply_otsu(frame, params):
+    _, image_result = cv2.threshold(frame, params.get('low', 0), params.get('high', 255), cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return image_result
+
+
 def join_masks(frame, params):
     label = params.get('label', 'mask')
     mask = params.get(label)
@@ -369,7 +374,7 @@ def apply_dilatation(frame, params):
     return dilated_frame
 
 
-def negate(frame, params):
+def negate(frame, params={}):
     return ~frame
 
 
@@ -477,6 +482,20 @@ def get_line_intersection_with_frame(frame, line: Line):
     return intersections_with_frame
 
 
+def grey_in_range(original_frame, params):
+    mask = cv2.inRange(original_frame, params.get("low", 0), params.get("high", 0))
+    res = cv2.bitwise_and(original_frame, original_frame, mask=~mask)
+    return res
+
+
+# https://stackoverflow.com/questions/42257173/contrast-stretching-in-python-opencv
+def contrast_stretching(original_frame, params):
+    norm_img = cv2.normalize(original_frame, None, alpha=0, beta=1.5, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    norm_img = np.clip(norm_img, 0, 1)
+    norm_img = (255 * norm_img).astype(np.uint8)
+    return norm_img
+
+
 def show(frame, window_name, window_number):
     frame = cv2.resize(frame, (500, 500))
 
@@ -509,6 +528,21 @@ def detect_edges(original_frame, params):
 def gray_scale(original_frame, params):
     frame = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
     return frame
+
+
+def top_hat(original_frame, params):
+    # Getting the kernel to be used in Top-Hat
+    filterSize = (3, 3)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, filterSize)
+
+    # Reading the image named 'input.jpg'
+    input_image = cv2.imread("testing.jpg")
+    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
+
+    # Applying the Top-Hat operation
+    tophat_img = cv2.morphologyEx(input_image,
+                                  cv2.MORPH_TOPHAT,
+                                  kernel)
 
 
 def sobel(original_frame, params):

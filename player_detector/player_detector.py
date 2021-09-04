@@ -2,6 +2,7 @@ from player_detector.imp_background_subtraction import *
 from player_detector.imp_by_color import *
 from player_detector.imp_edges import *
 from player_detector.imp_adhoc import *
+from player_detector.impl_otsu import *
 from domain.player import *
 from domain.video import *
 from timer.timer import *
@@ -18,7 +19,8 @@ class PlayerDetector:
             'background_subtraction': BackgroundSubtractionPlayerDetector(**kwargs['background_subtraction']),
             'edges': EdgesPlayerDetector(**kwargs['edges']),
             'adhoc': AdHoc(**kwargs['adhoc']),
-            'by_color': ByColor(**kwargs['by_color'])
+            'by_color': ByColor(**kwargs['by_color']),
+            'otsu': OtsuPlayerDetector(**kwargs['otsu'])
         }
 
         self.method = methods[kwargs['method']]
