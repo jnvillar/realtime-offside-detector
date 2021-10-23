@@ -37,10 +37,10 @@ class OffsideLineDetector:
         team_two.label = params.get(team_two.id, team_two.label)
 
     def detect_offside_line(self, soccer_video: Video):
+        # detect field
+        soccer_video, _ = self.field_detector.detect_field(soccer_video)
         # get vanishing point
         vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
-        # detect field
-        #soccer_video, _ = self.field_detector.detect_field(soccer_video)
         # find players
         players = self.player_detector.detect_players(soccer_video)
         # track players
