@@ -347,10 +347,10 @@ def color_mask(original_frame, params):
     return green_mask
 
 
-def apply_mask(frame, params):
-    mask = params.get('mask')
-    mask = cv2.bitwise_and(params.get(mask), params.get(mask), mask=frame)
-    return mask
+def apply_mask(mask, params):
+    frame_name = params.get('mask')
+    frame = cv2.bitwise_and(params.get(frame_name), params.get(frame_name), mask=mask)
+    return frame
 
 
 def apply_otsu(frame, params):
@@ -548,3 +548,19 @@ def top_hat(original_frame, params):
 def sobel(original_frame, params):
     frame = cv2.Sobel(original_frame, cv2.CV_8U, 1, 0, ksize=-1)
     return frame
+
+
+def g_greater_than_r_greater_than_b_mask(original_frame, params):
+    # frame is expected to be in BGR format
+    r_channel = original_frame[:, :, 2]
+    g_channel = original_frame[:, :, 1]
+    b_channel = original_frame[:, :, 0]
+
+    g_greater_than_r = g_channel > r_channel
+    r_greater_than_b = r_channel > b_channel
+    g_greater_than_r_greater_than_b = g_greater_than_r & r_greater_than_b
+
+    # the resulting mask will be defined as:
+    #   255 for pixels that satisfy G > R > B,
+    #     0 otherwise
+    return g_greater_than_r_greater_than_b.astype(np.uint8) * 255
