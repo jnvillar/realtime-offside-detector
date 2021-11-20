@@ -118,7 +118,6 @@ default_config = {
         }
     },
     'vanishing_point_finder': {
-        # hough
         'method': 'hough',
         'hough': {
             'debug': False,
@@ -130,6 +129,6 @@ default_config = {
     },
     'field_detector': {
         'debug': False,
-        'method': 'green_detection'
+        'method': 'ground_pixels_detection'
     }
 }
