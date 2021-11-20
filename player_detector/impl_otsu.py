@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from player_detector.step import *
 from utils.frame_utils import *
 from log.logger import *
@@ -6,16 +7,53 @@ from log.logger import *
 class OtsuPlayerDetector:
 
     def __init__(self, **kwargs):
-        self.debug = kwargs.get('debug', False)
+        self.debug = kwargs.get('debug', True)
         self.log = Logger(self, LoggingPackage.player_detector)
         self.params = kwargs
 
     def find_players(self, original_frame):
+        mask = self.compute_otsu_mask_shadows(original_frame)
+        self.show_mask(mask, original_frame, title='Otsu thresholding on the hue channel with shadow removal')
+        ScreenManager.get_manager().show_frame(original_frame, "original")
+        cv2.waitKey(0)
+        return []
+
+    def compute_otsu_mask_shadows(self, original_frame, shadow_percentile=5):
+        image_hls = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HLS)
+
+        hue, lightness, saturation = np.split(image_hls, 3, axis=2)
+        hue = hue.reshape((hue.shape[0], hue.shape[1]))
+
+        otsu = cv2.threshold(hue, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+        otsu_mask = otsu != 255
+
+        image_lab = cv2.cvtColor(original_frame, cv2.COLOR_BGR2LAB)
+        l, a, b = np.split(image_lab, 3, axis=2)
+        l = l.reshape((l.shape[0], l.shape[1]))
+
+        shadow_threshold = np.percentile(l.ravel(), q=shadow_percentile)
+        shadows_mask = l < shadow_threshold
+
+        mask = otsu_mask ^ shadows_mask
+
+        return mask
+
+    def show_mask(self, mask, image, title='', mask_color=(255, 0, 0)):
+        display_image = image.copy()
+        display_image[mask != 0] = mask_color
+        plt.imshow(display_image)
+        plt.title(title)
+        plt.axis('off')
+        plt.show()
+
+    def find_players2(self, original_frame):
         pipeline: [Step] = self.enhance_contrast()
 
         enhanced_contrast = original_frame
         for idx, step in enumerate(pipeline):
             enhanced_contrast = step.apply(idx, enhanced_contrast)
+            plt.hist(enhanced_contrast.ravel(), 256, [0, 256])
+            plt.show()
 
         pipeline = self.otsu("low", 0, 125)
         low_greys_frame = enhanced_contrast

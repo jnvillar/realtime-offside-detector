@@ -37,10 +37,13 @@ def percentage_of_frame(frame, area):
     return (area / total_pixels) * 100
 
 
+def to_hls(original_frame, params=None):
+    hls = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HLS)
+    return hls
+
 def to_hsv(original_frame, params=None):
     hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
     return hsv
-
 
 def remove_color(frame, colors: [Color]):
     # convert to hsv color space
@@ -490,7 +493,7 @@ def grey_in_range(original_frame, params):
 
 # https://stackoverflow.com/questions/42257173/contrast-stretching-in-python-opencv
 def contrast_stretching(original_frame, params):
-    norm_img = cv2.normalize(original_frame, None, alpha=0, beta=1.5, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    norm_img = cv2.normalize(original_frame, None, alpha=0, beta=1.6, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     norm_img = np.clip(norm_img, 0, 1)
     norm_img = (255 * norm_img).astype(np.uint8)
     return norm_img
