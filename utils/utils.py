@@ -1,6 +1,7 @@
 import math
 import cv2
 import screeninfo
+import matplotlib.pyplot as plt
 
 
 class FramePrinter:

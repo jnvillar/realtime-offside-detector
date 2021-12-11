@@ -1,7 +1,52 @@
-from matplotlib import pyplot as plt
-from player_detector.step import *
 from utils.frame_utils import *
-from log.logger import *
+from timer.timer import *
+
+
+def transform_gray_scale(x1, x2, y1, y2, pixel):
+    pixel_in_0_255 = pixel / 255
+    if pixel_in_0_255 < x1:
+        return 255 * x1
+    if pixel_in_0_255 > x2:
+        return 255 * x2
+    return (((y2 - y1) / (x2 - x1)) * (pixel_in_0_255 - x1) * 255) + 255 * y1
+
+
+def filter_grays(min, max, pixel):
+    if min <= pixel <= max:
+        return pixel
+    else:
+        if min == 0:
+            return 255
+        if max == 255:
+            return 0
+
+
+def full_gray(pixel):
+    return transform_gray_scale(0, 1, 0, 1, pixel)
+
+
+def stretch_gray(pixel, low, high):
+    pixel = filter_grays(low, high, pixel)
+    return transform_pixel_range(pixel, low, high, 0, 255)
+
+
+def stretch_low(pixel):
+    return stretch_gray(pixel, 0, 125)
+
+
+def stretch_high(pixel):
+    return stretch_gray(pixel, 126, 255)
+
+
+def transform_matrix_range(original_frame, old_min, old_max, new_min=0, new_max=255):
+    scale = (new_max - new_min) / (old_max - old_min)
+    res = (original_frame - old_min) * scale
+    return res.astype(np.uint8)
+
+
+def transform_pixel_range(value_in_r1, r1_min, r1_max, r2_min, r2_max):
+    scale = (r2_max - r2_min) / (r1_max - r1_min)
+    return min((value_in_r1 - r1_min) * scale, 255)
 
 
 class OtsuPlayerDetector:
@@ -12,118 +57,28 @@ class OtsuPlayerDetector:
         self.params = kwargs
 
     def find_players(self, original_frame):
-        mask = self.compute_otsu_mask_shadows(original_frame)
-        self.show_mask(mask, original_frame, title='Otsu thresholding on the hue channel with shadow removal')
-        ScreenManager.get_manager().show_frame(original_frame, "original")
-        cv2.waitKey(0)
-        return []
+        image_grayscale = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
 
-    def compute_otsu_mask_shadows(self, original_frame, shadow_percentile=5):
-        image_hls = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HLS)
+        log_gray_scale = grey_in_range(image_grayscale, {'low': 0, 'high': 130, 'default_values': True})
+        low_gray_scale_stretched = transform_matrix_range(log_gray_scale, 0, 130)
 
-        hue, lightness, saturation = np.split(image_hls, 3, axis=2)
-        hue = hue.reshape((hue.shape[0], hue.shape[1]))
+        # old_low = apply_linear_function(image_grayscale, {'fn':stretch_low})
 
-        otsu = cv2.threshold(hue, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-        otsu_mask = otsu != 255
+        high_gray_scale = grey_in_range(image_grayscale, {'low': 130, 'high': 255})
+        high_gray_scale_stretched = transform_matrix_range(high_gray_scale, 130, 255)
 
-        image_lab = cv2.cvtColor(original_frame, cv2.COLOR_BGR2LAB)
-        l, a, b = np.split(image_lab, 3, axis=2)
-        l = l.reshape((l.shape[0], l.shape[1]))
+        o_low = apply_otsu(low_gray_scale_stretched)
+        o_high = apply_otsu(high_gray_scale_stretched)
 
-        shadow_threshold = np.percentile(l.ravel(), q=shadow_percentile)
-        shadows_mask = l < shadow_threshold
+        open_gray_scale = morphological_opening(image_grayscale, {"element_size": (3, 3)})
+        subtraction = image_grayscale - open_gray_scale
+        detected_lines = apply_linear_function(subtraction, {'fn': to_mask})
+        remove_lines = remove_mask(o_high, {"mask": detected_lines})
 
-        mask = otsu_mask ^ shadows_mask
+        remove_lines = morphological_opening(remove_lines, {'element_size': (5, 5)})
 
-        return mask
+        add_both_otsu = add_mask(negate(o_low), params={'mask': remove_lines})
+        add_both_otsu = apply_dilatation(add_both_otsu)
+        players = detect_contours(add_both_otsu, params=self.params)
 
-    def show_mask(self, mask, image, title='', mask_color=(255, 0, 0)):
-        display_image = image.copy()
-        display_image[mask != 0] = mask_color
-        plt.imshow(display_image)
-        plt.title(title)
-        plt.axis('off')
-        plt.show()
-
-    def find_players2(self, original_frame):
-        pipeline: [Step] = self.enhance_contrast()
-
-        enhanced_contrast = original_frame
-        for idx, step in enumerate(pipeline):
-            enhanced_contrast = step.apply(idx, enhanced_contrast)
-            plt.hist(enhanced_contrast.ravel(), 256, [0, 256])
-            plt.show()
-
-        pipeline = self.otsu("low", 0, 125)
-        low_greys_frame = enhanced_contrast
-        for idx, step in enumerate(pipeline):
-            low_greys_frame = step.apply(idx, enhanced_contrast)
-
-        pipeline = self.otsu("high", 125, 255)
-        high_greys_frame = enhanced_contrast
-        for idx, step in enumerate(pipeline):
-            high_greys_frame = step.apply(idx, enhanced_contrast)
-
-        players_1 = detect_contours(low_greys_frame, params=self.params)
-        players_2 = detect_contours(high_greys_frame, params=self.params)
-
-        return players_from_contours(players_1 + players_2, self.debug)
-
-    def otsu(self, name, low, high):
-        return [
-            Step(
-                "otsu {}".format(name),
-                apply_otsu, {"low": low, "high": high},
-                debug=self.debug),
-            Step(
-                "dilate {}".format(name),
-                apply_dilatation, {'iterations': 1},
-                debug=self.debug),
-        ]
-
-    def enhance_contrast(self):
-        return [
-            Step(
-                "grey scale",
-                gray_scale, {},
-                debug=self.debug
-            ),
-            Step(
-                "contrast stretching scale",
-                contrast_stretching, {},
-                debug=self.debug
-            ),
-        ]
-
-    def get_otsu_threshold(self, image):
-        # Set total number of bins in the histogram
-        bins_num = 256
-
-        # Get the image histogram
-        hist, bin_edges = np.histogram(image, bins=bins_num)
-
-        # Get normalized histogram if it is required
-        if self.params.get('normalized', False):
-            hist = np.divide(hist.ravel(), hist.max())
-
-        # Calculate centers of bins
-        bin_mids = (bin_edges[:-1] + bin_edges[1:]) / 2.
-
-        # Iterate over all thresholds (indices) and get the probabilities w1(t), w2(t)
-        weight1 = np.cumsum(hist)
-        weight2 = np.cumsum(hist[::-1])[::-1]
-
-        # Get the class means mu0(t)
-        mean1 = np.cumsum(hist * bin_mids) / weight1
-        # Get the class means mu1(t)
-        mean2 = (np.cumsum((hist * bin_mids)[::-1]) / weight2[::-1])[::-1]
-
-        inter_class_variance = weight1[:-1] * weight2[1:] * (mean1[:-1] - mean2[1:]) ** 2
-
-        # Maximize the inter_class_variance function val
-        index_of_max_val = np.argmax(inter_class_variance)
-
-        threshold = bin_mids[:-1][index_of_max_val]
-        print("Otsu's algorithm implementation thresholding result: ", threshold)
-        return threshold
+        return players_from_contours(players, self.debug)

@@ -12,7 +12,8 @@ class PlayerSorterByKMeans:
         self.debug = kwargs.get('debug', False)
         self.params = kwargs
         self.previous_centroids = None
-        self.k_means = KMeans(n_clusters=2, random_state=0)
+        self.label_team = kwargs.get('klusters_team')
+        self.k_means = KMeans(n_clusters=kwargs.get('klusters', 3), random_state=0)
 
     def sort_players(self, original_frame, players: [Player]):
         if len(players) < 2:
@@ -31,10 +32,12 @@ class PlayerSorterByKMeans:
 
         if self.params.get('median', False):
             hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-            player_representative_pixel = frame_utils.get_players_median_colors(hsv_img, players_to_be_sorted, params=self.params)
+            player_representative_pixel = frame_utils.get_players_median_colors(hsv_img, players_to_be_sorted,
+                                                                                params=self.params)
         else:
             hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players_to_be_sorted, params=self.params)
+            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players_to_be_sorted,
+                                                                              params=self.params)
 
         player_labels = self.get_players_labels(player_representative_pixel)
         self.log.log('player representative pixels', {
@@ -44,10 +47,7 @@ class PlayerSorterByKMeans:
         }) if self.debug else None
 
         for itx, label in enumerate(player_labels):
-            if label == 0:
-                players_to_be_sorted[itx].team = self.params.get('first_cluster_team', team_unclassified)
-            else:
-                players_to_be_sorted[itx].team = self.params.get('second_cluster_team', team_unclassified)
+            players_to_be_sorted[itx].team = self.label_team[label]
 
         return players
 

@@ -46,12 +46,17 @@ default_config = {
             'debug': False
         },
         'kmeans': {
-            'first_cluster_team': team_two,
-            'second_cluster_team': team_one,
+
             'debug': False,
             'only_unclassified_players': True,
             'median': False,
-            'focused': True
+            'focused': True,
+            'klusters': 3,
+            'klusters_team': {
+                0: team_one,
+                1: team_two,
+                2: team_three,
+            }
         },
         'automatic_by_color': {
             white.color_name: team_two,
@@ -63,6 +68,13 @@ default_config = {
         'method': 'otsu',
         'detect_every_amount_of_frames': 2,
         'otsu': {
+            'debug': True,
+            'ignore_contours_smaller_than': 0.06,
+            'ignore_contours_bigger_than': 1,
+            'keep_contours_by_aspect_ratio': AspectRatio.taller,
+            # 'filter_contour_inside_other': True
+        },
+        'tophat': {
             'debug': True
         },
         'by_color': {

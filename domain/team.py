@@ -29,6 +29,7 @@ def set_attacking_team(attackingTeam):
 
 team_one = Team("1️⃣", (255, 0, 0), "1")
 team_two = Team("2️⃣", (0, 0, 255), "2")
+team_three = Team("3️⃣", (0, 255, 0), "3")
 team_unclassified = Team("❓", (0, 0, 255), "?")
 
 all_teams = [team_one, team_two, team_unclassified]

@@ -41,9 +41,11 @@ def to_hls(original_frame, params=None):
     hls = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HLS)
     return hls
 
+
 def to_hsv(original_frame, params=None):
     hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
     return hsv
+
 
 def remove_color(frame, colors: [Color]):
     # convert to hsv color space
@@ -79,7 +81,8 @@ def draw_players(video: Video, players: [Player]):
         cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
         player_box = player.get_box(focused=True)
         # cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
-        cv2.putText(frame, str(player.get_label()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5, player.get_label_color(), 2, cv2.LINE_AA)
+        cv2.putText(frame, str(player.get_label()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5,
+                    player.get_label_color(), 2, cv2.LINE_AA)
 
     return video.set_frame(frame)
 
@@ -317,7 +320,8 @@ def remove_green(original_frame, params):
 
 def get_biggest_component_mask(original_frame, params):
     # search connected components over the mask, and get the biggest one
-    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(original_frame, params.get('connectivity', 4))
+    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(original_frame,
+                                                                            params.get('connectivity', 4))
     biggest_component_label = stats.argmax(axis=0)[cv2.CC_STAT_AREA]
 
     # get a mask which includes only the biggest component
@@ -356,8 +360,34 @@ def apply_mask(mask, params):
     return frame
 
 
-def apply_otsu(frame, params):
-    _, image_result = cv2.threshold(frame, params.get('low', 0), params.get('high', 255), cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+def add_mask(frame, params):
+    mask = params.get('mask')
+    frame = cv2.bitwise_or(frame, mask)
+    return frame
+
+
+def remove_mask(frame, params):
+    mask = params.get("mask")
+    res = cv2.bitwise_and(frame, frame, mask=~mask)
+    return res
+
+
+def apply_otsu(frame, params=None):
+    if params is None:
+        params = {}
+
+    _, image_result = cv2.threshold(frame, params.get('low', 0), params.get('high', 255),
+                                    cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return image_result
+
+
+def apply_top_hat(frame, params=None):
+    if params is None:
+        params = {}
+
+    element = np.ones((21, 1))
+
+    _, image_result = cv2.morphologyEx(frame, cv2.MORPH_TOPHAT, element, iterations=params.get('iterations', 1))
     return image_result
 
 
@@ -368,13 +398,33 @@ def join_masks(frame, params):
     return mask
 
 
-def apply_dilatation(frame, params):
+def apply_dilatation(frame, params={}):
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
         params.get('element_size', (6, 6)))
 
     dilated_frame = cv2.dilate(frame, kernel, iterations=params.get('iterations', 1))
     return dilated_frame
+
+
+def to_mask(pixel):
+    if abs(pixel) > 40:
+        return 255
+    return 0
+
+
+def apply_linear_function(frame, params={}):
+    fn = params.get('fn')
+    height = frame.shape[0]
+    width = frame.shape[1]
+
+    grayimg = np.zeros((height, width), np.uint8)
+
+    for i in range(height):
+        for j in range(width):
+            grayimg[i, j] = fn(frame[i, j])
+
+    return grayimg
 
 
 def negate(frame, params={}):
@@ -486,13 +536,18 @@ def get_line_intersection_with_frame(frame, line: Line):
 
 
 def grey_in_range(original_frame, params):
+    default = params.get('default_values', None)
     mask = cv2.inRange(original_frame, params.get("low", 0), params.get("high", 0))
-    res = cv2.bitwise_and(original_frame, original_frame, mask=~mask)
+    if default is not None:
+        res = cv2.bitwise_and(original_frame, mask)
+        res = cv2.bitwise_or(res, ~mask)
+        return res
+    res = cv2.bitwise_and(original_frame, mask)
     return res
 
 
 # https://stackoverflow.com/questions/42257173/contrast-stretching-in-python-opencv
-def contrast_stretching(original_frame, params):
+def contrast_stretching(original_frame, params={}):
     norm_img = cv2.normalize(original_frame, None, alpha=0, beta=1.6, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     norm_img = np.clip(norm_img, 0, 1)
     norm_img = (255 * norm_img).astype(np.uint8)

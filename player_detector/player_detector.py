@@ -3,6 +3,7 @@ from player_detector.imp_by_color import *
 from player_detector.imp_edges import *
 from player_detector.imp_adhoc import *
 from player_detector.impl_otsu import *
+from player_detector.impl_tophat import *
 from domain.player import *
 from domain.video import *
 from timer.timer import *
@@ -20,7 +21,8 @@ class PlayerDetector:
             'edges': EdgesPlayerDetector(**kwargs['edges']),
             'adhoc': AdHoc(**kwargs['adhoc']),
             'by_color': ByColor(**kwargs['by_color']),
-            'otsu': OtsuPlayerDetector(**kwargs['otsu'])
+            'otsu': OtsuPlayerDetector(**kwargs['otsu']),
+            'tophat': TopHatPlayerDetector(**kwargs['tophat']),
         }
 
         self.method = methods[kwargs['method']]
