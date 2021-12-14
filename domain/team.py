@@ -2,33 +2,36 @@ from enum import Enum
 
 
 class Team:
-    def __init__(self, id, color, label, isAttacking=False):
+    def __init__(self, id, color, label, is_defending=False):
         self.id = id
         self.color = color
         self.label = label
-        self.isAttacking = isAttacking
+        self.is_defending = is_defending
 
     def get_color(self):
         return self.color
 
     def get_label(self):
-        attitude = 'atk' if self.isAttacking else 'def'
+        attitude = 'def' if self.is_defending else 'atk'
         return self.label + ' ' + attitude
 
     def __repr__(self):
         return {'name': self.label}
 
 
-def set_attacking_team(attackingTeam):
+def set_defending_team(defending_team):
     for team in all_teams:
-        if attackingTeam.id == team.id:
-            team.isAttacking = True
+        if defending_team.id == team.id:
+            team.is_defending = True
         else:
-            team.isAttacking = False
+            team.is_defending = False
 
 
+# blue team
 team_one = Team("1️⃣", (255, 0, 0), "1")
+# red team
 team_two = Team("2️⃣", (0, 0, 255), "2")
+# green team
 team_three = Team("3️⃣", (0, 255, 0), "3")
 team_unclassified = Team("❓", (0, 0, 255), "?")
 

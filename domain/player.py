@@ -48,7 +48,8 @@ class Player:
     def get_label(self):
         name = ''
         if self.debug:
-            name = "T: {} W: {} H:{} AR:{:.2f}".format(self.team.get_label(), self.width, self.height, self.height / self.width)
+            name = "T: {} W: {} H:{} AR:{:.2f}".format(self.team.get_label(), self.width, self.height,
+                                                       self.height / self.width)
             return name
 
         if self.team is not team_unclassified:
@@ -88,7 +89,7 @@ def get_players_bb(players: [Player]):
 def get_defending_players(players: [Player]):
     res = []
     for player in players:
-        if not player.team.isAttacking:
+        if player.team.is_defending:
             res.append(player)
     return res
 

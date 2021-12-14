@@ -28,6 +28,8 @@ class PlayerFinder:
             self.log.log("orientation is None", {}) if self.args['debug'] else None
             return
 
+        players = get_defending_players(players)
+
         if orientation == Orientation.left:
             leftmost_player = None
             for player in players:

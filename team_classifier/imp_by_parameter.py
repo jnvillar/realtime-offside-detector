@@ -7,5 +7,5 @@ class ByParameter:
         self.args = kwargs
 
     def classify_teams(self, frame, players: [Player]):
-        team = self.args['attacking_team']
-        set_attacking_team(team)
+        team = self.args['defending_team']
+        set_defending_team(team)

@@ -30,14 +30,20 @@ class PlayerSorterByKMeans:
         if len(players_to_be_sorted) == 0:
             return players
 
+        frame = original_frame
+        if self.params.get('hsv', False):
+            frame = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
+
         if self.params.get('median', False):
-            hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-            player_representative_pixel = frame_utils.get_players_median_colors(hsv_img, players_to_be_sorted,
-                                                                                params=self.params)
+            player_representative_pixel = frame_utils.get_players_median_colors(
+                frame,
+                players_to_be_sorted,
+                params=self.params)
         else:
-            hsv_img = cv2.cvtColor(original_frame, cv2.COLOR_RGB2HSV)
-            player_representative_pixel = frame_utils.get_players_mean_colors(hsv_img, players_to_be_sorted,
-                                                                              params=self.params)
+            player_representative_pixel = frame_utils.get_players_mean_colors(
+                frame,
+                players_to_be_sorted,
+                params=self.params)
 
         player_labels = self.get_players_labels(player_representative_pixel)
         self.log.log('player representative pixels', {

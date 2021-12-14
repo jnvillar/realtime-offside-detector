@@ -32,7 +32,7 @@ default_config = {
     'team_classifier': {  # params for team classifier
         'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
-            'attacking_team': team_two
+            'defending_team': team_one
         }
     },
     'player_sorter': {
@@ -46,7 +46,6 @@ default_config = {
             'debug': False
         },
         'kmeans': {
-
             'debug': False,
             'only_unclassified_players': True,
             'median': False,
