@@ -20,7 +20,7 @@ class PlayerFinder:
         return player
 
     def _find_last_defending_player(self, players: [Player], orientation: Orientation):
-        if not players:
+        if not players or len(players) == 0:
             self.log.log("no players to mark", {}) if self.args['debug'] else None
             return
 
@@ -30,22 +30,15 @@ class PlayerFinder:
 
         players = get_defending_players(players)
 
+        res = players[0]
         if orientation == Orientation.left:
-            leftmost_player = None
             for player in players:
-                if leftmost_player is None:
-                    leftmost_player = player
-                elif player.get_box().x < leftmost_player.get_box().x:
-                    leftmost_player = player
-            player = leftmost_player
+                if player.get_box().x < res.get_box().x:
+                    res = player
         else:
-            rightmost_player = None
             for player in players:
-                if rightmost_player is None:
-                    rightmost_player = player
-                elif player.get_box().x + player.get_box().w > rightmost_player.get_box().x + rightmost_player.get_box().w:
-                    rightmost_player = player
-            player = rightmost_player
+                if player.get_box().x + player.get_box().w > res.get_box().x + res.get_box().w:
+                    res = player
 
-        player.is_last_defending_player = True
-        return player
+        res.is_last_defending_player = True
+        return res
