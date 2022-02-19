@@ -1,7 +1,6 @@
-from matplotlib import pyplot as plt
-from player_detector.step import *
 from utils.frame_utils import *
 from log.logger import *
+
 
 class TopHatPlayerDetector:
 

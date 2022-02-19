@@ -34,6 +34,7 @@ def get_line(p1, p2):
     m, c = lstsq(A, y_coords)[0]
     return m, c
 
+
 def euclidean_distance(a, b):
     return numpy.linalg.norm(numpy.subtract(a, b))
 

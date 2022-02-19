@@ -129,7 +129,10 @@ def get_predominant_color(frame, box: Box, colors: [ColorRange]):
     return find_predominant_color(pixels_by_color)
 
 
-def get_players_mean_colors(frame, players: [Player], params={}):
+def get_players_mean_colors(frame, players: [Player], params=None):
+    if params is None:
+        params = {}
+
     res = []
     for itx, player in enumerate(players):
         player_box = player.get_box(focused=params.get('focused', False))
@@ -138,7 +141,10 @@ def get_players_mean_colors(frame, players: [Player], params={}):
     return res
 
 
-def get_players_median_colors(frame, players: [Player], params={}):
+def get_players_median_colors(frame, players: [Player], params=None):
+    if params is None:
+        params = {}
+
     res = []
     for itx, player in enumerate(players):
         player_box = player.get_box(focused=params.get('focused', False))
@@ -372,12 +378,29 @@ def remove_mask(frame, params):
     return res
 
 
+def transform_matrix_gray_range(original_frame, params=None):
+    old_min, old_max, new_min, new_max = \
+        params.get('old_min'), \
+        params.get('old_max'), \
+        params.get('new_min', 0), \
+        params.get('new_max', 255)
+
+    scale = (new_max - new_min) / (old_max - old_min)
+    res = (original_frame - old_min) * scale
+    return res.astype(np.uint8)
+
+
 def apply_otsu(frame, params=None):
     if params is None:
         params = {}
 
-    _, image_result = cv2.threshold(frame, params.get('low', 0), params.get('high', 255),
-                                    cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, image_result = cv2.threshold(
+        frame,
+        params.get('low', 0),
+        params.get('high', 255),
+        cv2.THRESH_BINARY + cv2.THRESH_OTSU
+    )
+
     return image_result
 
 
@@ -427,8 +450,9 @@ def apply_linear_function(frame, params={}):
     return grayimg
 
 
-def negate(frame, params={}):
-    return ~frame
+def negate(original_frame, params={}):
+    res = ~original_frame
+    return res
 
 
 def apply_erosion(frame, params):
@@ -535,14 +559,46 @@ def get_line_intersection_with_frame(frame, line: Line):
     return intersections_with_frame
 
 
+def fill_black_pixels_in_gray_image(original_frame, params):
+    filled_frame = original_frame
+    filled_frame[np.where((filled_frame == [0]))] = [params.get("value", 0)]
+    return filled_frame
+
+
+def grey_in_range_to_mask(original_frame, params):
+    _, res = cv2.threshold(
+        original_frame,
+        params.get("max_gray_value", 255),
+        params.get("to_value", 255),
+        cv2.THRESH_BINARY
+    )
+    return res, None
+
+
 def grey_in_range(original_frame, params):
-    default = params.get('default_values', None)
+    gray_mask = cv2.inRange(original_frame, params.get("low", 0), params.get("high", 0))
+    applied_gray_mask = cv2.bitwise_and(original_frame, gray_mask)
+
+    if params.get('blacks_defaults_to_high', False):
+        # fill new black pixels with default value
+        applied_gray_mask = fill_black_pixels_in_gray_image(applied_gray_mask, {'value': params.get('high', 0)})
+        # restore original blacks
+        applied_gray_mask = cv2.bitwise_and(applied_gray_mask, original_frame)
+
+    if params.get('negated_result', False):
+        negated_result = cv2.bitwise_and(original_frame, negate(gray_mask))
+        return applied_gray_mask, negated_result
+
+    return applied_gray_mask, None
+
+
+def test(original_frame, params):
+    default = params.get('default_values', False)
     mask = cv2.inRange(original_frame, params.get("low", 0), params.get("high", 0))
-    if default is not None:
-        res = cv2.bitwise_and(original_frame, mask)
-        res = cv2.bitwise_or(res, ~mask)
-        return res
     res = cv2.bitwise_and(original_frame, mask)
+    if default is not None:
+        res = cv2.bitwise_or(res, ~mask)
+
     return res
 
 
@@ -583,8 +639,8 @@ def detect_edges(original_frame, params):
     return cv2.Canny(original_frame, params["threshold1"], params["threshold2"], apertureSize=3)
 
 
-def gray_scale(original_frame, params):
-    frame = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
+def gray_scale(original_frame, params={}):
+    frame = cv2.cvtColor(original_frame, params.get('code', cv2.COLOR_BGR2GRAY))
     return frame
 
 
