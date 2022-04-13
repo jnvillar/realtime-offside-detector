@@ -41,6 +41,7 @@ class FrameDataDictionaryMapper:
     FRAME_FIELD = "frame"
     FIELD_FIELD = "field"
     PLAYERS_FIELD = "players"
+    DEFENDING_TEAM_FIELD = "defending_team"
 
     def __init__(self):
         self.field_mapper = FieldListMapper()
@@ -60,6 +61,9 @@ class FrameDataDictionaryMapper:
                 players_list.append(self.player_mapper.to_dictionary(player))
             frame_data_dictionary[self.PLAYERS_FIELD] = players_list
 
+        if frame_data.get_defending_team() is not None:
+            frame_data_dictionary[self.DEFENDING_TEAM_FIELD] = frame_data.get_defending_team().value
+
         return frame_data_dictionary
 
     def from_dictionary(self, dictionary):
@@ -67,6 +71,7 @@ class FrameDataDictionaryMapper:
         frame_number = dictionary.get(self.FRAME_FIELD)
         field_vertices = dictionary.get(self.FIELD_FIELD, None)
         players_as_dictionary = dictionary.get(self.PLAYERS_FIELD, None)
+        defending_team = dictionary.get(self.DEFENDING_TEAM_FIELD, None)
 
         frame_data_builder = FrameDataBuilder().set_frame_number(frame_number)
         if field_vertices is not None:
@@ -74,6 +79,9 @@ class FrameDataDictionaryMapper:
 
         if players_as_dictionary is not None:
             frame_data_builder.set_players([self.player_mapper.from_dictionary(player_as_dictionary) for player_as_dictionary in players_as_dictionary])
+
+        if defending_team is not None:
+            frame_data_builder.set_defending_team(Team(defending_team))
 
         return frame_data_builder.build()
 
