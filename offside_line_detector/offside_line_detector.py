@@ -72,15 +72,18 @@ class OffsideLineDetector:
             if frame is None:
                 break
 
+            if self.params.get('show_original', False):
+                self.screen_manager.show_frame(soccer_video.get_current_frame(), 'original')
+
             Timer.start('detect_offside_line')
             soccer_video = self.detect_offside_line(soccer_video)
             elapsed_time = Timer.stop('detect_offside_line')
             self.log.log('offside line detected', {'cost': elapsed_time})
 
-            if self.params['show_result']:
+            if self.params.get('show_result', False):
                 self.screen_manager.show_frame(soccer_video.get_current_frame(), 'final result')
 
-            if self.params['stop_in_frame']:
+            if self.params.get('stop_in_frame', False):
                 if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():
                     pause = True
 

@@ -13,6 +13,7 @@ default_config = {
         'debug_screen': 0,
     },
     'app': {
+        'show_original': False,
         'show_result': True,
         'show_players': True,
         'stop_in_frame': 1,
@@ -63,9 +64,9 @@ default_config = {
         }
     },
     'player_detector': {
-        # background_subtraction, edges, adhoc,posta=by_color, otsu
-        'method': 'otsu',
-        'detect_every_amount_of_frames': 3,
+        # background_subtraction, edges, adhoc, by_color, posta=otsu
+        'method': 'background_subtraction',
+        'detect_every_amount_of_frames': 1,
         'otsu': {
             'debug': True,
             'ignore_contours_smaller_than': 0.06,
@@ -93,7 +94,7 @@ default_config = {
             'filter_contour_inside_other': True
         },
         'background_subtraction': {
-            'debug': False,
+            'debug': True,
             'history': 1,
             'detect_shadows': False,
             'var_threshold': 50,
@@ -139,7 +140,7 @@ default_config = {
         'debug': False
     },
     'field_detector': {
-        'debug': False,
+        'debug': True,
         'method': 'ground_pixels_detection'
     }
 }

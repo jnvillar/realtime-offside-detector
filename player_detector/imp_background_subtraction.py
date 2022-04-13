@@ -22,7 +22,7 @@ class BackgroundSubtractionPlayerDetector:
 
     def find_players(self, frame):
         pipeline: [Step] = [
-            Step("remove green", remove_green, debug=self.debug),
+            #Step("remove green", remove_green, debug=self.debug),
             Step("background substitution", self.background_substitution, debug=self.debug),
             Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),
             Step("join close contours", morphological_closing, debug=self.debug),
