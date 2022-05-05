@@ -31,9 +31,12 @@ default_config = {
         'debug': False
     },
     'team_classifier': {  # params for team classifier
-        'method': 'by_parameter',
+        'method': 'by_ball_detection',
         'by_parameter': {  # params used in by parameter method
-            'defending_team': team_one
+            'attacking_team': team_one
+        },
+        'by_ball_detection': {  # params used in by ball detection method
+            'debug': True
         }
     },
     'player_sorter': {
@@ -65,11 +68,11 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, posta=otsu
-        'method': 'background_subtraction',
+        'method': 'otsu',
         'detect_every_amount_of_frames': 1,
         'otsu': {
-            'debug': True,
-            'ignore_contours_smaller_than': 0.06,
+            'debug': False,
+            'ignore_contours_smaller_than': 0.03,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             # 'filter_contour_inside_other': True
@@ -94,7 +97,7 @@ default_config = {
             'filter_contour_inside_other': True
         },
         'background_subtraction': {
-            'debug': True,
+            'debug': False,
             'history': 1,
             'detect_shadows': False,
             'var_threshold': 50,
@@ -133,14 +136,14 @@ default_config = {
         'method': 'hough',
         'hough': {
             'debug': False,
-            'calculate_every_x_amount_of_frames': 5
+            'calculate_every_x_amount_of_frames': 2
         }
     },
     'offside_line_drawer': {
         'debug': False
     },
     'field_detector': {
-        'debug': True,
+        'debug': False,
         'method': 'ground_pixels_detection'
     }
 }

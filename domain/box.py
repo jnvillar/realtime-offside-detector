@@ -2,7 +2,7 @@ from domain.player import *
 
 
 class Box:
-    def __init__(self, label, bounding_box, upper_left, upper_right, down_left, down_right, center):
+    def __init__(self, label, bounding_box, upper_left, upper_right, down_left, down_right):
         x, y, w, h = bounding_box
 
         self.label = label
@@ -57,6 +57,4 @@ def box_from_player(player, focused=False) -> Box:
 
         upper_right=(x - resize_x + w, y + h - resize_y - move_y),
         down_right=(x + w - resize_x, y + resize_y - move_y),
-
-        center=(x + (w / 2), y + (h / 2))
     )

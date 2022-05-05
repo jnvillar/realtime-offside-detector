@@ -127,14 +127,14 @@ class FieldDetector:
             ),
             # erode to remove white holes from the areas out of the field, generated with the first dilatation
             Step(
-                "Erode (2 iterations)",
-                apply_erosion, {'element_size': (40, 40), 'element': cv2.MORPH_RECT, 'iterations': 2},
+                "Erode (3 iterations)",
+                apply_erosion, {'element_size': (40, 40), 'element': cv2.MORPH_RECT, 'iterations': 3},
                 debug=self.debug
             ),
             # dilate again to undo the prior erosion but now we do not have the white holes
             Step(
-                "Dilate (3 iterations)",
-                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
+                "Dilate (4 iterations)",
+                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 4},
                 debug=self.debug
             )
         ]
@@ -147,13 +147,21 @@ class FieldDetector:
         h, w = im_floodfill.shape[:2]
         mask = np.zeros((h + 2, w + 2), np.uint8)
 
-        # Floodfill from point (0, 0) or the first point from the first column that is white
+        # Floodfill from point (0, 0) or the first point from the first column that is black
         x = 0
         y = 0
         while im_floodfill[y][x] != 0 and y < h - 1:
             y = y + 1
 
-        cv2.floodFill(im_floodfill, mask, (x, y), 255)
+        _, _, _, rect = cv2.floodFill(im_floodfill, mask, (x, y), 255)
+
+        # rect return value is the minimum bounding rectangle of the repainted domain
+        if rect[2] < w * 0.7:
+            # if the repainted domain was too small (width lower than 70% of image width), means that we painted
+            # an isolated component from the top left, so we flood again
+            while im_floodfill[y][x] != 0 and y < h - 1:
+                y = y + 1
+            cv2.floodFill(im_floodfill, mask, (x, y), 255)
 
         # Invert floodfilled image
         im_floodfill_inv = cv2.bitwise_not(im_floodfill)
@@ -216,7 +224,7 @@ class FieldDetector:
             self.screen_manager.show_frame(img, "Field detection")
 
         self.video.set_frame(img)
-        return self.video
+        return self.video, img
 
     #deprecated
     def by_green_detection2(self):
