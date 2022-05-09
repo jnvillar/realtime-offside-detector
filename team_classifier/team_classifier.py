@@ -11,8 +11,9 @@ class TeamClassifier:
         self.log = Logger(self, LoggingPackage.team_classifier)
         methods = {
             'by_parameter': ByParameter(**kwargs['by_parameter']),
+            'by_ball_detection': ByBallDetection(**kwargs['by_ball_detection'])
         }
-        self.method = methods['by_parameter']
+        self.method = methods['by_ball_detection']
 
     def classify_teams(self, video: Video, players: [Player]):
         self.log.log("classifying teams")
