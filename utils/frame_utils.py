@@ -477,6 +477,74 @@ def fill_contours(frame, params):
     return frame
 
 
+def remove_lines_canny(frame, params):
+    mask = np.zeros(frame.shape, np.uint8)
+
+    canny = cv2.Canny(frame, 100, 200)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+
+    ScreenManager.get_manager().show_frame(canny, '1')
+    close = cv2.morphologyEx(canny, cv2.MORPH_CLOSE, kernel)
+
+    ScreenManager.get_manager().show_frame(close, '2')
+
+    minLineLength = 100
+    maxLineGap = 350
+
+    lines = cv2.HoughLinesP(close, 1, np.pi / 180, 100, minLineLength, maxLineGap)
+
+    if lines is None:
+        return frame
+
+    for line in lines:
+        for x1, y1, x2, y2 in line:
+            cv2.line(mask, (x1, y1), (x2, y2), (255, 255, 255), 3)
+
+    cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+
+    for c in cnts:
+        cv2.drawContours(frame, [c], -1, (255, 255, 255), -1)
+
+    return frame
+
+
+def remove_lines(frame, params):
+    # Create diagonal kernel
+
+    kernels = [
+        np.array([[0, 0, 0],
+                  [1, 1, 1],
+                  [0, 0, 0]], dtype=np.uint8),
+
+        np.array([[0, 0, 1],
+                  [0, 1, 0],
+                  [1, 0, 0]], dtype=np.uint8),
+
+        np.array([[0, 0, 0, 0, 1],
+                  [0, 0, 0, 1, 0],
+                  [0, 0, 1, 0, 0],
+                  [0, 1, 0, 0, 0],
+                  [1, 0, 0, 0, 0]], dtype=np.uint8),
+
+        np.array([[1, 0, 0],
+                  [0, 1, 0],
+                  [0, 0, 1]], dtype=np.uint8)
+    ]
+
+    for k in kernels:
+        opening = cv2.morphologyEx(frame, cv2.MORPH_OPEN, k, iterations=1)
+
+        cnts = cv2.findContours(opening, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        for c in cnts:
+            area = cv2.contourArea(c)
+            if area < 500:
+                cv2.drawContours(opening, [c], -1, (0, 0, 0), -1)
+
+    return opening
+
+
 def delete_small_contours(frame, params):
     (contours, hierarchy) = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     for pic, contour in enumerate(contours):

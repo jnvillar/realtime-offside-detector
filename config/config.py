@@ -65,7 +65,7 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, posta=otsu
-        'method': 'background_subtraction',
+        'method': 'otsu',
         'detect_every_amount_of_frames': 1,
         'otsu': {
             'debug': True,
@@ -140,7 +140,7 @@ default_config = {
         'debug': False
     },
     'field_detector': {
-        'debug': True,
+        'debug': False,
         'method': 'ground_pixels_detection'
     }
 }
