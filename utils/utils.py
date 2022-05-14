@@ -18,7 +18,8 @@ class FramePrinter:
         line_type = 1
         offset = 0
         for line in text_lines:
-            cv2.putText(frame, line, (bottom_left_point_first_line[0], bottom_left_point_first_line[1] + offset), font, font_scale, color, line_type)
+            cv2.putText(frame, line, (bottom_left_point_first_line[0], bottom_left_point_first_line[1] + offset), font,
+                        font_scale, color, line_type)
             offset += 20
 
     def print_point(self, frame, coordinates, color):
@@ -28,7 +29,12 @@ class FramePrinter:
 class KeyboardManager:
 
     def key_was_pressed(self, key_code_to_check, expected_key_code):
-        return key_code_to_check & 0xFF == expected_key_code
+        if isinstance(expected_key_code, list):
+            for key in expected_key_code:
+                if key_code_to_check & 0xFF == key:
+                    return True
+        else:
+            return key_code_to_check & 0xFF == expected_key_code
 
     def is_lowercase_alphabet_char_code(self, key_code):
         return 97 <= key_code <= 122
@@ -41,7 +47,8 @@ class ScreenManager:
     @staticmethod
     def initialize(config={}):
         if ScreenManager.INSTANCE is not None:
-            raise Exception("You can initialize the screen manager only once. If you want multiple instances consider using the class constructor")
+            raise Exception(
+                "You can initialize the screen manager only once. If you want multiple instances consider using the class constructor")
         ScreenManager.INSTANCE = ScreenManager(screen_number=config.get('debug_screen', 0))
         return ScreenManager.INSTANCE
 
@@ -72,7 +79,8 @@ class ScreenManager:
     def show_frame(self, frame, window_name):
         # existing window
         if window_name in self.window_names:
-            frame = cv2.resize(frame, (self.window_width, int(self.window_height * (100 - self.frame_height_resize_offset) / 100)))
+            frame = cv2.resize(frame, (
+                self.window_width, int(self.window_height * (100 - self.frame_height_resize_offset) / 100)))
             cv2.imshow(window_name, frame)
             return
 
@@ -80,7 +88,9 @@ class ScreenManager:
         self.window_names.append(window_name)
         if len(self.window_names) >= self.MAX_WINDOWS:
             # just in case we set a hardcoded limit of windows
-            raise Exception("You are trying to print more windows than the max number ({}). Increase the MAX_WINDOWS constant".format(self.MAX_WINDOWS))
+            raise Exception(
+                "You are trying to print more windows than the max number ({}). Increase the MAX_WINDOWS constant".format(
+                    self.MAX_WINDOWS))
 
         requires_resize = self._calculate_window_dimensions()
 
@@ -93,7 +103,8 @@ class ScreenManager:
 
         cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
         x, y = self._get_coordinate_to_print_window(self.nextWindow)
-        frame = cv2.resize(frame, (self.window_width, int(self.window_height * (100 - self.frame_height_resize_offset) / 100)))
+        frame = cv2.resize(frame,
+                           (self.window_width, int(self.window_height * (100 - self.frame_height_resize_offset) / 100)))
         cv2.resizeWindow(window_name, self.window_width, self.window_height)
         cv2.moveWindow(window_name, x, y)
         cv2.imshow(window_name, frame)
@@ -105,7 +116,8 @@ class ScreenManager:
             available_screens_string = ""
             for screen_id, screen in enumerate(available_screens):
                 available_screens_string += "{} : {}\n".format(screen_id, screen.__repr__())
-            raise Exception("Screen number {} is not available. Available screens are:\n{}".format(screen_number, available_screens_string))
+            raise Exception("Screen number {} is not available. Available screens are:\n{}".format(screen_number,
+                                                                                                   available_screens_string))
         return available_screens[screen_number]
 
     def _get_coordinate_to_print_window(self, window_number):
@@ -135,7 +147,8 @@ class ScreenManager:
         return requires_resize
 
     def _all_windows_fit_on_screen(self, total_windows, window_width, window_height, rows):
-        return self.screen.width >= window_width * math.ceil(total_windows / rows) and self.screen.height >= window_height * rows
+        return self.screen.width >= window_width * math.ceil(
+            total_windows / rows) and self.screen.height >= window_height * rows
 
     def _calculate_screen_offsets(self, screen_to_use):
         screens = screeninfo.get_monitors()
