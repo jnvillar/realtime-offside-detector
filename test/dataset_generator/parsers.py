@@ -155,8 +155,20 @@ class PlayersParser:
                 cv2.imshow(self.window_name, self.current_frame)
             # ESC to exit selection mode
             elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                print("You have exited field selection mode.")
-                break
+                print("Are you sure you want to exit? All the players selection WILL BE LOST. (Yes/No)")
+                exit = False
+                while True:
+                    key_code_exit = cv2.waitKey(0)
+                    if self.keyboard_manager.key_was_pressed(key_code_exit, constants.Y_KEY_CODE):
+                        exit = True
+                        break
+                    elif self.keyboard_manager.key_was_pressed(key_code_exit, constants.N_KEY_CODE):
+                        break
+                if exit:
+                    print("You have exited field selection mode.")
+                    break
+                else:
+                    print("Exit was aborted. Continue parsing.")
 
         # remove mouse callback to prevent selecting more players
         cv2.setMouseCallback(self.window_name, lambda *args: None)
@@ -174,7 +186,7 @@ class PlayersParser:
             " LEFT CLICK + CMD + MOVE = select goalkeeper bounding box",
             " RETURN = confirm selection (only if at least {} players were selected)".format(self.MIN_PLAYERS_TO_SELECT),
             " DELETE = remove last selected player",
-            " ESC = exit players selection mode"
+            " ESC = exit players selection mode (confirm exit with Y/N)"
         ]
 
     def _click_event(self, event, x, y, flags, arguments):

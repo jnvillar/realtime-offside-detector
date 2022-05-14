@@ -26,6 +26,11 @@ class DatasetGenerator:
         "S = save parsed data to file",
         "ESC = exit without saving",
     ]
+    EXIT_OPTIONS = [
+        "Are you sure you want to exit? All the selection WILL BE LOST.",
+        "Y (yes)",
+        "N (no)"
+    ]
     TOP_LEFT_FRAME_WINDOW = (1, 1)
 
     def __init__(self):
@@ -84,7 +89,18 @@ class DatasetGenerator:
                     break
                 # ESC to exit without saving
                 elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                    return
+                    self.options = self.EXIT_OPTIONS
+                    self._print_available_options()
+                    while True:
+                        key_code_exit = cv2.waitKey(0)
+                        if self.keyboard_manager.key_was_pressed(key_code_exit, constants.Y_KEY_CODE):
+                            print("Goodbye!")
+                            return
+                        elif self.keyboard_manager.key_was_pressed(key_code_exit, constants.N_KEY_CODE):
+                            print("Exit was aborted. Continue parsing.")
+                            self.options = self.GENERAL_OPTIONS
+                            self._print_available_options()
+                            break
                 # any other key will do nothing
 
             if print_json:
@@ -101,10 +117,9 @@ class DatasetGenerator:
             # file exists
             self.options = [
                 "The output file to be written ({}) already exists.".format(outfile),
-                "Do you want to merge parsed frame data or overwrite it?",
+                "Do you want to merge parsed frame data or create a new file?",
                 "1 = Merge",
-                "2 = Overwrite",
-                "ESC = Exit without saving anything"
+                "9 = Create a new file (this file will not overwrite the existing one)"
             ]
             self._print_available_options()
             while True:
@@ -116,12 +131,16 @@ class DatasetGenerator:
                         file_frame_data_list = [frame_data_mapper.from_dictionary(frame_data_dictionary) for frame_data_dictionary in frame_data_dictionary_list]
                         frame_data_list = FrameDataMerger.merge(frame_data_list, file_frame_data_list)
                         break
-                # TWO to overwrite with the new frame data
-                elif self.keyboard_manager.key_was_pressed(key_code, constants.TWO_KEY_CODE):
+                # NINE to create a new file with the frame data
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.NINE_KEY_CODE):
+                    #  Add numeric suffix to the outfile to avoid overwrite
+                    numeric_postfix = 1
+                    new_outfile = "{} ({})".format(outfile, numeric_postfix)
+                    while Path(new_outfile).is_file():
+                        numeric_postfix += 1
+                        new_outfile = "{} ({})".format(outfile, numeric_postfix)
+                    outfile = new_outfile
                     break
-                # ESC to exit without saving
-                elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                    return
 
         # save data in file
         with open(outfile, 'w') as file:
