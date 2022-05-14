@@ -95,7 +95,8 @@ class PlayersParser:
     MIN_PLAYERS_TO_SELECT = 1
     TEAM_BOX_COLOR = {
         Team.TEAM_ONE: {PlayerType.FIELD_PLAYER: constants.BGR_RED, PlayerType.GOALKEEPER: constants.BGR_DARK_RED},
-        Team.TEAM_TWO: {PlayerType.FIELD_PLAYER: constants.BGR_BLUE, PlayerType.GOALKEEPER: constants.BGR_DARK_BLUE}
+        Team.TEAM_TWO: {PlayerType.FIELD_PLAYER: constants.BGR_BLUE, PlayerType.GOALKEEPER: constants.BGR_DARK_BLUE},
+        Team.REFEREE: {PlayerType.FIELD_PLAYER: constants.BGR_YELLOW}
     }
     EMPTY_PLAYER_SELECTION = {
         Team.TEAM_ONE: {PlayerType.FIELD_PLAYER: [], PlayerType.GOALKEEPER: []},
@@ -143,6 +144,10 @@ class PlayersParser:
             elif self.keyboard_manager.key_was_pressed(key_code, constants.TWO_KEY_CODE):
                 print("Switched to Team TWO selection.")
                 self.active_team = Team.TEAM_TWO
+            # THREE to select referee
+            elif self.keyboard_manager.key_was_pressed(key_code, constants.THREE_KEY_CODE):
+                print("Switched to REFEREE selection.")
+                self.active_team = Team.REFEREE
             # DELETE to remove last selected player (only if at least 1 player was selected)
             elif self.keyboard_manager.key_was_pressed(key_code, constants.DELETE_KEY_CODE) and len(self.selected_players) > 0:
                 print("{} deleted from selection.".format(self.selected_players.pop()))
@@ -164,7 +169,8 @@ class PlayersParser:
             " ------------ PLAYERS SELECTION MODE ------------",
             " 1 = switch to team ONE selection (red)",
             " 2 = switch to team TWO selection (blue)",
-            " LEFT CLICK + MOVE = select player bounding box",
+            " 3 = switch to REFEREE selection (yellow)",
+            " LEFT CLICK + MOVE = select player/referee bounding box",
             " LEFT CLICK + CMD + MOVE = select goalkeeper bounding box",
             " RETURN = confirm selection (only if at least {} players were selected)".format(self.MIN_PLAYERS_TO_SELECT),
             " DELETE = remove last selected player",
@@ -189,12 +195,20 @@ class PlayersParser:
             self.drawing = False
             player_selected = False
             goalkeeper_already_selected = any(player.get_team() == self.active_team and player.get_type() == PlayerType.GOALKEEPER for player in self.selected_players)
+            referee_already_selected = any(player.get_team() == self.active_team and self.active_team == Team.REFEREE for player in self.selected_players)
             if self.active_player_type == PlayerType.FIELD_PLAYER:
-                print("Player selected.")
-                player_selected = True
+                if self.active_team == Team.REFEREE:
+                    if referee_already_selected:
+                        print("You can only select one referee!")
+                    else:
+                        print("Referee selected.")
+                        player_selected = True
+                else:
+                    print("Player selected.")
+                    player_selected = True
             else:
                 if goalkeeper_already_selected:
-                    print("You can only select only one goalkeeper by team!")
+                    print("You can only select one goalkeeper by team!")
                 else:
                     print("Goalkeeper selected.")
                     player_selected = True

@@ -52,7 +52,7 @@ class DatasetGenerator:
             # display frame with some informative text
             self.frame_printer.print_text(self.current_frame, "Frame: {}".format(current_frame_number), (5, 30), constants.BGR_WHITE)
             cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
-            cv2.moveWindow(self.FRAME_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[0], self.TOP_LEFT_FRAME_WINDOW[1])
+            # cv2.moveWindow(self.FRAME_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[0], self.TOP_LEFT_FRAME_WINDOW[1])
 
             self._print_available_options()
 
@@ -132,4 +132,4 @@ class DatasetGenerator:
         black_frame = numpy.zeros((200, width, 3))
         self.frame_printer.print_multiline_text(black_frame, self.options, (5, 30), constants.BGR_WHITE)
         cv2.imshow(self.KEYS_HELP_WINDOW_NAME, black_frame)
-        cv2.moveWindow(self.KEYS_HELP_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[1], self.TOP_LEFT_FRAME_WINDOW[0] + height + 100)
+        # cv2.moveWindow(self.KEYS_HELP_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[1], self.TOP_LEFT_FRAME_WINDOW[0] + height + 100)
