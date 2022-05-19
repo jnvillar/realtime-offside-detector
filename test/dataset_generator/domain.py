@@ -18,11 +18,12 @@ class PlayerType(Enum):
 
 class FrameData:
 
-    def __init__(self, frame_number, players, field, referees, defending_team):
+    def __init__(self, frame_number, players, field, referees, last_defense_player_index, defending_team):
         self.frame_number = self._validate_frame_number(frame_number)
         self.players = players
         self.field = field
         self.referees = referees
+        self.last_defense_player_index = last_defense_player_index
         self.defending_team = defending_team
 
     def get_frame_number(self):
@@ -36,6 +37,9 @@ class FrameData:
 
     def get_referees(self):
         return self.referees
+
+    def get_last_defense_player_index(self):
+        return self.last_defense_player_index
 
     def get_defending_team(self):
         return self.defending_team
@@ -55,6 +59,7 @@ class FrameDataBuilder:
         self.players = None
         self.field = None
         self.referees = None
+        self.last_defense_player_index = None
         self.defending_team = None
 
     def set_frame_number(self, frame_number):
@@ -73,12 +78,16 @@ class FrameDataBuilder:
         self.referees = referees
         return self
 
+    def set_last_defense_player_index(self, last_defense_player_index):
+        self.last_defense_player_index = last_defense_player_index
+        return self
+
     def set_defending_team(self, defending_team):
         self.defending_team = defending_team
         return self
 
     def build(self):
-        return FrameData(self.frame_number, self.players, self.field, self.referees, self.defending_team)
+        return FrameData(self.frame_number, self.players, self.field, self.referees, self.last_defense_player_index, self.defending_team)
 
 #######################################################################################################################
 

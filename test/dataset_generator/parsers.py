@@ -93,6 +93,10 @@ class FieldParser:
 
 class PlayersParser:
     MIN_PLAYERS_TO_SELECT = 1
+    TEAM_BOX_COLOR_LAST_DEFENSE = {
+        Team.TEAM_ONE: constants.BGR_ORANGE,
+        Team.TEAM_TWO: constants.BGR_CIAN
+    }
     TEAM_BOX_COLOR = {
         Team.TEAM_ONE: {PlayerType.FIELD_PLAYER: constants.BGR_RED, PlayerType.GOALKEEPER: constants.BGR_DARK_RED},
         Team.TEAM_TWO: {PlayerType.FIELD_PLAYER: constants.BGR_BLUE, PlayerType.GOALKEEPER: constants.BGR_DARK_BLUE},
@@ -111,8 +115,10 @@ class PlayersParser:
         self.frame_printer = FramePrinter()
         self.keyboard_manager = KeyboardManager()
         self.drawing = False
+        self.active_selection_last_defense_player = False
         self.active_team = Team.TEAM_ONE
         self.active_player_type = None
+        self.last_defense_player_index = None
         self.player_box_vertices = []
 
     def parse(self, frame, frame_data_builder):
@@ -131,9 +137,10 @@ class PlayersParser:
 
             key_code = cv2.waitKey(0)
             # RETURN to confirm selection (only if at least MIN_PLAYERS_TO_SELECT vertices were selected)
-            if self.keyboard_manager.key_was_pressed(key_code, constants.RETURN_KEY_CODE) and len(self.selected_players) >= self.MIN_PLAYERS_TO_SELECT:
+            if self.keyboard_manager.key_was_pressed(key_code, constants.RETURN_KEY_CODE) and len(self.selected_players) >= self.MIN_PLAYERS_TO_SELECT and self.last_defense_player_index is not None:
                 print("Players selection confirmed: {}.".format(self.selected_players))
                 frame_data_builder.set_players(self.selected_players)
+                frame_data_builder.set_last_defense_player_index(self.last_defense_player_index)
                 selection_confirmed = True
                 break
             # ONE to select players from team one
@@ -151,6 +158,9 @@ class PlayersParser:
             # DELETE to remove last selected player (only if at least 1 player was selected)
             elif self.keyboard_manager.key_was_pressed(key_code, constants.DELETE_KEY_CODE) and len(self.selected_players) > 0:
                 print("{} deleted from selection.".format(self.selected_players.pop()))
+                # Check if last defense player was removed and restore index in such case
+                if self.last_defense_player_index is not None and len(self.selected_players) <= self.last_defense_player_index:
+                    self.last_defense_player_index = None
                 self.current_frame = self.previous_frames.pop()
                 cv2.imshow(self.window_name, self.current_frame)
             # ESC to exit selection mode
@@ -184,6 +194,7 @@ class PlayersParser:
             " 3 = switch to REFEREE selection (yellow)",
             " LEFT CLICK + MOVE = select player/referee bounding box",
             " LEFT CLICK + CMD + MOVE = select goalkeeper bounding box",
+            " LEFT CLICK + SHIFT + MOVE = select last defending player bounding box",
             " RETURN = confirm selection (only if at least {} players were selected)".format(self.MIN_PLAYERS_TO_SELECT),
             " DELETE = remove last selected player",
             " ESC = exit players selection mode (confirm exit with Y/N)"
@@ -193,10 +204,14 @@ class PlayersParser:
         current_frame_with_box = self.current_frame.copy()
         point = (x, y)
         if event == cv2.EVENT_LBUTTONDOWN:
+            self.active_selection_last_defense_player = False
             self.drawing = True
             self.start_point = (x, y)
             if flags & cv2.EVENT_FLAG_CTRLKEY:
                 self.active_player_type = PlayerType.GOALKEEPER
+            elif flags & cv2.EVENT_FLAG_SHIFTKEY:
+                self.active_selection_last_defense_player = True
+                self.active_player_type = PlayerType.FIELD_PLAYER
             else:
                 self.active_player_type = PlayerType.FIELD_PLAYER
 
@@ -208,16 +223,27 @@ class PlayersParser:
             player_selected = False
             goalkeeper_already_selected = any(player.get_team() == self.active_team and player.get_type() == PlayerType.GOALKEEPER for player in self.selected_players)
             referee_already_selected = any(player.get_team() == self.active_team and self.active_team == Team.REFEREE for player in self.selected_players)
+            last_defense_player_already_selected = self.last_defense_player_index is not None
             if self.active_player_type == PlayerType.FIELD_PLAYER:
                 if self.active_team == Team.REFEREE:
                     if referee_already_selected:
                         print("You can only select one referee!")
+                    elif self.active_selection_last_defense_player:
+                        print("You cannot select a referee as last defense player!")
                     else:
                         print("Referee selected.")
                         player_selected = True
                 else:
-                    print("Player selected.")
-                    player_selected = True
+                    if self.active_selection_last_defense_player:
+                        if last_defense_player_already_selected:
+                            print("You cannot select more than one last defense!")
+                        else:
+                            print("Last defense player selected.")
+                            player_selected = True
+                    else:
+                        print("Player selected.")
+                        player_selected = True
+
             else:
                 if goalkeeper_already_selected:
                     print("You can only select one goalkeeper by team!")
@@ -227,19 +253,28 @@ class PlayersParser:
 
             if player_selected:
                 self.selected_players.append(Player(self.active_player_type, self.active_team, [self.start_point, point]))
+                if self.active_selection_last_defense_player:
+                    self.last_defense_player_index = len(self.selected_players) - 1
+
                 self.previous_frames.append(self.current_frame.copy())
                 cv2.rectangle(current_frame_with_box, self.start_point, point, self._get_box_color(), 2)
                 self.current_frame = current_frame_with_box
 
                 min_remaining_players_to_select = self.MIN_PLAYERS_TO_SELECT - len(self.selected_players)
-                if min_remaining_players_to_select <= 0:
+                if min_remaining_players_to_select <= 0 and self.last_defense_player_index is not None:
                     print("You can select more players or confirm your selection by pressing RETURN (press ESC to exit players selection mode).")
                 else:
-                    print("You need to select at least {} more players (press ESC to exit players selection mode).".format(min_remaining_players_to_select))
+                    if min_remaining_players_to_select <= 0:
+                        print("You need to include the last defense player in your selection (press ESC to exit players selection mode).")
+                    else:
+                        print("You need to select at least {} more players, including the last defense (press ESC to exit players selection mode).".format(min_remaining_players_to_select))
+
 
         cv2.imshow(self.window_name, current_frame_with_box)
 
     def _get_box_color(self):
+        if self.active_selection_last_defense_player:
+            return self.TEAM_BOX_COLOR_LAST_DEFENSE.get(self.active_team)
         return self.TEAM_BOX_COLOR.get(self.active_team).get(self.active_player_type)
 
 #######################################################################################################################

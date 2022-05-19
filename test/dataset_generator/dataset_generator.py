@@ -22,7 +22,7 @@ class DatasetGenerator:
         "DELETE = go back to previous frame",
         "F = switch to field parsing mode",
         "P = switch to players parsing mode",
-        "D = switch to defending team parsing mode",
+        # "D = switch to defending team parsing mode",
         "S = save parsed data to file",
         "ESC = exit without saving",
     ]
@@ -43,7 +43,7 @@ class DatasetGenerator:
         self.parsers = {
             'f': parsers.FieldParser(self.FRAME_WINDOW_NAME),
             'p': parsers.PlayersParser(self.FRAME_WINDOW_NAME),
-            'd': parsers.DefendingTeamParser(self.FRAME_WINDOW_NAME),
+            # 'd': parsers.DefendingTeamParser(self.FRAME_WINDOW_NAME),
         }
         self.options = self.GENERAL_OPTIONS
 

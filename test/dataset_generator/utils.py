@@ -47,11 +47,13 @@ class FrameDataMerger:
         # data from the new frame data object has priority over the old one
         field = old_frame_data.get_field() if new_frame_data.get_field() is None else new_frame_data.get_field()
         players = old_frame_data.get_players() if new_frame_data.get_players() is None else new_frame_data.get_players()
+        last_defense_player_index = old_frame_data.get_last_defense_player_index() if new_frame_data.get_last_defense_player_index() is None else new_frame_data.get_last_defense_player_index()
         defending_team = old_frame_data.get_defending_team() if new_frame_data.get_defending_team() is None else new_frame_data.get_defending_team()
 
         return FrameDataBuilder() \
             .set_frame_number(new_frame_data.get_frame_number()) \
             .set_field(field) \
             .set_players(players) \
+            .set_last_defense_player_index(last_defense_player_index) \
             .set_defending_team(defending_team) \
             .build()
