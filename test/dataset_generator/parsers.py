@@ -327,3 +327,99 @@ class DefendingTeamParser:
             " RETURN = confirm selection"
             " ESC = exit defending selection mode"
         ]
+
+#######################################################################################################################
+
+
+class VanishingPointParser:
+    POINTS_TO_SELECT = 4
+
+    def __init__(self, window_name):
+        self.window_name = window_name
+        self.current_frame = None
+        self.current_frame_to_print = None
+        self.previous_frames = []
+        self.segment_points = []
+        self.frame_printer = FramePrinter()
+        self.keyboard_manager = KeyboardManager()
+
+    def parse(self, frame, frame_data_builder):
+        self.current_frame = frame
+        self.segment_points = []
+        height, width = self.current_frame.shape[:2]
+        selection_confirmed = False
+
+        # set mouse callback function to capture pixels clicked
+        cv2.setMouseCallback(self.window_name, self._click_event)
+        while True:
+            # display the frame with the text
+            self.frame_printer.print_text(self.current_frame,
+                                          "Mark vanishing point by selecting 2 segments",
+                                          (round(width / 2) - 320, 30), constants.BGR_WHITE)
+            self.print_current_frame_with_segments()
+
+            key_code = cv2.waitKey(0)
+            # RETURN to confirm selection (only if exactly POINTS_TO_SELECT points were selected)
+            if self.keyboard_manager.key_was_pressed(key_code, constants.RETURN_KEY_CODE) and len(self.segment_points) == self.POINTS_TO_SELECT:
+                print("Selection confirmed: {}.".format(self.segment_points))
+                frame_data_builder.set_vanishing_point_segments([[self.segment_points[0], self.segment_points[1]], [self.segment_points[2], self.segment_points[3]]])
+                selection_confirmed = True
+                break
+            # DELETE to remove last selected vertex (only if at least 1 vertex was selected)
+            elif self.keyboard_manager.key_was_pressed(key_code, constants.DELETE_KEY_CODE) and len(self.segment_points) > 0:
+                print("Point {} deleted from selection.".format(self.segment_points.pop()))
+                self.current_frame = self.previous_frames.pop()
+            # ESC to exit selection mode
+            elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                print("You have exited vanishing point selection mode.")
+                break
+
+        # remove mouse callback to prevent selecting more points
+        cv2.setMouseCallback(self.window_name, lambda *args: None)
+        self.previous_frames = []
+        self.segment_points = []
+        return selection_confirmed
+
+    def get_options(self):
+        return [
+            " ------------ VANISHING POINT SELECTION MODE ------------",
+            " LEFT CLICK = select segment point",
+            " RETURN = confirm selection (only if {} points were selected)".format(self.POINTS_TO_SELECT),
+            " DELETE = remove last selected point",
+            " ESC = exit field selection mode",
+        ]
+
+    def _click_event(self, event, x, y, flags, arguments):
+        if event == cv2.EVENT_LBUTTONUP:
+            # if 4 points were already selection, reject this point
+            if len(self.segment_points) == 4:
+                print("Two segments are already selected. Confirm your selection.")
+                return
+
+            self.previous_frames.append(self.current_frame.copy())
+            point = (x, y)
+            cv2.circle(self.current_frame, point, radius=3, color=constants.BGR_RED, thickness=-1)
+
+            self.segment_points.append(point)
+            if len(self.segment_points) > 0 and len(self.segment_points) % 2 == 0:
+                # draw line between the previous and the last selected points
+                cv2.line(self.current_frame, self.segment_points[-1], point, constants.BGR_RED, thickness=2)
+
+            print("Point {} selected.".format(point))
+            remaining_vertices_to_select = self.POINTS_TO_SELECT - len(self.segment_points)
+            if remaining_vertices_to_select <= 0:
+                print("You need to mark {} more points (press ESC to exit vanishing point selection mode).".format(remaining_vertices_to_select))
+            self.print_current_frame_with_segments()
+
+    def print_current_frame_with_segments(self):
+        frame_to_print = self.current_frame.copy()
+
+        # if the first segment was already selected, print it
+        if len(self.segment_points) >= 2:
+            cv2.line(frame_to_print, self.segment_points[0], self.segment_points[1], constants.BGR_RED, thickness=2)
+
+        # if the second segment was already selected, print it
+        if len(self.segment_points) == 4:
+            cv2.line(frame_to_print, self.segment_points[2], self.segment_points[3], constants.BGR_RED, thickness=2)
+
+        cv2.imshow(self.window_name, frame_to_print)

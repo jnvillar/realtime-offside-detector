@@ -22,6 +22,7 @@ class DatasetGenerator:
         "DELETE = go back to previous frame",
         "F = switch to field parsing mode",
         "P = switch to players parsing mode",
+        "V = switch to vanishing point parsing mode",
         # "D = switch to defending team parsing mode",
         "S = save parsed data to file",
         "ESC = exit without saving",
@@ -43,6 +44,7 @@ class DatasetGenerator:
         self.parsers = {
             'f': parsers.FieldParser(self.FRAME_WINDOW_NAME),
             'p': parsers.PlayersParser(self.FRAME_WINDOW_NAME),
+            'v': parsers.VanishingPointParser(self.FRAME_WINDOW_NAME)
             # 'd': parsers.DefendingTeamParser(self.FRAME_WINDOW_NAME),
         }
         self.options = self.GENERAL_OPTIONS
@@ -148,7 +150,7 @@ class DatasetGenerator:
 
     def _print_available_options(self):
         height, width = [500, 1000] if self.current_frame is None else self.current_frame.shape[:2]
-        black_frame = numpy.zeros((200, width, 3))
+        black_frame = numpy.zeros((220, width, 3))
         self.frame_printer.print_multiline_text(black_frame, self.options, (5, 30), constants.BGR_WHITE)
         cv2.imshow(self.KEYS_HELP_WINDOW_NAME, black_frame)
         # cv2.moveWindow(self.KEYS_HELP_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[1], self.TOP_LEFT_FRAME_WINDOW[0] + height + 100)

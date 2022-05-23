@@ -1,5 +1,8 @@
 from enum import Enum
 
+from domain.line import Line
+from utils import math
+
 
 class Team(Enum):
     TEAM_ONE = 1
@@ -18,12 +21,14 @@ class PlayerType(Enum):
 
 class FrameData:
 
-    def __init__(self, frame_number, players, field, referees, last_defense_player_index, defending_team):
+    def __init__(self, frame_number, players, field, referees, last_defense_player_index, vanishing_point_segments, defending_team):
         self.frame_number = self._validate_frame_number(frame_number)
         self.players = players
         self.field = field
         self.referees = referees
         self.last_defense_player_index = last_defense_player_index
+        self.vanishing_point_segments = vanishing_point_segments
+        self.vanishing_point = None
         self.defending_team = defending_team
 
     def get_frame_number(self):
@@ -41,6 +46,15 @@ class FrameData:
     def get_last_defense_player_index(self):
         return self.last_defense_player_index
 
+    def get_vanishing_point_segments(self):
+        return self.vanishing_point_segments
+
+    def get_vanishing_point(self):
+        # Lazy calculation of vp from segments
+        if self.vanishing_point is None:
+            self.vanishing_point = self._calculate_vanishing_point_from_segments()
+        return self.vanishing_point
+
     def get_defending_team(self):
         return self.defending_team
 
@@ -48,6 +62,13 @@ class FrameData:
         if frame_number < 1:
             raise ValueError("Frame number must be a positive integer")
         return frame_number
+
+    def _calculate_vanishing_point_from_segments(self):
+        p1 = self.vanishing_point_segments[0]
+        p2 = self.vanishing_point_segments[1]
+        p3 = self.vanishing_point_segments[2]
+        p4 = self.vanishing_point_segments[3]
+        return math.get_lines_intersection(Line(p1, p2), Line(p3, p4))
 
 #######################################################################################################################
 
@@ -60,6 +81,7 @@ class FrameDataBuilder:
         self.field = None
         self.referees = None
         self.last_defense_player_index = None
+        self.vanishing_point_segments = None
         self.defending_team = None
 
     def set_frame_number(self, frame_number):
@@ -82,12 +104,16 @@ class FrameDataBuilder:
         self.last_defense_player_index = last_defense_player_index
         return self
 
+    def set_vanishing_point_segments(self, vanishing_point_segments):
+        self.vanishing_point_segments = vanishing_point_segments
+        return self
+
     def set_defending_team(self, defending_team):
         self.defending_team = defending_team
         return self
 
     def build(self):
-        return FrameData(self.frame_number, self.players, self.field, self.referees, self.last_defense_player_index, self.defending_team)
+        return FrameData(self.frame_number, self.players, self.field, self.referees, self.last_defense_player_index, self.vanishing_point_segments, self.defending_team)
 
 #######################################################################################################################
 
