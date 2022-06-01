@@ -17,6 +17,7 @@ BGR_BLUE = (255, 0, 0)
 BGR_DARK_BLUE = (100, 40, 0)
 BGR_CIAN = (255, 255, 0)
 BGR_YELLOW = (0, 255, 255)
+BGR_GREEN = (0, 255, 0)
 
 # Key ASCII codes (dec)
 DELETE_KEY_CODE = [8, 127]

@@ -1,5 +1,6 @@
 import cv2
 
+from test.dataset_generator import colors
 from test.dataset_generator.domain import Field, Team, PlayerType, Player
 from utils import constants
 from utils.utils import FramePrinter, KeyboardManager
@@ -67,10 +68,10 @@ class FieldParser:
         if event == cv2.EVENT_LBUTTONUP:
             self.previous_frames.append(self.current_frame.copy())
             point = (x, y)
-            cv2.circle(self.current_frame, point, radius=3, color=constants.BGR_RED, thickness=-1)
+            cv2.circle(self.current_frame, point, radius=3, color=colors.FIELD_BOX_COLOR, thickness=-1)
             if len(self.field_vertices) > 0:
                 # draw line between the previous and the last selected points
-                cv2.line(self.current_frame, self.field_vertices[-1], point, constants.BGR_RED, thickness=2)
+                cv2.line(self.current_frame, self.field_vertices[-1], point, colors.FIELD_BOX_COLOR, thickness=2)
 
             self.field_vertices.append(point)
             print("Vertex {} selected.".format(point))
@@ -85,7 +86,7 @@ class FieldParser:
         frame_to_print = self.current_frame.copy()
         # if at least the minimum number of required vertices are selected, close the box
         if len(self.field_vertices) >= self.MIN_VERTICES_TO_SELECT:
-            cv2.line(frame_to_print, self.field_vertices[-1], self.field_vertices[0], constants.BGR_RED, thickness=2)
+            cv2.line(frame_to_print, self.field_vertices[-1], self.field_vertices[0], colors.FIELD_BOX_COLOR, thickness=2)
         cv2.imshow(self.window_name, frame_to_print)
 
 #######################################################################################################################
@@ -93,19 +94,6 @@ class FieldParser:
 
 class PlayersParser:
     MIN_PLAYERS_TO_SELECT = 1
-    TEAM_BOX_COLOR_LAST_DEFENSE = {
-        Team.TEAM_ONE: constants.BGR_ORANGE,
-        Team.TEAM_TWO: constants.BGR_CIAN
-    }
-    TEAM_BOX_COLOR = {
-        Team.TEAM_ONE: {PlayerType.FIELD_PLAYER: constants.BGR_RED, PlayerType.GOALKEEPER: constants.BGR_DARK_RED},
-        Team.TEAM_TWO: {PlayerType.FIELD_PLAYER: constants.BGR_BLUE, PlayerType.GOALKEEPER: constants.BGR_DARK_BLUE},
-        Team.REFEREE: {PlayerType.FIELD_PLAYER: constants.BGR_YELLOW}
-    }
-    EMPTY_PLAYER_SELECTION = {
-        Team.TEAM_ONE: {PlayerType.FIELD_PLAYER: [], PlayerType.GOALKEEPER: []},
-        Team.TEAM_TWO: {PlayerType.FIELD_PLAYER: [], PlayerType.GOALKEEPER: []}
-    }
 
     def __init__(self, window_name):
         self.window_name = window_name
@@ -274,8 +262,8 @@ class PlayersParser:
 
     def _get_box_color(self):
         if self.active_selection_last_defense_player:
-            return self.TEAM_BOX_COLOR_LAST_DEFENSE.get(self.active_team)
-        return self.TEAM_BOX_COLOR.get(self.active_team).get(self.active_player_type)
+            return colors.TEAM_BOX_COLOR_LAST_DEFENSE.get(self.active_team)
+        return colors.TEAM_BOX_COLOR.get(self.active_team).get(self.active_player_type)
 
 #######################################################################################################################
 
@@ -398,12 +386,12 @@ class VanishingPointParser:
 
             self.previous_frames.append(self.current_frame.copy())
             point = (x, y)
-            cv2.circle(self.current_frame, point, radius=3, color=constants.BGR_RED, thickness=-1)
+            cv2.circle(self.current_frame, point, radius=3, color=colors.VP_SEGMENTS_COLOR, thickness=-1)
 
             self.segment_points.append(point)
             if len(self.segment_points) > 0 and len(self.segment_points) % 2 == 0:
                 # draw line between the previous and the last selected points
-                cv2.line(self.current_frame, self.segment_points[-1], point, constants.BGR_RED, thickness=2)
+                cv2.line(self.current_frame, self.segment_points[-1], point, colors.VP_SEGMENTS_COLOR, thickness=2)
 
             print("Point {} selected.".format(point))
             remaining_vertices_to_select = self.POINTS_TO_SELECT - len(self.segment_points)
@@ -416,10 +404,10 @@ class VanishingPointParser:
 
         # if the first segment was already selected, print it
         if len(self.segment_points) >= 2:
-            cv2.line(frame_to_print, self.segment_points[0], self.segment_points[1], constants.BGR_RED, thickness=2)
+            cv2.line(frame_to_print, self.segment_points[0], self.segment_points[1], colors.VP_SEGMENTS_COLOR, thickness=2)
 
         # if the second segment was already selected, print it
         if len(self.segment_points) == 4:
-            cv2.line(frame_to_print, self.segment_points[2], self.segment_points[3], constants.BGR_RED, thickness=2)
+            cv2.line(frame_to_print, self.segment_points[2], self.segment_points[3], colors.VP_SEGMENTS_COLOR, thickness=2)
 
         cv2.imshow(self.window_name, frame_to_print)

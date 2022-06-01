@@ -1,3 +1,5 @@
+import cv2
+
 from domain.frame import *
 import log.logger as log
 
@@ -12,6 +14,7 @@ class Video:
         self.current_frame_number = 0
         self.next_frames = []
         self.previous_frames = []
+        self.total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
 
     def set_frame(self, frame):
         self.current_frame = frame
@@ -49,5 +52,18 @@ class Video:
                 self.next_frames.append(self.current_frame)
             self.current_frame = self.previous_frames.pop()
             self.current_frame_number -= 1
+
+        return self.current_frame.copy()
+
+    def get_exact_frame(self, frame_number):
+        if frame_number < 1 or frame_number > self.total_frames:
+            raise Exception("Invalid frame number ({}). This video includes {} frames.".format(frame_number, self.total_frames))
+
+        if len(self.previous_frames) >= frame_number:
+            while len(self.previous_frames) > frame_number - 1:
+                self.get_previous_frame()
+        else:
+            while len(self.previous_frames) < frame_number - 1:
+                self.get_next_frame()
 
         return self.current_frame.copy()

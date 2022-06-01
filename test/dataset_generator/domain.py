@@ -21,11 +21,10 @@ class PlayerType(Enum):
 
 class FrameData:
 
-    def __init__(self, frame_number, players, field, referees, last_defense_player_index, vanishing_point_segments, defending_team):
+    def __init__(self, frame_number, players, field, last_defense_player_index, vanishing_point_segments, defending_team):
         self.frame_number = self._validate_frame_number(frame_number)
         self.players = players
         self.field = field
-        self.referees = referees
         self.last_defense_player_index = last_defense_player_index
         self.vanishing_point_segments = vanishing_point_segments
         self.vanishing_point = None
@@ -39,9 +38,6 @@ class FrameData:
 
     def get_players(self):
         return self.players
-
-    def get_referees(self):
-        return self.referees
 
     def get_last_defense_player_index(self):
         return self.last_defense_player_index
@@ -64,10 +60,12 @@ class FrameData:
         return frame_number
 
     def _calculate_vanishing_point_from_segments(self):
-        p1 = self.vanishing_point_segments[0]
-        p2 = self.vanishing_point_segments[1]
-        p3 = self.vanishing_point_segments[2]
-        p4 = self.vanishing_point_segments[3]
+        if self.vanishing_point_segments is None:
+            return None
+        p1 = self.vanishing_point_segments[0][0]
+        p2 = self.vanishing_point_segments[0][1]
+        p3 = self.vanishing_point_segments[1][0]
+        p4 = self.vanishing_point_segments[1][1]
         return math.get_lines_intersection(Line(p1, p2), Line(p3, p4))
 
 #######################################################################################################################
@@ -79,7 +77,6 @@ class FrameDataBuilder:
         self.frame_number = None
         self.players = None
         self.field = None
-        self.referees = None
         self.last_defense_player_index = None
         self.vanishing_point_segments = None
         self.defending_team = None
@@ -96,10 +93,6 @@ class FrameDataBuilder:
         self.field = field
         return self
 
-    def set_referees(self, referees):
-        self.referees = referees
-        return self
-
     def set_last_defense_player_index(self, last_defense_player_index):
         self.last_defense_player_index = last_defense_player_index
         return self
@@ -113,7 +106,7 @@ class FrameDataBuilder:
         return self
 
     def build(self):
-        return FrameData(self.frame_number, self.players, self.field, self.referees, self.last_defense_player_index, self.vanishing_point_segments, self.defending_team)
+        return FrameData(self.frame_number, self.players, self.field, self.last_defense_player_index, self.vanishing_point_segments, self.defending_team)
 
 #######################################################################################################################
 

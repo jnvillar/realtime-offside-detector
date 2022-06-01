@@ -27,7 +27,8 @@ class PlayerDictionaryMapper:
 
     def from_dictionary(self, dictionary):
         self._validate_structure(dictionary)
-        return Player(PlayerType(dictionary[self.TYPE_FIELD]), Team(dictionary[self.TEAM_FIELD]), dictionary[self.POSITION_FIELD])
+        # for position: convert points into tuples (they are parsed as lists)
+        return Player(PlayerType(dictionary[self.TYPE_FIELD]), Team(dictionary[self.TEAM_FIELD]), [tuple(point) for point in dictionary[self.POSITION_FIELD]])
 
     def _validate_structure(self, dictionary):
         if self.TYPE_FIELD not in dictionary or self.TEAM_FIELD not in dictionary or self.POSITION_FIELD not in dictionary:
@@ -85,7 +86,8 @@ class FrameDataDictionaryMapper:
 
         frame_data_builder = FrameDataBuilder().set_frame_number(frame_number)
         if field_vertices is not None:
-            frame_data_builder.set_field(Field(field_vertices))
+            # convert points into tuples (they are parsed as lists)
+            frame_data_builder.set_field(Field([tuple(vertex) for vertex in field_vertices]))
 
         if players_as_dictionary is not None:
             frame_data_builder.set_players([self.player_mapper.from_dictionary(player_as_dictionary) for player_as_dictionary in players_as_dictionary])
@@ -97,7 +99,8 @@ class FrameDataDictionaryMapper:
             frame_data_builder.set_defending_team(Team(defending_team))
 
         if vanishing_point_segments is not None:
-            frame_data_builder.set_vanishing_point_segments(vanishing_point_segments)
+            # convert points into tuples (they are parsed as lists)
+            frame_data_builder.set_vanishing_point_segments([[tuple(vanishing_point_segments[0][0]), tuple(vanishing_point_segments[0][1])], [tuple(vanishing_point_segments[1][0]), tuple(vanishing_point_segments[1][1])]])
 
         return frame_data_builder.build()
 
