@@ -28,7 +28,7 @@ class DatasetGenerator:
         "ESC = exit without saving",
     ]
     EXIT_OPTIONS = [
-        "Are you sure you want to exit? All the selection WILL BE LOST.",
+        "Are you sure you want to exit? All the selection that was not saved WILL BE LOST.",
         "Y (yes)",
         "N (no)"
     ]
@@ -52,7 +52,6 @@ class DatasetGenerator:
     def generate_dataset(self, video_path, outfile):
         video = video_repository.VideoRepository.get_video(video_path, True)
 
-        print_json = False
         self.current_frame = video.get_next_frame()
         while self.current_frame is not None:
             current_frame_number = video.get_current_frame_number()
@@ -87,7 +86,8 @@ class DatasetGenerator:
                     break
                 # S to save parsed data to file
                 elif self.keyboard_manager.is_lowercase_alphabet_char_code(key_code) and chr(key_code) == 's':
-                    print_json = True
+                    self._print_parsed_data(outfile)
+                    self.options = self.GENERAL_OPTIONS
                     break
                 # ESC to exit without saving
                 elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
@@ -105,11 +105,6 @@ class DatasetGenerator:
                             break
                 # any other key will do nothing
 
-            if print_json:
-                break
-
-        self._print_parsed_data(outfile)
-
     def _print_parsed_data(self, outfile):
         frame_data_mapper = FrameDataDictionaryMapper()
         frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in self.frame_data_builders.items()]
@@ -121,7 +116,8 @@ class DatasetGenerator:
                 "The output file to be written ({}) already exists.".format(outfile),
                 "Do you want to merge parsed frame data or create a new file?",
                 "1 = Merge",
-                "9 = Create a new file (this file will not overwrite the existing one)"
+                "9 = Create a new file (this file will not overwrite the existing one)",
+                "ESC = Abort saving and continue parsing"
             ]
             self._print_available_options()
             while True:
@@ -143,10 +139,15 @@ class DatasetGenerator:
                         new_outfile = "{} ({})".format(outfile, numeric_postfix)
                     outfile = new_outfile
                     break
+                # ESC to not save
+                elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                    print("Save was aborted. Continue parsing.")
+                    return
 
         # save data in file
         with open(outfile, 'w') as file:
             json.dump([frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list], file)
+            print("Parsed data saved in file {}".format(outfile))
 
     def _print_available_options(self):
         height, width = [500, 1000] if self.current_frame is None else self.current_frame.shape[:2]
