@@ -48,6 +48,9 @@ class DatasetGenerator:
             # 'd': parsers.DefendingTeamParser(self.FRAME_WINDOW_NAME),
         }
         self.options = self.GENERAL_OPTIONS
+        self.show_warning = False
+        self.missing_parsing = None
+        self.previous_frame_number = -1
 
     def generate_dataset(self, video_path, outfile):
         video = video_repository.VideoRepository.get_video(video_path, True)
@@ -57,6 +60,13 @@ class DatasetGenerator:
             current_frame_number = video.get_current_frame_number()
             # display frame with some informative text
             self.frame_printer.print_text(self.current_frame, "Frame: {}".format(current_frame_number), (5, 30), constants.BGR_WHITE)
+            if self.show_warning:
+                warning_message_lines = [
+                    "WARNING: YOU DID NOT PARSE {} IN THE PREVIOUS FRAME ({}). ".format(self.missing_parsing, self.previous_frame_number),
+                    "IF THAT'S OK DISMISS THIS MESSAGE AND CONTINUE!"
+                ]
+                print(warning_message_lines[0] + warning_message_lines[1])
+                self.frame_printer.print_multiline_text(self.current_frame, warning_message_lines, (200, 20), constants.BGR_YELLOW)
             cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
             # cv2.moveWindow(self.FRAME_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[0], self.TOP_LEFT_FRAME_WINDOW[1])
 
@@ -78,10 +88,13 @@ class DatasetGenerator:
                     self._print_available_options()
                 # DELETE to go back to previous frame
                 elif self.keyboard_manager.key_was_pressed(key_code, constants.DELETE_KEY_CODE):
+                    if current_frame_number != 1:
+                        self.show_warning = self._is_any_missing_parsing(current_frame_number)
                     self.current_frame = video.get_previous_frame()
                     break
                 # SPACE to continue to next frame
                 elif self.keyboard_manager.key_was_pressed(key_code, constants.SPACE_KEY_CODE):
+                    self.show_warning = self._is_any_missing_parsing(current_frame_number)
                     self.current_frame = video.get_next_frame()
                     break
                 # S to save parsed data to file
@@ -105,7 +118,35 @@ class DatasetGenerator:
                             break
                 # any other key will do nothing
 
-    def _print_parsed_data(self, outfile):
+        self._print_parsed_data(outfile, allow_abort_saving=False)
+
+    def _is_any_missing_parsing(self, current_frame_number):
+        current_frame_data_builder = self.frame_data_builders.get(current_frame_number, None)
+        if current_frame_data_builder is None:
+            return False
+
+        players = current_frame_data_builder.players
+        field = current_frame_data_builder.field
+        vanishing_point_segments = current_frame_data_builder.vanishing_point_segments
+        # if nothing was marked in the frame, we assume that it was not a frame of interest
+        if players is None and field is None and vanishing_point_segments is None:
+            return False
+        elif players is None:
+            self.missing_parsing = "PLAYERS"
+            self.previous_frame_number = current_frame_number
+            return True
+        elif field is None:
+            self.missing_parsing = "FIELD"
+            self.previous_frame_number = current_frame_number
+            return True
+        elif vanishing_point_segments is None:
+            self.missing_parsing = "VANISHING POINT SEGMENTS"
+            self.previous_frame_number = current_frame_number
+            return True
+
+        return False
+
+    def _print_parsed_data(self, outfile, allow_abort_saving=True):
         frame_data_mapper = FrameDataDictionaryMapper()
         frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in self.frame_data_builders.items()]
 
@@ -117,8 +158,10 @@ class DatasetGenerator:
                 "Do you want to merge parsed frame data or create a new file?",
                 "1 = Merge",
                 "9 = Create a new file (this file will not overwrite the existing one)",
-                "ESC = Abort saving and continue parsing"
             ]
+            if allow_abort_saving:
+                self.options.append("ESC = Abort saving and continue parsing")
+
             self._print_available_options()
             while True:
                 key_code = cv2.waitKey(0)
@@ -140,7 +183,7 @@ class DatasetGenerator:
                     outfile = new_outfile
                     break
                 # ESC to not save
-                elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                elif allow_abort_saving and self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
                     print("Save was aborted. Continue parsing.")
                     return
 
