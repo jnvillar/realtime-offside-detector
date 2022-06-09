@@ -129,44 +129,6 @@ class DatasetReader:
                             break
                 # any other key will do nothing
 
-    def _show_parsed_data(self, outfile):
-        frame_data_mapper = FrameDataDictionaryMapper()
-        frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in self.frame_data_builders.items()]
-
-        output_path = Path(outfile)
-        if output_path.is_file():
-            # file exists
-            self.options = [
-                "The output file to be written ({}) already exists.".format(outfile),
-                "Do you want to merge parsed frame data or create a new file?",
-                "1 = Merge",
-                "9 = Create a new file (this file will not overwrite the existing one)"
-            ]
-            self._print_available_options()
-            while True:
-                key_code = cv2.waitKey(0)
-                # ONE to merge frame data list from file and the new frame data
-                if self.keyboard_manager.key_was_pressed(key_code, constants.ONE_KEY_CODE):
-                    with open(outfile, 'r') as file:
-                        frame_data_dictionary_list = json.load(file)
-                        file_frame_data_list = [frame_data_mapper.from_dictionary(frame_data_dictionary) for frame_data_dictionary in frame_data_dictionary_list]
-                        frame_data_list = FrameDataMerger.merge(frame_data_list, file_frame_data_list)
-                        break
-                # NINE to create a new file with the frame data
-                elif self.keyboard_manager.key_was_pressed(key_code, constants.NINE_KEY_CODE):
-                    #  Add numeric suffix to the outfile to avoid overwrite
-                    numeric_postfix = 1
-                    new_outfile = "{} ({})".format(outfile, numeric_postfix)
-                    while Path(new_outfile).is_file():
-                        numeric_postfix += 1
-                        new_outfile = "{} ({})".format(outfile, numeric_postfix)
-                    outfile = new_outfile
-                    break
-
-        # save data in file
-        with open(outfile, 'w') as file:
-            json.dump([frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list], file)
-
     def _print_available_options(self):
         height, width = [500, 1000] if self.current_frame is None else self.current_frame.shape[:2]
         black_frame = numpy.zeros((220, width, 3))
