@@ -97,6 +97,9 @@ class FrameDataPrinter:
             cv2.line(frame, vanishing_point_segments[1][0], vanishing_point_segments[1][1], colors.VP_SEGMENTS_COLOR, thickness=2)
             self.frame_printer.print_text(frame, "Vanishing point: {}".format(vanishing_point), (230, 30), constants.BGR_WHITE)
 
+        if vanishing_point is not None and players_and_referees is not None and last_defense_player_index is not None:
+            cv2.line(frame, vanishing_point, players_and_referees[last_defense_player_index].get_position()[1], colors.OFFSIDE_LINE_COLOR, thickness=2)
+
     def _get_player_box_color(self, player, last_defense_player):
         if last_defense_player:
             return colors.TEAM_BOX_COLOR_LAST_DEFENSE.get(player.get_team())
