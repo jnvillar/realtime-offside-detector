@@ -1,9 +1,11 @@
+import json
 import os
 
 from argparse import ArgumentParser
 from pathlib import Path
 
 from test.dataset_generator.dataset_generator import DatasetGenerator
+from test.dataset_generator.mappers import FrameDataDictionaryMapper
 
 
 def parse_arguments():
@@ -26,4 +28,12 @@ def get_file_name(video_path):
 
 if __name__ == '__main__':
     video_path, outfile = parse_arguments()
-    DatasetGenerator().generate_dataset(video_path, outfile)
+    dataset_generator = DatasetGenerator()
+    try:
+        dataset_generator.generate_dataset(video_path, outfile)
+    except Exception as e:
+        print("Unexpected error while parsing data: {}".format(str(e)))
+        print("Parsed data:".format(str(e)))
+        frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in dataset_generator.frame_data_builders.items()]
+        frame_data_mapper = FrameDataDictionaryMapper()
+        print(json.dumps([frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list]))
