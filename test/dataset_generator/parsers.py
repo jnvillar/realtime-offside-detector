@@ -113,6 +113,8 @@ class PlayersParser:
         self.current_frame = frame
         height, width = self.current_frame.shape[:2]
         selection_confirmed = False
+        # reset to not use the value from a previous frame
+        self.last_defense_player_index = None
 
         # set mouse callback function to capture pixels clicked
         cv2.setMouseCallback(self.window_name, self._click_event)
@@ -231,7 +233,6 @@ class PlayersParser:
                     else:
                         print("Player selected.")
                         player_selected = True
-
             else:
                 if goalkeeper_already_selected:
                     print("You can only select one goalkeeper by team!")
