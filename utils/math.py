@@ -24,7 +24,7 @@ def get_lines_intersection(line1: Line, line2: Line):
     x = (a * (p3[0] - p4[0]) - (p1[0] - p2[0]) * b) / denominator
     y = (a * (p3[1] - p4[1]) - (p1[1] - p2[1]) * b) / denominator
 
-    return x, y
+    return int(round(x)), int(round(y))
 
 
 def get_line(p1, p2):
