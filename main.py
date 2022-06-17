@@ -9,14 +9,14 @@ if __name__ == '__main__':
     Logger.initialize(config['logger'])
     ScreenManager.initialize(config['screen_manager'])
 
-    video_path = './test/videos'
-    dataset_path = './datasets'
     video_name = constants.VideoConstants.video_1_from_8_to_12
+
+    video_path = './test/videos' + '/' + video_name
+    dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"
 
     analytics = Analytics(video_name, **config['analytics_conf'])
     offside_line_detector = OffsideLineDetector(analytics, **config)
 
     while True:
-        video = video_repository.VideoRepository.get_video(video_path + '/' + video_name)
-        offside_line_detector.detect_and_draw_offside_line(video, dataset_path + '/' + video_name.split(".")[0] + ".json")
-        analytics.store()
+        video = video_repository.VideoRepository.get_video(video_path)
+        offside_line_detector.detect_and_draw_offside_line(video, dataset_path)
