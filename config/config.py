@@ -34,7 +34,7 @@ default_config = {
     'team_classifier': {  # params for team classifier
         'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
-            'attacking_team': team_one
+            'attacking_team': team_two
         },
         'by_ball_detection': {  # params used in by ball detection method
             'debug': False
