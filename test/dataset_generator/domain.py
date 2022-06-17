@@ -204,6 +204,13 @@ class Player:
     def get_position(self):
         return self.position
 
+    def get_center(self):
+        upper_left, down_right = self.position
+        width = down_right[0] - upper_left[0]
+        height = upper_left[1] - down_right[1]
+        center = (upper_left[0] + int(width / 2), upper_left[1] - int(height / 2))
+        return center
+
     def _to_string(self):
         return "Player(type: {}, team: {}, position: {})".format(self.player_type, self.team, self.position)
 
