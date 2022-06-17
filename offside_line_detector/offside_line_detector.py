@@ -38,7 +38,7 @@ class OffsideLineDetector:
 
     def detect_offside_line(self, soccer_video: Video):
         # detect field
-        soccer_video, _ = self.field_detector.detect_field(soccer_video)
+        soccer_video, mask = self.field_detector.detect_field(soccer_video)
         # get vanishing point
         vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
         # find players
@@ -62,7 +62,7 @@ class OffsideLineDetector:
             # draw players
             soccer_video = frame_utils.draw_players(soccer_video, players)
 
-        return soccer_video
+        return soccer_video, players, vanishing_point, mask
 
     def detect_and_draw_offside_line(self, soccer_video: Video):
         pause = True
@@ -76,7 +76,7 @@ class OffsideLineDetector:
                 self.screen_manager.show_frame(soccer_video.get_current_frame(), 'original')
 
             Timer.start('detect_offside_line')
-            soccer_video = self.detect_offside_line(soccer_video)
+            soccer_video, players, vanishing_point, field_mask = self.detect_offside_line(soccer_video)
             elapsed_time = Timer.stop('detect_offside_line')
             self.log.log('offside line detected', {'cost': elapsed_time})
 

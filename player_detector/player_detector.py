@@ -37,11 +37,5 @@ class PlayerDetector:
         else:
             players = []
         elapsed_time = Timer.stop('finding players')
-        self.save_event(video, players)
         self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
         return players
-
-    def save_event(self, video: Video, players: [Player]):
-        self.analytics.save({
-            'frame': video.get_current_frame_number(),
-            'players': [player.get_data() for player in players]})

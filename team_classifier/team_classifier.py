@@ -13,7 +13,7 @@ class TeamClassifier:
             'by_parameter': ByParameter(**kwargs['by_parameter']),
             'by_ball_detection': ByBallDetection(**kwargs['by_ball_detection'])
         }
-        self.method = methods['by_ball_detection']
+        self.method = methods[kwargs["method"]]
 
     def classify_teams(self, video: Video, players: [Player]):
         self.log.log("classifying teams")

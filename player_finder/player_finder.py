@@ -28,15 +28,18 @@ class PlayerFinder:
             self.log.log("orientation is None", {}) if self.args['debug'] else None
             return
 
-        players = get_defending_players(players)
+        defending_players = get_defending_players(players)
 
-        res = players[0]
+        if len(defending_players) == 0:
+            print("a")
+
+        res = defending_players[0]
         if orientation == Orientation.left:
-            for player in players:
+            for player in defending_players:
                 if player.get_box().x < res.get_box().x:
                     res = player
         else:
-            for player in players:
+            for player in defending_players:
                 if player.get_box().x + player.get_box().w > res.get_box().x + res.get_box().w:
                     res = player
 

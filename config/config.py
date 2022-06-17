@@ -31,12 +31,12 @@ default_config = {
         'debug': False
     },
     'team_classifier': {  # params for team classifier
-        'method': 'by_ball_detection',
+        'method': 'by_parameter',
         'by_parameter': {  # params used in by parameter method
             'attacking_team': team_one
         },
         'by_ball_detection': {  # params used in by ball detection method
-            'debug': True
+            'debug': False
         }
     },
     'player_sorter': {
@@ -72,7 +72,7 @@ default_config = {
         'detect_every_amount_of_frames': 1,
         'otsu': {
             'debug': False,
-            'ignore_contours_smaller_than': 0.03,
+            'ignore_contours_smaller_than': 0.05,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             # 'filter_contour_inside_other': True

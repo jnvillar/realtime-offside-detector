@@ -10,8 +10,12 @@ class ByParameter:
         self.args = kwargs
 
     def classify_teams(self, frame, players: [Player]):
-        team = self.args['defending_team']
-        set_defending_team(team)
+        if self.args.get('defending_team', False):
+            team = self.args['defending_team']
+            set_defending_team(team)
+        if self.args.get('attacking_team', False):
+            team = self.args['attacking_team']
+            set_attacking_team(team)
 
 
 class ByBallDetection:

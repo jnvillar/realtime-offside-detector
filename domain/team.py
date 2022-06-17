@@ -27,6 +27,14 @@ def set_defending_team(defending_team):
             team.is_defending = False
 
 
+def set_attacking_team(attacking_team):
+    for team in all_teams:
+        if attacking_team.id == team.id:
+            team.is_defending = False
+        else:
+            team.is_defending = True
+
+
 # blue team
 team_one = Team("1️⃣", (255, 0, 0), "1")
 # red team
