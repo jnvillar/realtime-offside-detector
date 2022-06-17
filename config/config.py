@@ -25,7 +25,8 @@ default_config = {
         'team_names': {
             team_one.id: "boca",
             team_two.id: "river",
-        }
+        },
+        'compare': True
     },
     'player_finder': {
         'debug': False

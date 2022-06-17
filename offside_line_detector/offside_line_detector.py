@@ -1,17 +1,27 @@
-from field_detector.field_detector import FieldDetector
-from utils import constants
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
+from test.dataset_generator.dataset_generator import *
+from test.dataset_generator.domain import *
+from field_detector.field_detector import FieldDetector
 from offside_line_drawer.offside_line import *
 from player_detector.player_detector import *
 from team_classifier.team_classifier import *
 from player_tracker.player_tracker import *
 from player_sorter.player_sorter import *
 from player_finder.player_finder import *
+
 import utils.frame_utils as frame_utils
 from utils.utils import *
 from domain.video import *
 import cv2
+
+
+class OffsideLineDetectorResult:
+    def __init__(self, video: Video, players: [Player], vanishing_point, field_mask):
+        self.video: Video = video
+        self.players: [Player] = players
+        self.vanishing_point = vanishing_point
+        self.field_mask = field_mask
 
 
 class OffsideLineDetector:
@@ -38,7 +48,7 @@ class OffsideLineDetector:
 
     def detect_offside_line(self, soccer_video: Video):
         # detect field
-        soccer_video, mask = self.field_detector.detect_field(soccer_video)
+        soccer_video, field_mask = self.field_detector.detect_field(soccer_video)
         # get vanishing point
         vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
         # find players
@@ -62,7 +72,12 @@ class OffsideLineDetector:
             # draw players
             soccer_video = frame_utils.draw_players(soccer_video, players)
 
-        return soccer_video, players, vanishing_point, mask
+        return OffsideLineDetectorResult(
+            video=soccer_video,
+            players=players,
+            vanishing_point=vanishing_point,
+            field_mask=field_mask
+        )
 
     def detect_and_draw_offside_line(self, soccer_video: Video):
         pause = True
@@ -76,18 +91,33 @@ class OffsideLineDetector:
                 self.screen_manager.show_frame(soccer_video.get_current_frame(), 'original')
 
             Timer.start('detect_offside_line')
-            soccer_video, players, vanishing_point, field_mask = self.detect_offside_line(soccer_video)
+            result = self.detect_offside_line(soccer_video)
             elapsed_time = Timer.stop('detect_offside_line')
             self.log.log('offside line detected', {'cost': elapsed_time})
 
             if self.params.get('show_result', False):
-                self.screen_manager.show_frame(soccer_video.get_current_frame(), 'final result')
+                self.screen_manager.show_frame(result.video.get_current_frame(), 'final result')
 
             if self.params.get('stop_in_frame', False):
-                if self.params['stop_in_frame'] == soccer_video.get_current_frame_number():
+                if self.params['stop_in_frame'] == result.video.get_current_frame_number():
                     pause = True
 
+            if self.params.get('compare', False):
+                self.compare(result)
+
             pause = self.parse_keyboard_action(pause)
+
+    def compare(self, result: OffsideLineDetectorResult):
+        data_frame = self.build_frame_data(result)
+        return
+
+    def build_frame_data(self, result: OffsideLineDetectorResult) -> FrameData:
+        builder = FrameDataBuilder()
+        builder.set_frame_number(result.video.get_current_frame_number())
+        builder.set_players_from_domain_players(result.players)
+        builder.set_field_mask(result.field_mask)
+        builder.set_vanishing_point(result.vanishing_point)
+        return builder.build(all_parameters_set=True)
 
     def parse_keyboard_action(self, pause):
         if pause:

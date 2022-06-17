@@ -31,7 +31,8 @@ class Box:
         return self.h
 
     def __str__(self):
-        return 'Box: ' + ' ul:' + str(self.upper_left) + ' ur: ' + str(self.upper_right) + ' dl: ' + str(self.down_left) + ' dr: ' + str(self.down_right)
+        return 'Box: ' + ' ul:' + str(self.upper_left) + ' ur: ' + str(self.upper_right) + ' dl: ' + str(
+            self.down_left) + ' dr: ' + str(self.down_right)
 
 
 def box_from_player(player, focused=False) -> Box:

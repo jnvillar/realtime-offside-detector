@@ -45,7 +45,6 @@ class DatasetGenerator:
             'f': parsers.FieldParser(self.FRAME_WINDOW_NAME),
             'p': parsers.PlayersParser(self.FRAME_WINDOW_NAME),
             'v': parsers.VanishingPointParser(self.FRAME_WINDOW_NAME)
-            # 'd': parsers.DefendingTeamParser(self.FRAME_WINDOW_NAME),
         }
         self.options = self.GENERAL_OPTIONS
         self.show_warning = False

@@ -268,58 +268,6 @@ class PlayersParser:
 
 #######################################################################################################################
 
-
-class DefendingTeamParser:
-
-    def __init__(self, window_name):
-        self.window_name = window_name
-        self.defending_team = Team.TEAM_ONE
-        self.frame_printer = FramePrinter()
-        self.keyboard_manager = KeyboardManager()
-
-    def parse(self, frame, frame_data_builder):
-        height, width = frame.shape[:2]
-        selection_confirmed = False
-
-        while True:
-            # display the frame with the text
-            self.frame_printer.print_text(frame, "Select defending team (default selection is team ONE)", (round(width / 2) - 320, 30), constants.BGR_WHITE)
-            cv2.imshow(self.window_name, frame)
-
-            key_code = cv2.waitKey(0)
-            # RETURN to confirm selection
-            if self.keyboard_manager.key_was_pressed(key_code, constants.RETURN_KEY_CODE):
-                print("Defending team selection confirmed: {}.".format(self.defending_team))
-                frame_data_builder.set_defending_team(self.defending_team)
-                selection_confirmed = True
-                break
-            # ONE to select team one as defending team
-            elif self.keyboard_manager.key_was_pressed(key_code, constants.ONE_KEY_CODE):
-                print("Team ONE selected as defending team.")
-                self.defending_team = Team.TEAM_ONE
-            # TWO to select team two as defending team
-            elif self.keyboard_manager.key_was_pressed(key_code, constants.TWO_KEY_CODE):
-                print("Team TWO selected as defending team.")
-                self.defending_team = Team.TEAM_TWO
-            # ESC to exit selection mode
-            elif self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                print("You have exited defending team selection mode.")
-                break
-
-        return selection_confirmed
-
-    def get_options(self):
-        return [
-            " ------------ DEFENDING TEAM SELECTION MODE ------------",
-            " 1 = set team ONE (red) as defending team",
-            " 2 = set team TWO (blue) as defending team",
-            " RETURN = confirm selection"
-            " ESC = exit defending selection mode"
-        ]
-
-#######################################################################################################################
-
-
 class VanishingPointParser:
     POINTS_TO_SELECT = 4
 

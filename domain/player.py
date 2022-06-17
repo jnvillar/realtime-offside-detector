@@ -42,6 +42,18 @@ class Player:
             'h': self.height
         }
 
+    def get_upper_left(self):
+        return (
+            self.x_coordinate,
+            self.y_coordinate + self.height
+        )
+
+    def get_down_right(self):
+        return (
+            self.x_coordinate + self.width,
+            self.y_coordinate
+        )
+
     def get_box(self, focused=False) -> Box:
         return box_from_player(self, focused)
 
