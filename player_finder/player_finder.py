@@ -31,7 +31,8 @@ class PlayerFinder:
         defending_players = get_defending_players(players)
 
         if len(defending_players) == 0:
-            print("a")
+            self.log.log("no defending players", {}) if self.args['debug'] else None
+            return
 
         res = defending_players[0]
         if orientation == Orientation.left:
