@@ -81,14 +81,20 @@ class OffsideLineDetector:
         )
 
     def get_video_frame_data(self, video_data_path) -> [FrameData]:
+        video_data = []
         if self.params.get('compare', False):
-            with open(video_data_path, 'r') as file:
-                json_data = json.load(file)
-                return [
-                    self.frame_data_dictionary_mapper
-                        .from_dictionary(frame_data_dictionary) for frame_data_dictionary in json_data
-                ]
-        return []
+            try:
+                with open(video_data_path, 'r') as file:
+                    json_data = json.load(file)
+                    video_data = [
+                        self.frame_data_dictionary_mapper
+                            .from_dictionary(frame_data_dictionary) for frame_data_dictionary in json_data
+                    ]
+            except Exception as e:
+                print(e)
+                exit(f'no dataset for video {video_data_path}')
+
+        return video_data
 
     def detect_and_draw_offside_line(self, soccer_video: Video, video_data_path):
         video_data = self.get_video_frame_data(video_data_path)
