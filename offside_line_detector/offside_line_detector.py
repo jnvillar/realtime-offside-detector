@@ -40,6 +40,7 @@ class OffsideLineDetector:
         self.screen_manager = ScreenManager.get_manager()
         self.keyboard_manager = KeyboardManager()
         self.log = Logger(self, LoggingPackage.offside_detector)
+        self.frame_data_dictionary_mapper = FrameDataDictionaryMapper()
         self.set_teams(kwargs['app']['team_names'])
 
     def set_teams(self, params):
@@ -79,7 +80,18 @@ class OffsideLineDetector:
             field_mask=field_mask
         )
 
-    def detect_and_draw_offside_line(self, soccer_video: Video):
+    def get_video_frame_data(self, video_data_path) -> [FrameData]:
+        if self.params.get('compare', False):
+            with open(video_data_path, 'r') as file:
+                json_data = json.load(file)
+                return [
+                    self.frame_data_dictionary_mapper
+                        .from_dictionary(frame_data_dictionary) for frame_data_dictionary in json_data
+                ]
+        return []
+
+    def detect_and_draw_offside_line(self, soccer_video: Video, video_data_path):
+        video_data = self.get_video_frame_data(video_data_path)
         pause = True
 
         while True:
@@ -103,12 +115,21 @@ class OffsideLineDetector:
                     pause = True
 
             if self.params.get('compare', False):
-                self.compare(result)
+                self.compare(result, video_data)
 
             pause = self.parse_keyboard_action(pause)
 
-    def compare(self, result: OffsideLineDetectorResult):
-        data_frame = self.build_frame_data(result)
+    def compare(self, result: OffsideLineDetectorResult, video_data: [FrameData]):
+        detected_frame_data = self.build_frame_data(result)
+        real_frame_data = None
+        for frame_data in video_data:
+            if detected_frame_data.frame_number == frame_data.frame_number:
+                real_frame_data = frame_data
+
+        if real_frame_data is None:
+            return
+
+        # Todo: Compare
         return
 
     def build_frame_data(self, result: OffsideLineDetectorResult) -> FrameData:

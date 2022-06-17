@@ -10,6 +10,7 @@ if __name__ == '__main__':
     ScreenManager.initialize(config['screen_manager'])
 
     video_path = './test/videos'
+    dataset_path = './datasets'
     video_name = constants.VideoConstants.video_1_from_8_to_12
 
     analytics = Analytics(video_name, **config['analytics_conf'])
@@ -17,5 +18,5 @@ if __name__ == '__main__':
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path + '/' + video_name)
-        offside_line_detector.detect_and_draw_offside_line(video)
+        offside_line_detector.detect_and_draw_offside_line(video, dataset_path + '/' + video_name.split(".")[0] + ".json")
         analytics.store()

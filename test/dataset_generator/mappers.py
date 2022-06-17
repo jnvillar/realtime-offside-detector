@@ -44,7 +44,6 @@ class FrameDataDictionaryMapper:
     PLAYERS_FIELD = "players"
     LAST_DEFENSE_PLAYER_INDEX_FIELD = "last_defense_player_index"
     VANISHING_POINT_FIELD = "vanishing_point"
-    DEFENDING_TEAM_FIELD = "defending_team"
 
     def __init__(self):
         self.field_mapper = FieldListMapper()
@@ -70,9 +69,6 @@ class FrameDataDictionaryMapper:
         if frame_data.get_vanishing_point_segments() is not None:
             frame_data_dictionary[self.VANISHING_POINT_FIELD] = frame_data.get_vanishing_point_segments()
 
-        if frame_data.get_defending_team() is not None:
-            frame_data_dictionary[self.DEFENDING_TEAM_FIELD] = frame_data.get_defending_team().value
-
         return frame_data_dictionary
 
     def from_dictionary(self, dictionary):
@@ -82,7 +78,6 @@ class FrameDataDictionaryMapper:
         players_as_dictionary = dictionary.get(self.PLAYERS_FIELD, None)
         last_defense_player_index = dictionary.get(self.LAST_DEFENSE_PLAYER_INDEX_FIELD, None)
         vanishing_point_segments = dictionary.get(self.VANISHING_POINT_FIELD, None)
-        defending_team = dictionary.get(self.DEFENDING_TEAM_FIELD, None)
 
         frame_data_builder = FrameDataBuilder().set_frame_number(frame_number)
         if field_vertices is not None:

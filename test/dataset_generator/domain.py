@@ -172,7 +172,7 @@ class FrameDataBuilder:
             frame_number=self.frame_number,
             players=self.players,
             field=self.field,
-            field_mask=self.field,
+            field_mask=self.field_mask,
             last_defense_player_index=self.last_defense_player_index,
             vanishing_point=self.vanishing_point,
             vanishing_point_segments=self.vanishing_point_segments

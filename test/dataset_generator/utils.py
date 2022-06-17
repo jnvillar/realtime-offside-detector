@@ -54,14 +54,12 @@ class FrameDataMerger:
         players = old_frame_data.get_players() if new_frame_data.get_players() is None else new_frame_data.get_players()
         last_defense_player_index = old_frame_data.get_last_defense_player_index() if new_frame_data.get_last_defense_player_index() is None else new_frame_data.get_last_defense_player_index()
         vanishing_point_segments = old_frame_data.get_vanishing_point_segments() if new_frame_data.get_vanishing_point_segments() is None else new_frame_data.get_vanishing_point_segments()
-        defending_team = old_frame_data.get_defending_team() if new_frame_data.get_defending_team() is None else new_frame_data.get_defending_team()
 
         return FrameDataBuilder() \
             .set_frame_number(new_frame_data.get_frame_number()) \
             .set_field(field) \
             .set_players(players) \
             .set_last_defense_player_index(last_defense_player_index) \
-            .set_defending_team(defending_team) \
             .set_vanishing_point_segments(vanishing_point_segments) \
             .build()
 
