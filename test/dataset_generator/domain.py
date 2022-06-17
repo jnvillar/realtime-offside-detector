@@ -21,10 +21,11 @@ class PlayerType(Enum):
 
 class FrameData:
 
-    def __init__(self, frame_number, players, field, last_defense_player_index, vanishing_point_segments, defending_team):
+    def __init__(self, frame_number, players, field, field_mask, last_defense_player_index, vanishing_point_segments, defending_team):
         self.frame_number = self._validate_frame_number(frame_number)
         self.players = players
         self.field = field
+        self.field_mask = field_mask
         self.last_defense_player_index = last_defense_player_index
         self.vanishing_point_segments = vanishing_point_segments
         self.vanishing_point = None
@@ -35,6 +36,10 @@ class FrameData:
 
     def get_field(self):
         return self.field
+
+    def get_field_mask(self):
+        # TODO: add logic to calculate field mask from self.field
+        return self.field_mask
 
     def get_players(self):
         return self.players
@@ -77,6 +82,7 @@ class FrameDataBuilder:
         self.frame_number = None
         self.players = None
         self.field = None
+        self.field_mask = None
         self.last_defense_player_index = None
         self.vanishing_point_segments = None
         self.defending_team = None
@@ -91,6 +97,10 @@ class FrameDataBuilder:
 
     def set_field(self, field):
         self.field = field
+        return self
+
+    def set_field_mask(self, field_mask):
+        self.field_mask = field_mask
         return self
 
     def set_last_defense_player_index(self, last_defense_player_index):
