@@ -2,7 +2,7 @@ import cv2
 import numpy
 
 from test.dataset_generator import colors
-from test.dataset_generator.domain import FrameDataBuilder
+from test.dataset_generator.domain import FrameDataBuilder, Orientation
 from utils import utils, constants
 
 
@@ -54,6 +54,9 @@ class FrameDataMerger:
         players = old_frame_data.get_players() if new_frame_data.get_players() is None else new_frame_data.get_players()
         last_defense_player_index = old_frame_data.get_last_defense_player_index() if new_frame_data.get_last_defense_player_index() is None else new_frame_data.get_last_defense_player_index()
         vanishing_point_segments = old_frame_data.get_vanishing_point_segments() if new_frame_data.get_vanishing_point_segments() is None else new_frame_data.get_vanishing_point_segments()
+        frame_width = old_frame_data.get_frame_width() if new_frame_data.get_frame_width() is None else new_frame_data.get_frame_width()
+        frame_height = old_frame_data.get_frame_height() if new_frame_data.get_frame_height() is None else new_frame_data.get_frame_height()
+        play_orientation = old_frame_data.get_play_orientation() if new_frame_data.get_play_orientation() is None else new_frame_data.get_play_orientation()
 
         return FrameDataBuilder() \
             .set_frame_number(new_frame_data.get_frame_number()) \
@@ -61,6 +64,9 @@ class FrameDataMerger:
             .set_players(players) \
             .set_last_defense_player_index(last_defense_player_index) \
             .set_vanishing_point_segments(vanishing_point_segments) \
+            .set_frame_width(frame_width) \
+            .set_frame_height(frame_height) \
+            .set_play_orientation(play_orientation) \
             .build()
 
 
@@ -76,6 +82,7 @@ class FrameDataPrinter:
         last_defense_player_index = frame_data.get_last_defense_player_index()
         vanishing_point_segments = frame_data.get_vanishing_point_segments()
         vanishing_point = frame_data.get_vanishing_point()
+        play_orientation = frame_data.get_play_orientation()
 
         self.frame_printer.print_text(frame, "Frame: {}".format(frame_number), (5, 30), constants.BGR_WHITE)
 
@@ -96,9 +103,20 @@ class FrameDataPrinter:
             self.frame_printer.print_text(frame, "Vanishing point: {}".format(vanishing_point), (230, 30), constants.BGR_WHITE)
 
         if vanishing_point is not None and players_and_referees is not None and last_defense_player_index is not None:
-            cv2.line(frame, vanishing_point, players_and_referees[last_defense_player_index].get_position()[1], colors.OFFSIDE_LINE_COLOR, thickness=2)
+            cv2.line(frame, vanishing_point,
+                     self._get_player_offside_line_point_according_to_orientation(play_orientation, players_and_referees[last_defense_player_index].get_position()),
+                     colors.OFFSIDE_LINE_COLOR, thickness=2)
 
     def _get_player_box_color(self, player, last_defense_player):
         if last_defense_player:
             return colors.TEAM_BOX_COLOR_LAST_DEFENSE.get(player.get_team())
         return colors.TEAM_BOX_COLOR.get(player.get_team()).get(player.get_type())
+
+    def _get_player_offside_line_point_according_to_orientation(self, play_orientation, player_bounding_box):
+        # bounding box is given by two points (0: top left, 1: bottom right)
+        if play_orientation == Orientation.RIGHT:
+            # bottom right bounding box point
+            return player_bounding_box[1]
+        else:
+            # bottom left bounding box point
+            return player_bounding_box[0][0], player_bounding_box[1][1]

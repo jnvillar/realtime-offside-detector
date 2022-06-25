@@ -1,8 +1,7 @@
+from domain.player import Player as PlayerD
+from domain.orientation import Orientation as OrientationD
 from enum import Enum
-
 from domain.line import Line
-from domain.player import Player
-from domain.team import Team as DomainTeam
 from utils import math
 
 
@@ -23,11 +22,21 @@ class PlayerType(Enum):
 #######################################################################################################################
 
 
+class Orientation(Enum):
+    LEFT = 1
+    RIGHT = 2
+
+
+#######################################################################################################################
+
 class FrameData:
 
     def __init__(
             self,
             frame_number,
+            frame_width,
+            frame_height,
+            play_orientation,
             players,
             field,
             field_mask,
@@ -36,6 +45,9 @@ class FrameData:
             vanishing_point=None
     ):
         self.frame_number = self._validate_frame_number(frame_number)
+        self.frame_width = frame_width
+        self.frame_height = frame_height
+        self.play_orientation = play_orientation
         self.players = players
         self.field = field
         self.field_mask = field_mask
@@ -68,6 +80,31 @@ class FrameData:
             self.vanishing_point = self._calculate_vanishing_point_from_segments()
         return self.vanishing_point
 
+    def get_offside_line(self):
+        if self.get_vanishing_point() is not None and self.players is not None and self.last_defense_player_index is not None and self.get_play_orientation is not None:
+            last_defense_player_position = self.players[self.last_defense_player_index].get_position()
+            # Based on the play orientation use the bottom right or left vertex from the player bounding box as second
+            # point of the offside line
+            top_left = last_defense_player_position[0]
+            bottom_right = last_defense_player_position[1]
+            if self.play_orientation == Orientation.RIGHT:
+                player_box_vertex = bottom_right
+            else:
+                bottom_left_x = top_left[0]
+                bottom_left_y = bottom_right[1]
+                player_box_vertex = (bottom_left_x, bottom_left_y)
+
+            return [self.get_vanishing_point(), player_box_vertex]
+
+    def get_play_orientation(self):
+        return self.play_orientation
+
+    def get_frame_width(self):
+        return self.frame_width
+
+    def get_frame_height(self):
+        return self.frame_height
+
     def _validate_frame_number(self, frame_number):
         if frame_number < 1:
             raise ValueError("Frame number must be a positive integer")
@@ -90,6 +127,9 @@ class FrameDataBuilder:
 
     def __init__(self):
         self.frame_number = None
+        self.frame_width = None
+        self.frame_height = None
+        self.play_orientation = None
         self.players = None
         self.field = None
         self.field_mask = None
@@ -101,11 +141,30 @@ class FrameDataBuilder:
         self.frame_number = frame_number
         return self
 
+    def set_frame_width(self, frame_width):
+        self.frame_width = frame_width
+        return self
+
+    def set_frame_height(self, frame_height):
+        self.frame_height = frame_height
+        return self
+
+    def set_play_orientation(self, play_orientation):
+        self.play_orientation = play_orientation
+        return self
+
+    def set_play_orientation_from_domain_play_orientation(self, play_orientation: OrientationD):
+        if play_orientation == OrientationD.right:
+            self.play_orientation = Orientation.RIGHT
+        else:
+            self.play_orientation = Orientation.LEFT
+        return self
+
     def set_players(self, players):
         self.players = players
         return self
 
-    def set_players_from_domain_players(self, players: [Player]):
+    def set_players_from_domain_players(self, players: [PlayerD]):
         res = []
         for idx, player in enumerate(players):
             if player.is_last_defending_player:
@@ -156,6 +215,15 @@ class FrameDataBuilder:
             if self.frame_number is None:
                 raise Exception("frame number not set")
 
+            if self.frame_width is None:
+                raise Exception("frame width not set")
+
+            if self.frame_height is None:
+                raise Exception("frame height not set")
+
+            if self.play_orientation is None:
+                raise Exception("play orientation not set")
+
             if self.players is None:
                 raise Exception("players not set")
 
@@ -170,6 +238,9 @@ class FrameDataBuilder:
 
         return FrameData(
             frame_number=self.frame_number,
+            frame_width=self.frame_width,
+            frame_height=self.frame_height,
+            play_orientation=self.play_orientation,
             players=self.players,
             field=self.field,
             field_mask=self.field_mask,

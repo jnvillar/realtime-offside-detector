@@ -6,8 +6,8 @@ import numpy
 
 import test.dataset_generator.parsers as parsers
 import utils.utils as utils
-from test.dataset_generator.domain import FrameDataBuilder
-from test.dataset_generator.mappers import FrameDataDictionaryMapper
+from test.dataset_generator.domain import FrameDataBuilder, Orientation
+from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from test.dataset_generator.utils import FrameDataMerger
 from utils import constants
 from video_repository import video_repository
@@ -53,6 +53,8 @@ class DatasetGenerator:
 
     def generate_dataset(self, video_path, outfile):
         video = video_repository.VideoRepository.get_video(video_path, True)
+        first_frame = True
+        play_orientation = None
 
         self.current_frame = video.get_next_frame()
         while self.current_frame is not None:
@@ -69,13 +71,24 @@ class DatasetGenerator:
             cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
             # cv2.moveWindow(self.FRAME_WINDOW_NAME, self.TOP_LEFT_FRAME_WINDOW[0], self.TOP_LEFT_FRAME_WINDOW[1])
 
+            # Select the play orientation only in the first frame
+            if first_frame:
+                play_orientation = self._set_play_orientation()
+                first_frame = False
+
             self._print_available_options()
 
             while True:
                 key_code = cv2.waitKey(0)
                 # keys defined in self.parsers to switch to any of the parsing modes
                 if self.keyboard_manager.is_lowercase_alphabet_char_code(key_code) and chr(key_code) in self.parsers:
-                    frame_data_builder = self.frame_data_builders.get(current_frame_number, FrameDataBuilder().set_frame_number(current_frame_number))
+                    height, width = self.current_frame.shape[:2]
+                    new_frame_data_builder = FrameDataBuilder()\
+                        .set_frame_number(current_frame_number)\
+                        .set_frame_height(height)\
+                        .set_frame_width(width)\
+                        .set_play_orientation(play_orientation)
+                    frame_data_builder = self.frame_data_builders.get(current_frame_number, new_frame_data_builder)
                     # set parser options and print them
                     self.options = self.parsers.get(chr(key_code)).get_options()
                     self._print_available_options()
@@ -146,7 +159,7 @@ class DatasetGenerator:
         return False
 
     def _print_parsed_data(self, outfile, allow_abort_saving=True):
-        frame_data_mapper = FrameDataDictionaryMapper()
+        frame_dataset_mapper = FrameDatasetDictionaryMapper()
         frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in self.frame_data_builders.items()]
 
         output_path = Path(outfile)
@@ -168,7 +181,7 @@ class DatasetGenerator:
                 if self.keyboard_manager.key_was_pressed(key_code, constants.ONE_KEY_CODE):
                     with open(outfile, 'r') as file:
                         frame_data_dictionary_list = json.load(file)
-                        file_frame_data_list = [frame_data_mapper.from_dictionary(frame_data_dictionary) for frame_data_dictionary in frame_data_dictionary_list]
+                        file_frame_data_list = frame_dataset_mapper.from_dictionary(frame_data_dictionary_list)
                         frame_data_list = FrameDataMerger.merge(frame_data_list, file_frame_data_list)
                         break
                 # NINE to create a new file with the frame data
@@ -188,8 +201,28 @@ class DatasetGenerator:
 
         # save data in file
         with open(outfile, 'w') as file:
-            json.dump([frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list], file)
+            json.dump(frame_dataset_mapper.to_dictionary(frame_data_list), file)
             print("Parsed data saved in file {}".format(outfile))
+
+    def _set_play_orientation(self):
+        self.options = [
+            "Select the play orientation by pressing R or L:",
+            "(from left to) Right (R)",
+            "(from right to) Left (L)"
+        ]
+        self._print_available_options()
+
+        while (True):
+            key_code = cv2.waitKey(0)
+            # R to hide/show field
+            if chr(key_code) in ['r', 'l']:
+                play_orientation = Orientation.RIGHT if chr(key_code) == 'r' else Orientation.LEFT
+                print("Play orientation selected: " + str(play_orientation))
+                break
+
+        # restore general options
+        self.options = self.GENERAL_OPTIONS
+        return play_orientation
 
     def _print_available_options(self):
         height, width = [500, 1000] if self.current_frame is None else self.current_frame.shape[:2]

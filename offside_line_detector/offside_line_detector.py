@@ -17,11 +17,12 @@ import cv2
 
 
 class OffsideLineDetectorResult:
-    def __init__(self, video: Video, players: [Player], vanishing_point, field_mask):
+    def __init__(self, video: Video, players: [Player], vanishing_point, field_mask, play_orientation: Orientation):
         self.video: Video = video
         self.players: [Player] = players
         self.vanishing_point = vanishing_point
         self.field_mask = field_mask
+        self.play_orientation = play_orientation
 
 
 class OffsideLineDetector:
@@ -40,7 +41,7 @@ class OffsideLineDetector:
         self.screen_manager = ScreenManager.get_manager()
         self.keyboard_manager = KeyboardManager()
         self.log = Logger(self, LoggingPackage.offside_detector)
-        self.frame_data_dictionary_mapper = FrameDataDictionaryMapper()
+        self.frame_dataset_dictionary_mapper = FrameDatasetDictionaryMapper()
         self.set_teams(kwargs['app']['team_names'])
 
     def set_teams(self, params):
@@ -77,7 +78,8 @@ class OffsideLineDetector:
             video=soccer_video,
             players=players,
             vanishing_point=vanishing_point,
-            field_mask=field_mask
+            field_mask=field_mask,
+            play_orientation=orientation
         )
 
     def get_video_frame_data(self, video_data_path) -> [FrameData]:
@@ -86,10 +88,7 @@ class OffsideLineDetector:
             try:
                 with open(video_data_path, 'r') as file:
                     json_data = json.load(file)
-                    video_data = [
-                        self.frame_data_dictionary_mapper
-                            .from_dictionary(frame_data_dictionary) for frame_data_dictionary in json_data
-                    ]
+                    video_data = self.frame_dataset_dictionary_mapper.from_dictionary(json_data)
             except Exception as e:
                 print(e)
                 exit(f'no dataset for video {video_data_path}')
@@ -139,11 +138,15 @@ class OffsideLineDetector:
         return
 
     def build_frame_data(self, result: OffsideLineDetectorResult) -> FrameData:
+        height, width = result.video.get_current_frame().shape[:2]
         builder = FrameDataBuilder()
         builder.set_frame_number(result.video.get_current_frame_number())
+        builder.set_frame_height(height)
+        builder.set_frame_width(width)
         builder.set_players_from_domain_players(result.players)
         builder.set_field_mask(result.field_mask)
         builder.set_vanishing_point(result.vanishing_point)
+        builder.set_play_orientation_from_domain_play_orientation(result.play_orientation)
         return builder.build(all_parameters_set=True)
 
     def parse_keyboard_action(self, pause):

@@ -5,8 +5,8 @@ import cv2
 import numpy
 
 import utils.utils as utils
-from test.dataset_generator.mappers import FrameDataDictionaryMapper
-from test.dataset_generator.utils import FrameDataMerger, FrameDataPrinter
+from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
+from test.dataset_generator.utils import FrameDataPrinter
 from utils import constants
 
 
@@ -39,7 +39,7 @@ class DatasetReader:
         self.keyboard_manager = utils.KeyboardManager()
         self.frame_printer = utils.FramePrinter()
         self.frame_data_printer = FrameDataPrinter()
-        self.frame_data_mapper = FrameDataDictionaryMapper()
+        self.frame_dataset_mapper = FrameDatasetDictionaryMapper()
         self.options = self.GENERAL_OPTIONS
         self.show_field = True
         self.show_players_and_referees = True
@@ -48,7 +48,7 @@ class DatasetReader:
         self.read_started = True
 
     def read_dataset(self, video, json_dataset):
-        frame_data_list = [self.frame_data_mapper.from_dictionary(frame_data_dictionary) for frame_data_dictionary in json_dataset]
+        frame_data_list = self.frame_dataset_mapper.from_dictionary(json_dataset)
         frame_data_list.sort(key=lambda e: e.get_frame_number())
         frame_data_by_frame_number = {frame_data.get_frame_number(): frame_data for frame_data in frame_data_list}
 

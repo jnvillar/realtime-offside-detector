@@ -1,4 +1,4 @@
-from test.dataset_generator.domain import Field, Player, PlayerType, Team, FrameDataBuilder
+from test.dataset_generator.domain import Field, Player, PlayerType, Team, FrameDataBuilder, Orientation
 
 
 class FieldListMapper:
@@ -71,7 +71,7 @@ class FrameDataDictionaryMapper:
 
         return frame_data_dictionary
 
-    def from_dictionary(self, dictionary):
+    def from_dictionary(self, dictionary, frame_width, frame_height, play_orientation):
         self._validate_structure(dictionary)
         frame_number = dictionary.get(self.FRAME_FIELD)
         field_vertices = dictionary.get(self.FIELD_FIELD, None)
@@ -94,8 +94,66 @@ class FrameDataDictionaryMapper:
             # convert points into tuples (they are parsed as lists)
             frame_data_builder.set_vanishing_point_segments([[tuple(vanishing_point_segments[0][0]), tuple(vanishing_point_segments[0][1])], [tuple(vanishing_point_segments[1][0]), tuple(vanishing_point_segments[1][1])]])
 
+        # width, height and play orientation are given as extra arguments since they are globally (and not per frame) defined on json serialization
+        if frame_width is not None:
+            frame_data_builder.set_frame_width(frame_width)
+
+        if frame_height is not None:
+            frame_data_builder.set_frame_height(frame_height)
+
+        if play_orientation is not None:
+            frame_data_builder.set_play_orientation(play_orientation)
+
         return frame_data_builder.build()
 
     def _validate_structure(self, dictionary):
         if self.FRAME_FIELD not in dictionary:
             raise ValueError("The given dictionary cannot be mapped to a FrameData object")
+
+#######################################################################################################################
+
+
+class FrameDatasetDictionaryMapper:
+
+    FRAME_WIDTH_FIELD = "frame_width"
+    FRAME_HEIGHT_FIELD = "frame_height"
+    PLAY_ORIENTATION_FIELD = "play_orientation"
+    FRAMES_FIELD = "frames"
+
+    def __init__(self):
+        self.frame_data_mapper = FrameDataDictionaryMapper()
+
+    def to_dictionary(self, frame_data_list):
+        frame_width = None if len(frame_data_list) == 0 else frame_data_list[0].get_frame_width()
+        frame_height = None if len(frame_data_list) == 0 else frame_data_list[0].get_frame_height()
+        play_orientation = None if len(frame_data_list) == 0 else frame_data_list[0].get_play_orientation().name
+        frame_data_dictionary_list = [self.frame_data_mapper.to_dictionary(frame_data) for frame_data in frame_data_list]
+
+        frame_dataset_dictionary = {
+            self.FRAME_WIDTH_FIELD: frame_width,
+            self.FRAME_HEIGHT_FIELD: frame_height,
+            self.PLAY_ORIENTATION_FIELD: play_orientation,
+            self.FRAMES_FIELD: frame_data_dictionary_list
+        }
+
+        return frame_dataset_dictionary
+
+    def from_dictionary(self, dictionary):
+        self._validate_structure(dictionary)
+
+        frame_width = dictionary.get(self.FRAME_WIDTH_FIELD)
+        frame_height = dictionary.get(self.FRAME_HEIGHT_FIELD)
+        play_orientation = Orientation[dictionary.get(self.PLAY_ORIENTATION_FIELD)]
+        frame_data_dictionary_list = dictionary.get(self.FRAMES_FIELD)
+
+        return [self.frame_data_mapper.from_dictionary(frame_data_dictionary, frame_width, frame_height, play_orientation) for frame_data_dictionary in frame_data_dictionary_list]
+
+    def _validate_structure(self, dictionary):
+        if len(dictionary) != 0 and self._has_missing_key(dictionary):
+            raise ValueError("The given dictionary cannot be mapped to a list of FrameData objects")
+
+    def _has_missing_key(self, dictionary):
+        return self.FRAME_WIDTH_FIELD not in dictionary or \
+               self.FRAME_HEIGHT_FIELD not in dictionary or \
+               self.PLAY_ORIENTATION_FIELD not in dictionary or \
+               self.FRAMES_FIELD not in dictionary

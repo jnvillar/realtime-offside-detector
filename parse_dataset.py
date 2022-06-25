@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 
 from argparse import ArgumentParser
 from pathlib import Path
@@ -34,6 +35,7 @@ if __name__ == '__main__':
         dataset_generator.generate_dataset(video_path, outfile)
     except Exception as e:
         print("Unexpected error while  parsing data: {}".format(e))
+        print(traceback.format_exc())
         print("Parsed data:".format(str(e)))
         frame_data_list = [frame_data_builder.build() for frame_number, frame_data_builder in dataset_generator.frame_data_builders.items()]
         frame_data_mapper = FrameDataDictionaryMapper()
