@@ -1,8 +1,11 @@
+import cv2
+import numpy as np
+
 from domain.player import Player as PlayerD
 from domain.orientation import Orientation as OrientationD
 from enum import Enum
 from domain.line import Line
-from utils import math
+from utils import math, constants
 
 
 class Player:
@@ -97,7 +100,12 @@ class FrameData:
         return self.field
 
     def get_field_mask(self):
-        # TODO: add logic to calculate field mask from self.field
+        if self.field_mask is None:
+            # if field mask is not defined, calculate it from field vertices
+            mask = np.zeros((self.frame_height, self.frame_width), np.uint8)
+            vertices = np.array(self.field.get_vertices())
+            cv2.fillPoly(mask, [vertices], constants.BGR_WHITE)
+            self.field_mask = mask
         return self.field_mask
 
     def get_defending_team(self):
