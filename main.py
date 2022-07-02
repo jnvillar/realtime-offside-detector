@@ -13,7 +13,12 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 def save_comparison_results(video_name, results):
-    result_path = './experiments' + '/' + str(datetime.now().time()) + '_' + video_name.split(".")[0] + ".json"
+    use_time = False
+    if use_time:
+        result_path = './experiments' + '/' + str(datetime.now().time()) + '_' + video_name.split(".")[0] + ".json"
+    else:
+        result_path = './experiments' + '/' + video_name.split(".")[0] + ".json"
+
     with open(result_path, 'w') as file:
         results = [ob if isinstance(ob, dict) else ob.__dict__ for ob in results]
         json.dump(results, file, indent=2)
