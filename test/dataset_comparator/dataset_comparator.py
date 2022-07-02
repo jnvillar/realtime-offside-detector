@@ -9,22 +9,10 @@ class FrameDataComparator:
     def compare(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         height, width, _ = expected_frame_data.get_field_mask().shape
         comparison_results = {
-            'field': self.compare_field(
-                expected_frame_data,
-                actual_frame_data
-            ),
-            'vanishing_point': self.compare_vanishing_point(
-                expected_frame_data,
-                actual_frame_data
-            ),
-            'defending_team': self.compare_defending_team(
-                expected_frame_data,
-                actual_frame_data
-            ),
-            'players': self.compare_players(
-                expected_frame_data,
-                actual_frame_data
-            )
+            'field': self.compare_field(expected_frame_data, actual_frame_data),
+            'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
+            'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
+            'players': self.compare_players(expected_frame_data, actual_frame_data)
         }
         return comparison_results
 
