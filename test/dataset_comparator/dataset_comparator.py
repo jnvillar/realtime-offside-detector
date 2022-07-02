@@ -8,34 +8,25 @@ class FrameDataComparator:
 
     def compare(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         height, width, _ = expected_frame_data.get_field_mask().shape
-        comparison_results = {}
-
-        false_negative_percentage, false_positive_percentage = self.compare_field(expected_frame_data,
-                                                                                  expected_frame_data)
-        comparison_results['field'] = {
-            'missing_field_percentage': false_negative_percentage,
-            'extra_field_percentage': false_positive_percentage
+        comparison_results = {
+            'field': self.compare_field(
+                expected_frame_data,
+                actual_frame_data
+            ),
+            'vanishing_point': self.compare_vanishing_point(
+                expected_frame_data,
+                actual_frame_data
+            ),
+            'defending_team': self.compare_defending_team(
+                expected_frame_data,
+                actual_frame_data
+            ),
+            'players': self.compare_players(
+                expected_frame_data,
+                actual_frame_data
+            )
         }
-
-        distance, x_axis_distance_percentage, y_axis_distance_percentage = self.compare_vanishing_point(
-            expected_frame_data, actual_frame_data)
-        comparison_results['vanishing_point'] = {
-            'distance': distance,
-            'x_axis_distance_percentage': x_axis_distance_percentage,
-            'y_axis_distance_percentage': y_axis_distance_percentage
-        }
-
-        defending_team_match = self.compare_defending_team(expected_frame_data, actual_frame_data)
-        comparison_results['defending_team'] = "Correct" if defending_team_match else "Incorrect"
-
-        correctly_detected_players, extra_detected_players, not_detected_players = \
-            self.compare_players(expected_frame_data, actual_frame_data)
-
-        comparison_results['detected_players'] = {
-            'correctly_detected_players': len(correctly_detected_players),
-            'extra_detected_players': len(x_axis_distance_percentage),
-            'not_detected_players': len(not_detected_players)
-        }
+        return comparison_results
 
     def compare_field(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         expected_field_mask = expected_frame_data.get_field_mask()
@@ -50,7 +41,10 @@ class FrameDataComparator:
         false_positives_area = cv2.countNonZero(false_positives_mask)
         false_positives_percentage = false_positives_area / expected_field_mask_area
 
-        return false_negative_percentage, false_positives_percentage
+        return {
+            'missing_field_percentage': false_negative_percentage,
+            'extra_field_percentage': false_positives_percentage
+        }
 
     def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         distance = math.distance_between_points(expected_frame_data.get_vanishing_point(),
@@ -58,7 +52,11 @@ class FrameDataComparator:
         x_axis_distance_percentage = distance / actual_frame_data.get_frame_width()
         y_axis_distance_percentage = distance / actual_frame_data.get_frame_height()
 
-        return distance, x_axis_distance_percentage, y_axis_distance_percentage
+        return {
+            'distance': distance,
+            'x_axis_distance_percentage': x_axis_distance_percentage,
+            'y_axis_distance_percentage': y_axis_distance_percentage
+        }
 
     def compare_defending_team(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         expected_defending_team = expected_frame_data.get_players()[
@@ -66,36 +64,60 @@ class FrameDataComparator:
         actual_defending_team = actual_frame_data.get_players()[
             actual_frame_data.get_last_defense_player_index()].get_team()
 
-        return expected_defending_team == actual_defending_team
+        defending_team_match = expected_defending_team == actual_defending_team
+        return "Correct" if defending_team_match else "Incorrect"
 
     def compare_offside_line(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         # TODO: add logic
         return None
 
     def compare_players(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
-        detected_players: [Player] = actual_frame_data.get_players()
-        expected_players: [Player] = expected_frame_data.get_players()
+        detected_players: [Player] = actual_frame_data.get_players().copy()
+        expected_players: [Player] = expected_frame_data.get_players().copy()
+
+        defending_team_in_detected_frame_data = actual_frame_data.get_defending_team()
+        defending_team_in_expected_frame_data = expected_frame_data.get_defending_team()
+
+        # switch teams if defending teams are inverted
+        if defending_team_in_detected_frame_data != defending_team_in_expected_frame_data:
+            for detected_player in detected_players:
+                if detected_player.team == Team.TEAM_ONE:
+                    detected_player.team = Team.TEAM_TWO
+                else:
+                    detected_player.team = Team.TEAM_ONE
 
         correctly_detected_players_idx = []
         correctly_detected_players = []
+        correctly_detected_teams = []
+        badly_detected_teams = []
         extra_detected_players = []
 
+        # for every detected player, check if center is inside any expected player
         for detected_player in detected_players:
             detected_center = detected_player.get_center()
             for idx, expected_player in enumerate(expected_players):
                 if self.point_inside_bounding_box(detected_center, expected_player.get_position()):
                     correctly_detected_players.append(detected_player)
                     correctly_detected_players_idx.append(idx)
+                    if detected_player.team == expected_player.team:
+                        correctly_detected_teams.append(detected_player)
+                    else:
+                        badly_detected_teams.append(detected_player)
                     break
             extra_detected_players.append(detected_center)
 
-        not_detected_players = []
-        for idx, expected_player in enumerate(expected_players):
-            for i in correctly_detected_players_idx:
-                if idx != i:
-                    not_detected_players.append(expected_player)
+        # copy expected players and remove detected ones
+        not_detected_players = expected_players.copy()
+        for idx in correctly_detected_players_idx:
+            not_detected_players.pop(idx)
 
-        return correctly_detected_players, extra_detected_players, not_detected_players
+        return {
+            'correctly_detected_players': len(correctly_detected_players),
+            'extra_detected_players': len(extra_detected_players),
+            'not_detected_players': len(not_detected_players),
+            'badly_detected_teams': len(badly_detected_teams),
+            'correctly_detected_teams': len(correctly_detected_players)
+        }
 
     def point_inside_bounding_box(self, point, box):
         x, y = point

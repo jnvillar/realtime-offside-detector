@@ -5,6 +5,41 @@ from domain.line import Line
 from utils import math
 
 
+class Player:
+
+    def __init__(self, player_type, team, position):
+        self.player_type = player_type
+        self.team: Team = team
+        self.position = position
+
+    def __str__(self):
+        return self._to_string()
+
+    def __repr__(self):
+        return self._to_string()
+
+    def get_type(self):
+        return self.player_type
+
+    def get_team(self):
+        return self.team
+
+    def get_position(self):
+        return self.position
+
+    def get_center(self):
+        upper_left, down_right = self.position
+        width = down_right[0] - upper_left[0]
+        height = upper_left[1] - down_right[1]
+        center = (upper_left[0] + int(width / 2), upper_left[1] - int(height / 2))
+        return center
+
+    def _to_string(self):
+        return "Player(type: {}, team: {}, position: {})".format(self.player_type, self.team, self.position)
+
+
+#######################################################################################################################
+
 class Team(Enum):
     TEAM_ONE = 1
     TEAM_TWO = 2
@@ -37,7 +72,7 @@ class FrameData:
             frame_width,
             frame_height,
             play_orientation,
-            players,
+            players: [Player],
             field,
             field_mask,
             last_defense_player_index,
@@ -48,7 +83,7 @@ class FrameData:
         self.frame_width = frame_width
         self.frame_height = frame_height
         self.play_orientation = play_orientation
-        self.players = players
+        self.players: [Player] = players
         self.field = field
         self.field_mask = field_mask
         self.last_defense_player_index = last_defense_player_index
@@ -65,7 +100,10 @@ class FrameData:
         # TODO: add logic to calculate field mask from self.field
         return self.field_mask
 
-    def get_players(self):
+    def get_defending_team(self):
+        return self.players[self.last_defense_player_index].team
+
+    def get_players(self) -> [Player]:
         return self.players
 
     def get_last_defense_player_index(self):
@@ -166,6 +204,7 @@ class FrameDataBuilder:
 
     def set_players_from_domain_players(self, players: [PlayerD]):
         res = []
+
         for idx, player in enumerate(players):
             if player.is_last_defending_player:
                 self.last_defense_player_index = idx
@@ -248,42 +287,6 @@ class FrameDataBuilder:
             vanishing_point=self.vanishing_point,
             vanishing_point_segments=self.vanishing_point_segments
         )
-
-
-#######################################################################################################################
-
-
-class Player:
-
-    def __init__(self, player_type, team, position):
-        self.player_type = player_type
-        self.team = team
-        self.position = position
-
-    def __str__(self):
-        return self._to_string()
-
-    def __repr__(self):
-        return self._to_string()
-
-    def get_type(self):
-        return self.player_type
-
-    def get_team(self):
-        return self.team
-
-    def get_position(self):
-        return self.position
-
-    def get_center(self):
-        upper_left, down_right = self.position
-        width = down_right[0] - upper_left[0]
-        height = upper_left[1] - down_right[1]
-        center = (upper_left[0] + int(width / 2), upper_left[1] - int(height / 2))
-        return center
-
-    def _to_string(self):
-        return "Player(type: {}, team: {}, position: {})".format(self.player_type, self.team, self.position)
 
 
 #######################################################################################################################
