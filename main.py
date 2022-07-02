@@ -4,6 +4,13 @@ import utils.constants as constants
 from analytics.analytics import *
 import config.config as config
 
+
+def get_video_frame_data(video_data_path) -> [FrameData]:
+    with open(video_data_path, 'r') as file:
+        json_data = json.load(file)
+        return FrameDatasetDictionaryMapper().from_dictionary(json_data)
+
+
 if __name__ == '__main__':
     config = config.default_config
     Logger.initialize(config['logger'])
@@ -17,6 +24,8 @@ if __name__ == '__main__':
     analytics = Analytics(video_name, **config['analytics_conf'])
     offside_line_detector = OffsideLineDetector(analytics, **config)
 
+    video_data = get_video_frame_data(dataset_path)
+
     while True:
         video = video_repository.VideoRepository.get_video(video_path)
-        offside_line_detector.detect_and_draw_offside_line(video, dataset_path)
+        frame_data_for_video = offside_line_detector.detect_and_draw_offside_line(video, video_data)

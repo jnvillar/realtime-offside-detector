@@ -1,3 +1,4 @@
+from test.dataset_comparator.dataset_comparator import FrameDataComparator
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
 from test.dataset_generator.dataset_generator import *
@@ -43,6 +44,7 @@ class OffsideLineDetector:
         self.log = Logger(self, LoggingPackage.offside_detector)
         self.frame_dataset_dictionary_mapper = FrameDatasetDictionaryMapper()
         self.set_teams(kwargs['app']['team_names'])
+        self.frame_data_comparator = FrameDataComparator()
 
     def set_teams(self, params):
         team_one.label = params.get(team_one.id, team_one.label)
@@ -82,22 +84,9 @@ class OffsideLineDetector:
             play_orientation=orientation
         )
 
-    def get_video_frame_data(self, video_data_path) -> [FrameData]:
-        video_data = []
-        if self.params.get('compare', False):
-            try:
-                with open(video_data_path, 'r') as file:
-                    json_data = json.load(file)
-                    video_data = self.frame_dataset_dictionary_mapper.from_dictionary(json_data)
-            except Exception as e:
-                print(e)
-                exit(f'no dataset for video {video_data_path}')
-
-        return video_data
-
-    def detect_and_draw_offside_line(self, soccer_video: Video, video_data_path):
-        video_data = self.get_video_frame_data(video_data_path)
+    def detect_and_draw_offside_line(self, soccer_video: Video, video_data: [FrameData]):
         pause = True
+        comparison_results = []
 
         while True:
             frame = soccer_video.get_next_frame()
@@ -120,22 +109,26 @@ class OffsideLineDetector:
                     pause = True
 
             if self.params.get('compare', False):
-                self.compare(result, video_data)
+                frame_comparison_results = self.compare(result, video_data)
+                if frame_comparison_results is not None:
+                    comparison_results.append(frame_comparison_results)
+                    self.log.log('comparison results', frame_comparison_results)
 
             pause = self.parse_keyboard_action(pause)
 
+        return comparison_results
+
     def compare(self, result: OffsideLineDetectorResult, video_data: [FrameData]):
         detected_frame_data = self.build_frame_data(result)
-        real_frame_data = None
+        expected_frame_data = None
         for frame_data in video_data:
-            if detected_frame_data.frame_number == frame_data.frame_number:
-                real_frame_data = frame_data
+            if detected_frame_data.get_frame_number() == frame_data.get_frame_number():
+                expected_frame_data = frame_data
 
-        if real_frame_data is None:
-            return
+        if expected_frame_data is None:
+            return None
 
-        # Todo: Compare
-        return
+        return self.frame_data_comparator.compare(expected_frame_data, detected_frame_data)
 
     def build_frame_data(self, result: OffsideLineDetectorResult) -> FrameData:
         height, width = result.video.get_current_frame().shape[:2]
