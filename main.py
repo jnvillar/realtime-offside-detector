@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path)
-        frame_data_for_video = offside_line_detector.detect_and_draw_offside_line(video, video_data)
+        comparison_results = offside_line_detector.detect_and_draw_offside_line(video, video_data)
