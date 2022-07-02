@@ -128,7 +128,10 @@ class OffsideLineDetector:
         if expected_frame_data is None:
             return None
 
-        return self.frame_data_comparator.compare(expected_frame_data, detected_frame_data)
+        return self.frame_data_comparator.compare(
+            expected_frame_data=expected_frame_data,
+            actual_frame_data=detected_frame_data
+        )
 
     def build_frame_data(self, result: OffsideLineDetectorResult) -> FrameData:
         height, width = result.video.get_current_frame().shape[:2]
