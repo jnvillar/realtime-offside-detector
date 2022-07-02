@@ -1,3 +1,4 @@
+import video_repository.video_repository as video_repository
 from offside_line_detector.offside_line_detector import *
 import utils.constants as constants
 from analytics.analytics import *
@@ -35,5 +36,5 @@ if __name__ == '__main__':
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path)
-        frame_data_for_video = offside_line_detector.detect_and_draw_offside_line(video, video_data)
-        save_comparison_results(video_name=video_name, results=frame_data_for_video)
+        comparison_results = offside_line_detector.detect_and_draw_offside_line(video, video_data)
+        save_comparison_results(video_name=video_name, results=comparison_results)

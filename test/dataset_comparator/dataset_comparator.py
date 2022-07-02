@@ -1,7 +1,8 @@
 import cv2
 
 from test.dataset_generator.domain import *
-import utils.math as math
+import utils.math as math_utils
+import math
 
 
 class FrameDataComparator:
@@ -17,7 +18,8 @@ class FrameDataComparator:
             # 'field': self.compare_field(expected_frame_data, actual_frame_data),
             'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
             'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
-            'players': self.compare_players(expected_frame_data, actual_frame_data)
+            'players': self.compare_players(expected_frame_data, actual_frame_data),
+            'offside_line': self.compare_offside_line(expected_frame_data, actual_frame_data)
         }
         return comparison_results
 
@@ -40,8 +42,8 @@ class FrameDataComparator:
         }
 
     def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
-        distance = math.distance_between_points(expected_frame_data.get_vanishing_point(),
-                                                actual_frame_data.get_vanishing_point())
+        distance = math_utils.distance_between_points(expected_frame_data.get_vanishing_point(),
+                                                      actual_frame_data.get_vanishing_point())
         x_axis_distance_percentage = distance / actual_frame_data.get_frame_width()
         y_axis_distance_percentage = distance / actual_frame_data.get_frame_height()
 
@@ -61,8 +63,13 @@ class FrameDataComparator:
         return "Correct" if defending_team_match else "Incorrect"
 
     def compare_offside_line(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
-        # TODO: add logic
-        return None
+        expected_offside_line = expected_frame_data.get_offside_line()
+        actual_offside_line = actual_frame_data.get_offside_line()
+
+        slope1 = self._slope(expected_offside_line[0][0], expected_offside_line[0][1], expected_offside_line[1][0], expected_offside_line[1][1])
+        slope2 = self._slope(actual_offside_line[0][0], actual_offside_line[0][1], actual_offside_line[1][0], actual_offside_line[1][1])
+
+        return {'angle_difference': math.degrees(math.atan((slope2 - slope1) / (1 + (slope2 * slope1))))}
 
     def compare_players(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         detected_players: [Player] = actual_frame_data.get_players().copy()
@@ -123,3 +130,7 @@ class FrameDataComparator:
             return False
 
         return True
+
+    # Line slope given two points:
+    def _slope(self, x1, y1, x2, y2):
+        return (y2 - y1) / (x2 - x1)
