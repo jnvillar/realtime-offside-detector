@@ -7,8 +7,13 @@ import utils.math as math
 class FrameDataComparator:
 
     def compare(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
+        if expected_frame_data.get_frame_number() != actual_frame_data.get_frame_number():
+            raise Exception("The frame data objects that you are trying to compare belong to different frames (expected: {}, actual {})".format(
+                expected_frame_data.get_frame_number(), actual_frame_data.get_frame_number()))
+
         height, width, _ = expected_frame_data.get_field_mask().shape
         comparison_results = {
+            'frame_number': actual_frame_data.get_frame_number(),
             'field': self.compare_field(expected_frame_data, actual_frame_data),
             'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
             'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
