@@ -14,6 +14,7 @@ class PlayerSorterByKMeans:
         self.previous_centroids = None
         self.label_team = kwargs.get('klusters_team')
         self.k_means = KMeans(n_clusters=kwargs.get('klusters', 3), random_state=0)
+        self.labels_teams = {}
 
     def sort_players(self, original_frame, players: [Player]):
         if len(players) < 2:
@@ -52,8 +53,23 @@ class PlayerSorterByKMeans:
             'labels': player_labels
         }) if self.debug else None
 
+        if len(self.labels_teams) is 0:
+            count = {}
+            for label in player_labels:
+                count[label] = count.get(label, 0) + 1
+
+            pairs = []
+            for label, count in count.items():
+                pairs.append((label, count))
+
+            pairs.sort(key=lambda x: x[1])
+
+            priority = [team_three, team_two, team_one]
+            for itx, pair in enumerate(pairs):
+                self.labels_teams[pair[0]] = priority[itx]
+
         for itx, label in enumerate(player_labels):
-            players_to_be_sorted[itx].team = self.label_team[label]
+            players_to_be_sorted[itx].team = self.labels_teams[label]
 
         return players
 
