@@ -56,11 +56,7 @@ default_config = {
             'median': False,
             'focused': True,
             'klusters': 3,
-            'klusters_team': {
-                0: team_one,
-                1: team_two,
-                2: team_three,
-            }
+            'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
         },
         'automatic_by_color': {
             white.color_name: team_two,
