@@ -1,3 +1,4 @@
+import os
 import video_repository.video_repository as video_repository
 from offside_line_detector.offside_line_detector import *
 import utils.constants as constants
@@ -6,10 +7,17 @@ import config.config as config
 from datetime import datetime
 
 
-def get_video_frame_data(video_data_path) -> [FrameData]:
-    with open(video_data_path, 'r') as file:
-        json_data = json.load(file)
-        return FrameDatasetDictionaryMapper().from_dictionary(json_data)
+def get_video_frame_data(video_data_path, config) -> [FrameData]:
+    video_frame_data = []
+    if config.get('app', {}).get('compare', False):
+        if os.path.isfile(video_data_path):
+            with open(video_data_path, 'r') as file:
+                json_data = json.load(file)
+                video_frame_data = FrameDatasetDictionaryMapper().from_dictionary(json_data)
+        else:
+            print('File {} does not exist. No dataset loaded.'.format(video_data_path))
+
+    return video_frame_data
 
 
 def save_comparison_results(video_name, results):
@@ -37,7 +45,7 @@ if __name__ == '__main__':
     analytics = Analytics(video_name, **config['analytics_conf'])
     offside_line_detector = OffsideLineDetector(analytics, **config)
 
-    video_data = get_video_frame_data(dataset_path)
+    video_data = get_video_frame_data(dataset_path, config)
 
     while True:
         video = video_repository.VideoRepository.get_video(video_path)

@@ -54,7 +54,7 @@ class PlayerSorterByKMeans:
             'labels': player_labels
         }) if self.debug else None
 
-        if len(self.labels_teams) is 0:
+        if len(self.labels_teams) == 0:
             self.set_labels_teams(player_labels)
 
         for itx, label in enumerate(player_labels):
