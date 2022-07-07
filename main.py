@@ -29,7 +29,7 @@ if __name__ == '__main__':
     Logger.initialize(config['logger'])
     ScreenManager.initialize(config['screen_manager'])
 
-    video_name = constants.VideoConstants.video_1_from_8_to_12
+    video_name = constants.VideoConstants.video_Liverpool_Benfica_119_126
 
     video_path = './test/videos' + '/' + video_name
     dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"
