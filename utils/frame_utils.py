@@ -273,6 +273,10 @@ def detect_contours(original_frame, params):
     #  cv2.RETR_EXTERNAL keeps only parent contours
     (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
+
+    if params.get('debug', False):
+        cv2.drawContours(original_frame, contours, -1, (0, 255, 0), 3)
+
     for idx, c in enumerate(contours):
 
         x, y, w, h = cv2.boundingRect(c)
@@ -374,8 +378,8 @@ def add_mask(frame, params):
 
 def remove_mask(frame, params):
     mask = params.get("mask")
-    res = cv2.bitwise_and(frame, frame, mask=~mask)
-    return res
+    return frame - mask
+
 
 
 def transform_matrix_gray_range(original_frame, params=None):
@@ -401,16 +405,6 @@ def apply_otsu(frame, params=None):
         cv2.THRESH_BINARY + cv2.THRESH_OTSU
     )
 
-    return image_result
-
-
-def apply_top_hat(frame, params=None):
-    if params is None:
-        params = {}
-
-    element = np.ones((21, 1))
-
-    _, image_result = cv2.morphologyEx(frame, cv2.MORPH_TOPHAT, element, iterations=params.get('iterations', 1))
     return image_result
 
 
@@ -464,9 +458,27 @@ def apply_erosion(frame, params):
     return eroded_frame
 
 
-def apply_blur(frame, params):
-    blurred_frame = cv2.blur(frame, params.get('blur', (10, 10)))
+def apply_blur(frame, params={}):
+    blurred_frame = cv2.blur(frame, params.get('blur', (5, 5)))
     return blurred_frame
+
+
+def change_contrast(frame, params={}):
+    alpha = 1.0  # Simple contrast control
+    beta = 0  # Simple brightness control
+    # Initialize values
+    alpha = 1.5  # Enter the alpha value [1.0-3.0]
+    beta = 0  # Enter the beta value [0-100]
+    # Do the operation new_image(i,j) = alpha*image(i,j) + beta
+    # Instead of these 'for' loops we could have used simply:
+    # new_image = cv.convertScaleAbs(image, alpha=alpha, beta=beta)
+    # but we wanted to show you how to access the pixels :)
+    new_image = cv2.convertScaleAbs(frame, alpha=alpha, beta=beta)
+    # for y in range(image.shape[0]):
+    #     for x in range(image.shape[1]):
+    #         for c in range(image.shape[2]):
+    #             new_image[y, x, c] = np.clip(alpha * image[y, x, c] + beta, 0, 255)
+    return new_image
 
 
 def fill_contours(frame, params):
@@ -580,12 +592,51 @@ def filter_contours_by_aspect_ratio(frame, params):
 
 
 def morphological_opening(original_frame, params={}):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+    if percentage_of_frame is not None:
+        width = int(len(original_frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
         params.get('element_size', (3, 3)))
 
     frame = cv2.morphologyEx(original_frame, cv2.MORPH_OPEN, kernel, iterations=params.get('iterations', 1))
     return frame
+
+
+def morphological_top_hat(original_frame, params={}):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+
+    if percentage_of_frame is not None:
+        width = int(len(original_frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
+    kernel = cv2.getStructuringElement(
+        params.get('element', cv2.MORPH_RECT),
+        params.get('element_size', (10, 10)))
+
+    image_result = cv2.morphologyEx(original_frame, cv2.MORPH_TOPHAT, kernel, iterations=params.get('iterations', 1))
+
+    if params.get('remove', False):
+        image_result = remove_mask(original_frame, {'mask': image_result})
+
+    return image_result
+
+
+def morphological_black_hat(original_frame, params={}):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+
+    if percentage_of_frame is not None:
+        width = int(len(original_frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
+    kernel = cv2.getStructuringElement(
+        params.get('element', cv2.MORPH_RECT),
+        params.get('element_size', (10, 10)))
+
+    image_result = cv2.morphologyEx(original_frame, cv2.MORPH_BLACKHAT, kernel, iterations=params.get('iterations', 1))
+    return image_result
 
 
 # Use "close" morphological operation to close the gaps between contours
@@ -710,21 +761,6 @@ def detect_edges(original_frame, params):
 def gray_scale(original_frame, params={}):
     frame = cv2.cvtColor(original_frame, params.get('code', cv2.COLOR_BGR2GRAY))
     return frame
-
-
-def top_hat(original_frame, params):
-    # Getting the kernel to be used in Top-Hat
-    filterSize = (3, 3)
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, filterSize)
-
-    # Reading the image named 'input.jpg'
-    input_image = cv2.imread("testing.jpg")
-    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
-
-    # Applying the Top-Hat operation
-    tophat_img = cv2.morphologyEx(input_image,
-                                  cv2.MORPH_TOPHAT,
-                                  kernel)
 
 
 def sobel(original_frame, params):

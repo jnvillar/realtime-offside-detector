@@ -26,7 +26,7 @@ default_config = {
             team_one.id: "boca",
             team_two.id: "river",
         },
-        'compare': True
+        'compare': False
     },
     'player_finder': {
         'debug': False
@@ -64,12 +64,20 @@ default_config = {
         }
     },
     'player_detector': {
-        # background_subtraction, edges, adhoc, by_color, posta=otsu
-        'method': 'otsu',
+        # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
+        'method': 'kmeans',
         'detect_every_amount_of_frames': 1,
+        'kmeans': {
+            'debug': False,
+            'klusters': 5,
+            'attempts': 2,
+            'keep_contours_by_aspect_ratio': AspectRatio.taller,
+            'ignore_contours_smaller_than': 0.03,
+            'ignore_contours_bigger_than': 0.5,
+        },
         'otsu': {
             'debug': False,
-            'ignore_contours_smaller_than': 0.05,
+            'ignore_contours_smaller_than': 0.02,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             # 'filter_contour_inside_other': True

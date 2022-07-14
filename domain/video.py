@@ -1,6 +1,5 @@
 import cv2
 
-from domain.frame import *
 import log.logger as log
 
 

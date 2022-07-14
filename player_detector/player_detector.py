@@ -3,6 +3,7 @@ from player_detector.imp_by_color import *
 from player_detector.imp_edges import *
 from player_detector.imp_adhoc import *
 from player_detector.impl_otsu import *
+from player_detector.impl_kmeans import *
 from player_detector.impl_tophat import *
 from domain.player import *
 from domain.video import *
@@ -23,6 +24,7 @@ class PlayerDetector:
             'by_color': ByColor(**kwargs['by_color']),
             'otsu': OtsuPlayerDetector(**kwargs['otsu']),
             'tophat': TopHatPlayerDetector(**kwargs['tophat']),
+            'kmeans': KmeansPlayerDetector(**kwargs['kmeans'])
         }
 
         self.method = methods[kwargs['method']]
