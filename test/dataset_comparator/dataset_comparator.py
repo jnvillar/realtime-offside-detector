@@ -191,6 +191,10 @@ class ComparatorByStrategy:
                 # ESC to exit comparison
                 if self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
                     break
+            else:
+                # some of the sub-problems require to perform detection over all frames to work properly, given that
+                # results for one frame depend on results from previous frames
+                self.comparison_strategy.detect_only(video)
 
 
 class PlayerDetectorComparisonStrategy:
@@ -207,9 +211,13 @@ class PlayerDetectorComparisonStrategy:
         video.set_frame(frame_with_field_detected)
 
     def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+        return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def detect_only(self, video):
         players = self.player_detector.detect_players(video)
         detected_frame_data = self._build_frame_data(video, players)
-        return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
+        return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
         detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False, False)
@@ -240,9 +248,13 @@ class FieldDetectorComparisonStrategy:
         video.set_frame(frame_with_field_detected)
 
     def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+        return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def detect_only(self, video):
         video, field_mask = self.field_detector.detect_field(video)
         detected_frame_data = self._build_frame_data(video, field_mask)
-        return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
+        return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
         detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False, False)
