@@ -1,8 +1,13 @@
 import cv2
 
+from field_detector.field_detector import FieldDetector
+from player_detector.player_detector import PlayerDetector
 from test.dataset_generator.domain import *
 import utils.math as math_utils
 import math
+
+from test.dataset_generator.utils import FrameDataPrinter
+from utils.utils import ScreenManager, KeyboardManager
 
 
 class FrameDataComparator:
@@ -15,11 +20,11 @@ class FrameDataComparator:
 
         comparison_results = {
             'frame_number': actual_frame_data.get_frame_number(),
-            # 'field': self.compare_field(expected_frame_data, actual_frame_data),
-            'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
-            'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
-            'players': self.compare_players(expected_frame_data, actual_frame_data),
-            'offside_line': self.compare_offside_line(expected_frame_data, actual_frame_data)
+            'field': self.compare_field(expected_frame_data, actual_frame_data),
+            # 'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
+            # 'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
+            # 'players': self.compare_players(expected_frame_data, actual_frame_data),
+            # 'offside_line': self.compare_offside_line(expected_frame_data, actual_frame_data)
         }
         return comparison_results
 
@@ -149,3 +154,105 @@ class FrameDataComparator:
     # Line slope given two points:
     def _slope(self, x1, y1, x2, y2):
         return (y2 - y1) / (x2 - x1)
+
+
+class ComparatorByStrategy:
+
+    def __init__(self, comparison_strategy, debug):
+        self.debug = debug
+        self.comparison_strategy = comparison_strategy
+        self.screen_manager = ScreenManager.get_manager()
+        self.keyboard_manager = KeyboardManager()
+
+    def compare(self, video, video_data):
+        # index expected frame data by frame number
+        video_data_map = {frame_data.get_frame_number(): frame_data for frame_data in video_data}
+        while True:
+            frame = video.get_next_frame()
+            if frame is None:
+                break
+
+            frame_number = video.get_current_frame_number()
+            # perform comparison only if the frame is present in video_data_map
+            if frame_number in video_data_map:
+                expected_frame_data = video_data_map[frame_number]
+                # preliminary steps (anything necessary to provide as input for the comparison step)
+                self.comparison_strategy.prepare_for_detection(video, expected_frame_data)
+
+                # detection and comparison of results
+                comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video, expected_frame_data)
+                print("Frame {}: {}".format(frame_number, comparison_results))
+
+                # debug visualization of results
+                if self.debug:
+                    self.comparison_strategy.show_comparison_results(detected_frame_data, expected_frame_data, video.get_current_frame())
+
+                key_code = cv2.waitKey(0)
+                # ESC to exit comparison
+                if self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                    break
+
+
+class PlayerDetectorComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.player_detector = PlayerDetector(None, **config['player_detector'])
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        # apply detected field from dataset
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True, False, False, False, field_from_mask=True)
+        video.set_frame(frame_with_field_detected)
+
+    def detect_and_compare(self, video, expected_frame_data):
+        players = self.player_detector.detect_players(video)
+        detected_frame_data = self._build_frame_data(video, players)
+        return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False, False)
+        self.screen_manager.show_frame(detected_frame, "Detected players")
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False, False)
+        self.screen_manager.show_frame(expected_frame, "Expected players")
+
+    def _build_frame_data(self, video, players):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder()\
+            .set_frame_number(video.get_current_frame_number())\
+            .set_frame_height(height)\
+            .set_frame_width(width)\
+            .set_players_from_domain_players(players)\
+            .build()
+
+
+class FieldDetectorComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.field_detector = FieldDetector(None, **config['field_detector'])
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True, False, False, False, field_from_mask=True)
+        video.set_frame(frame_with_field_detected)
+
+    def detect_and_compare(self, video, expected_frame_data):
+        video, field_mask = self.field_detector.detect_field(video)
+        detected_frame_data = self._build_frame_data(video, field_mask)
+        return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False, False)
+        self.screen_manager.show_frame(detected_frame, "Detected (mask) vs Expected (lines)")
+
+    def _build_frame_data(self, video, field_mask):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder()\
+            .set_frame_number(video.get_current_frame_number())\
+            .set_frame_height(height)\
+            .set_frame_width(width)\
+            .set_field_mask(field_mask)\
+            .build()
