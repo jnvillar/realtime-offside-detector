@@ -33,17 +33,20 @@ class FrameDataComparator:
         actual_field_mask = actual_frame_data.get_field_mask()
         expected_field_mask_area = cv2.countNonZero(expected_field_mask)
 
-        false_negatives_mask = expected_field_mask - actual_field_mask
+        false_negatives_mask = cv2.subtract(expected_field_mask, actual_field_mask)
         false_negatives_area = cv2.countNonZero(false_negatives_mask)
         false_negative_percentage = false_negatives_area / expected_field_mask_area
 
-        false_positives_mask = actual_field_mask - expected_field_mask
+        false_positives_mask = cv2.subtract(actual_field_mask, expected_field_mask)
         false_positives_area = cv2.countNonZero(false_positives_mask)
         false_positives_percentage = false_positives_area / expected_field_mask_area
 
         return {
+            'missing_field_pixels': false_negatives_area,
             'missing_field_percentage': false_negative_percentage,
-            'extra_field_percentage': false_positives_percentage
+            'extra_field_pixels': false_positives_area,
+            'extra_field_percentage': false_positives_percentage,
+            'total_difference_percentage': false_negative_percentage + false_positives_percentage
         }
 
     def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
