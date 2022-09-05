@@ -101,11 +101,13 @@ class FrameData:
 
     def get_field_mask(self):
         if self.field_mask is None:
-            # if field mask is not defined, calculate it from field vertices
-            mask = np.zeros((self.frame_height, self.frame_width), np.uint8)
-            vertices = np.array(self.field.get_vertices())
-            cv2.fillPoly(mask, [vertices], constants.BGR_WHITE)
-            self.field_mask = mask
+            # if field is not set, then it's not possible to calculate field mask
+            if self.field is not None:
+                # if field mask is not defined, calculate it from field vertices
+                mask = np.zeros((self.frame_height, self.frame_width), np.uint8)
+                vertices = np.array(self.field.get_vertices())
+                cv2.fillPoly(mask, [vertices], constants.BGR_WHITE)
+                self.field_mask = mask
         return self.field_mask
 
     def get_defending_team(self):

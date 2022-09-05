@@ -61,7 +61,7 @@ class DatasetReader:
             # display frame with some informative text
             self.frame_printer.print_text(self.current_frame, "Frame: {}".format(current_frame_number), (5, 30), constants.BGR_WHITE)
             if current_frame_number in frame_data_by_frame_number:
-                self.frame_data_printer.print(frame_data_by_frame_number.get(current_frame_number), self.current_frame, self.show_field, self.show_players_and_referees, self.show_vp_segments)
+                self.current_frame = self.frame_data_printer.print(frame_data_by_frame_number.get(current_frame_number), self.current_frame, self.show_field, self.show_players_and_referees, self.show_vp_segments, True)
             cv2.imshow(self.FRAME_WINDOW_NAME, self.current_frame)
             # Only for the first time move the window
             if self.read_started:

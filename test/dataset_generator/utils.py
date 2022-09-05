@@ -75,9 +75,10 @@ class FrameDataPrinter:
     def __init__(self):
         self.frame_printer = utils.FramePrinter()
 
-    def print(self, frame_data, frame, print_field, print_players_and_referees, print_vanishing_point_segments):
+    def print(self, frame_data, frame, print_field, print_players_and_referees, print_vanishing_point_segments, print_offside_line, field_from_mask=False):
         frame_number = frame_data.get_frame_number()
         field = frame_data.get_field()
+        field_mask = frame_data.get_field_mask()
         players_and_referees = frame_data.get_players()
         last_defense_player_index = frame_data.get_last_defense_player_index()
         vanishing_point_segments = frame_data.get_vanishing_point_segments()
@@ -86,9 +87,13 @@ class FrameDataPrinter:
 
         self.frame_printer.print_text(frame, "Frame: {}".format(frame_number), (5, 30), constants.BGR_WHITE)
 
-        if print_field and field is not None:
-            vertices = numpy.array(field.get_vertices())
-            cv2.polylines(frame, [vertices], True, colors.FIELD_BOX_COLOR, thickness=2)
+        if print_field and (field is not None or field_mask is not None):
+            # Based on field_from_mask value, the field is printed as mask or as a polygon
+            if field_from_mask:
+                frame = cv2.bitwise_and(frame, frame, mask=field_mask)
+            else:
+                vertices = numpy.array(field.get_vertices())
+                cv2.polylines(frame, [vertices], True, colors.FIELD_BOX_COLOR, thickness=2)
 
         if print_players_and_referees and players_and_referees is not None:
             player_index = 0
@@ -102,10 +107,12 @@ class FrameDataPrinter:
             cv2.line(frame, vanishing_point_segments[1][0], vanishing_point_segments[1][1], colors.VP_SEGMENTS_COLOR, thickness=2)
             self.frame_printer.print_text(frame, "Vanishing point: {}".format(vanishing_point), (230, 30), constants.BGR_WHITE)
 
-        if vanishing_point is not None and players_and_referees is not None and last_defense_player_index is not None:
+        if print_offside_line and vanishing_point is not None and players_and_referees is not None and last_defense_player_index is not None:
             cv2.line(frame, vanishing_point,
                      self._get_player_offside_line_point_according_to_orientation(play_orientation, players_and_referees[last_defense_player_index].get_position()),
                      colors.OFFSIDE_LINE_COLOR, thickness=2)
+
+        return frame
 
     def _get_player_box_color(self, player, last_defense_player):
         if last_defense_player:
