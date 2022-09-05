@@ -55,8 +55,9 @@ default_config = {
             'only_unclassified_players': True,
             'median': False,
             'focused': True,
-            'klusters': 3,
-            'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+            'klusters': 2,
+            # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+            'klusters_team': [team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
         },
         'automatic_by_color': {
             white.color_name: team_two,
@@ -72,8 +73,8 @@ default_config = {
             'klusters': 5,
             'attempts': 2,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
-            'ignore_contours_smaller_than': 0.03,
-            'ignore_contours_bigger_than': 0.5,
+            'ignore_contours_smaller_than': 0.04,
+            'ignore_contours_bigger_than': 1,
         },
         'otsu': {
             'debug': False,

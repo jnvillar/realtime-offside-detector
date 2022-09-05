@@ -133,8 +133,8 @@ class FieldDetector:
             ),
             # dilate again to undo the prior erosion but now we do not have the white holes
             Step(
-                "Dilate (4 iterations)",
-                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 4},
+                "Dilate (3 iterations)",
+                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 2},
                 debug=self.debug
             )
         ]

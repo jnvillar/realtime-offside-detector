@@ -1,5 +1,6 @@
 from utils.utils import ScreenManager
 from PIL import Image, ImageOps
+from random import random
 from domain.aspec_ratio import *
 from domain.player import *
 from domain.video import *
@@ -268,6 +269,34 @@ def crop(original_frame, params):
     return original_frame
 
 
+# https://stackoverflow.com/questions/23841852/filtering-lines-and-curves-in-background-subtraction-in-opencv
+def get_blobs(thresh, maxblobs, maxmu03, iterations=1):
+    """
+    Return a 2-tuple list of the locations of large white blobs.
+    `thresh` is a black and white threshold image.
+    No more than `maxblobs` will be returned.
+    Moments with a mu03 larger than `maxmu03` are ignored.
+    Before sampling for blobs, the image will be eroded `iterations` times.
+    """
+    # Kernel specifies an erosion on direct pixel neighbours.
+    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
+    # Remove noise and thin lines by eroding/dilating blobs.
+    thresh = cv2.erode(thresh, kernel, iterations=iterations)
+    thresh = cv2.dilate(thresh, kernel, iterations=iterations - 1)
+    ScreenManager.get_manager().show_frame(thresh, 'blob {}'.format(random()))
+
+    # Calculate the centers of the contours.
+    contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[0]
+    moments = map(cv2.moments, contours)
+
+    # Filter out the moments that are too tall.
+    moments = filter(lambda k: abs(k['mu03']) <= maxmu03, moments)
+    # Select the largest moments.
+    moments = sorted(moments, key=lambda k: k['m00'], reverse=True)[:maxblobs]
+    # Return the centers of the moments.
+    return [(m['m10'] / m['m00'], m['m01'] / m['m00']) for m in moments if m['m00'] != 0]
+
+
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
@@ -340,6 +369,27 @@ def get_biggest_component_mask(original_frame, params):
     return biggest_component_mask
 
 
+def get_biggest_components_mask(original_frame, params={}):
+    # search connected components over the mask, and get the biggest one
+    totalLabels, label_ids, values, centroid = cv2.connectedComponentsWithStats(
+        original_frame,
+        params.get('connectivity', 8),
+        cv2.CV_32S
+    )
+    result = np.zeros_like(label_ids, np.uint8)
+
+    for i in range(1, totalLabels):
+        # Area of the component
+        area = values[i, cv2.CC_STAT_AREA]
+
+        if (area > 1) and (area < 10):
+            # get a mask which includes only the biggest component
+            result = np.zeros_like(label_ids, np.uint8)
+            result[label_ids == label_ids[1]] = 255
+
+    return result
+
+
 def nothing(original_frame, params):
     return original_frame
 
@@ -376,10 +426,15 @@ def add_mask(frame, params):
     return frame
 
 
+def remove_mask_2(frame, params):
+    mask = params.get("mask")
+    return cv2.bitwise_and(frame, frame, mask=~mask)
+
+
 def remove_mask(frame, params):
     mask = params.get("mask")
-    return frame - mask
-
+    res = frame - mask
+    return res
 
 
 def transform_matrix_gray_range(original_frame, params=None):
@@ -415,7 +470,28 @@ def join_masks(frame, params):
     return mask
 
 
+def apply_erosion(frame, params):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+
+    if percentage_of_frame is not None:
+        width = int(len(frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
+    kernel = cv2.getStructuringElement(
+        params.get('element', cv2.MORPH_RECT),
+        params.get('element_size', (6, 6)))
+
+    eroded_frame = cv2.erode(frame, kernel, iterations=params.get('iterations', 1))
+    return eroded_frame
+
+
 def apply_dilatation(frame, params={}):
+    percentage_of_frame = params.get('percentage_of_frame', None)
+
+    if percentage_of_frame is not None:
+        width = int(len(frame) * percentage_of_frame / 100)
+        params['element_size'] = (width, width)
+
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
         params.get('element_size', (6, 6)))
@@ -449,17 +525,8 @@ def negate(original_frame, params={}):
     return res
 
 
-def apply_erosion(frame, params):
-    kernel = cv2.getStructuringElement(
-        params.get('element', cv2.MORPH_RECT),
-        params.get('element_size', (6, 6)))
-
-    eroded_frame = cv2.erode(frame, kernel, iterations=params.get('iterations', 1))
-    return eroded_frame
-
-
 def apply_blur(frame, params={}):
-    blurred_frame = cv2.blur(frame, params.get('blur', (5, 5)))
+    blurred_frame = cv2.blur(frame, params.get('blur', params.get('element_size', (5, 5))))
     return blurred_frame
 
 
@@ -487,6 +554,40 @@ def fill_contours(frame, params):
         cv2.fillPoly(frame, pts=[contour], color=255)
 
     return frame
+
+
+def get_lines_lsd(original_frame, params={}):
+    # Create default Fast Line Detector (FSD)
+    gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
+    height, width = original_frame.shape[:2]
+    min_length = params.get('min_length_in_video_percentage', int(width * 0.02))
+    fld = cv2.ximgproc.createFastLineDetector(min_length)
+
+    # Detect lines in the image
+    lines = fld.detect(gray_image)
+    # Draw detected lines in the image
+    black_image = np.zeros((height, width), np.uint8)
+    mask = fld.drawSegments(black_image, lines, linecolor=params.get('line_color', (255, 255, 255)))
+
+    # keep only one channel (any channel works)
+    mask = mask[:, :, 2]
+
+    mask = morphological_closing(mask, {'element_size': (4, 4)})
+    mask = morphological_opening(mask, {'element_size': (2, 2)})
+    mask = apply_dilatation(mask, {'element_size': (10, 10)})
+
+    return mask
+
+
+def get_lines_top_hat(original_frame, params={}):
+    top_hat = morphological_top_hat(original_frame, {
+        'percentage_of_frame': params.get('percentage_of_frame', 0.3),
+        'remove': True
+    })
+    lines = original_frame - top_hat
+    grey_scale = cv2.cvtColor(lines, cv2.COLOR_BGR2GRAY)
+    res = cv2.threshold(grey_scale, 10, 255, cv2.THRESH_BINARY)[1]
+    return res
 
 
 def remove_lines_canny(frame, params):
@@ -614,7 +715,7 @@ def morphological_top_hat(original_frame, params={}):
 
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
-        params.get('element_size', (10, 10)))
+        params.get('element_size', (3, 3)))
 
     image_result = cv2.morphologyEx(original_frame, cv2.MORPH_TOPHAT, kernel, iterations=params.get('iterations', 1))
 
@@ -761,6 +862,10 @@ def detect_edges(original_frame, params):
 def gray_scale(original_frame, params={}):
     frame = cv2.cvtColor(original_frame, params.get('code', cv2.COLOR_BGR2GRAY))
     return frame
+
+
+def rgb_to_mask(original_frame, params={}):
+    return cv2.inRange(original_frame, np.array([1, 1, 1]), np.array([255, 255, 255]))
 
 
 def sobel(original_frame, params):
