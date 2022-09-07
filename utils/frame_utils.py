@@ -303,8 +303,11 @@ def detect_contours(original_frame, params):
     (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
 
-    if params.get('debug', False):
-        cv2.drawContours(original_frame, contours, -1, (0, 255, 0), 3)
+    if params.get('debug', True):
+        height, width = original_frame.shape[:2]
+        black_image = np.zeros((height, width), np.uint8)
+        ScreenManager.get_manager().show_frame(
+            cv2.drawContours(black_image, contours, -1, (255, 255, 0), 3), 'contours')
 
     for idx, c in enumerate(contours):
 
@@ -316,15 +319,19 @@ def detect_contours(original_frame, params):
             if params['filter_contour_inside_other'] and hierarchy[0, idx, 3] != -1:
                 valid_contour = False
 
+        contour_percentage_of_frame = None
         if 'ignore_contours_smaller_than' in params:
-            area = cv2.contourArea(c)
-            contour_percentage_of_frame = percentage_of_frame(original_frame, area)
+            if contour_percentage_of_frame is None:
+                area = cv2.contourArea(c)
+                contour_percentage_of_frame = percentage_of_frame(original_frame, area)
+
             if contour_percentage_of_frame < params['ignore_contours_smaller_than']:
                 valid_contour = False
 
         if 'ignore_contours_bigger_than' in params:
-            area = cv2.contourArea(c)
-            contour_percentage_of_frame = percentage_of_frame(original_frame, area)
+            if contour_percentage_of_frame is None:
+                area = cv2.contourArea(c)
+                contour_percentage_of_frame = percentage_of_frame(original_frame, area)
 
             if contour_percentage_of_frame > params['ignore_contours_bigger_than']:
                 valid_contour = False
@@ -336,14 +343,14 @@ def detect_contours(original_frame, params):
                 aspect_ratio = h / w
                 # keep taller (h/w > 1) or slightly wider ( h/w > 0.9) contours
                 # h / w >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.9 or aspect_ratio > 3:
+                if aspect_ratio < 0.9 or aspect_ratio > 4:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
                 aspect_ratio = w / h
                 # keep wider (w/h > 1) or slightly taller ( w/h > 0.9) contours
                 # w / h >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.6 or aspect_ratio > 3:
+                if aspect_ratio < 0.6 or aspect_ratio > 4:
                     valid_contour = False
 
         if valid_contour:
@@ -560,7 +567,7 @@ def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
     height, width = original_frame.shape[:2]
-    min_length = params.get('min_length_in_video_percentage', int(width * 0.02))
+    min_length = params.get('min_length_in_video_percentage', int(width * 0.01))
     fld = cv2.ximgproc.createFastLineDetector(min_length)
 
     # Detect lines in the image
@@ -572,7 +579,7 @@ def get_lines_lsd(original_frame, params={}):
     # keep only one channel (any channel works)
     mask = mask[:, :, 2]
 
-    mask = morphological_closing(mask, {'element_size': (4, 4)})
+    mask = morphological_closing(mask, {'element_size': (5, 5)})
     mask = morphological_opening(mask, {'element_size': (2, 2)})
     mask = apply_dilatation(mask, {'element_size': (10, 10)})
 

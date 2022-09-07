@@ -70,10 +70,10 @@ default_config = {
         'detect_every_amount_of_frames': 1,
         'kmeans': {
             'debug': False,
-            'klusters': 5,
+            'klusters': 6,
             'attempts': 2,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
-            'ignore_contours_smaller_than': 0.04,
+            'ignore_contours_smaller_than': 0.03,
             'ignore_contours_bigger_than': 1,
         },
         'otsu': {

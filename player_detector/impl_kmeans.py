@@ -39,15 +39,13 @@ class KmeansPlayerDetector:
         team_one = rgb_to_mask(segmented_data.reshape(image.shape))
         ScreenManager.get_manager().show_frame(team_one, 'team_one') if self.debug else None
 
-        ScreenManager.get_manager().show_frame(remove_mask(team_one, params={"mask": lines}),
-                                               'team_one_no_lines_bad') if self.debug else None
-
         team_one = remove_mask_2(team_one, params={"mask": lines})
-        ScreenManager.get_manager().show_frame(team_one, 'team_one_no_lines') if self.debug else None
+        ScreenManager.get_manager().show_frame(team_one, "team_one_no_lines") if self.debug else None
 
         segmented_data = second_team_main_color[pixels]
         team_two = rgb_to_mask(segmented_data.reshape(image.shape))
         ScreenManager.get_manager().show_frame(team_two, 'team_two') if self.debug else None
+
         team_two = remove_mask_2(team_two, params={"mask": lines})
         ScreenManager.get_manager().show_frame(team_two, 'team_two_no_lines') if self.debug else None
 
@@ -61,6 +59,7 @@ class KmeansPlayerDetector:
 
         players_team_one = detect_contours(team_one, params=self.params)
         players_team_two = detect_contours(team_two, params=self.params)
+
         return players_from_contours(players_team_one + players_team_two, self.debug)
 
     def show_pixels_classification(self, image, pixels):
@@ -74,7 +73,7 @@ class KmeansPlayerDetector:
             Step(
                 "open 1 {}".format(name),
                 morphological_opening, {
-                    'percentage_of_frame': 0.5,
+                    'percentage_of_frame': 0.6,
                     'iterations': 1
                 },
                 debug=self.debug
