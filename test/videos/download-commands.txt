@@ -38,3 +38,18 @@ python download_video.py 'https://www.youtube.com/watch?v=Ta8N2UzQR2A' 156 167 -
 python download_video.py 'https://www.youtube.com/watch?v=xn8Q7zB9DRU' 78 94 -o Italia-Alemania -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
 python download_video.py 'https://www.youtube.com/watch?v=xn8Q7zB9DRU' 162 173 -o Italia-Alemania -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
 python download_video.py 'https://www.youtube.com/watch?v=xn8Q7zB9DRU' 548 555 -o Italia-Alemania -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+
+
+python download_video.py 'https://www.youtube.com/watch?v=b8F2jZYA9wo' 12 22 -o Estudiantes-Patronato -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+python download_video.py 'https://www.youtube.com/watch?v=b8F2jZYA9wo' 380 392 -o Estudiantes-Patronato -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+
+
+python download_video.py 'https://www.youtube.com/watch?v=u2CHIqhYvR0' 415 425 -o ManchesterCity-Sevilla -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+
+
+python download_video.py 'https://www.youtube.com/watch?v=e607zuTdy8w' 239 250 -o Napoli-Liverpool -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+python download_video.py 'https://www.youtube.com/watch?v=e607zuTdy8w' 425 435 -o Napoli-Liverpool -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+
+
+python download_video.py 'https://www.youtube.com/watch?v=Vj7w7AOT4sE' 230 245 -o Tottenham-Fulham -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+python download_video.py 'https://www.youtube.com/watch?v=Vj7w7AOT4sE' 347 358 -o Tottenham-Fulham -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
