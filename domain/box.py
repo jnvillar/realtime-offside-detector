@@ -46,8 +46,8 @@ def box_from_player(player, focused=False) -> Box:
     # this is an attempt to focus the shorts/down part of the t-shirt
     if focused:
         resize_x = int(w / 4)
-        resize_y = int(h / 5)
-        move_y = int(h / 25)
+        resize_y = int(h / 3)
+        move_y = int(h / 4)
 
     return Box(
         label=label,

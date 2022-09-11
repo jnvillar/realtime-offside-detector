@@ -80,8 +80,10 @@ def draw_players(video: Video, players: [Player]):
     for idx, player in enumerate(players):
         player_box = player.get_box()
         cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+
         player_box = player.get_box(focused=True)
-        # cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+
         cv2.putText(frame, str(player.get_label()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5,
                     player.get_label_color(), 2, cv2.LINE_AA)
 
