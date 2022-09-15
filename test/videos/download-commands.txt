@@ -61,7 +61,7 @@ python download_video.py 'https://www.youtube.com/watch?v=eT7HOBQ78YI' 38 52 -o 
 python download_video.py 'https://www.youtube.com/watch?v=cONRX_No2-w' 43 50 -o Barcelona-Valladolid -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
 
 
-python download_video.py 'https://www.youtube.com/watch?v=uY9QGh5BfQM' 111 122 -o Celta-RealMadrid -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+python download_video.py 'https://www.youtube.com/watch?v=uY9QGh5BfQM' 112 122 -o Celta-RealMadrid -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
 
 
 python download_video.py 'https://www.youtube.com/watch?v=QJIjRbCGPJI' 29 38 -o Sevilla-Valladolid -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
