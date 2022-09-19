@@ -4,7 +4,21 @@ from offside_line_detector.offside_line_detector import *
 import utils.constants as constants
 from analytics.analytics import *
 import config.config as config
+import config.override_config as override_config
 from datetime import datetime
+from copy import deepcopy
+
+
+def dict_of_dicts_merge(x, y):
+    z = {}
+    overlapping_keys = x.keys() & y.keys()
+    for key in overlapping_keys:
+        z[key] = dict_of_dicts_merge(x[key], y[key])
+    for key in x.keys() - overlapping_keys:
+        z[key] = deepcopy(x[key])
+    for key in y.keys() - overlapping_keys:
+        z[key] = deepcopy(y[key])
+    return z
 
 
 def get_video_frame_data(video_data_path, config) -> [FrameData]:
@@ -33,14 +47,16 @@ def save_comparison_results(video_name, results):
 
 
 if __name__ == '__main__':
-    config = config.default_config
-    Logger.initialize(config['logger'])
-    ScreenManager.initialize(config['screen_manager'])
-
-    video_name = constants.VideoConstants.video_1_from_8_to_12
+    video_name = constants.VideoConstants.video_12_ManchesterCity_Sevilla_415_425
 
     video_path = './test/videos' + '/' + video_name
     dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"
+    override_config = override_config.override_config.get(video_name.split(".")[0], {})
+    config = config.default_config
+    config.update(override_config)
+
+    Logger.initialize(config['logger'])
+    ScreenManager.initialize(config['screen_manager'])
 
     analytics = Analytics(video_name, **config['analytics_conf'])
     offside_line_detector = OffsideLineDetector(analytics, **config)

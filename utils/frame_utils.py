@@ -8,6 +8,7 @@ from domain.color import *
 from domain.box import *
 from utils.math import *
 import log.logger as log
+import colour as cl
 import statistics
 import cv2
 
@@ -360,8 +361,38 @@ def detect_contours(original_frame, params):
 
     return detected_contours
 
+def rgb_to_lab(p):
+    new = rgb_to_xyz(p)
+    return cl.XYZ_to_Lab(new)
 
-def remove_green(original_frame, params):
+def rgb_to_xyz(p):
+    RGB_to_XYZ_matrix = np.array(
+        [[0.41240000, 0.35760000, 0.18050000],
+        [0.21260000, 0.71520000, 0.07220000],
+        [0.01930000, 0.11920000, 0.95050000]])
+    illuminant_RGB = np.array([0.31270, 0.32900])
+    illuminant_XYZ = np.array([0.34570, 0.35850])
+    return cl.RGB_to_XYZ(p / 255, illuminant_RGB, illuminant_XYZ,
+                         RGB_to_XYZ_matrix, 'Bradford')
+
+def xyz_to_rgb(p):
+    XYZ_to_RGB_matrix = np.array(
+        [[3.24062548, -1.53720797, -0.49862860],
+        [-0.96893071, 1.87575606, 0.04151752],
+        [0.05571012, -0.20402105, 1.05699594]])
+    illuminant_RGB = np.array([0.31270, 0.32900])
+    illuminant_XYZ = np.array([0.34570, 0.35850])
+    newp = cl.XYZ_to_RGB(p, illuminant_XYZ, illuminant_RGB,
+							XYZ_to_RGB_matrix, 'Bradford')
+    return newp * 255
+
+#converts from lab to rgb
+def lab_to_rgb(p):
+    xyz = cl.Lab_to_XYZ(p)
+    return xyz_to_rgb(xyz)
+
+
+def remove_green(original_frame, params={}):
     frame = remove_color(original_frame, ColorRange.green.color_range)
     return frame
 
@@ -569,7 +600,7 @@ def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
     height, width = original_frame.shape[:2]
-    min_length = params.get('min_length_in_video_percentage', int(width * 0.01))
+    min_length = params.get('min_length_in_video_percentage', int(width * 0.015))
     fld = cv2.ximgproc.createFastLineDetector(min_length)
 
     # Detect lines in the image
@@ -578,12 +609,21 @@ def get_lines_lsd(original_frame, params={}):
     black_image = np.zeros((height, width), np.uint8)
     mask = fld.drawSegments(black_image, lines, linecolor=params.get('line_color', (255, 255, 255)))
 
+    ScreenManager.get_manager().show_frame(mask, 'lines_1') if params.get('debug', False) else None
+
     # keep only one channel (any channel works)
     mask = mask[:, :, 2]
 
-    mask = morphological_closing(mask, {'element_size': (5, 5)})
-    mask = morphological_opening(mask, {'element_size': (2, 2)})
+    mask = morphological_closing(mask, {'element_size': (3, 3)})
+    ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug', False) else None
+
+
     mask = apply_dilatation(mask, {'element_size': (10, 10)})
+    ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug', False) else None
+
+    mask = morphological_opening(mask, {'element_size': (2, 2)})
+    ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug', False) else None
+
 
     return mask
 

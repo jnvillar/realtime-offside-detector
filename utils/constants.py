@@ -3,6 +3,7 @@ class VideoConstants:
     video_1_from_8_to_12 = "video_1_from_8_to_12.mp4"
     video_Liverpool_Benfica_119_126 = "4_Liverpool-Benfica_119_126.mp4"
     video_11_Estudiantes_Patronato_11_22 = "11_Estudiantes-Patronato_12_22.mp4"
+    video_12_ManchesterCity_Sevilla_415_425 = "12_ManchesterCity-Sevilla_415_425.mp4"
 
 
 # Colors RGB

@@ -71,7 +71,6 @@ default_config = {
         'kmeans': {
             'debug': False,
             'klusters': 6,
-            'attempts': 2,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             'ignore_contours_smaller_than': 0.03,
             'ignore_contours_bigger_than': 1,
