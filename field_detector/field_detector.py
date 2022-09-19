@@ -127,14 +127,14 @@ class FieldDetector:
             ),
             # erode to remove white holes from the areas out of the field, generated with the first dilatation
             Step(
-                "Erode (3 iterations)",
-                apply_erosion, {'element_size': (40, 40), 'element': cv2.MORPH_RECT, 'iterations': 3},
+                "Erode (4 iterations)",
+                apply_erosion, {'element_size': (40, 40), 'element': cv2.MORPH_RECT, 'iterations': 4},
                 debug=self.debug
             ),
             # dilate again to undo the prior erosion but now we do not have the white holes
             Step(
                 "Dilate (3 iterations)",
-                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 2},
+                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
                 debug=self.debug
             )
         ]
