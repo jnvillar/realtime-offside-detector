@@ -136,8 +136,11 @@ class KmeansPlayerDetector:
         h, w = image.shape[:2]
         amount_of_pixels = h * w
 
-        ## keep colors that uses less % of pixels
-        while True:
+        # keep colors that uses less % of pixels
+        while True or len(label_count) != 0:
+            if len(label_count) == 0:
+                break
+
             least_predominant_color_idx = min(label_count, key=label_count.get)
 
             if label_count[least_predominant_color_idx] < (

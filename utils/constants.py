@@ -1,4 +1,5 @@
 class VideoConstants:
+    # andan bien: 4, 13, 15
     video_1_from_1_to_3 = "video_1_from_1_to_3.mp4"
     video_1_from_8_to_12 = "video_1_from_8_to_12.mp4"
     video_Liverpool_Benfica_119_126 = "4_Liverpool-Benfica_119_126.mp4"
@@ -6,6 +7,8 @@ class VideoConstants:
     video_12_ManchesterCity_Sevilla_415_425 = "12_ManchesterCity-Sevilla_415_425.mp4"
     video_12_ManchesterCity_Sevilla_415_425 = "12_ManchesterCity-Sevilla_415_425.mp4"
     video_9__Udinese_Cagliari_35_41 = "9_Udinese-Cagliari_35_41.mp4"
+    video_6_Napoli_Fiorentina_91_98 = "6_Napoli-Fiorentina_91_98.mp4"
+    video_15_Valencia_Getafe_38_52 = "15_Valencia-Getafe_38_52.mp4"
 
 
 # Colors RGB

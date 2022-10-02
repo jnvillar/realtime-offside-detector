@@ -85,17 +85,6 @@ class FrameDataComparator:
         detected_players: [Player] = actual_frame_data.get_players().copy()
         expected_players: [Player] = expected_frame_data.get_players().copy()
 
-        defending_team_in_detected_frame_data = actual_frame_data.get_defending_team()
-        defending_team_in_expected_frame_data = expected_frame_data.get_defending_team()
-
-        # switch teams if defending teams are inverted
-        if defending_team_in_detected_frame_data != defending_team_in_expected_frame_data:
-            for detected_player in detected_players:
-                if detected_player.team == Team.TEAM_ONE:
-                    detected_player.team = Team.TEAM_TWO
-                else:
-                    detected_player.team = Team.TEAM_ONE
-
         correctly_detected_players = []
         correctly_detected_teams = []
         badly_detected_teams = []
@@ -112,11 +101,14 @@ class FrameDataComparator:
                     possible_expected_players.append(expected_player)
                     possible_expected_players_idx.append(idx)
 
+            # player is not expected
             if len(possible_expected_players) == 0:
                 extra_detected_players.append(detected_player)
                 break
 
             found = False
+
+
             for idx, possible in enumerate(possible_expected_players):
                 if possible.team == detected_player.team:
                     correctly_detected_players.append(detected_player)
@@ -170,6 +162,7 @@ class ComparatorByStrategy:
     def compare(self, video, video_data):
         # index expected frame data by frame number
         video_data_map = {frame_data.get_frame_number(): frame_data for frame_data in video_data}
+        results = []
         while True:
             frame = video.get_next_frame()
             if frame is None:
@@ -185,19 +178,25 @@ class ComparatorByStrategy:
                 # detection and comparison of results
                 comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video, expected_frame_data)
                 print("Frame {}: {}".format(frame_number, comparison_results))
+                results.append(comparison_results)
+                break
 
                 # debug visualization of results
                 if self.debug:
                     self.comparison_strategy.show_comparison_results(detected_frame_data, expected_frame_data, video.get_current_frame())
 
-                key_code = cv2.waitKey(0)
-                # ESC to exit comparison
-                if self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
-                    break
+                if self.debug:
+                    key_code = cv2.waitKey(0)
+
+                    # ESC to exit comparison
+                    if self.keyboard_manager.key_was_pressed(key_code, constants.ESC_KEY_CODE):
+                        break
             else:
                 # some of the sub-problems require to perform detection over all frames to work properly, given that
                 # results for one frame depend on results from previous frames
                 self.comparison_strategy.detect_only(video)
+
+        return results
 
 
 class PlayerDetectorComparisonStrategy:
