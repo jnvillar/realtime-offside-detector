@@ -133,11 +133,25 @@ class KmeansPlayerDetector:
         pixels = pixel_labels.flatten()
 
         colors = np.zeros((len(self.main_colors), 3), np.uint8)
+        h, w = image.shape[:2]
+        amount_of_pixels = h * w
 
-        for i in range(0, self.params.get('least_predominant_colors', 5)):
+        ## keep colors that uses less % of pixels
+        while True:
             least_predominant_color_idx = min(label_count, key=label_count.get)
-            label_count.pop(least_predominant_color_idx, None)
-            colors[least_predominant_color_idx] = self.main_colors[least_predominant_color_idx]
+
+            if label_count[least_predominant_color_idx] < (
+                    amount_of_pixels * self.params.get('color_percentage', None)):
+
+                colors[least_predominant_color_idx] = self.main_colors[least_predominant_color_idx]
+                label_count.pop(least_predominant_color_idx, None)
+            else:
+                break
+
+        # for i in range(0, self.params.get('least_predominant_colors', 5)):
+        #     least_predominant_color_idx = min(label_count, key=label_count.get)
+        #     label_count.pop(least_predominant_color_idx, None)
+        #     colors[least_predominant_color_idx] = self.main_colors[least_predominant_color_idx]
 
         segmented_data = colors[pixels]
         segmented_data = segmented_data.reshape(image.shape)

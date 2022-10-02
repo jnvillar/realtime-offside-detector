@@ -82,8 +82,9 @@ def draw_players(video: Video, players: [Player]):
         player_box = player.get_box()
         cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
 
-        player_box = player.get_box(focused=True)
-        cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
+        ## focused box
+        # player_box = player.get_box(focused=True)
+        # cv2.rectangle(frame, player_box.down_left, player_box.upper_right, player.get_color(), 2)
 
         cv2.putText(frame, str(player.get_label()), player_box.down_left, cv2.FONT_HERSHEY_DUPLEX, 0.5,
                     player.get_label_color(), 2, cv2.LINE_AA)
@@ -346,14 +347,14 @@ def detect_contours(original_frame, params):
                 aspect_ratio = h / w
                 # keep taller (h/w > 1) or slightly wider ( h/w > 0.9) contours
                 # h / w >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.9 or aspect_ratio > 4:
+                if aspect_ratio < 0.9 or aspect_ratio > 3:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
                 aspect_ratio = w / h
                 # keep wider (w/h > 1) or slightly taller ( w/h > 0.9) contours
                 # w / h >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.6 or aspect_ratio > 4:
+                if aspect_ratio < 0.6 or aspect_ratio > 3:
                     valid_contour = False
 
         if valid_contour:

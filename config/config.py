@@ -54,10 +54,10 @@ default_config = {
             'debug': False,
             'only_unclassified_players': True,
             'median': False,
-            'focused': True,
+            'focused': False,
             'klusters': 2,
             # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-            'klusters_team': [team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+            'klusters_team': [team_one, team_two]  # smallest cluster = team 3, 2dn smallest = team 2 ...
         },
         'automatic_by_color': {
             white.color_name: team_two,
@@ -70,6 +70,7 @@ default_config = {
         'detect_every_amount_of_frames': 1,
         'kmeans': {
             'debug': False,
+            'color_percentage': (5 / 100),  # 5%
             'klusters': 6,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             'ignore_contours_smaller_than': 0.03,
