@@ -86,40 +86,22 @@ class FrameDataComparator:
         expected_players: [Player] = expected_frame_data.get_players().copy()
 
         correctly_detected_players = []
-        correctly_detected_teams = []
-        badly_detected_teams = []
         extra_detected_players = []
 
         # for every detected player, check if center is inside any expected player
         for detected_player in detected_players:
             detected_center = detected_player.get_center()
-            possible_expected_players = []
-            possible_expected_players_idx = []
+            match = False
 
             for idx, expected_player in enumerate(expected_players):
                 if self.point_inside_bounding_box(detected_center, expected_player.get_position()):
-                    possible_expected_players.append(expected_player)
-                    possible_expected_players_idx.append(idx)
-
-            # player is not expected
-            if len(possible_expected_players) == 0:
-                extra_detected_players.append(detected_player)
-                break
-
-            found = False
-
-
-            for idx, possible in enumerate(possible_expected_players):
-                if possible.team == detected_player.team:
                     correctly_detected_players.append(detected_player)
-                    expected_players.pop(possible_expected_players_idx[idx])
-                    correctly_detected_teams.append(detected_player)
-                    found = True
+                    expected_players.pop(idx)
+                    match = True
+                    break
 
-            if not found:
-                correctly_detected_players.append(detected_player)
-                expected_players.pop(possible_expected_players_idx[0])
-                badly_detected_teams.append(detected_player)
+            if not match:
+                extra_detected_players.append(detected_player)
 
         # copy expected players and remove detected ones
         not_detected_players = expected_players
@@ -129,9 +111,7 @@ class FrameDataComparator:
             'detected_players': len(detected_players),
             'correctly_detected_players': len(correctly_detected_players),
             'extra_detected_players': len(extra_detected_players),
-            'not_detected_players': len(not_detected_players),
-            'badly_detected_teams': len(badly_detected_teams),
-            'correctly_detected_teams': len(correctly_detected_players)
+            'not_detected_players': len(not_detected_players)
         }
 
     def point_inside_bounding_box(self, point, box):
@@ -179,7 +159,6 @@ class ComparatorByStrategy:
                 comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video, expected_frame_data)
                 print("Frame {}: {}".format(frame_number, comparison_results))
                 results.append(comparison_results)
-                break
 
                 # debug visualization of results
                 if self.debug:
