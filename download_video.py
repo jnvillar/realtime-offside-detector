@@ -24,10 +24,18 @@ def parse_arguments():
 if __name__ == '__main__':
     url, start_time, end_time, outfile, directory = parse_arguments()
     ydl_opts = {}
+    full_hd = True
     with YoutubeDL(ydl_opts) as ydl:
         print("Fetching video info: {}".format(url))
         info = ydl.extract_info(url, download=False)
-        video_url = info['requested_formats'][0]['url']
+        if full_hd:
+            video_url = info['requested_formats'][0]['url']
+        else:
+            formats = info['formats']
+            # format_id == 136 --> 720p
+            result = filter(lambda video_format: video_format['format_id'] == '136', formats)
+            video_url = list(result)[0]['url']
+
         print(video_url)
 
         if outfile is None:
