@@ -6,7 +6,7 @@ import config.override_config as override_config
 import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
-    PlayerDetectorComparisonStrategy
+    PlayerDetectorComparisonStrategy, PlayerSorterComparisonStrategy
 from test.dataset_generator.domain import FrameData
 from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from utils.utils import ScreenManager
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     # Strategies:
     # 1) Field detection
     # 2) Players detection
-    comparison_strategy = 2
+    comparison_strategy = 3
     # Whether to show the frames with the comparison results or not
     debug = True
 
@@ -67,6 +67,8 @@ if __name__ == '__main__':
         strategy = FieldDetectorComparisonStrategy(config)
     elif comparison_strategy == 2:
         strategy = PlayerDetectorComparisonStrategy(config)
+    elif comparison_strategy == 3:
+        strategy = PlayerSorterComparisonStrategy(config)
     else:
         print("Undefined comparison strategy: " + str(comparison_strategy))
         exit(1)

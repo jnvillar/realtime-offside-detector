@@ -2,7 +2,9 @@ import cv2
 
 from field_detector.field_detector import FieldDetector
 from player_detector.player_detector import PlayerDetector
+from player_sorter.player_sorter import PlayerSorter
 from test.dataset_generator.domain import *
+from domain.player import *
 import utils.math as math_utils
 import math
 
@@ -156,13 +158,15 @@ class ComparatorByStrategy:
                 self.comparison_strategy.prepare_for_detection(video, expected_frame_data)
 
                 # detection and comparison of results
-                comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video, expected_frame_data)
+                comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video,
+                                                                                                      expected_frame_data)
                 print("Frame {}: {}".format(frame_number, comparison_results))
                 results.append(comparison_results)
 
                 # debug visualization of results
                 if self.debug:
-                    self.comparison_strategy.show_comparison_results(detected_frame_data, expected_frame_data, video.get_current_frame())
+                    self.comparison_strategy.show_comparison_results(detected_frame_data, expected_frame_data,
+                                                                     video.get_current_frame())
 
                 if self.debug:
                     key_code = cv2.waitKey(0)
@@ -178,6 +182,62 @@ class ComparatorByStrategy:
         return results
 
 
+class PlayerSorterComparisonStrategy:
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.player_sorter = PlayerSorter(None, **config['player_sorter'])
+        self.players = []
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        # apply detected field from dataset
+        frame_with_field_detected = self.frame_data_printer.print(
+            expected_frame_data, video.get_current_frame(), True, False, False, False, field_from_mask=True)
+        video.set_frame(frame_with_field_detected)
+        self.players = expected_frame_data.get_players()
+
+    def detect_only(self, video):
+        playersD = []
+        for p in self.players:
+            coordinate_1, coordinate_2 = p.position
+            w = abs(coordinate_1[0] - coordinate_2[0])
+            h = abs(coordinate_1[1] - coordinate_2[1])
+            x = min(coordinate_1[0], coordinate_2[0])
+            y = min(coordinate_1[1], coordinate_2[1])
+            playersD.append(
+                PlayerD(
+                    contour=(None, (x, y, w, h)),
+                    id=None
+                ))
+
+        sorted_players = self.player_sorter.sort_players(video, playersD)
+        detected_frame_data = self._build_frame_data(video, sorted_players)
+        return detected_frame_data
+
+    def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+        return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False,
+                                                       False)
+        self.screen_manager.show_frame(detected_frame, "Sorted players")
+
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False,
+                                                       False)
+        self.screen_manager.show_frame(expected_frame, "Expected players")
+
+    def _build_frame_data(self, video, players):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_players_from_domain_players(players) \
+            .build()
+
+
 class PlayerDetectorComparisonStrategy:
 
     def __init__(self, config):
@@ -188,7 +248,8 @@ class PlayerDetectorComparisonStrategy:
 
     def prepare_for_detection(self, video, expected_frame_data):
         # apply detected field from dataset
-        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True, False, False, False, field_from_mask=True)
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
+                                                                  False, False, False, field_from_mask=True)
         video.set_frame(frame_with_field_detected)
 
     def detect_and_compare(self, video, expected_frame_data):
@@ -201,18 +262,20 @@ class PlayerDetectorComparisonStrategy:
         return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
-        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False, False)
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False,
+                                                       False)
         self.screen_manager.show_frame(detected_frame, "Detected players")
-        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False, False)
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False,
+                                                       False)
         self.screen_manager.show_frame(expected_frame, "Expected players")
 
     def _build_frame_data(self, video, players):
         height, width = video.get_current_frame().shape[:2]
-        return FrameDataBuilder()\
-            .set_frame_number(video.get_current_frame_number())\
-            .set_frame_height(height)\
-            .set_frame_width(width)\
-            .set_players_from_domain_players(players)\
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_players_from_domain_players(players) \
             .build()
 
 
@@ -225,7 +288,8 @@ class FieldDetectorComparisonStrategy:
         self.field_detector = FieldDetector(None, **config['field_detector'])
 
     def prepare_for_detection(self, video, expected_frame_data):
-        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True, False, False, False, field_from_mask=True)
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
+                                                                  False, False, False, field_from_mask=True)
         video.set_frame(frame_with_field_detected)
 
     def detect_and_compare(self, video, expected_frame_data):
@@ -238,14 +302,15 @@ class FieldDetectorComparisonStrategy:
         return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
-        detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False, False)
+        detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False,
+                                                       False)
         self.screen_manager.show_frame(detected_frame, "Detected (mask) vs Expected (lines)")
 
     def _build_frame_data(self, video, field_mask):
         height, width = video.get_current_frame().shape[:2]
-        return FrameDataBuilder()\
-            .set_frame_number(video.get_current_frame_number())\
-            .set_frame_height(height)\
-            .set_frame_width(width)\
-            .set_field_mask(field_mask)\
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_field_mask(field_mask) \
             .build()
