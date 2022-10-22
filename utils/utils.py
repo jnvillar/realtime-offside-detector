@@ -41,7 +41,7 @@ class KeyboardManager:
 
 class ScreenManager:
     INSTANCE = None
-    MAX_WINDOWS = 50
+    MAX_WINDOWS = 500
 
     @staticmethod
     def initialize(config={}):

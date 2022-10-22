@@ -116,6 +116,46 @@ class FrameDataComparator:
             'not_detected_players': len(not_detected_players)
         }
 
+    def compare_teams(self, expected, detected):
+        detected_players: [Player] = detected.get_players().copy()
+        expected_players: [Player] = expected.get_players().copy()
+
+        expected_defending_player = expected_players[expected.last_defense_player_index]
+        detected_defending_player = detected_players[expected.last_defense_player_index]
+
+        expected_defending_team = expected_defending_player.team
+        detected_defending_team = detected_defending_player.team
+
+        ## switch teams if they are inverted
+        if (expected_defending_team != detected_defending_team):
+            for player in detected_players:
+                player.team = player.team.reverse()
+
+        referee_idx = None
+        for i, p in enumerate(expected_players):
+            if p.team.is_referee():
+                referee_idx = i
+                break
+
+        ## remove referee if present
+        if referee_idx is not None:
+            expected_players.pop(referee_idx)
+            detected_players.pop(referee_idx)
+
+        correctly_sorted_players = 0
+        badly_sorted_players = 0
+
+        for i, p in enumerate(expected_players):
+            if p.team == detected_players[i].team:
+                correctly_sorted_players += 1
+            else:
+                badly_sorted_players += 1
+
+        return {
+            "correctly_sorted_players": correctly_sorted_players,
+            "badly_sorted_players": badly_sorted_players
+        }
+
     def point_inside_bounding_box(self, point, box):
         x, y = point
         down_left, upper_right = box
@@ -217,15 +257,28 @@ class PlayerSorterComparisonStrategy:
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video)
-        return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
+        return self.frame_data_comparator.compare_teams(expected_frame_data, detected_frame_data), detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
-        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False,
-                                                       False)
+        detected_frame = self.frame_data_printer.print(
+            detected_frame_data,
+            current_frame.copy(),
+            False,
+            True,
+            False,
+            False
+        )
         self.screen_manager.show_frame(detected_frame, "Sorted players")
 
-        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False,
-                                                       False)
+        expected_frame = self.frame_data_printer.print(
+            expected_frame_data,
+            current_frame.copy(),
+            False,
+            True,
+            False,
+            False
+        )
+
         self.screen_manager.show_frame(expected_frame, "Expected players")
 
     def _build_frame_data(self, video, players):

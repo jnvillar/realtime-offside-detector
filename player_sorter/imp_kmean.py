@@ -48,11 +48,12 @@ class PlayerSorterByKMeans:
                 params=self.params)
 
         player_labels = self.get_players_labels(player_representative_pixel)
-        self.log.log('player representative pixels', {
-            'players_to_be_sorted': players_to_be_sorted,
-            'representative_pixels': player_representative_pixel,
-            'labels': player_labels
-        }) if self.debug else None
+        self.log.log('player representative pixels',
+                     {
+                         'players_to_be_sorted': players_to_be_sorted,
+                         'representative_pixels': player_representative_pixel,
+                         'labels': player_labels
+                     }) if self.debug else None
 
         if len(self.labels_teams) == 0:
             self.set_labels_teams(player_labels)

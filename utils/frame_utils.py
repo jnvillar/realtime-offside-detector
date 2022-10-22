@@ -135,14 +135,14 @@ def get_predominant_color(frame, box: Box, colors: [ColorRange]):
 
 
 def get_players_mean_colors(frame, players: [Player], params=None):
-    if params is None:
-        params = {}
+    green_mask = g_greater_than_r_greater_than_b_mask(frame, {})
 
     res = []
     for itx, player in enumerate(players):
         player_box = player.get_box(focused=params.get('focused', False))
-        player_mean_color = get_box_mean_color(frame, player_box)
+        player_mean_color, player_box, player_box_no_green, player = get_box_mean_color(frame, player_box, green_mask)
         res.append(list(player_mean_color)[0:3])  # [0:3] do not include aplha
+
     return res
 
 
@@ -170,12 +170,14 @@ def get_box_median_color(original_frame, box: Box):
     return [statistics.median(a), statistics.median(b), statistics.median(c)]
 
 
-def get_box_mean_color(original_frame, box: Box):
+def get_box_mean_color(original_frame, box: Box, green_mask):
     box_mask = np.zeros(original_frame.shape[:2], np.uint8)
     x, y, w, h = box.x, box.y, box.w, box.h
     box_mask = cv2.rectangle(box_mask, (x, y), (x + w, y + h), (255, 255, 255), -1)
-    box_mean_color = cv2.mean(original_frame, mask=box_mask)
-    return box_mean_color
+    no_green_box = remove_mask_2(box_mask, {'mask': green_mask})
+    player = apply_mask(no_green_box, params={'mask': 'frame', 'frame': original_frame})
+    box_mean_color = cv2.mean(original_frame, mask=no_green_box)
+    return box_mean_color, box_mask, no_green_box, player
 
 
 def get_pixel_color(pixel, colors_range: [ColorRange]) -> ColorRange:
@@ -362,32 +364,36 @@ def detect_contours(original_frame, params):
 
     return detected_contours
 
+
 def rgb_to_lab(p):
     new = rgb_to_xyz(p)
     return cl.XYZ_to_Lab(new)
 
+
 def rgb_to_xyz(p):
     RGB_to_XYZ_matrix = np.array(
         [[0.41240000, 0.35760000, 0.18050000],
-        [0.21260000, 0.71520000, 0.07220000],
-        [0.01930000, 0.11920000, 0.95050000]])
+         [0.21260000, 0.71520000, 0.07220000],
+         [0.01930000, 0.11920000, 0.95050000]])
     illuminant_RGB = np.array([0.31270, 0.32900])
     illuminant_XYZ = np.array([0.34570, 0.35850])
     return cl.RGB_to_XYZ(p / 255, illuminant_RGB, illuminant_XYZ,
                          RGB_to_XYZ_matrix, 'Bradford')
 
+
 def xyz_to_rgb(p):
     XYZ_to_RGB_matrix = np.array(
         [[3.24062548, -1.53720797, -0.49862860],
-        [-0.96893071, 1.87575606, 0.04151752],
-        [0.05571012, -0.20402105, 1.05699594]])
+         [-0.96893071, 1.87575606, 0.04151752],
+         [0.05571012, -0.20402105, 1.05699594]])
     illuminant_RGB = np.array([0.31270, 0.32900])
     illuminant_XYZ = np.array([0.34570, 0.35850])
     newp = cl.XYZ_to_RGB(p, illuminant_XYZ, illuminant_RGB,
-							XYZ_to_RGB_matrix, 'Bradford')
+                         XYZ_to_RGB_matrix, 'Bradford')
     return newp * 255
 
-#converts from lab to rgb
+
+# converts from lab to rgb
 def lab_to_rgb(p):
     xyz = cl.Lab_to_XYZ(p)
     return xyz_to_rgb(xyz)
@@ -618,13 +624,11 @@ def get_lines_lsd(original_frame, params={}):
     mask = morphological_closing(mask, {'element_size': (3, 3)})
     ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug', False) else None
 
-
     mask = apply_dilatation(mask, {'element_size': (10, 10)})
     ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug', False) else None
 
     mask = morphological_opening(mask, {'element_size': (2, 2)})
     ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug', False) else None
-
 
     return mask
 
@@ -923,7 +927,7 @@ def sobel(original_frame, params):
     return frame
 
 
-def g_greater_than_r_greater_than_b_mask(original_frame, params):
+def g_greater_than_r_greater_than_b_mask(original_frame, params=None):
     # frame is expected to be in BGR format
     r_channel = original_frame[:, :, 2]
     g_channel = original_frame[:, :, 1]

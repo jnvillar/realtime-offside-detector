@@ -48,6 +48,15 @@ class Team(Enum):
     TEAM_TWO = 2
     REFEREE = 3
 
+    def is_referee(self):
+        return self == Team.REFEREE
+
+    def reverse(self):
+        if self == Team.TEAM_ONE:
+            return Team.TEAM_TWO
+        if self == Team.TEAM_TWO:
+            return Team.TEAM_ONE
+
 
 #######################################################################################################################
 
