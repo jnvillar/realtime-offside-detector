@@ -140,7 +140,7 @@ def get_players_mean_colors(frame, players: [Player], params=None):
     res = []
     for itx, player in enumerate(players):
         player_box = player.get_box(focused=params.get('focused', False))
-        player_mean_color, player_box, player_box_no_green, player = get_box_mean_color(frame, player_box, green_mask)
+        player_mean_color, player_box, player_box_no_green = get_box_mean_color(frame, player_box, green_mask)
         res.append(list(player_mean_color)[0:3])  # [0:3] do not include aplha
 
     return res
@@ -175,9 +175,8 @@ def get_box_mean_color(original_frame, box: Box, green_mask):
     x, y, w, h = box.x, box.y, box.w, box.h
     box_mask = cv2.rectangle(box_mask, (x, y), (x + w, y + h), (255, 255, 255), -1)
     no_green_box = remove_mask_2(box_mask, {'mask': green_mask})
-    player = apply_mask(no_green_box, params={'mask': 'frame', 'frame': original_frame})
     box_mean_color = cv2.mean(original_frame, mask=no_green_box)
-    return box_mean_color, box_mask, no_green_box, player
+    return box_mean_color, box_mask, no_green_box
 
 
 def get_pixel_color(pixel, colors_range: [ColorRange]) -> ColorRange:

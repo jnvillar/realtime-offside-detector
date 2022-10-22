@@ -18,6 +18,8 @@ def save_comparison_results(video_name, comparison_strategy, results):
         result_name = 'field-detection'
     if comparison_strategy == 2:
         result_name = 'players-detection'
+    if comparison_strategy == 3:
+        result_name = 'players-sorting'
 
     if result_name is None:
         Exception("set result name")
@@ -58,7 +60,7 @@ if __name__ == '__main__':
     # 2) Players detection
     comparison_strategy = 3
     # Whether to show the frames with the comparison results or not
-    debug = True
+    debug = False
 
     video_data = get_video_frame_data(dataset_path + ".json")
     video = VideoRepository.get_video(video_path)
