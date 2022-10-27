@@ -27,7 +27,6 @@ def save_comparison_results(video_name, comparison_strategy, results):
     result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + result_name + ".json"
 
     with open(result_path, 'w') as file:
-        results = [ob if isinstance(ob, dict) else ob.__dict__ for ob in results]
         json.dump(results, file, indent=2)
 
 
