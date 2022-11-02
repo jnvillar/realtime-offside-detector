@@ -43,12 +43,18 @@ class FrameDataComparator:
         false_positives_area = cv2.countNonZero(false_positives_mask)
         false_positives_percentage = false_positives_area / expected_field_mask_area
 
+        intersection_area = cv2.countNonZero(cv2.bitwise_and(expected_field_mask, actual_field_mask))
+        union_area = cv2.countNonZero(cv2.bitwise_or(expected_field_mask, actual_field_mask))
+        jaccard_index = intersection_area / union_area
+
         return {
+            'frame_number': actual_frame_data.get_frame_number(),
             'missing_field_pixels': false_negatives_area,
             'missing_field_percentage': false_negative_percentage,
             'extra_field_pixels': false_positives_area,
             'extra_field_percentage': false_positives_percentage,
-            'total_difference_percentage': false_negative_percentage + false_positives_percentage
+            'total_difference_percentage': false_negative_percentage + false_positives_percentage,
+            'jaccard_index': jaccard_index
         }
 
     def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
@@ -219,7 +225,12 @@ class ComparatorByStrategy:
                 # results for one frame depend on results from previous frames
                 self.comparison_strategy.detect_only(video)
 
-        return results
+        aggregations = self.comparison_strategy.calculate_aggregations(results)
+
+        return {
+            "frame_results": results,
+            "aggregations": aggregations
+        }
 
 
 class PlayerSorterComparisonStrategy:
@@ -281,6 +292,10 @@ class PlayerSorterComparisonStrategy:
 
         self.screen_manager.show_frame(expected_frame, "Expected players")
 
+    def calculate_aggregations(self, results):
+        # TODO: add calculation for aggregations of interest for this subproblem (e.g. mean, average, std. dev.)
+        return {}
+
     def _build_frame_data(self, video, players):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
@@ -322,6 +337,10 @@ class PlayerDetectorComparisonStrategy:
                                                        False)
         self.screen_manager.show_frame(expected_frame, "Expected players")
 
+    def calculate_aggregations(self, results):
+        # TODO: add calculation for aggregations of interest for this subproblem (e.g. mean, average, std. dev.)
+        return {}
+
     def _build_frame_data(self, video, players):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
@@ -358,6 +377,18 @@ class FieldDetectorComparisonStrategy:
         detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False,
                                                        False)
         self.screen_manager.show_frame(detected_frame, "Detected (mask) vs Expected (lines)")
+
+    def calculate_aggregations(self, results):
+        average = {}
+        for frame_result in results:
+            for metric, value in frame_result.items():
+                average[metric + "_avg"] = average.get(metric + "_avg", 0) + value
+
+        for avg_metric in average:
+            average[avg_metric] = average[avg_metric] / len(results)
+
+        return average
+
 
     def _build_frame_data(self, video, field_mask):
         height, width = video.get_current_frame().shape[:2]

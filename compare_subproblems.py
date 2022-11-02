@@ -1,7 +1,7 @@
 import json
 import os
 
-import utils.constants as constants
+from utils.constants import VideoConstants
 import config.override_config as override_config
 import config.config as config
 from log.logger import Logger
@@ -27,7 +27,6 @@ def save_comparison_results(video_name, comparison_strategy, results):
     result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + result_name + ".json"
 
     with open(result_path, 'w') as file:
-        results = [ob if isinstance(ob, dict) else ob.__dict__ for ob in results]
         json.dump(results, file, indent=2)
 
 
@@ -44,38 +43,46 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 if __name__ == '__main__':
-    video_name = constants.VideoConstants.video_15_Valencia_Getafe_38_52
-    video_path = './test/videos' + '/' + video_name
-    dataset_path = './datasets' + '/' + video_name.split(".")[0]
 
-    override_config = override_config.override_config.get(video_name.split(".")[0], {})
-    config = config.default_config
-    config.update(override_config)
-
-    Logger.initialize(config['logger'])
-    ScreenManager.initialize(config['screen_manager'])
+    videos = [
+        VideoConstants.video_1_Arsenal_Chelsea_107_122,
+        VideoConstants.video_4_Liverpool_Benfica_119_126,
+        VideoConstants.video_20_BayernMunich_ViktoriaPlzen_515_524
+    ]
 
     # Strategies:
     # 1) Field detection
     # 2) Players detection
-    comparison_strategy = 3
+    # 3) Team classification
+    comparison_strategy = 1
     # Whether to show the frames with the comparison results or not
     debug = False
 
-    video_data = get_video_frame_data(dataset_path + ".json")
-    video = VideoRepository.get_video(video_path)
+    configuration = config.default_config.copy()
+    Logger.initialize(configuration['logger'])
+    ScreenManager.initialize(configuration['screen_manager'])
 
-    if comparison_strategy == 1:
-        strategy = FieldDetectorComparisonStrategy(config)
-    elif comparison_strategy == 2:
-        strategy = PlayerDetectorComparisonStrategy(config)
-    elif comparison_strategy == 3:
-        strategy = PlayerSorterComparisonStrategy(config)
-    else:
-        print("Undefined comparison strategy: " + str(comparison_strategy))
-        exit(1)
+    for video_name in videos:
+        video_path = './test/videos' + '/' + video_name
+        dataset_path = './datasets' + '/' + video_name.split(".")[0]
 
-    comparator = ComparatorByStrategy(strategy, debug)
-    results = comparator.compare(video, video_data)
+        override_configuration = override_config.override_config.get(video_name.split(".")[0], config.default_config)
+        configuration.update(override_configuration)
 
-    save_comparison_results(video_name, comparison_strategy, results)
+        video_data = get_video_frame_data(dataset_path + ".json")
+        video = VideoRepository.get_video(video_path)
+
+        if comparison_strategy == 1:
+            strategy = FieldDetectorComparisonStrategy(configuration)
+        elif comparison_strategy == 2:
+            strategy = PlayerDetectorComparisonStrategy(configuration)
+        elif comparison_strategy == 3:
+            strategy = PlayerSorterComparisonStrategy(configuration)
+        else:
+            print("Undefined comparison strategy: " + str(comparison_strategy))
+            exit(1)
+
+        comparator = ComparatorByStrategy(strategy, debug)
+        results = comparator.compare(video, video_data)
+
+        save_comparison_results(video_name, comparison_strategy, results)

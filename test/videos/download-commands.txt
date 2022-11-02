@@ -88,3 +88,6 @@ python download_video.py 'https://www.youtube.com/watch?v=8fONYY758N4' 37 44 -o 
 
 python download_video.py 'https://www.youtube.com/watch?v=T846SS4DF9Y' 20 29 -o RealMadrid-Shakhtar -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
 python download_video.py 'https://www.youtube.com/watch?v=T846SS4DF9Y' 245 253 -o RealMadrid-Shakhtar -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
+
+
+python download_video.py 'https://www.youtube.com/watch?v=J-lNToucyP4' 515 524 -o BayernMunich-ViktoriaPlzen -d /Users/mcadaval/Mati/Programacion/realtime-offside-detector/test/videos
