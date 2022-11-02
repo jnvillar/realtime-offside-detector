@@ -79,28 +79,28 @@ class FieldDetector:
                 debug=self.debug
             ),
             Step(
-                "biggest component mask",
+                "biggest component mask (1st time)",
                 get_biggest_component_mask, {'connectivity': 4},
                 debug=self.debug
             ),
             Step(
-                "biggest component mask",
+                "erosion",
                 apply_erosion, {'element': cv2.MORPH_RECT, 'element_size': (50, 50)},
                 debug=self.debug
             ),
             Step(
-                "biggest component mask",
+                "biggest component mask (2nd time)",
                 get_biggest_component_mask, {'connectivity': 8},
                 debug=self.debug
             ),
             Step(
-                "closening on field",
+                "closing on field",
                 morphological_closing, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
                 debug=self.debug
             ),
             Step(
                 "dilate on field",
-                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 3},
+                apply_dilatation, {'element_size': (50, 50), 'element': cv2.MORPH_RECT, 'iterations': 1},
                 debug=self.debug
             ),
         ]
