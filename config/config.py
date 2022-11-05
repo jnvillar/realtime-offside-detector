@@ -71,7 +71,7 @@ default_config = {
         'kmeans': {
             'debug': False,
             'color_percentage': (2 / 100),  # 5%
-            'klusters': 20,
+            'klusters': 15,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
             'ignore_contours_smaller_than': 0.03,
             'ignore_contours_bigger_than': 1,

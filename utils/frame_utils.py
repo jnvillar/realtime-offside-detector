@@ -606,7 +606,7 @@ def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
     height, width = original_frame.shape[:2]
-    min_length = params.get('min_length_in_video_percentage', int(width * 0.015))
+    min_length = params.get('min_length_in_video_percentage', int(width * 0.010))
     fld = cv2.ximgproc.createFastLineDetector(min_length)
 
     # Detect lines in the image
