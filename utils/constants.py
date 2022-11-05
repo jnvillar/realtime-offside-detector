@@ -28,6 +28,8 @@ class VideoConstants:
     video_19_RealMadrid_Shakhtar_245_253 = "19_RealMadrid-Shakhtar_245_253.mp4"
     video_19_RealMadrid_Shakhtar_20_29 = "19_RealMadrid-Shakhtar_20_29.mp4"
     video_20_BayernMunich_ViktoriaPlzen_515_524 = "20_BayernMunich-ViktoriaPlzen_515_524.mp4"
+    video_21_Roma_Ludogrets_503_510 = "21_Roma-Ludogrets_503_510.mp4"
+    video_22_ManchesterCity_Brighton_539_547 = "22_ManchesterCity-Brighton_539_547.mp4"
 
 
 # Colors RGB
