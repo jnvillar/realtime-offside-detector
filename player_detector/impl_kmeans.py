@@ -24,15 +24,32 @@ class KmeansPlayerDetector:
 
     def find_players(self, original_frame):
         image = original_frame
-        lines = get_lines_lsd(image, {'debug': self.debug})
 
+        lines = get_lines_lsd(image, {'debug': self.params.get('debug_lines', False)})
         ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None
 
-        image = apply_blur(original_frame, params={'element_size': (5, 5)})
-        ScreenManager.get_manager().show_frame(image, 'blured') if self.debug else None
+        # classify pixels
+        pixel_labels = self.get_pixel_labels(image)
+        self.show_pixels_classification(image, pixel_labels) if self.debug else None
 
-        # image = change_contrast(image)
-        # ScreenManager.get_manager().show_frame(image, 'contrast') if self.debug else None
+        least_predominant_colors = self.get_least_predominant_colors(image, pixel_labels)
+
+        players_mask = rgb_to_mask(least_predominant_colors.reshape(image.shape))
+
+        ScreenManager.get_manager().show_frame(players_mask, 'players_mask') if self.debug else None
+
+        players_no_lines = remove_mask_2(players_mask, params={"mask": lines})
+        ScreenManager.get_manager().show_frame(players_no_lines, 'players_no_lines') if self.debug else None
+
+        players = detect_contours(players_no_lines, params=self.params)
+
+        return players_from_contours(players, self.debug)
+
+    def find_players_3(self, original_frame):
+        image = original_frame
+        lines = get_lines_lsd(image, {'debug': self.params.get('debug_lines', False)})
+
+        ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None
 
         # classify pixels
         pixel_labels = self.get_pixel_labels(image)
@@ -108,6 +125,17 @@ class KmeansPlayerDetector:
         ScreenManager.get_manager().show_frame(segmented_image, 'pixels_classification')
         return segmented_image
 
+    def step_final(self, name):
+        return [
+            Step(
+                "close {}".format(name),
+                morphological_closing, {
+                    'element_size': (5, 30)
+                },
+                debug=self.debug
+            )
+        ]
+
     def step(self, name):
         return [
             Step(
@@ -137,24 +165,35 @@ class KmeansPlayerDetector:
         amount_of_pixels = h * w
 
         # keep colors that uses less % of pixels
-        while True or len(label_count) != 0:
-            if len(label_count) == 0:
-                break
+        for idx, colour_count in label_count.items():
+            if colour_count < (amount_of_pixels * self.params.get('color_percentage', None)):
+                colors[idx] = self.main_colors[idx]
 
-            least_predominant_color_idx = min(label_count, key=label_count.get)
+        res = None
+        for i, color in enumerate(colors):
+            if not color.any():
+                continue
 
-            if label_count[least_predominant_color_idx] < (
-                    amount_of_pixels * self.params.get('color_percentage', None)):
+            only_that_color = np.zeros((len(self.main_colors), 3), np.uint8)
+            only_that_color[i] = color
 
-                colors[least_predominant_color_idx] = self.main_colors[least_predominant_color_idx]
-                label_count.pop(least_predominant_color_idx, None)
+            image_only_that_color = only_that_color[pixels]
+            image_only_that_color = image_only_that_color.reshape(image.shape)
+            image_only_that_color = apply_erosion(image_only_that_color, {'element_size': (3, 3)})
+            image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (5, 30)})
+            ScreenManager.get_manager().show_frame(
+                image_only_that_color,
+                'color {}'.format(color)
+            ) if self.debug else None
+
+            if res is None:
+                res = image_only_that_color
             else:
-                break
+                res = res + image_only_that_color
 
-        # for i in range(0, self.params.get('least_predominant_colors', 5)):
-        #     least_predominant_color_idx = min(label_count, key=label_count.get)
-        #     label_count.pop(least_predominant_color_idx, None)
-        #     colors[least_predominant_color_idx] = self.main_colors[least_predominant_color_idx]
+        ScreenManager.get_manager().show_frame(res, 'res') if self.debug else None
+
+        return res
 
         segmented_data = colors[pixels]
         segmented_data = segmented_data.reshape(image.shape)

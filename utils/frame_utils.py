@@ -348,7 +348,7 @@ def detect_contours(original_frame, params):
                 aspect_ratio = h / w
                 # keep taller (h/w > 1) or slightly wider ( h/w > 0.9) contours
                 # h / w >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.9 or aspect_ratio > 3:
+                if aspect_ratio < 0.9 or aspect_ratio > 4:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
@@ -516,7 +516,7 @@ def join_masks(frame, params):
     return mask
 
 
-def apply_erosion(frame, params):
+def apply_erosion(frame, params={}):
     percentage_of_frame = params.get('percentage_of_frame', None)
 
     if percentage_of_frame is not None:
@@ -525,7 +525,8 @@ def apply_erosion(frame, params):
 
     kernel = cv2.getStructuringElement(
         params.get('element', cv2.MORPH_RECT),
-        params.get('element_size', (6, 6)))
+        params.get('element_size', params.get('element_size', (6, 6)))
+    )
 
     eroded_frame = cv2.erode(frame, kernel, iterations=params.get('iterations', 1))
     return eroded_frame
