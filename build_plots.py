@@ -17,14 +17,25 @@ def get_results_json(results_file_path):
     return json_data
 
 
+config = {
+    "intertia": {
+        'chart_title': 'Elbow method',
+        'label': 'Elbow method',
+        'tick': None,
+        'showlegend': True,
+    },
+    "field-detection": {
+        'chart_title': 'Field detection',
+        'metric_name': "jaccard_index",
+        'label': 'Field detection',
+        'tick': None,
+        'showlegend': True,
+    }
+}
+
 if __name__ == '__main__':
 
-    chart_title = None
-    metric_name = "jaccard_index"
     sub_problem_suffix = "intertia"  # field-detection, intertia
-    label = 'Elbow method'
-    tick = None
-    showlegend = False
 
     videos_path = "./test/videos"
     videos_to_consider = []
@@ -36,7 +47,13 @@ if __name__ == '__main__':
                 videos_to_consider.append(video_name)
 
         fig = go.Figure()
-        fig.update_layout(title=chart_title, xaxis_title=label, xaxis=dict(dtick=tick), showlegend=showlegend)
+        fig.update_layout(
+            title=config[sub_problem_suffix]['chart_title'],
+            xaxis_title=config[sub_problem_suffix]['label'],
+            xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
+            showlegend=config[sub_problem_suffix]['showlegend']
+        )
+
         for video_name in videos_to_consider:
             video_name_without_extesion = video_name.split(".")[0]
             results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix + ".json"
@@ -50,16 +67,16 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'intertia' and len(results["frame_results"]) > 0:
                 frame_results = results["frame_results"][0]
 
-                df = pd.DataFrame({
-                    'k': frame_results['k'],
-                    'inertias': frame_results['inertias'],
-                })
-
                 fig.add_trace(
-                    go.Scatter(x=df["k"], y=df["inertias"], name=video_name_without_extesion, mode="lines")
+                    go.Scatter(
+                        x=frame_results['k'],
+                        y=frame_results['inertias'],
+                        name=video_name_without_extesion,
+                        hoverinfo="x",
+                        mode="lines")
                 )
             else:
-                metric_values = [frame_data[metric_name] for frame_data in frame_results]
+                metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
                 fig.add_trace(
                     go.Box(x=metric_values, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
                            boxmean=True)
