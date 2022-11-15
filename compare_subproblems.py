@@ -90,9 +90,8 @@ if __name__ == '__main__':
         override_configuration = override_config.override_config.get(video_name.split(".")[0], config.default_config)
         configuration.update(override_configuration)
 
-        video_data = get_video_frame_data(dataset_path + ".json")
-
         try:
+            video_data = get_video_frame_data(dataset_path + ".json")
             video = VideoRepository.get_video(video_path)
         except Exception as e:
             print('Error opening video {}'.format(video_name))
