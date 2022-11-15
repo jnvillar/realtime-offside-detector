@@ -13,6 +13,28 @@ from utils.utils import ScreenManager
 from video_repository.video_repository import VideoRepository
 import numpy as np
 
+from enum import Enum
+
+
+class ComparisonStrategy(Enum):
+    field_detector = 'field-detection'
+    player_detector = 'players-detection'
+    player_sorter = 'players-sorting'
+    intertia = 'intertia'
+
+    def get_strategy_comparator(self):
+        if self == ComparisonStrategy.field_detector:
+            return FieldDetectorComparisonStrategy(configuration)
+
+        if self == ComparisonStrategy.player_detector:
+            return PlayerDetectorComparisonStrategy(configuration)
+
+        if self == ComparisonStrategy.player_sorter:
+            return PlayerSorterComparisonStrategy(configuration)
+
+        if self == ComparisonStrategy.intertia:
+            return IntertiaComparisonStrategy({'amount_of_frames': 1})
+
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -26,19 +48,7 @@ class NpEncoder(json.JSONEncoder):
 
 
 def save_comparison_results(video_name, comparison_strategy, results):
-    if comparison_strategy == 1:
-        result_name = 'field-detection'
-    if comparison_strategy == 2:
-        result_name = 'players-detection'
-    if comparison_strategy == 3:
-        result_name = 'players-sorting'
-    if comparison_strategy == 4:
-        result_name = 'intertia'
-
-    if result_name is None:
-        Exception("set result name")
-
-    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + result_name + ".json"
+    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.get_name() + ".json"
 
     with open(result_path, 'w') as file:
         json.dump(results, file, indent=2, cls=NpEncoder)
@@ -59,6 +69,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = False
     all_videos = True
+    strategy = ComparisonStrategy.intertia
 
     if all_videos:
         videos = VideoConstants().all()
@@ -69,12 +80,6 @@ if __name__ == '__main__':
             VideoConstants.video_20_BayernMunich_ViktoriaPlzen_515_524
         ]
 
-    # Strategies:
-    # 1) Field detection
-    # 2) Players detection
-    # 3) Team classification
-    # 4) Kmeans intertia
-    comparison_strategy = 4
     # Whether to show the frames with the comparison results or not
 
     configuration = config.default_config.copy()
@@ -97,21 +102,6 @@ if __name__ == '__main__':
             print('Error opening video {}'.format(video_name))
             continue
 
-        if comparison_strategy == 1:
-            strategy = FieldDetectorComparisonStrategy(configuration)
-        elif comparison_strategy == 2:
-            strategy = PlayerDetectorComparisonStrategy(configuration)
-        elif comparison_strategy == 3:
-            strategy = PlayerSorterComparisonStrategy(configuration)
-        elif comparison_strategy == 4:
-            strategy = IntertiaComparisonStrategy({
-                'amount_of_frames': 1
-            })
-        else:
-            print("Undefined comparison strategy: " + str(comparison_strategy))
-            exit(1)
-
-        comparator = ComparatorByStrategy(strategy, debug)
-        results = comparator.compare(video, video_data)
-
-        save_comparison_results(video_name, comparison_strategy, results)
+        comparator = strategy.get_strategy_comparator()
+        results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
+        save_comparison_results(video_name, strategy.name, results)
