@@ -20,14 +20,15 @@ def get_results_json(results_file_path):
 config = {
     "intertia": {
         'chart_title': 'Elbow method',
-        'label': 'Elbow method',
+        'label_x': 'K',
+        'label_y': 'Inercia',
         'tick': None,
         'showlegend': True,
     },
     "field-detection": {
         'chart_title': 'Field detection',
         'metric_name': "jaccard_index",
-        'label': 'Field detection',
+        'label_x': 'Field detection',
         'tick': None,
         'showlegend': True,
     }
@@ -49,7 +50,8 @@ if __name__ == '__main__':
         fig = go.Figure()
         fig.update_layout(
             title=config[sub_problem_suffix]['chart_title'],
-            xaxis_title=config[sub_problem_suffix]['label'],
+            xaxis_title=config[sub_problem_suffix]['label_x'],
+            yaxis_title=config[sub_problem_suffix].get('label_y', None),
             xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
             showlegend=config[sub_problem_suffix]['showlegend']
         )
