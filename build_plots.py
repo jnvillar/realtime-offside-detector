@@ -1,10 +1,6 @@
 import json
 import os
-
 import plotly.graph_objects as go
-import plotly.express as px
-import pandas as pd
-
 
 def get_results_json(results_file_path):
     json_data = {}
