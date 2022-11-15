@@ -1,4 +1,5 @@
 from utils.utils import ScreenManager
+from sklearn.cluster import KMeans
 from PIL import Image, ImageOps
 from random import random
 from domain.aspec_ratio import *
@@ -91,6 +92,22 @@ def draw_players(video: Video, players: [Player]):
 
     return video.set_frame(frame)
 
+
+def calculate_optimal_k(image):
+    image = image.reshape((-1, 3))
+
+    inertias = []
+    min_k = 2
+    max_k = 15
+
+    for i in range(min_k, max_k):
+        kmeans = KMeans(n_clusters=i)
+        kmeans.fit(image)
+        intertia = kmeans.inertia_
+        inertias.append(intertia)
+        print(intertia)
+
+    return inertias, list(np.arange(min_k, max_k))
 
 def remove_boca(original_frame):
     frame = remove_color(original_frame, ColorRange.green.color_range)

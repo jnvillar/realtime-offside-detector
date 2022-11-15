@@ -7,6 +7,7 @@ from test.dataset_generator.domain import *
 from domain.player import *
 import utils.math as math_utils
 import math
+from utils.frame_utils import *
 
 from test.dataset_generator.utils import FrameDataPrinter
 from utils.utils import ScreenManager, KeyboardManager
@@ -204,8 +205,10 @@ class ComparatorByStrategy:
                 self.comparison_strategy.prepare_for_detection(video, expected_frame_data)
 
                 # detection and comparison of results
-                comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(video,
-                                                                                                      expected_frame_data)
+                comparison_results, detected_frame_data = self.comparison_strategy.detect_and_compare(
+                    video, expected_frame_data
+                )
+
                 print("Frame {}: {}".format(frame_number, comparison_results))
                 results.append(comparison_results)
 
@@ -231,6 +234,38 @@ class ComparatorByStrategy:
             "frame_results": results,
             "aggregations": aggregations
         }
+
+
+class IntertiaComparisonStrategy:
+    def __init__(self, config):
+        self.amount_of_frames = config.get('amount_of_frames', 1)
+        self.analized_frames = 0
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        return
+
+    def detect_only(self, video):
+        return
+
+    def detect_and_compare(self, video, expected_frame_data):
+        self.analized_frames += 1
+        if self.analized_frames > self.amount_of_frames:
+            return {}, {}
+
+        inertias, k = calculate_optimal_k(video.get_current_frame())
+        return {
+                   'inertias': inertias,
+                   'k': k
+               }, {
+                   'inertias': inertias,
+                   'k': k
+               }
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        return
+
+    def calculate_aggregations(self, results):
+        return {}
 
 
 class PlayerSorterComparisonStrategy:
@@ -388,7 +423,6 @@ class FieldDetectorComparisonStrategy:
             average[avg_metric] = average[avg_metric] / len(results)
 
         return average
-
 
     def _build_frame_data(self, video, field_mask):
         height, width = video.get_current_frame().shape[:2]

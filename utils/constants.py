@@ -1,7 +1,8 @@
+import inspect
+
+
 class VideoConstants:
     # andan bien: 4, 13, 15
-    video_1_from_1_to_3 = "video_1_from_1_to_3.mp4"
-    video_1_from_8_to_12 = "video_1_from_8_to_12.mp4"
     video_1_Arsenal_Chelsea_107_122 = "1_Arsenal-Chelsea_107_122.mp4"
     video_2_Boca_Lanus_202_216 = "2_Boca-Lanus_202_216.mp4"
     video_4_Liverpool_Benfica_119_126 = "4_Liverpool-Benfica_119_126.mp4"
@@ -30,6 +31,9 @@ class VideoConstants:
     video_20_BayernMunich_ViktoriaPlzen_515_524 = "20_BayernMunich-ViktoriaPlzen_515_524.mp4"
     video_21_Roma_Ludogrets_503_510 = "21_Roma-Ludogrets_503_510.mp4"
     video_22_ManchesterCity_Brighton_539_547 = "22_ManchesterCity-Brighton_539_547.mp4"
+
+    def all(self):
+        return [v for k, v in VideoConstants.__dict__.items() if k[:1] != '_' and k != 'all']
 
 
 # Colors RGB

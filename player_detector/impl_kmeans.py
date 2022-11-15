@@ -1,8 +1,8 @@
 from sklearn.cluster import KMeans
 from player_detector.step import *
 from timer.timer import *
+import matplotlib
 import matplotlib.pyplot as plt
-
 
 class KmeansPlayerDetector:
 
@@ -259,17 +259,3 @@ class KmeansPlayerDetector:
             return k_means_result.labels_
         else:
             return self.k_means_2.predict(image)
-
-    def calculate_optimal_k(self, image):
-        md = []
-        min_k = 5
-        max_k = 15
-        for i in range(min_k, max_k):
-            kmeans = KMeans(n_clusters=i)
-            kmeans.fit(image)
-            o = kmeans.inertia_
-            md.append(o)
-            print(md)
-        print(md)
-        plt.plot(list(np.arange(min_k, max_k)), md)
-        plt.show()
