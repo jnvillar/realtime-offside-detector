@@ -66,7 +66,6 @@ if __name__ == '__main__':
 
             if sub_problem_suffix == 'intertia' and len(results["frame_results"]) > 0:
                 frame_results = results["frame_results"][0]
-
                 fig.add_trace(
                     go.Scatter(
                         x=frame_results['k'],
