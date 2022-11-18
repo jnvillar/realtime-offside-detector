@@ -109,6 +109,7 @@ def calculate_optimal_k(image):
 
     return inertias, list(np.arange(min_k, max_k))
 
+
 def remove_boca(original_frame):
     frame = remove_color(original_frame, ColorRange.green.color_range)
     frame = remove_color(frame, ColorRange.blue.color_range)
@@ -624,7 +625,7 @@ def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
     height, width = original_frame.shape[:2]
-    min_length = params.get('min_length_in_video_percentage', int(width * 0.010))
+    min_length = int(width * params.get('min_length_line_in_video_percentage', 0.01))
     fld = cv2.ximgproc.createFastLineDetector(min_length)
 
     # Detect lines in the image
@@ -633,19 +634,19 @@ def get_lines_lsd(original_frame, params={}):
     black_image = np.zeros((height, width), np.uint8)
     mask = fld.drawSegments(black_image, lines, linecolor=params.get('line_color', (255, 255, 255)))
 
-    ScreenManager.get_manager().show_frame(mask, 'lines_1') if params.get('debug', False) else None
+    ScreenManager.get_manager().show_frame(mask, 'lines_1') if params.get('debug_lines', False) else None
 
     # keep only one channel (any channel works)
     mask = mask[:, :, 2]
 
     mask = morphological_closing(mask, {'element_size': (3, 3)})
-    ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug', False) else None
+    ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug_lines', False) else None
 
     mask = apply_dilatation(mask, {'element_size': (10, 10)})
-    ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug', False) else None
+    ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug_lines', False) else None
 
     mask = morphological_opening(mask, {'element_size': (2, 2)})
-    ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug', False) else None
+    ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug_lines', False) else None
 
     return mask
 

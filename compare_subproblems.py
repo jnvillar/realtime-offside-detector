@@ -68,16 +68,14 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 if __name__ == '__main__':
     debug = False
-    all_videos = True
+    all_videos = False
     strategy = ComparisonStrategy.player_detector
 
     if all_videos:
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_1_Arsenal_Chelsea_107_122,
-            VideoConstants.video_4_Liverpool_Benfica_119_126,
-            VideoConstants.video_20_BayernMunich_ViktoriaPlzen_515_524
+            VideoConstants.video_7_Psg_Angers_103_110
         ]
 
     # Whether to show the frames with the comparison results or not

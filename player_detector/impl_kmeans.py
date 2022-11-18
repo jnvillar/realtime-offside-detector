@@ -4,6 +4,7 @@ from timer.timer import *
 import matplotlib
 import matplotlib.pyplot as plt
 
+
 class KmeansPlayerDetector:
 
     def __init__(self, **kwargs):
@@ -25,7 +26,7 @@ class KmeansPlayerDetector:
     def find_players(self, original_frame):
         image = original_frame
 
-        lines = get_lines_lsd(image, {'debug': self.params.get('debug_lines', False)})
+        lines = get_lines_lsd(image, self.params)
         ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None
 
         # classify pixels
@@ -180,7 +181,7 @@ class KmeansPlayerDetector:
             image_only_that_color = only_that_color[pixels]
             image_only_that_color = image_only_that_color.reshape(image.shape)
             image_only_that_color = apply_erosion(image_only_that_color, {'element_size': (3, 3)})
-            image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (5, 30)})
+            image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (5, 35)})
 
             ScreenManager.get_manager().show_frame(
                 image_only_that_color,

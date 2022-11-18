@@ -3,47 +3,23 @@ from player_finder.player_finder import *
 from domain.status import *
 
 override_config = {
-    '15_Valencia-Getafe_38_52': {
-        'player_sorter': {
-            # bsas, automatic_by_color, by_color, kmeans
-            'method': 'kmeans',
-            'bsas': {
-                'threshold': 0,
-                'clusters': 2,
-                'team_one': team_two,
-                'team_two': team_one,
-                'debug': False
-            },
-            'kmeans': {
-                'debug': False,
-                'only_unclassified_players': True,
-                'median': False,
-                'focused': True,
-                'klusters': 2,
-                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
-                # smallest cluster = team 3, 2dn smallest = team 2 ...
-            },
-            'automatic_by_color': {
-                white.color_name: team_two,
-                red.color_name: team_two
-            }
-        },
+    '19_RealMadrid-Shakhtar_20_29': {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
             'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
+                'debug_lines': False,
                 'debug': False,
-                'klusters': 20,
-                'color_percentage': (1 / 100),  # 5%
+                'color_percentage': (2 / 100),  # 5%
+                'klusters': 10,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'ignore_contours_smaller_than': 0.06,
+                'ignore_contours_smaller_than': 0.008,
                 'ignore_contours_bigger_than': 1,
             },
             'otsu': {
                 'debug': False,
-                'ignore_contours_smaller_than': 0.06,
+                'ignore_contours_smaller_than': 0.02,
                 'ignore_contours_bigger_than': 1,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
                 # 'filter_contour_inside_other': True
@@ -84,46 +60,21 @@ override_config = {
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
                 'filter_contour_inside_other': True
             }
-        },
+        }
     },
-    '12_ManchesterCity-Sevilla_415_425': {
-        'player_sorter': {
-            # bsas, automatic_by_color, by_color, kmeans
-            'method': 'kmeans',
-            'bsas': {
-                'threshold': 0,
-                'clusters': 2,
-                'team_one': team_two,
-                'team_two': team_one,
-                'debug': False
-            },
-            'kmeans': {
-                'debug': False,
-                'only_unclassified_players': True,
-                'median': False,
-                'focused': False,
-                'klusters': 3,
-                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_three, team_two, team_one]
-                # smallest cluster = team 3, 2dn smallest = team 2 ...
-            },
-            'automatic_by_color': {
-                white.color_name: team_two,
-                red.color_name: team_two
-            }
-        },
-    },
-    '16_Barcelona-Valladolid_43_50': {
+    '7_Psg-Angers_103_110': {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
             'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
-                'debug': False,
-                'klusters': 15,
-                'color_percentage': (1 / 100),  # 5%
+                'min_length_line_in_video_percentage': 0.01,
+                'debug_lines': False,
+                'debug': True,
+                'color_percentage': (2 / 100),  # 5%
+                'klusters': 9,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'ignore_contours_smaller_than': 0,
+                'ignore_contours_smaller_than': 0.01,
                 'ignore_contours_bigger_than': 1,
             },
             'otsu': {

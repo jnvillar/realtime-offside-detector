@@ -165,15 +165,23 @@ class FrameDataComparator:
 
     def point_inside_bounding_box(self, point, box):
         x, y = point
-        down_left, upper_right = box
+        point_1, point_2 = box
 
-        if not (down_left[0] <= x <= upper_right[0]):
-            return False
+        if point_1[0] > point_2[0]:
+            aux = point_1
+            point_1 = point_2
+            point_2 = aux
 
-        if not (down_left[1] <= y <= upper_right[1]):
-            return False
+        if point_1[1] < point_2[1]:
+            down_left = point_1
+            upper_right = point_2
 
-        return True
+            return (down_left[0] <= x <= upper_right[0]) and (down_left[1] <= y <= upper_right[1])
+
+        upper_left = point_1
+        down_right = point_2
+
+        return (upper_left[0] <= x <= down_right[0]) and (down_right[1] <= y <= upper_left[1])
 
     # Line slope given two points:
     def _slope(self, x1, y1, x2, y2):

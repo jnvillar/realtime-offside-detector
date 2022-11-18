@@ -47,7 +47,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "players-sorting"  # field-detection, intertia, players-sorting
+    sub_problem_suffix = "players-detection"  # field-detection, intertia, players-sorting
 
     videos_path = "./test/videos"
     videos_to_consider = []
@@ -87,6 +87,26 @@ if __name__ == '__main__':
                         hoverinfo="x",
                         mode="lines")
                 )
+            if sub_problem_suffix == 'players-detection':
+                total_players_in_frame = \
+                    [frame_data['expected_players'] for
+                     frame_data in
+                     frame_results]
+
+                good_detected_players_in_frame = \
+                    [frame_data['correctly_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                good_percentage = [good / total * 100 for good, total
+                                   in zip(good_detected_players_in_frame, total_players_in_frame)
+                                   ]
+
+                fig.add_trace(
+                    go.Box(x=good_percentage, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
+                           boxmean=True)
+                )
+
             if sub_problem_suffix == 'players-sorting' and len(results["frame_results"]) > 0:
                 good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
                                frame_results]
