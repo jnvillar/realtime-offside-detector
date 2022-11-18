@@ -642,7 +642,7 @@ def get_lines_lsd(original_frame, params={}):
     mask = morphological_closing(mask, {'element_size': (3, 3)})
     ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug_lines', False) else None
 
-    mask = apply_dilatation(mask, {'element_size': (10, 10)})
+    mask = apply_dilatation(mask, {'element_size': (5, 5)})
     ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug_lines', False) else None
 
     mask = morphological_opening(mask, {'element_size': (2, 2)})

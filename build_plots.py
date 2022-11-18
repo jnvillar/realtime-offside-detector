@@ -73,6 +73,9 @@ if __name__ == '__main__':
         showlegend=config[sub_problem_suffix]['showlegend']
     )
 
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', gridcolor='lightgrey')
+
+
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
         video_name_without_extesion = video_name.split(".")[0]
