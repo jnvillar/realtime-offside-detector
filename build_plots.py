@@ -60,7 +60,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "players-detection"  # field-detection, intertia, players-sorting
+    sub_problem_suffix = "field-detection"  # field-detection, intertia, players-sorting
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
@@ -72,9 +72,7 @@ if __name__ == '__main__':
         xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
         showlegend=config[sub_problem_suffix]['showlegend']
     )
-
-    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', gridcolor='lightgrey')
-
+    fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
 
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
