@@ -348,6 +348,7 @@ class PlayerDetectorComparisonStrategy:
         self.frame_data_comparator = FrameDataComparator()
         self.screen_manager = ScreenManager.get_manager()
         self.player_detector = PlayerDetector(None, **config['player_detector'])
+        self.field_detector = FieldDetector(None, **config['field_detector'])
 
     def prepare_for_detection(self, video, expected_frame_data):
         # apply detected field from dataset
@@ -360,7 +361,8 @@ class PlayerDetectorComparisonStrategy:
         return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
 
     def detect_only(self, video):
-        players = self.player_detector.detect_players(video)
+        video_only_field, _ = self.field_detector.detect_field(video)
+        players = self.player_detector.detect_players(video_only_field)
         detected_frame_data = self._build_frame_data(video, players)
         return detected_frame_data
 
