@@ -60,7 +60,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "field-detection"  # field-detection, intertia, players-sorting
+    sub_problem_suffix = "players-detection"  # field-detection, intertia, players-sorting, players-detection
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
@@ -113,8 +113,14 @@ if __name__ == '__main__':
                                ]
 
             fig.add_trace(
-                go.Box(x=good_percentage, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
-                       boxmean=True)
+                go.Box(
+                    x=good_percentage,
+                    name=video_name_without_extesion,
+                    boxpoints="all",
+                    hoverinfo="x",
+                    boxmean=True,
+                    legendrank=video_idx
+                )
             )
 
         if sub_problem_suffix == 'players-sorting' and len(results["frame_results"]) > 0:
