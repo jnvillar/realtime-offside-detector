@@ -97,15 +97,27 @@ if __name__ == '__main__':
                 good_percentage = [good / total * 100 for good, total in zip(good_values, totals)]
 
                 fig.add_trace(
-                    go.Box(x=good_percentage, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
-                           boxmean=True)
+                    go.Box(
+                        x=good_percentage,
+                        name=video_name_without_extesion,
+                        boxpoints="all",
+                        hoverinfo="x",
+                        boxmean=True)
                 )
 
             if sub_problem_suffix == 'field-detection':
                 metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+                frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
+
                 fig.add_trace(
-                    go.Box(x=metric_values, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
-                           boxmean=True)
+                    go.Box(
+                        x=metric_values,
+                        name=video_name_without_extesion,
+                        customdata=frame_numbers,
+                        hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
+                        boxpoints="all",
+                        boxmean=True,
+                    )
                 )
 
         fig.show()
