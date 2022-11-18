@@ -181,6 +181,7 @@ class KmeansPlayerDetector:
             image_only_that_color = image_only_that_color.reshape(image.shape)
             image_only_that_color = apply_erosion(image_only_that_color, {'element_size': (3, 3)})
             image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (5, 30)})
+
             ScreenManager.get_manager().show_frame(
                 image_only_that_color,
                 'color {}'.format(color)
@@ -192,8 +193,6 @@ class KmeansPlayerDetector:
                 res = res + image_only_that_color
 
         ScreenManager.get_manager().show_frame(res, 'res') if self.debug else None
-
-        return res
 
         segmented_data = colors[pixels]
         segmented_data = segmented_data.reshape(image.shape)

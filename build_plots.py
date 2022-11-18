@@ -2,6 +2,7 @@ import json
 import os
 import plotly.graph_objects as go
 
+
 def get_results_json(results_file_path):
     json_data = {}
     if os.path.isfile(results_file_path):
@@ -27,12 +28,26 @@ config = {
         'label_x': 'Field detection',
         'tick': None,
         'showlegend': True,
-    }
+    },
+    "players-sorting": {
+        'chart_title': 'Sort Players',
+        'label_x': 'Ok percentage',
+        'tick': None,
+        'showlegend': True,
+        'correctly_sorted_players': "correctly_sorted_players",
+        'badly_sorted_players': "badly_sorted_players",
+    },
+    "players-detection": {
+        'chart_title': 'Player Detection',
+        'label_x': 'Ok percentage',
+        'tick': None,
+        'showlegend': True
+    },
 }
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "intertia"  # field-detection, intertia
+    sub_problem_suffix = "players-sorting"  # field-detection, intertia, players-sorting
 
     videos_path = "./test/videos"
     videos_to_consider = []
@@ -72,7 +87,21 @@ if __name__ == '__main__':
                         hoverinfo="x",
                         mode="lines")
                 )
-            else:
+            if sub_problem_suffix == 'players-sorting' and len(results["frame_results"]) > 0:
+                good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
+                               frame_results]
+                badly_values = [frame_data[config[sub_problem_suffix]['badly_sorted_players']] for frame_data in
+                                frame_results]
+
+                totals = [x + y for x, y in zip(good_values, badly_values)]
+                good_percentage = [good / total * 100 for good, total in zip(good_values, totals)]
+
+                fig.add_trace(
+                    go.Box(x=good_percentage, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",
+                           boxmean=True)
+                )
+
+            if sub_problem_suffix == 'field-detection':
                 metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
                 fig.add_trace(
                     go.Box(x=metric_values, name=video_name_without_extesion, boxpoints="all", hoverinfo="x",

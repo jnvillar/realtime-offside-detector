@@ -69,7 +69,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = False
     all_videos = True
-    strategy = ComparisonStrategy.field_detector
+    strategy = ComparisonStrategy.player_detector
 
     if all_videos:
         videos = VideoConstants().all()
@@ -81,13 +81,13 @@ if __name__ == '__main__':
         ]
 
     # Whether to show the frames with the comparison results or not
-
     configuration = config.default_config.copy()
     Logger.initialize(configuration['logger'])
     ScreenManager.initialize(configuration['screen_manager'])
 
     for video_name in videos:
-        print(video_name)
+        print("processing video: {}".format(video_name))
+        configuration = config.default_config.copy()
 
         video_path = './test/videos' + '/' + video_name
         dataset_path = './datasets' + '/' + video_name.split(".")[0]
