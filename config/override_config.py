@@ -241,5 +241,65 @@ override_config = {
                 'filter_contour_inside_other': True
             }
         }
+    },
+    '17_Celta-RealMadrid_112_122': {
+        'player_detector': {
+            # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
+            'method': 'kmeans',
+            'detect_every_amount_of_frames': 1,
+            'kmeans': {
+                'min_length_line_in_video_percentage': 0.015,
+                'debug_lines': False,
+                'debug': True,
+                'color_percentage': (2 / 100),  # 5%
+                'klusters': 10,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'ignore_contours_smaller_than': 0.005,
+                'ignore_contours_bigger_than': 1,
+            },
+            'otsu': {
+                'debug': False,
+                'ignore_contours_smaller_than': 0.02,
+                'ignore_contours_bigger_than': 1,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                # 'filter_contour_inside_other': True
+            },
+            'tophat': {
+                'debug': True
+            },
+            'by_color': {
+                'debug': False,
+                'ignore_contours_smaller_than': 0.05,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
+            },
+            'adhoc': {
+                'debug': False,
+                'threshold1': 50,
+                'threshold2': 70,
+                'ignore_contours_smaller_than': 0.1,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
+            },
+            'background_subtraction': {
+                'debug': False,
+                'history': 1,
+                'detect_shadows': False,
+                'var_threshold': 50,
+                'ignore_contours_smaller_than': 0.02,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller
+            },
+            'edges': {
+                'debug': True,
+                'threshold1': 50,
+                'threshold2': 70,
+                'ignore_contours_smaller_than': 0.04,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
+            }
+        }
     }
 }
