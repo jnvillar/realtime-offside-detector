@@ -54,7 +54,8 @@ config = {
         'chart_title': 'Player Detection',
         'label_x': 'Ok percentage',
         'tick': None,
-        'showlegend': True
+        'showlegend': True,
+        'x_range': [0, 100]
     },
 }
 
@@ -68,6 +69,7 @@ if __name__ == '__main__':
     fig.update_layout(
         title=config[sub_problem_suffix]['chart_title'],
         xaxis_title=config[sub_problem_suffix]['label_x'],
+        xaxis_range=config[sub_problem_suffix]['x_range'],
         yaxis_title=config[sub_problem_suffix].get('label_y', None),
         xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
         showlegend=config[sub_problem_suffix]['showlegend']
