@@ -3,6 +3,7 @@
 class VideoConstants:
     video_1_Arsenal_Chelsea_107_122 = "1_Arsenal-Chelsea_107_122.mp4"
     video_2_Boca_Lanus_202_216 = "2_Boca-Lanus_202_216.mp4"
+    video_2_Boca_Lanus_383_392 = "2_Boca-Lanus_383_392.mp4"
     video_3_Inter_Roma_55_67 = "3_Inter-Roma_55_67.mp4"
     video_3_Inter_Roma_147_158 = "3_Inter-Roma_147_158.mp4"
     video_4_Liverpool_Benfica_119_126 = "4_Liverpool-Benfica_119_126.mp4"

@@ -75,7 +75,7 @@ if __name__ == '__main__':
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_7_Psg_Angers_103_110
+            VideoConstants.video_3_Inter_Roma_55_67
         ]
 
     # Whether to show the frames with the comparison results or not
