@@ -11,6 +11,7 @@ from utils.frame_utils import *
 
 from test.dataset_generator.utils import FrameDataPrinter
 from utils.utils import ScreenManager, KeyboardManager
+from vanishing_point_finder.vanishing_point_finder import VanishingPointFinder
 
 
 class FrameDataComparator:
@@ -444,4 +445,45 @@ class FieldDetectorComparisonStrategy:
             .set_frame_height(height) \
             .set_frame_width(width) \
             .set_field_mask(field_mask) \
+            .build()
+
+
+class VanishingPointFinderComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.vanishing_point_finder = VanishingPointFinder(None, **config['vanishing_point_finder'])
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
+                                                                  False, False, False, field_from_mask=True)
+        video.set_frame(frame_with_field_detected)
+
+    def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def detect_only(self, video):
+        vanishing_point, vanishing_point_segments = self.vanishing_point_finder.find_vanishing_point(video)
+        return self._build_frame_data(video, vanishing_point, vanishing_point_segments)
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, False, True, False)
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, False, True, False)
+        self.screen_manager.show_frame(expected_frame, "Expected vanishing point")
+        self.screen_manager.show_frame(detected_frame, "Detected vanishing point")
+
+    def calculate_aggregations(self, results):
+        return {}
+
+    def _build_frame_data(self, video, vanishing_point, vanishing_point_segments):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_vanishing_point(vanishing_point) \
+            .set_vanishing_point_segments(vanishing_point_segments) \
             .build()

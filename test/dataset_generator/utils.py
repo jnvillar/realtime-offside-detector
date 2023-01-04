@@ -103,8 +103,10 @@ class FrameDataPrinter:
                 player_index += 1
 
         if print_vanishing_point_segments and vanishing_point_segments is not None:
-            cv2.line(frame, vanishing_point_segments[0][0], vanishing_point_segments[0][1], colors.VP_SEGMENTS_COLOR, thickness=2)
-            cv2.line(frame, vanishing_point_segments[1][0], vanishing_point_segments[1][1], colors.VP_SEGMENTS_COLOR, thickness=2)
+            line1 = vanishing_point_segments[0]
+            line2 = vanishing_point_segments[1]
+            cv2.line(frame, line1.p0, line1.p1, colors.VP_SEGMENTS_COLOR, thickness=2)
+            cv2.line(frame, line2.p0, line2.p1, colors.VP_SEGMENTS_COLOR, thickness=2)
             self.frame_printer.print_text(frame, "Vanishing point: {}".format(vanishing_point), (230, 30), constants.BGR_WHITE)
 
         if print_offside_line and vanishing_point is not None and players_and_referees is not None and last_defense_player_index is not None:

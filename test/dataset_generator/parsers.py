@@ -1,5 +1,6 @@
 import cv2
 
+from domain.line import Line
 from test.dataset_generator import colors
 from test.dataset_generator.domain import Field, Team, PlayerType, Player
 from utils import constants
@@ -299,7 +300,7 @@ class VanishingPointParser:
             # RETURN to confirm selection (only if exactly POINTS_TO_SELECT points were selected)
             if self.keyboard_manager.key_was_pressed(key_code, constants.RETURN_KEY_CODE) and len(self.segment_points) == self.POINTS_TO_SELECT:
                 print("Selection confirmed: {}.".format(self.segment_points))
-                frame_data_builder.set_vanishing_point_segments([[self.segment_points[0], self.segment_points[1]], [self.segment_points[2], self.segment_points[3]]])
+                frame_data_builder.set_vanishing_point_segments([Line(self.segment_points[0], self.segment_points[1]), Line(self.segment_points[2], self.segment_points[3])])
                 selection_confirmed = True
                 break
             # DELETE to remove last selected vertex (only if at least 1 vertex was selected)

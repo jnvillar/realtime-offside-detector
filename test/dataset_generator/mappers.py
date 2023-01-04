@@ -1,3 +1,4 @@
+from domain.line import Line
 from test.dataset_generator.domain import Field, Player, PlayerType, Team, FrameDataBuilder, Orientation
 
 
@@ -92,7 +93,7 @@ class FrameDataDictionaryMapper:
 
         if vanishing_point_segments is not None:
             # convert points into tuples (they are parsed as lists)
-            frame_data_builder.set_vanishing_point_segments([[tuple(vanishing_point_segments[0][0]), tuple(vanishing_point_segments[0][1])], [tuple(vanishing_point_segments[1][0]), tuple(vanishing_point_segments[1][1])]])
+            frame_data_builder.set_vanishing_point_segments([Line(tuple(vanishing_point_segments[0][0]), tuple(vanishing_point_segments[0][1])), Line(tuple(vanishing_point_segments[1][0]), tuple(vanishing_point_segments[1][1]))])
 
         # width, height and play orientation are given as extra arguments since they are globally (and not per frame) defined on json serialization
         if frame_width is not None:

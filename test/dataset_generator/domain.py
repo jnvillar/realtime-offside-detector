@@ -170,11 +170,7 @@ class FrameData:
     def _calculate_vanishing_point_from_segments(self):
         if self.vanishing_point_segments is None:
             return None
-        p1 = self.vanishing_point_segments[0][0]
-        p2 = self.vanishing_point_segments[0][1]
-        p3 = self.vanishing_point_segments[1][0]
-        p4 = self.vanishing_point_segments[1][1]
-        return math.get_lines_intersection(Line(p1, p2), Line(p3, p4))
+        return math.get_lines_intersection(self.vanishing_point_segments[0], self.vanishing_point_segments[1])
 
 
 #######################################################################################################################
