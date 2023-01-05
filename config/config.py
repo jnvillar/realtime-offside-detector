@@ -143,7 +143,8 @@ default_config = {
         'method': 'hough',
         'hough': {
             'debug': False,
-            'calculate_every_x_amount_of_frames': 2
+            'calculate_every_x_amount_of_frames': 2,
+            'max_number_of_candidate_lines': 100
         }
     },
     'offside_line_drawer': {

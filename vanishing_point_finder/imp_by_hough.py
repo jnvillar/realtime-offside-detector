@@ -15,7 +15,9 @@ class ByHough:
 
     def __init__(self, **kwargs):
         self.log = Logger(self, LoggingPackage.vanishing_point)
-        self.args = kwargs
+        self.debug = kwargs.get('debug', False)
+        self.calculate_every_x_amount_of_frames = kwargs.get('calculate_every_x_amount_of_frames', 1)
+        self.max_number_of_candidate_lines = kwargs.get('max_number_of_candidate_lines', 10000)
         self.frame_printer = FramePrinter()
         self.vanishing_point = None
         self.vanishing_point_lines = None
@@ -26,28 +28,28 @@ class ByHough:
             Step(
                 "gray scale",
                 gray_scale, {},
-                debug=self.args.get('debug', False)
+                debug=self.debug
             ),
             Step(
                 "blur",
                 apply_blur, {'blur': (5, 5)},
-                debug=self.args.get('debug', False)
+                debug=self.debug
             ),
             Step(
                 "sobel",
                 sobel,
-                debug=self.args.get('debug', False)
+                debug=self.debug
             ),
             Step(
                 "find candidate lines",
                 self._find_lines,
-                debug=self.args.get('debug', False),
+                debug=self.debug,
                 print_frame_on_debug=False
             ),
             Step(
                 "find vp lines",
                 self._find_vp_lines,
-                debug=self.args.get('debug', False),
+                debug=self.debug,
                 print_frame_on_debug=False
             )
         ]
@@ -81,7 +83,7 @@ class ByHough:
         if lines is None:
             lines = []
 
-        self.log.log('Found lines', {'lines': len(lines)}) if self.args['debug'] else None
+        self.log.log('Found lines', {'lines': len(lines)}) if self.debug else None
         self.lines = lines
 
         # to honor the Step contract for the apply method we need to return a frame as result
@@ -91,10 +93,14 @@ class ByHough:
         # if we don't even find 2 lines, we directly use the previous VP
         frame_width = frame.shape[1]
         total_detected_lines = len(self.lines)
+
+        if total_detected_lines > self.max_number_of_candidate_lines:
+            print("TOTAL DETECTED LINES: " + str(total_detected_lines))
+
         if total_detected_lines >= 2:
             candidate_vanishing_points = []
             candidate_lines = []
-            for line1_idx in range(0, total_detected_lines):
+            for line1_idx in range(0, min(total_detected_lines, self.max_number_of_candidate_lines)):
                 line1_rho = self.lines[line1_idx][0][0]
                 line1_theta = self.lines[line1_idx][0][1]
                 line1_p1, line1_p2 = get_line_points(line1_rho, line1_theta)
@@ -107,7 +113,7 @@ class ByHough:
                 if self._is_border_line(line1_p1, line1_p2, frame_width):
                     continue
 
-                for line2_idx in range(line1_idx + 1, total_detected_lines):
+                for line2_idx in range(line1_idx + 1, min(total_detected_lines, self.max_number_of_candidate_lines)):
                     line2_rho = self.lines[line2_idx][0][0]
                     line2_theta = self.lines[line2_idx][0][1]
                     line2_p1, line2_p2 = get_line_points(line2_rho, line2_theta)
@@ -158,14 +164,14 @@ class ByHough:
     def find_vanishing_point(self, video: Video):
         # for the first frame, the vanishing point is manually selected
         if self.vanishing_point is None:
-            self._manually_select_vanishing_point()
-            return self.vanishing_point
+            self._manually_select_vanishing_point(video)
+            return self.vanishing_point, self.vanishing_point_lines
 
-        if video.get_current_frame_number() % self.args['calculate_every_x_amount_of_frames'] != 0:
-            if self.args['debug']:
+        if video.get_current_frame_number() % self.calculate_every_x_amount_of_frames != 0:
+            if self.debug:
                 self.log.log('Returning previous vanishing point', {'vanishing_point': self.vanishing_point})
 
-            return self.vanishing_point
+            return self.vanishing_point, self.vanishing_point_lines
 
         pipeline: [Step] = self.steps()
 
@@ -173,7 +179,7 @@ class ByHough:
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        if self.args['debug']:
+        if self.debug:
             frame = video.get_current_frame()
             line1 = self.vanishing_point_lines[0]
             line2 = self.vanishing_point_lines[1]
@@ -186,16 +192,9 @@ class ByHough:
             video.set_frame(frame)
             ScreenManager.get_manager().show_frame(frame, "Lines used for VP calculation")
 
-        return self.vanishing_point
+        return self.vanishing_point, self.vanishing_point_lines
 
-    def _manually_select_vanishing_point(self):
-        # temporary hardcode
-        line1 = Line((17, 208), (67, 194))
-        line2 = Line((318, 509), (455, 451))
-        self.vanishing_point = get_lines_intersection(line1, line2)
-        self.vanishing_point_lines = (line1, line2)
-        return self.vanishing_point
-
+    def _manually_select_vanishing_point(self, video):
         window_name = "Select field lines"
         frame = video.get_current_frame()
         captured_clicks = []
