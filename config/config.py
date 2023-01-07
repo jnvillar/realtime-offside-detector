@@ -142,9 +142,11 @@ default_config = {
     'vanishing_point_finder': {
         'method': 'hough',
         'hough': {
-            'debug': False,
-            'calculate_every_x_amount_of_frames': 2,
-            'max_number_of_candidate_lines': 100
+            'debug': True,
+            'calculate_every_x_amount_of_frames': 1,
+            'max_number_of_candidate_lines': 100,
+            'hough_lines_threshold': 400,
+            'vp_segments_first_frame': None
         }
     },
     'offside_line_drawer': {

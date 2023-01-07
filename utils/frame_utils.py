@@ -673,7 +673,7 @@ def get_lines_lsd(original_frame, params={}):
     lines = fld.detect(gray_image)
     # Draw detected lines in the image
     black_image = np.zeros((height, width), np.uint8)
-    mask = fld.drawSegments(black_image, lines, linecolor=params.get('line_color', (255, 255, 255)))
+    mask = fld.drawSegments(black_image, lines)
 
     ScreenManager.get_manager().show_frame(mask, 'lines_1') if params.get('debug_lines', False) else None
 
@@ -982,7 +982,7 @@ def rgb_to_mask(original_frame, params={}):
 
 
 def sobel(original_frame, params):
-    frame = cv2.Sobel(original_frame, cv2.CV_8U, 1, 0, ksize=-1)
+    frame = cv2.Sobel(original_frame, cv2.CV_8U, 1, 0, ksize=1)
     return frame
 
 

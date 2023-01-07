@@ -40,14 +40,15 @@ def euclidean_distance(a, b):
 
 
 def get_line_points(rho, theta):
+    length = 2000
     a = np.cos(theta)
     b = np.sin(theta)
     x0 = a * rho
     y0 = b * rho
-    x1 = int(x0 + 1000 * (-b))
-    y1 = int(y0 + 1000 * (a))
-    x2 = int(x0 - 1000 * (-b))
-    y2 = int(y0 - 1000 * (a))
+    x1 = int(x0 + length * (-b))
+    y1 = int(y0 + length * (a))
+    x2 = int(x0 - length * (-b))
+    y2 = int(y0 - length * (a))
 
     return (x1, y1), (x2, y2)
 

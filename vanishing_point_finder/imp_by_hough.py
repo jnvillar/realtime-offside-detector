@@ -18,10 +18,19 @@ class ByHough:
         self.debug = kwargs.get('debug', False)
         self.calculate_every_x_amount_of_frames = kwargs.get('calculate_every_x_amount_of_frames', 1)
         self.max_number_of_candidate_lines = kwargs.get('max_number_of_candidate_lines', 10000)
+        self.hough_lines_threshold = kwargs.get('hough_lines_threshold', 500)
         self.frame_printer = FramePrinter()
         self.vanishing_point = None
-        self.vanishing_point_lines = None
         self.lines = None
+        self.video = None
+        vp_segments_points = kwargs.get('vp_segments_first_frame', None)
+        if vp_segments_points is None:
+            self.vanishing_point_lines = None
+        else:
+            line1 = Line(vp_segments_points[0][0], vp_segments_points[0][1])
+            line2 = Line(vp_segments_points[1][0], vp_segments_points[1][1])
+            self.vanishing_point_lines = [line1, line2]
+            self.vanishing_point = get_lines_intersection(line1, line2)
 
     def steps(self):
         return [
@@ -57,7 +66,7 @@ class ByHough:
     def _find_lines(self, frame, params):
         rho = 1
         theta = np.pi / 180
-        threshold = 500
+        threshold = self.hough_lines_threshold
 
         lines = []
         width = frame.shape[1]
@@ -89,6 +98,22 @@ class ByHough:
         # to honor the Step contract for the apply method we need to return a frame as result
         return frame
 
+    def _find_lines_2(self, frame, params):
+        # Create default Fast Line Detector (FSD)
+        fld = cv2.ximgproc.createFastLineDetector(300, 1.4, 50, 50, 3, False)
+
+        # Detect lines in the image
+        lines = fld.detect(frame)
+        # Draw detected lines in the image
+        frame_with_lines = fld.drawSegments(frame, lines)
+        ScreenManager.get_manager().show_frame(frame_with_lines, 'Detected candidate lines')
+
+        self.log.log('Found lines', {'lines': len(lines)})
+        self.lines = lines
+
+        # to honor the Step contract for the apply method we need to return a frame as result
+        return frame
+
     def _find_vp_lines(self, frame, params):
         # if we don't even find 2 lines, we directly use the previous VP
         frame_width = frame.shape[1]
@@ -96,6 +121,8 @@ class ByHough:
 
         if total_detected_lines > self.max_number_of_candidate_lines:
             print("TOTAL DETECTED LINES: " + str(total_detected_lines))
+
+        frame_lines = self.video.get_current_frame()
 
         if total_detected_lines >= 2:
             candidate_vanishing_points = []
@@ -105,9 +132,9 @@ class ByHough:
                 line1_theta = self.lines[line1_idx][0][1]
                 line1_p1, line1_p2 = get_line_points(line1_rho, line1_theta)
 
-                # curr = video.get_current_frame()
-                # cv2.line(curr, line1_p1, line1_p2, (0, 0, 255), 3)
-                # screen_manager.show_frame(curr, "line detected")
+                if self.debug:
+                    cv2.line(frame_lines, line1_p1, line1_p2, (0, 0, 255), 3)
+                    ScreenManager.get_manager().show_frame(frame_lines, "lines detected")
 
                 # discard line if it is in the border
                 if self._is_border_line(line1_p1, line1_p2, frame_width):
@@ -162,6 +189,8 @@ class ByHough:
         return frame
 
     def find_vanishing_point(self, video: Video):
+        self.video = video
+
         # for the first frame, the vanishing point is manually selected
         if self.vanishing_point is None:
             self._manually_select_vanishing_point(video)
@@ -210,6 +239,8 @@ class ByHough:
         while len(captured_clicks) < 4:
             cv2.waitKey(0)
         cv2.destroyWindow(window_name)
+
+        self.log.log("Manually selected vanishing point segments: " + str(captured_clicks))
 
         line1 = Line(captured_clicks[0], captured_clicks[1])
         line2 = Line(captured_clicks[2], captured_clicks[3])
