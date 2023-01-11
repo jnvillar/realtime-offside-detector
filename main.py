@@ -1,24 +1,12 @@
 import os
 import video_repository.video_repository as video_repository
+from config.config_provider import ConfigProvider
 from offside_line_detector.offside_line_detector import *
 import utils.constants as constants
 from analytics.analytics import *
 import config.config as config
 import config.override_config as override_config
 from datetime import datetime
-from copy import deepcopy
-
-
-def dict_of_dicts_merge(x, y):
-    z = {}
-    overlapping_keys = x.keys() & y.keys()
-    for key in overlapping_keys:
-        z[key] = dict_of_dicts_merge(x[key], y[key])
-    for key in x.keys() - overlapping_keys:
-        z[key] = deepcopy(x[key])
-    for key in y.keys() - overlapping_keys:
-        z[key] = deepcopy(y[key])
-    return z
 
 
 def get_video_frame_data(video_data_path, config) -> [FrameData]:
@@ -51,9 +39,7 @@ if __name__ == '__main__':
 
     video_path = './test/videos' + '/' + video_name
     dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"
-    override_config = override_config.override_config.get(video_name.split(".")[0], {})
-    config = config.default_config
-    config.update(override_config)
+    config = ConfigProvider().get_config_for_video(video_name)
 
     Logger.initialize(config['logger'])
     ScreenManager.initialize(config['screen_manager'])

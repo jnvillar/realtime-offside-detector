@@ -1,8 +1,8 @@
 import json
 import os
 
+from config.config_provider import ConfigProvider
 from utils.constants import VideoConstants
-import config.override_config as override_config
 import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
@@ -83,20 +83,17 @@ if __name__ == '__main__':
             VideoConstants.video_17_Celta_RealMadrid_112_122
         ]
 
-    # Whether to show the frames with the comparison results or not
-    configuration = config.default_config.copy()
+    config_provider = ConfigProvider()
+    configuration = config.default_config
     Logger.initialize(configuration['logger'])
     ScreenManager.initialize(configuration['screen_manager'])
 
     for video_name in videos:
         print("processing video: {}".format(video_name))
-        configuration = config.default_config.copy()
+        configuration = config_provider.get_config_for_video(video_name)
 
         video_path = './test/videos' + '/' + video_name
         dataset_path = './datasets' + '/' + video_name.split(".")[0]
-
-        override_configuration = override_config.override_config.get(video_name.split(".")[0], config.default_config)
-        configuration.update(override_configuration)
 
         try:
             video_data = get_video_frame_data(dataset_path + ".json")

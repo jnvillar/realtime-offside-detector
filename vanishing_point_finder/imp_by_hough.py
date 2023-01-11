@@ -23,6 +23,7 @@ class ByHough:
         self.vanishing_point = None
         self.lines = None
         self.video = None
+        # if set, get vp for first frame from config
         vp_segments_points = kwargs.get('vp_segments_first_frame', None)
         if vp_segments_points is None:
             self.vanishing_point_lines = None

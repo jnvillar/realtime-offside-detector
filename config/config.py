@@ -145,7 +145,7 @@ default_config = {
             'debug': True,
             'calculate_every_x_amount_of_frames': 1,
             'max_number_of_candidate_lines': 100,
-            'hough_lines_threshold': 400,
+            'hough_lines_threshold': 500,
             'vp_segments_first_frame': None
         }
     },
