@@ -1,6 +1,7 @@
 import sys
 
 from player_detector.step import *
+from test.dataset_generator import colors
 from utils import constants
 from utils.frame_utils import *
 from domain.video import *
@@ -241,7 +242,8 @@ class ByHough:
             cv2.waitKey(0)
         cv2.destroyWindow(window_name)
 
-        self.log.log("Manually selected vanishing point segments: " + str(captured_clicks))
+        # Any extra point that is marked will be ignored
+        self.log.log("Manually selected vanishing point segments: " + str([[captured_clicks[0], captured_clicks[1]], [captured_clicks[2], captured_clicks[3]]]))
 
         line1 = Line(captured_clicks[0], captured_clicks[1])
         line2 = Line(captured_clicks[2], captured_clicks[3])
@@ -252,8 +254,13 @@ class ByHough:
         if event == cv2.EVENT_LBUTTONUP:
             click_coordinates = (x, y)
             frame = arguments['frame']
-            arguments['captured_clicks'].append(click_coordinates)
-            self.frame_printer.print_point(frame, click_coordinates, constants.BGR_RED)
+            captured_clicks = arguments['captured_clicks']
+            captured_clicks.append(click_coordinates)
+            self.frame_printer.print_point(frame, click_coordinates, colors.VP_SEGMENTS_COLOR)
+            if len(captured_clicks) == 2:
+                cv2.line(frame, captured_clicks[0], captured_clicks[1], colors.VP_SEGMENTS_COLOR, thickness=2)
+            if len(captured_clicks) == 4:
+                cv2.line(frame, captured_clicks[2], captured_clicks[3], colors.VP_SEGMENTS_COLOR, thickness=2)
             cv2.imshow(arguments['window_name'], frame)
 
     def _is_border_line(self, p0, p1, frame_width):
