@@ -46,8 +46,8 @@ default_config = {
         'bsas': {
             'threshold': 0,
             'clusters': 2,
-            'team_one': team_two,
-            'team_two': team_one,
+            'team_one': team_one,
+            'team_two': team_two,
             'debug': False
         },
         'kmeans': {

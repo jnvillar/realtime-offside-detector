@@ -80,7 +80,7 @@ if __name__ == '__main__':
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_10_Italia_Alemania_162_173
+            VideoConstants.video_10_Italia_Alemania_548_555
         ]
 
     config_provider = ConfigProvider()

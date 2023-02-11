@@ -114,7 +114,14 @@ override_config = {
                 'klusters': 2,
                 # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
                 'klusters_team': [team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-            }
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
         },
     },
     VideoConstants.video_4_Liverpool_Benfica_119_126: {
@@ -191,7 +198,14 @@ override_config = {
                 'klusters': 2,
                 # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
                 'klusters_team': [team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-            }
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
         },
         'vanishing_point_finder': {
             'method': 'hough',
@@ -219,7 +233,14 @@ override_config = {
                 # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
                 'klusters_team': [team_three, team_one, team_two]
                 # smallest cluster = team 3, 2dn smallest = team 2 ...
-            }
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
         },
     },
     VideoConstants.video_10_Italia_Alemania_162_173: {
@@ -236,7 +257,28 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(1141, 1007), (264, 419)], [(1392, 702), (643, 358)]]
             }
-        }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
     },
     VideoConstants.video_11_Estudiantes_Patronato_380_392: {
         'vanishing_point_finder': {
@@ -244,7 +286,28 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(163, 1053), (1068, 444)], [(13, 532), (657, 246)]]
             }
-        }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
     },
     VideoConstants.video_12_ManchesterCity_Sevilla_66_74: {
         'vanishing_point_finder': {
@@ -281,6 +344,27 @@ override_config = {
         }
     },
     VideoConstants.video_17_Celta_RealMadrid_112_122: {
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
             'method': 'kmeans',
@@ -418,7 +502,28 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]]
             }
-        }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
     },
     VideoConstants.video_19_RealMadrid_Shakhtar_245_253: {
         'vanishing_point_finder': {
@@ -426,7 +531,28 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]]
             }
-        }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
     },
     VideoConstants.video_20_BayernMunich_ViktoriaPlzen_515_524: {
         'vanishing_point_finder': {
@@ -443,7 +569,28 @@ override_config = {
                 'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]]
                 # Not detecting anything on this video. Tweak other parameters
             }
-        }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'debug': False,
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
     },
     VideoConstants.video_22_ManchesterCity_Brighton_539_547: {
         'vanishing_point_finder': {
