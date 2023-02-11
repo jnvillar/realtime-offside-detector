@@ -18,10 +18,10 @@ from enum import Enum
 
 
 class ComparisonStrategy(Enum):
-    field_detector = 'field-detection'
-    player_detector = 'players-detection'
-    player_sorter = 'players-sorting'
-    vanishing_point_finder = 'vanishing-point-finder'
+    field_detector = 'field_detection'
+    player_detector = 'players_detection'
+    player_sorter = 'player_sorter'
+    vanishing_point_finder = 'vanishing_point_finder'
     intertia = 'intertia'
 
     def get_strategy_comparator(self, conf):
@@ -52,8 +52,8 @@ class NpEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def save_comparison_results(video_name, comparison_strategy, results):
-    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value + ".json"
+def save_comparison_results(video_name, comparison_strategy, method, results):
+    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value + "-" + method + ".json"
 
     with open(result_path, 'w') as file:
         json.dump(results, file, indent=2, cls=NpEncoder)
@@ -73,7 +73,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 if __name__ == '__main__':
     debug = False
-    all_videos = False
+    all_videos = True
     strategy = ComparisonStrategy.player_sorter
 
     if all_videos:
@@ -104,4 +104,4 @@ if __name__ == '__main__':
 
         comparator = strategy.get_strategy_comparator(configuration)
         results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-        save_comparison_results(video_name, strategy, results)
+        save_comparison_results(video_name, strategy, configuration[strategy.name]['method'], results)

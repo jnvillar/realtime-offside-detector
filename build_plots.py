@@ -35,14 +35,14 @@ config = {
         'tick': None,
         'showlegend': True,
     },
-    "field-detection": {
+    "field_detection": {
         'chart_title': 'Field detection',
         'metric_name': "jaccard_index",
         'label_x': 'Field detection',
         'tick': None,
         'showlegend': True,
     },
-    "players-sorting": {
+    "player_sorter": {
         'chart_title': 'Sort Players',
         'label_x': 'Ok percentage',
         'tick': None,
@@ -50,7 +50,7 @@ config = {
         'correctly_sorted_players': "correctly_sorted_players",
         'badly_sorted_players': "badly_sorted_players",
     },
-    "players-detection": {
+    "players_detection": {
         'chart_title': 'Player Detection',
         'label_x': 'Ok percentage',
         'tick': None,
@@ -61,7 +61,8 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "players-sorting"  # field-detection, intertia, players-sorting, players-detection
+    sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, players_detection
+    method = "kmeans"
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
@@ -79,7 +80,7 @@ if __name__ == '__main__':
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
         video_name_without_extesion = video_name.split(".")[0]
-        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix + ".json"
+        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix + "-" + method + ".json"
         results = get_results_json(results_file_path)
 
         if not "frame_results" in results:
@@ -99,7 +100,7 @@ if __name__ == '__main__':
                     legendrank=video_idx
                 ))
 
-        if sub_problem_suffix == 'players-detection':
+        if sub_problem_suffix == 'players_detection':
             total_players_in_frame = \
                 [frame_data['expected_players'] for
                  frame_data in
@@ -125,7 +126,7 @@ if __name__ == '__main__':
                 )
             )
 
-        if sub_problem_suffix == 'players-sorting' and len(results["frame_results"]) > 0:
+        if sub_problem_suffix == 'player_sorter' and len(results["frame_results"]) > 0:
             good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
                            frame_results]
             badly_values = [frame_data[config[sub_problem_suffix]['badly_sorted_players']] for frame_data in
@@ -145,7 +146,7 @@ if __name__ == '__main__':
                 )
             )
 
-        if sub_problem_suffix == 'field-detection':
+        if sub_problem_suffix == 'field_detection':
             metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
             frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
