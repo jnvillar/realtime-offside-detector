@@ -42,7 +42,7 @@ default_config = {
     },
     'player_sorter': {
         # bsas, automatic_by_color, by_color, kmeans
-        'method': 'bsas',
+        'method': 'kmeans',
         'bsas': {
             'threshold': 0,
             'clusters': 2,

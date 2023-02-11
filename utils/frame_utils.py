@@ -336,11 +336,9 @@ def join_close_contours(contours):
     status = np.zeros((LENGTH, 1))
 
     for i, cnt1 in enumerate(contours):
-        print("hola 1")
         x = i
         if i != LENGTH - 1:
             for j, cnt2 in enumerate(contours[i + 1:]):
-                print("hola 2")
                 x = x + 1
                 dist = find_if_close(cnt1, cnt2)
                 if dist == True:
@@ -353,7 +351,6 @@ def join_close_contours(contours):
     unified = []
     maximum = int(status.max()) + 1
     for i in range(maximum):
-        print("hola")
         pos = np.where(status == i)[0]
         if pos.size != 0:
             cont = np.vstack(contours[i] for i in pos)

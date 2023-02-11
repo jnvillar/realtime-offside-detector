@@ -72,7 +72,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 if __name__ == '__main__':
-    debug = True
+    debug = False
     all_videos = False
     strategy = ComparisonStrategy.player_sorter
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_6_Napoli_Fiorentina_91_98
+            VideoConstants.video_10_Italia_Alemania_162_173
         ]
 
     config_provider = ConfigProvider()
