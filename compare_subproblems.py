@@ -24,18 +24,18 @@ class ComparisonStrategy(Enum):
     vanishing_point_finder = 'vanishing-point-finder'
     intertia = 'intertia'
 
-    def get_strategy_comparator(self):
+    def get_strategy_comparator(self, conf):
         if self == ComparisonStrategy.field_detector:
-            return FieldDetectorComparisonStrategy(configuration)
+            return FieldDetectorComparisonStrategy(conf)
 
         if self == ComparisonStrategy.player_detector:
-            return PlayerDetectorComparisonStrategy(configuration)
+            return PlayerDetectorComparisonStrategy(conf)
 
         if self == ComparisonStrategy.player_sorter:
-            return PlayerSorterComparisonStrategy(configuration)
+            return PlayerSorterComparisonStrategy(conf)
 
         if self == ComparisonStrategy.vanishing_point_finder:
-            return VanishingPointFinderComparisonStrategy(configuration)
+            return VanishingPointFinderComparisonStrategy(conf)
 
         if self == ComparisonStrategy.intertia:
             return IntertiaComparisonStrategy({'amount_of_frames': 1})
@@ -74,13 +74,13 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = True
     all_videos = False
-    strategy = ComparisonStrategy.player_detector
+    strategy = ComparisonStrategy.player_sorter
 
     if all_videos:
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_17_Celta_RealMadrid_112_122
+            VideoConstants.video_6_Napoli_Fiorentina_91_98
         ]
 
     config_provider = ConfigProvider()
@@ -102,6 +102,6 @@ if __name__ == '__main__':
             print('Error opening video {}'.format(video_name))
             continue
 
-        comparator = strategy.get_strategy_comparator()
+        comparator = strategy.get_strategy_comparator(configuration)
         results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
         save_comparison_results(video_name, strategy, results)

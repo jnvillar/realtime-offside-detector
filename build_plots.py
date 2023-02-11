@@ -61,7 +61,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "players-detection"  # field-detection, intertia, players-sorting, players-detection
+    sub_problem_suffix = "players-sorting"  # field-detection, intertia, players-sorting, players-detection
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     fig.update_layout(
         title=config[sub_problem_suffix]['chart_title'],
         xaxis_title=config[sub_problem_suffix]['label_x'],
-        xaxis_range=config[sub_problem_suffix]['x_range'],
+        xaxis_range=config[sub_problem_suffix].get('x_range', None),
         yaxis_title=config[sub_problem_suffix].get('label_y', None),
         xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
         showlegend=config[sub_problem_suffix]['showlegend']

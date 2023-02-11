@@ -135,9 +135,9 @@ class FrameDataComparator:
         detected_defending_team = detected_defending_player.team
 
         ## switch teams if they are inverted
-        if (expected_defending_team != detected_defending_team):
-            for player in detected_players:
-                player.team = player.team.reverse()
+        # if (expected_defending_team != detected_defending_team):
+        #     for player in detected_players:
+        #         player.team = player.team.reverse()
 
         referee_idx = None
         for i, p in enumerate(expected_players):
