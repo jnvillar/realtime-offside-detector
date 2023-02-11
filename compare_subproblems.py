@@ -73,7 +73,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 if __name__ == '__main__':
     debug = False
-    all_videos = True
+    all_videos = False
     strategy = ComparisonStrategy.player_sorter
 
     if all_videos:

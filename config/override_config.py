@@ -266,9 +266,9 @@ override_config = {
                 'only_unclassified_players': True,
                 'median': False,
                 'focused': False,
-                'klusters': 2,
+                'klusters': 3,
                 # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
+                'klusters_team': [team_three, team_one, team_two]
                 # smallest cluster = team 3, 2dn smallest = team 2 ...
             },
             'bsas': {
