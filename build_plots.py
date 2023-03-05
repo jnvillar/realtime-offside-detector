@@ -61,8 +61,8 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, players_detection
-    method = "kmeans"
+    sub_problem_suffix = "intertia"  # field_detection, intertia, player_sorter, players_detection
+    method = ""
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
@@ -80,7 +80,13 @@ if __name__ == '__main__':
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
         video_name_without_extesion = video_name.split(".")[0]
-        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix + "-" + method + ".json"
+        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix
+
+        if method != "":
+            results_file_path = results_file_path + "-" + method
+
+        results_file_path += ".json"
+
         results = get_results_json(results_file_path)
 
         if not "frame_results" in results:
