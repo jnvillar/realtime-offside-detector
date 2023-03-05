@@ -53,7 +53,12 @@ class NpEncoder(json.JSONEncoder):
 
 
 def save_comparison_results(video_name, comparison_strategy, method, results):
-    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value + "-" + method + ".json"
+    result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value
+
+    if method == "":
+        result_path = result_path + "-" + method
+
+    result_path = result_path + ".json"
 
     with open(result_path, 'w') as file:
         json.dump(results, file, indent=2, cls=NpEncoder)
@@ -74,13 +79,17 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = False
     all_videos = False
-    strategy = ComparisonStrategy.player_sorter
+    strategy = ComparisonStrategy.intertia
 
     if all_videos:
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_10_Italia_Alemania_548_555
+            VideoConstants.video_10_Italia_Alemania_548_555,
+            VideoConstants.video_10_Italia_Alemania_162_173,
+            VideoConstants.video_3_Inter_Roma_147_158,
+            VideoConstants.video_3_Inter_Roma_55_67,
+            VideoConstants.video_2_Boca_Lanus_383_392
         ]
 
     config_provider = ConfigProvider()
@@ -104,4 +113,5 @@ if __name__ == '__main__':
 
         comparator = strategy.get_strategy_comparator(configuration)
         results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-        save_comparison_results(video_name, strategy, configuration[strategy.name]['method'], results)
+        method_name = configuration.get(strategy.name, {}).get('method', ""),
+        save_comparison_results(video_name, strategy, method_name, results)
