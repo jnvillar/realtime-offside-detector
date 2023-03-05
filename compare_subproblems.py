@@ -85,11 +85,10 @@ if __name__ == '__main__':
         videos = VideoConstants().all()
     else:
         videos = [
-            VideoConstants.video_10_Italia_Alemania_548_555,
-            VideoConstants.video_10_Italia_Alemania_162_173,
-            VideoConstants.video_3_Inter_Roma_147_158,
-            VideoConstants.video_3_Inter_Roma_55_67,
-            VideoConstants.video_2_Boca_Lanus_383_392
+            VideoConstants.video_11_Estudiantes_Patronato_380_392,
+            VideoConstants.video_18_Sevilla_Valladolid_29_38,
+            VideoConstants.video_21_Roma_Ludogrets_503_510,
+            VideoConstants.video_22_ManchesterCity_Brighton_539_547,
         ]
 
     config_provider = ConfigProvider()
