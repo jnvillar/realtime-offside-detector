@@ -66,6 +66,7 @@ class FrameDataComparator:
         y_axis_distance_percentage = distance / actual_frame_data.get_frame_height()
 
         return {
+            'frame_number': actual_frame_data.get_frame_number(),
             'distance': distance,
             'x_axis_distance_percentage': x_axis_distance_percentage,
             'y_axis_distance_percentage': y_axis_distance_percentage
@@ -409,9 +410,8 @@ class FieldDetectorComparisonStrategy:
         self.field_detector = FieldDetector(None, **config['field_detector'])
 
     def prepare_for_detection(self, video, expected_frame_data):
-        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
-                                                                  False, False, False, field_from_mask=True)
-        video.set_frame(frame_with_field_detected)
+        # nothing to do here
+        return
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video)
