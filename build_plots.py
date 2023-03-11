@@ -36,11 +36,21 @@ config = {
         'showlegend': True,
     },
     "field_detection": {
-        'chart_title': 'Field detection',
+        'chart_title': None,
         'metric_name': "jaccard_index",
         'label_x': 'Field detection',
+        'label_x': 'Indice de Jaccard',
+        'tick': None,
+        'showlegend': False,
+        'x_range': None
+    },
+    "vanishing-point-finder": {
+        'chart_title': None,
+        'metric_name': "x_axis_distance_percentage",
+        'label_x': 'Distancia',
         'tick': None,
         'showlegend': True,
+        'x_range': None
     },
     "player_sorter": {
         'chart_title': 'Sort Players',
@@ -61,14 +71,15 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "intertia"  # field_detection, intertia, player_sorter, players_detection
-    method = ""
+    sub_problem_suffix = "field_detection"  # field_detection, intertia, player_sorter, players_detection
+    method = "green_detection"
+    export_html_file = True
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
     fig = go.Figure()
     fig.update_layout(
-        title=config[sub_problem_suffix]['chart_title'],
+        title=config[sub_problem_suffix].get('chart_title', None),
         xaxis_title=config[sub_problem_suffix]['label_x'],
         xaxis_range=config[sub_problem_suffix].get('x_range', None),
         yaxis_title=config[sub_problem_suffix].get('label_y', None),
@@ -168,6 +179,29 @@ if __name__ == '__main__':
                 )
             )
 
+        if sub_problem_suffix == 'vanishing-point-finder':
+            metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+            frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
+
+            fig.add_trace(
+                go.Box(
+                    x=metric_values,
+                    name=video_name_without_extesion,
+                    customdata=frame_numbers,
+                    hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
+                    boxpoints="all",
+                    boxmean=True,
+                    legendrank=video_idx
+                )
+            )
+
         video_idx -= 1
+
+    if export_html_file:
+        export_file_name = "plots/" + sub_problem_suffix
+        if method != "":
+            export_file_name += "-" + method
+        export_file_name += "-" + config[sub_problem_suffix]['metric_name'] + ".html"
+        fig.write_html(export_file_name)
 
     fig.show()
