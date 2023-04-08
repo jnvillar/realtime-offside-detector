@@ -11,6 +11,8 @@ class EdgesPlayerDetector:
         self.params = kwargs
 
     def find_players(self, frame):
+        ScreenManager.get_manager().show_frame(frame, "original") if self.debug else None
+
         pipeline: [Step] = self.steps()
 
         for idx, step in enumerate(pipeline):

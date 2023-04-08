@@ -358,6 +358,7 @@ def join_close_contours(contours):
             unified.append(hull)
     return unified
 
+
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
@@ -548,6 +549,10 @@ def transform_matrix_gray_range(original_frame, params=None):
 
     scale = (new_max - new_min) / (old_max - old_min)
     res = (original_frame - old_min) * scale
+
+    if params.get('replace_0', None) is not None:
+        res[res == 0] = params.get('replace_0')
+
     return res.astype(np.uint8)
 
 
@@ -680,7 +685,7 @@ def get_lines_lsd(original_frame, params={}):
     mask = morphological_closing(mask, {'element_size': (3, 3)})
     ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug_lines', False) else None
 
-    mask = apply_dilatation(mask, {'element_size': (5, 5)})
+    mask = apply_dilatation(mask, {'element_size': params.get('dilatation', (5, 5))})
     ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug_lines', False) else None
 
     mask = morphological_opening(mask, {'element_size': (2, 2)})
@@ -917,7 +922,7 @@ def grey_in_range(original_frame, params):
 
     if params.get('negated_result', False):
         negated_result = cv2.bitwise_and(original_frame, negate(gray_mask))
-        return applied_gray_mask, negated_result
+        return applied_gray_mask, gray_mask, negated_result, negate(gray_mask)
 
     return applied_gray_mask, None
 

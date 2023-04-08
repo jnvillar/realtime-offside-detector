@@ -24,25 +24,26 @@ class KmeansPlayerDetector:
         )
 
     def find_players(self, original_frame):
+        ScreenManager.get_manager().show_frame(original_frame, 'original') if self.debug else None
+
         image = original_frame
 
         lines = get_lines_lsd(image, self.params)
         ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None
 
+        image = remove_mask_2(image, params={"mask": lines})
+
         # classify pixels
         pixel_labels = self.get_pixel_labels(image)
         self.show_pixels_classification(image, pixel_labels) if self.debug else None
 
-        least_predominant_colors = self.get_least_predominant_colors(image, pixel_labels)
+        least_predominant_colors = self.get_least_predominant_colors(image, pixel_labels, lines)
 
         players_mask = rgb_to_mask(least_predominant_colors.reshape(image.shape))
 
         ScreenManager.get_manager().show_frame(players_mask, 'players_mask') if self.debug else None
 
-        players_no_lines = remove_mask_2(players_mask, params={"mask": lines})
-        ScreenManager.get_manager().show_frame(players_no_lines, 'players_no_lines') if self.debug else None
-
-        players = detect_contours(players_no_lines, params=self.params)
+        players = detect_contours(players_mask, params=self.params)
 
         return players_from_contours(players, self.debug)
 
@@ -156,7 +157,7 @@ class KmeansPlayerDetector:
             )
         ]
 
-    def get_least_predominant_colors(self, image, pixel_labels):
+    def get_least_predominant_colors(self, image, pixel_labels, lines):
         unique, counts = numpy.unique(pixel_labels, return_counts=True)
         label_count = dict(zip(unique, counts))
         pixels = pixel_labels.flatten()
@@ -170,6 +171,11 @@ class KmeansPlayerDetector:
             if colour_count < (amount_of_pixels * self.params.get('color_percentage', None)):
                 colors[idx] = self.main_colors[idx]
 
+        if self.debug:
+            segmented_data = colors[pixels]
+            segmented_data = segmented_data.reshape(image.shape)
+            ScreenManager.get_manager().show_frame(segmented_data, 'least_predominant') if self.debug else None
+
         res = None
         for i, color in enumerate(colors):
             if not color.any():
@@ -180,13 +186,14 @@ class KmeansPlayerDetector:
 
             image_only_that_color = only_that_color[pixels]
             image_only_that_color = image_only_that_color.reshape(image.shape)
-            image_only_that_color = apply_erosion(image_only_that_color, {'element_size': (3, 3)})
-            image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (5, 35)})
 
             ScreenManager.get_manager().show_frame(
                 image_only_that_color,
                 'color {}'.format(color)
             ) if self.debug else None
+
+            image_only_that_color = morphological_closing(image_only_that_color, {'element_size': (1, 20)})
+            image_only_that_color = apply_erosion(image_only_that_color, {'element_size': (5, 5)})
 
             if res is None:
                 res = image_only_that_color
@@ -195,10 +202,7 @@ class KmeansPlayerDetector:
 
         ScreenManager.get_manager().show_frame(res, 'res') if self.debug else None
 
-        segmented_data = colors[pixels]
-        segmented_data = segmented_data.reshape(image.shape)
-        ScreenManager.get_manager().show_frame(segmented_data, 'least_predominant') if self.debug else None
-        return segmented_data
+        return res
 
     def get_teams_main_colors(self, pixel_labels):
         unique, counts = numpy.unique(pixel_labels, return_counts=True)
