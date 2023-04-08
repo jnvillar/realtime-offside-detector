@@ -78,7 +78,7 @@ default_config = {
             'ignore_contours_bigger_than': 1,
         },
         'otsu': {
-            'debug': False,
+            'debug': True,
             'ignore_contours_smaller_than': 0.02,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -112,7 +112,7 @@ default_config = {
             'keep_contours_by_aspect_ratio': AspectRatio.taller
         },
         'edges': {
-            'debug': True,
+            'debug': False,
             'threshold1': 50,
             'threshold2': 70,
             'ignore_contours_smaller_than': 0.04,
