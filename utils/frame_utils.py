@@ -666,7 +666,11 @@ def fill_contours(frame, params):
 
 def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
-    gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
+    if params.get("gray_image", False):
+        gray_image = original_frame
+    else:
+        gray_image = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
+
     height, width = original_frame.shape[:2]
     min_length = int(width * params.get('min_length_line_in_video_percentage', 0.01))
     fld = cv2.ximgproc.createFastLineDetector(min_length)
@@ -705,36 +709,44 @@ def get_lines_top_hat(original_frame, params={}):
     return res
 
 
-def remove_lines_canny(frame, params):
-    mask = np.zeros(frame.shape, np.uint8)
+def remove_lines_canny(original_frame, params={}):
+    lines = get_lines_lsd(original_frame, params)
+    ScreenManager.get_manager().show_frame(lines, 'lines') if params.get("debug", None) else None
 
-    canny = cv2.Canny(frame, 100, 200)
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    image = remove_mask_2(original_frame, params={"mask": lines})
+    return image
 
-    ScreenManager.get_manager().show_frame(canny, '1')
-    close = cv2.morphologyEx(canny, cv2.MORPH_CLOSE, kernel)
 
-    ScreenManager.get_manager().show_frame(close, '2')
-
-    minLineLength = 100
-    maxLineGap = 350
-
-    lines = cv2.HoughLinesP(close, 1, np.pi / 180, 100, minLineLength, maxLineGap)
-
-    if lines is None:
-        return frame
-
-    for line in lines:
-        for x1, y1, x2, y2 in line:
-            cv2.line(mask, (x1, y1), (x2, y2), (255, 255, 255), 3)
-
-    cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-
-    for c in cnts:
-        cv2.drawContours(frame, [c], -1, (255, 255, 255), -1)
-
-    return frame
+# def remove_lines_canny(frame, params):
+#     mask = np.zeros(frame.shape, np.uint8)
+#
+#     canny = cv2.Canny(frame, 100, 200)
+#     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+#
+#     ScreenManager.get_manager().show_frame(canny, '1')
+#     close = cv2.morphologyEx(canny, cv2.MORPH_CLOSE, kernel)
+#
+#     ScreenManager.get_manager().show_frame(close, '2')
+#
+#     minLineLength = 100
+#     maxLineGap = 350
+#
+#     lines = cv2.HoughLinesP(close, 1, np.pi / 180, 100, minLineLength, maxLineGap)
+#
+#     if lines is None:
+#         return frame
+#
+#     for line in lines:
+#         for x1, y1, x2, y2 in line:
+#             cv2.line(mask, (x1, y1), (x2, y2), (255, 255, 255), 3)
+#
+#     cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+#     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+#
+#     for c in cnts:
+#         cv2.drawContours(frame, [c], -1, (255, 255, 255), -1)
+#
+#     return frame
 
 
 def remove_lines(frame, params):

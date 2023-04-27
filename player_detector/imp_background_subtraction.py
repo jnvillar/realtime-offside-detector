@@ -24,7 +24,7 @@ class BackgroundSubtractionPlayerDetector:
         pipeline: [Step] = [
             #Step("remove green", remove_green, debug=self.debug),
             Step("background substitution", self.background_substitution, debug=self.debug),
-            Step("remove lines", remove_lines_canny, debug=self.debug),
+            Step("remove lines", remove_lines_canny, params={"binary_image": True}, debug=self.debug),
             Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),
             Step("join close contours", morphological_closing, debug=self.debug),
             Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),

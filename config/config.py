@@ -67,7 +67,7 @@ default_config = {
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
         'method': 'kmeans',
-        'detect_every_amount_of_frames': 1,
+        'detect_every_amount_of_frames': 2,
         'kmeans': {
             'debug_lines': False,
             'debug': False,
@@ -78,7 +78,7 @@ default_config = {
             'ignore_contours_bigger_than': 1,
         },
         'otsu': {
-            'debug': True,
+            'debug': False,
             'ignore_contours_smaller_than': 0.02,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -104,8 +104,8 @@ default_config = {
             'filter_contour_inside_other': True
         },
         'background_subtraction': {
-            'debug': False,
-            'history': 1,
+            'debug': True,
+            'history': 2,
             'detect_shadows': False,
             'var_threshold': 50,
             'ignore_contours_smaller_than': 0.02,
