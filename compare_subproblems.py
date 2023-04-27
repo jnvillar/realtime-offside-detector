@@ -78,8 +78,8 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 if __name__ == '__main__':
     debug = False
-    all_videos = False
-    strategy = ComparisonStrategy.intertia
+    all_videos = True
+    strategy = ComparisonStrategy.player_sorter
 
     if all_videos:
         videos = VideoConstants().all()
