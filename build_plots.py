@@ -29,7 +29,6 @@ def scan_videos_from_path(videos_path):
 
 config = {
     "intertia": {
-        'chart_title': 'Elbow method',
         'label_x': 'K',
         'label_y': 'Inercia',
         'tick': None,
@@ -53,10 +52,10 @@ config = {
         'x_range': None
     },
     "player_sorter": {
-        'chart_title': 'Sort Players',
+        'chart_title': None,
         'label_x': 'Ok percentage',
         'tick': None,
-        'showlegend': True,
+        'showlegend': False,
         'correctly_sorted_players': "correctly_sorted_players",
         'badly_sorted_players': "badly_sorted_players",
     },
@@ -71,8 +70,8 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "field_detection"  # field_detection, intertia, player_sorter, players_detection
-    method = "green_detection"
+    sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, players_detection
+    method = "kmeans"
     export_html_file = True
 
     videos_to_consider = scan_videos_from_path("./test/videos")
@@ -201,7 +200,12 @@ if __name__ == '__main__':
         export_file_name = "plots/" + sub_problem_suffix
         if method != "":
             export_file_name += "-" + method
-        export_file_name += "-" + config[sub_problem_suffix]['metric_name'] + ".html"
+
+        metric_name = config[sub_problem_suffix].get('metric_name', '')
+        if metric_name != "":
+            export_file_name += "-" + metric_name + ".html"
+
+        export_file_name += ".html"
         fig.write_html(export_file_name)
 
     fig.show()
