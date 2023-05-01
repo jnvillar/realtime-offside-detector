@@ -71,7 +71,7 @@ config = {
 if __name__ == '__main__':
 
     sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, players_detection
-    method = "kmeans"
+    method = "bsas"
     export_html_file = True
 
     videos_to_consider = scan_videos_from_path("./test/videos")
