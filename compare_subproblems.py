@@ -55,7 +55,7 @@ class NpEncoder(json.JSONEncoder):
 def save_comparison_results(video_name, comparison_strategy, method, results):
     result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value
 
-    if method == "":
+    if method != "":
         result_path = result_path + "-" + method
 
     result_path = result_path + ".json"
