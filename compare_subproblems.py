@@ -19,7 +19,7 @@ from enum import Enum
 
 class ComparisonStrategy(Enum):
     field_detector = 'field_detection'
-    player_detector = 'players_detection'
+    player_detector = 'player_detection'
     player_sorter = 'player_sorter'
     vanishing_point_finder = 'vanishing_point_finder'
     intertia = 'intertia'
@@ -79,7 +79,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = False
     all_videos = True
-    strategy = ComparisonStrategy.player_sorter
+    strategy = ComparisonStrategy.player_detector
 
     if all_videos:
         videos = VideoConstants().all()
@@ -112,5 +112,5 @@ if __name__ == '__main__':
 
         comparator = strategy.get_strategy_comparator(configuration)
         results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-        method_name = configuration.get(strategy.name, {}).get('method', ""),
+        method_name = configuration.get(strategy.name, {}).get('method', "")
         save_comparison_results(video_name, strategy, method_name, results)

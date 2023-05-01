@@ -59,7 +59,7 @@ config = {
         'correctly_sorted_players': "correctly_sorted_players",
         'badly_sorted_players': "badly_sorted_players",
     },
-    "players_detection": {
+    "player_detection": {
         'chart_title': 'Player Detection',
         'label_x': 'Ok percentage',
         'tick': None,
@@ -70,8 +70,8 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, players_detection
-    method = "bsas"
+    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
+    method = "kmeans"
     export_html_file = True
 
     videos_to_consider = scan_videos_from_path("./test/videos")
@@ -116,7 +116,7 @@ if __name__ == '__main__':
                     legendrank=video_idx
                 ))
 
-        if sub_problem_suffix == 'players_detection':
+        if sub_problem_suffix == 'player_detection':
             total_players_in_frame = \
                 [frame_data['expected_players'] for
                  frame_data in
