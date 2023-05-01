@@ -35,7 +35,7 @@ def save_comparison_results(video_name, results):
 
 
 if __name__ == '__main__':
-    video_name = constants.VideoConstants.video_22_ManchesterCity_Brighton_539_547
+    video_name = constants.VideoConstants.video_10_Italia_Alemania_548_555
     #video_name = constants.VideoConstants.video_2_Boca_Lanus_202_216
 
     video_path = './test/videos' + '/' + video_name

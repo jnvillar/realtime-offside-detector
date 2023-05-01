@@ -37,7 +37,9 @@ class KmeansPlayerDetector:
         pixel_labels = self.get_pixel_labels(image)
         self.show_pixels_classification(image, pixel_labels) if self.debug else None
 
-        least_predominant_colors = self.get_least_predominant_colors(image, pixel_labels, lines)
+        least_predominant_colors, result = self.get_least_predominant_colors(image, pixel_labels, lines)
+        if not result:
+            return []
 
         players_mask = rgb_to_mask(least_predominant_colors.reshape(image.shape))
 
@@ -177,6 +179,7 @@ class KmeansPlayerDetector:
             ScreenManager.get_manager().show_frame(segmented_data, 'least_predominant') if self.debug else None
 
         res = None
+
         for i, color in enumerate(colors):
             if not color.any():
                 continue
@@ -200,9 +203,12 @@ class KmeansPlayerDetector:
             else:
                 res = res + image_only_that_color
 
+        if res is None:
+            return res, False
+
         ScreenManager.get_manager().show_frame(res, 'res') if self.debug else None
 
-        return res
+        return res, True
 
     def get_teams_main_colors(self, pixel_labels):
         unique, counts = numpy.unique(pixel_labels, return_counts=True)

@@ -34,7 +34,8 @@ class PlayerDetector:
         self.log.log("finding players", {"frame": video.get_current_frame_number()})
         Timer.start('finding players')
         detect_every_amount_of_frames = self.params.get('detect_every_amount_of_frames', 1)
-        if (video.get_current_frame_number() % detect_every_amount_of_frames == 0) or video.get_current_frame_number() < 3:
+        if (
+                video.get_current_frame_number() % detect_every_amount_of_frames == 0) or video.get_current_frame_number() < 3:
             players = self.method.find_players(video.get_current_frame())
         else:
             players = []
