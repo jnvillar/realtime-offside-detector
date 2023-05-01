@@ -6,7 +6,7 @@ from timer.timer import *
 class OtsuPlayerDetector:
 
     def __init__(self, **kwargs):
-        self.debug = kwargs.get('debug', True)
+        self.debug = kwargs.get('debug', False)
         self.log = Logger(self, LoggingPackage.player_detector)
         self.params = kwargs
 

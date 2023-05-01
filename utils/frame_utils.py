@@ -365,7 +365,7 @@ def detect_contours(original_frame, params):
     (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
 
-    if params.get('debug', True):
+    if params.get('debug', False):
         height, width = original_frame.shape[:2]
         black_image = np.zeros((height, width), np.uint8)
         ScreenManager.get_manager().show_frame(

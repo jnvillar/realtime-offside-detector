@@ -52,15 +52,18 @@ class NpEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def save_comparison_results(video_name, comparison_strategy, method, results):
+def get_result_path(video_name, comparison_strategy, method):
     result_path = './experiments' + '/' + video_name.split(".")[0] + "-" + comparison_strategy.value
 
     if method != "":
         result_path = result_path + "-" + method
 
     result_path = result_path + ".json"
+    return result_path
 
-    with open(result_path, 'w') as file:
+
+def save_comparison_results(path, results):
+    with open(path, 'w') as file:
         json.dump(results, file, indent=2, cls=NpEncoder)
 
 
@@ -79,6 +82,7 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 if __name__ == '__main__':
     debug = False
     all_videos = True
+    override_experiment = False
     strategy = ComparisonStrategy.player_detector
 
     if all_videos:
@@ -98,7 +102,16 @@ if __name__ == '__main__':
 
     for video_name in videos:
         print("processing video: {}".format(video_name))
+
         configuration = config_provider.get_config_for_video(video_name)
+        comparator = strategy.get_strategy_comparator(configuration)
+        method_name = configuration.get(strategy.name, {}).get('method', "")
+
+        save_result_path = get_result_path(video_name, strategy, method_name)
+
+        if os.path.exists(save_result_path) and not override_experiment:
+            print("skipping result for {} already exists".format(video_name))
+            continue
 
         video_path = './test/videos' + '/' + video_name
         dataset_path = './datasets' + '/' + video_name.split(".")[0]
@@ -110,7 +123,5 @@ if __name__ == '__main__':
             print('Error opening video {}'.format(video_name))
             continue
 
-        comparator = strategy.get_strategy_comparator(configuration)
         results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-        method_name = configuration.get(strategy.name, {}).get('method', "")
-        save_comparison_results(video_name, strategy, method_name, results)
+        save_comparison_results(save_result_path, results)
