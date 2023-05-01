@@ -60,10 +60,10 @@ config = {
         'badly_sorted_players': "badly_sorted_players",
     },
     "player_detection": {
-        'chart_title': 'Player Detection',
+        'chart_title': None,
         'label_x': 'Ok percentage',
         'tick': None,
-        'showlegend': True,
+        'showlegend': False,
         'x_range': [0, 100]
     },
 }
