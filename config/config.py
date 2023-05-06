@@ -66,7 +66,7 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-        'method': 'edges',
+        'method': 'by_color',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
             'debug_lines': False,
@@ -112,6 +112,7 @@ default_config = {
             'keep_contours_by_aspect_ratio': AspectRatio.taller
         },
         'edges': {
+            'parent_contour_only': True,
             'debug': False,
             'threshold1': 10,
             'threshold2': 20,

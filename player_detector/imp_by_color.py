@@ -23,12 +23,16 @@ class ByColor:
 
     def get_team_colors(self, original_frame):
         image_name = "choose colors"
-        clicks = []
+
+        clicks = self.params.get('clicks', [])
+
         while len(clicks) < 2:
+            save_clicks = True
             cv2.imshow(image_name, original_frame)
             cv2.setMouseCallback(image_name, on_click, clicks)
             cv2.waitKey(0)
-        cv2.destroyWindow(image_name)
+            cv2.destroyWindow(image_name)
+            print('clicks', clicks)
 
         clicks = clicks[-2:]
 

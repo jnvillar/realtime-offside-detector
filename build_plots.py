@@ -71,7 +71,7 @@ config = {
 if __name__ == '__main__':
 
     sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
-    method = "edges"
+    method = "by_color"
 
     export_html_file = True
 

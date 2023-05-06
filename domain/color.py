@@ -42,7 +42,7 @@ class Color:
         return self.luminence < 40
 
     def is_white(self):
-        return self.luminence > 128
+        return self.luminence > 170
 
     def get_hsv_lower(self):
         if self.is_black():
@@ -51,7 +51,10 @@ class Color:
             return [0, 0, 255 - self.white_sensitivity]
 
         h, s, v = self.hsv
-        return [max(h - 10, 0), 50, 0]
+        h -= 10
+        if h < 0:
+            h = 180 + h
+        return [h, 0, 0]
 
     def get_hsv_upper(self):
         if self.is_black():
@@ -60,7 +63,11 @@ class Color:
             return [255, self.white_sensitivity, 255]
 
         h, s, v = self.hsv
-        return [min(h + 10, 180), 255, 255]
+
+        h += 10
+        if h > 180:
+            h = h - 180
+        return [h, 255, 255]
 
     # remember this is bgr (blue, green, red)
 

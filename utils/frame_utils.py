@@ -362,7 +362,12 @@ def join_close_contours(contours):
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
-    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    parent_contour_only = params.get('parent_contour_only', True)
+    if parent_contour_only:
+        retr = cv2.RETR_EXTERNAL
+    else:
+        retr = cv2.RETR_TREE
+    (contours, hierarchy) = cv2.findContours(original_frame, retr, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
 
     if params.get('debug', False):
@@ -508,7 +513,18 @@ def color_mask_hsv(original_frame, params):
     hsv = cv2.cvtColor(original_frame, cv2.COLOR_BGR2HSV)
     color_label = params.get('label', '')
     color = params.get(color_label)
-    mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
+
+    lower = color.get_hsv_lower()
+    upper = color.get_hsv_upper()
+
+    if lower[0] > upper[0]:
+        # wrap around
+        mask1 = cv2.inRange(hsv, np.array([0, lower[1], lower[2]]), np.array([upper[0], upper[1], upper[2]]))
+        mask2 = cv2.inRange(hsv, np.array([lower[0], lower[1], lower[2]]), np.array([180, upper[1], upper[2]]))
+        mask = cv2.bitwise_or(mask1, mask2)
+    else:
+        mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
+
     return mask
 
 
