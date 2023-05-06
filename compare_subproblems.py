@@ -81,19 +81,15 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 if __name__ == '__main__':
     debug = False
-    all_videos = True
-    override_experiment = False
+    override_experiment = True
     strategy = ComparisonStrategy.player_detector
 
-    if all_videos:
+    videos = [
+        # VideoConstants.video_11_Estudiantes_Patronato_380_392
+    ]
+
+    if len(videos) == 0:
         videos = VideoConstants().all()
-    else:
-        videos = [
-            VideoConstants.video_11_Estudiantes_Patronato_380_392,
-            VideoConstants.video_18_Sevilla_Valladolid_29_38,
-            VideoConstants.video_21_Roma_Ludogrets_503_510,
-            VideoConstants.video_22_ManchesterCity_Brighton_539_547,
-        ]
 
     config_provider = ConfigProvider()
     configuration = config.default_config

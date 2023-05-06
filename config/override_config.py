@@ -154,14 +154,9 @@ override_config = {
             'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
-                'min_length_line_in_video_percentage': 0.01,
-                'debug_lines': False,
                 'debug': False,
-                'color_percentage': (2 / 100),  # 5%
-                'klusters': 9,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'ignore_contours_smaller_than': 0.01,
-                'ignore_contours_bigger_than': 1,
+                'ignore_contours_smaller_than': 0.007,
+                'klusters': 10,
             },
         },
         'vanishing_point_finder': {
@@ -281,6 +276,11 @@ override_config = {
         },
     },
     VideoConstants.video_11_Estudiantes_Patronato_380_392: {
+        'player_detector': {
+            'kmeans': {
+                'ignore_contours_smaller_than': 0.005,
+            }
+        },
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {

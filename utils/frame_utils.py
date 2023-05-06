@@ -404,8 +404,8 @@ def detect_contours(original_frame, params):
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.taller:
                 aspect_ratio = h / w
                 # keep taller (h/w > 1) or slightly wider ( h/w > 0.9) contours
-                # h / w >> 1. We dont want boxes that are too thin
-                if aspect_ratio < 0.9 or aspect_ratio > 4:
+                # h / w >> 1. We don't want boxes that are too thin
+                if aspect_ratio < 0.9 or aspect_ratio > 5:
                     valid_contour = False
 
             if params['keep_contours_by_aspect_ratio'] == AspectRatio.wider:
@@ -664,6 +664,14 @@ def fill_contours(frame, params):
     return frame
 
 
+def filter_lines_using_hough(mask, min_length, min_width):
+    # Utiliza la transformada de Hough probabilística para detectar líneas en la imagen binarizada
+    rho = 1  # Resolución de distancia en píxeles de la acumulación
+    theta = np.pi / 180  # Resolución angular en radianes de la acumulación
+    threshold = int(min_length * 0.5)  # Solo las líneas que tengan un número de votos mayor al umbral serán devueltas
+    lines = cv2.HoughLinesP(mask, rho, theta, threshold, minLineLength=min_length, maxLineGap=min_width)
+
+    return lines
 def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     if params.get("gray_image", False):
@@ -689,14 +697,26 @@ def get_lines_lsd(original_frame, params={}):
     mask = morphological_closing(mask, {'element_size': (3, 3)})
     ScreenManager.get_manager().show_frame(mask, 'lines_close') if params.get('debug_lines', False) else None
 
-    mask = apply_dilatation(mask, {'element_size': params.get('dilatation', (5, 5))})
+    mask = apply_dilatation(mask, {'element_size': params.get('dilatation', (4, 4))})
     ScreenManager.get_manager().show_frame(mask, 'lines_dilatation') if params.get('debug_lines', False) else None
 
-    mask = morphological_opening(mask, {'element_size': (2, 2)})
-    ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug_lines', False) else None
+    # mask = morphological_opening(mask, {'element_size': (2, 2)})
+    # ScreenManager.get_manager().show_frame(mask, 'lines_open') if params.get('debug_lines', False) else None
+
+    min_length = min_length * 3
+    min_width = 10
+    filtered_lines = filter_lines_using_hough(mask, min_length, min_width)
+
+    # Crea una nueva imagen en negro y dibuja solo las líneas filtradas
+    filtered_mask = np.zeros((height, width), np.uint8)
+    for line in filtered_lines:
+        for x1, y1, x2, y2 in line:
+            cv2.line(filtered_mask, (x1, y1), (x2, y2), 255, 2)
+
+    # Muestra la máscara filtrada si se solicita en los parámetros
+    ScreenManager.get_manager().show_frame(filtered_mask, 'filtered_lines') if params.get('debug_lines', False) else None
 
     return mask
-
 
 def get_lines_top_hat(original_frame, params={}):
     top_hat = morphological_top_hat(original_frame, {
