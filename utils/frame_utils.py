@@ -362,7 +362,7 @@ def join_close_contours(contours):
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
-    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    (contours, hierarchy) = cv2.findContours(original_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     detected_contours = []
 
     if params.get('debug', False):
@@ -376,7 +376,7 @@ def detect_contours(original_frame, params):
         x, y, w, h = cv2.boundingRect(c)
         valid_contour = True
 
-        if 'filter_contour_inside_other' in params:
+        if params.get('filter_contour_inside_other', False):
             # If hierarchy[0, idx, 3] is different from -1, then your contour is inside another.
             if params['filter_contour_inside_other'] and hierarchy[0, idx, 3] != -1:
                 valid_contour = False
@@ -672,6 +672,8 @@ def filter_lines_using_hough(mask, min_length, min_width):
     lines = cv2.HoughLinesP(mask, rho, theta, threshold, minLineLength=min_length, maxLineGap=min_width)
 
     return lines
+
+
 def get_lines_lsd(original_frame, params={}):
     # Create default Fast Line Detector (FSD)
     if params.get("gray_image", False):
@@ -714,9 +716,11 @@ def get_lines_lsd(original_frame, params={}):
             cv2.line(filtered_mask, (x1, y1), (x2, y2), 255, 2)
 
     # Muestra la máscara filtrada si se solicita en los parámetros
-    ScreenManager.get_manager().show_frame(filtered_mask, 'filtered_lines') if params.get('debug_lines', False) else None
+    ScreenManager.get_manager().show_frame(filtered_mask, 'filtered_lines') if params.get('debug_lines',
+                                                                                          False) else None
 
     return mask
+
 
 def get_lines_top_hat(original_frame, params={}):
     top_hat = morphological_top_hat(original_frame, {

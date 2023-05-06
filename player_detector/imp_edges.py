@@ -37,10 +37,10 @@ class EdgesPlayerDetector:
                 "dilate",
                 apply_dilatation, {'iterations': 2},
                 debug=self.debug),
-            Step(
-                "fill contours",
-                fill_contours, {},
-                debug=self.debug),
+            # Step(
+            #     "fill contours",
+            #     fill_contours, {},
+            #     debug=self.debug),
         ]
 
     def form_two(self):
