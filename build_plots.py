@@ -71,7 +71,8 @@ config = {
 if __name__ == '__main__':
 
     sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
-    method = "kmeans"
+    method = "otsu"
+
     export_html_file = True
 
     videos_to_consider = scan_videos_from_path("./test/videos")

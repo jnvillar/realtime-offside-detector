@@ -66,7 +66,7 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-        'method': 'kmeans',
+        'method': 'otsu',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
             'debug_lines': False,

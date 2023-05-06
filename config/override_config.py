@@ -33,7 +33,6 @@ override_config = {
     VideoConstants.video_3_Inter_Roma_55_67: {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.015,
@@ -151,7 +150,6 @@ override_config = {
     VideoConstants.video_7_Psg_Angers_103_110: {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'debug': False,
@@ -169,7 +167,6 @@ override_config = {
     VideoConstants.video_7_Psg_Angers_156_167: {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.01,
@@ -367,7 +364,6 @@ override_config = {
         },
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.015,
@@ -442,7 +438,6 @@ override_config = {
     VideoConstants.video_19_RealMadrid_Shakhtar_20_29: {
         'player_detector': {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'method': 'kmeans',
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'debug_lines': False,
