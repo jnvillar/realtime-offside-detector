@@ -66,10 +66,10 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-        'method': 'background_subtraction',
+        'method': 'kmeans',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
-            'debug_lines': False,
+            'debug_lines': True,
             'debug': False,
             'color_percentage': (2 / 100),  # 5%
             'klusters': 8,
@@ -104,7 +104,7 @@ default_config = {
             'filter_contour_inside_other': True
         },
         'background_subtraction': {
-            'debug_lines': False,
+            'debug_lines': True,
             'debug': False,
             'history': 500,
             'detect_shadows': False,

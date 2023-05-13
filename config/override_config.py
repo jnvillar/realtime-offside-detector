@@ -444,7 +444,6 @@ override_config = {
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.015,
                 'debug_lines': False,
-
                 'color_percentage': (2 / 100),  # 5%
                 'klusters': 10,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
