@@ -66,12 +66,19 @@ config = {
         'showlegend': False,
         'x_range': [0, 100]
     },
+    "player_detection-extra_players": {
+        'chart_title': None,
+        'label_x': 'Extra detected players',
+        'tick': None,
+        'showlegend': False,
+        'x_range': [0, 20]
+    },
 }
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
-    method = "background_subtraction"
+    sub_problem_suffix = "player_detection-extra_players"  # field_detection, intertia, player_sorter, player_detection
+    method = "otsu"
 
     export_html_file = True
 
@@ -91,7 +98,7 @@ if __name__ == '__main__':
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
         video_name_without_extesion = video_name.split(".")[0]
-        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix
+        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix.split("-")[0]
 
         if method != "":
             results_file_path = results_file_path + "-" + method
@@ -117,7 +124,7 @@ if __name__ == '__main__':
                     legendrank=video_idx
                 ))
 
-        if sub_problem_suffix == 'player_detection':
+        if sub_problem_suffix == 'player_detection' or sub_problem_suffix == 'player_detection-extra_players':
             total_players_in_frame = \
                 [frame_data['expected_players'] for
                  frame_data in
@@ -128,13 +135,27 @@ if __name__ == '__main__':
                  frame_data in
                  frame_results]
 
-            good_percentage = [good / total * 100 for good, total
-                               in zip(good_detected_players_in_frame, total_players_in_frame)
-                               ]
+            extra_players_in_frame = \
+                [frame_data['extra_detected_players'] for
+                 frame_data in
+                 frame_results]
+
+            not_detected_players_in_frame = \
+                [frame_data['not_detected_players'] for
+                 frame_data in
+                 frame_results]
+
+            x_metric = None
+            if sub_problem_suffix == 'player_detection':
+                x_metric = [good / total * 100 for good, total
+                            in zip(good_detected_players_in_frame, total_players_in_frame)
+                            ]
+            if sub_problem_suffix == 'player_detection-extra_players':
+                x_metric = extra_players_in_frame
 
             fig.add_trace(
                 go.Box(
-                    x=good_percentage,
+                    x=x_metric,
                     name=video_name_without_extesion,
                     boxpoints="all",
                     hoverinfo="x",
@@ -202,9 +223,9 @@ if __name__ == '__main__':
         if method != "":
             export_file_name += "-" + method
 
-        metric_name = config[sub_problem_suffix].get('metric_name', '')
+        metric_name = config[sub_problem_suffix.split("-")[0]].get('metric_name', '')
         if metric_name != "":
-            export_file_name += "-" + metric_name + ".html"
+            export_file_name += "-" + metric_name
 
         export_file_name += ".html"
         fig.write_html(export_file_name)
