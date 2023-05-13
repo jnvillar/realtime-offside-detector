@@ -22,21 +22,18 @@ class BackgroundSubtractionPlayerDetector:
 
     def find_players(self, frame):
         pipeline: [Step] = [
-            #Step("remove green", remove_green, debug=self.debug),
+            # Step("remove green", remove_green, debug=self.debug),
             Step("background substitution", self.background_substitution, debug=self.debug),
-            Step("remove lines", remove_lines_canny, params={"binary_image": True}, debug=self.debug),
-            Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),
+            Step("delete small contours", delete_small_contours, params=self.params, debug=self.debug),
+            Step("remove lines", remove_lines_canny, params=self.params | {'gray_image': True}, debug=self.debug),
             Step("join close contours", morphological_closing, debug=self.debug),
-            Step("delete small contours", delete_small_contours, params={'percentage_of_frame': self.params['ignore_contours_smaller_than']}, debug=self.debug),
+            Step("delete small contours", delete_small_contours, params=self.params, debug=self.debug),
             Step("erode", apply_erosion, debug=self.debug),
         ]
 
         for idx, step in enumerate(pipeline):
             frame = step.apply(idx, frame)
 
-        players = detect_contours(frame, params={
-            'ignore_contours_smaller_than': self.params['ignore_contours_smaller_than'],
-            'keep_contours_by_aspect_ratio': self.params['keep_contours_by_aspect_ratio']
-        })
+        players = detect_contours(frame, params=self.params)
 
         return players_from_contours(players)

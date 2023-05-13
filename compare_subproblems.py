@@ -85,7 +85,7 @@ if __name__ == '__main__':
     strategy = ComparisonStrategy.player_detector
 
     videos = [
-        VideoConstants.video_17_Celta_RealMadrid_112_122
+        #VideoConstants.video_17_Celta_RealMadrid_112_122
     ]
 
     if len(videos) == 0:

@@ -750,9 +750,11 @@ def get_lines_top_hat(original_frame, params={}):
 
 
 def remove_lines_canny(original_frame, params={}):
-    lines = get_lines_lsd(original_frame, params)
-    ScreenManager.get_manager().show_frame(lines, 'lines') if params.get("debug", None) else None
-
+    try:
+        lines = get_lines_lsd(original_frame, params=params)
+    except Exception as e:
+        print("error", e)
+        return original_frame
     image = remove_mask_2(original_frame, params={"mask": lines})
     return image
 
@@ -830,7 +832,7 @@ def delete_small_contours(frame, params):
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
         contour_percentage_of_frame = percentage_of_frame(frame, area)
-        if contour_percentage_of_frame < params['percentage_of_frame']:
+        if contour_percentage_of_frame < params['ignore_contours_smaller_than']:
             cv2.fillPoly(frame, pts=[contour], color=0)
             continue
 
