@@ -73,12 +73,19 @@ config = {
         'showlegend': False,
         'x_range': [0, 20]
     },
+    "player_detection-not_detected_players": {
+        'chart_title': None,
+        'label_x': 'Not detected players',
+        'tick': None,
+        'showlegend': False,
+        'x_range': [0, 20]
+    },
 }
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection-extra_players"  # field_detection, intertia, player_sorter, player_detection
-    method = "otsu"
+    sub_problem_suffix = "player_detection-not_detected_players"  # field_detection, intertia, player_sorter, player_detection
+    method = "background_subtraction"
 
     export_html_file = True
 
@@ -124,7 +131,7 @@ if __name__ == '__main__':
                     legendrank=video_idx
                 ))
 
-        if sub_problem_suffix == 'player_detection' or sub_problem_suffix == 'player_detection-extra_players':
+        if sub_problem_suffix.split("-")[0] == 'player_detection':
             total_players_in_frame = \
                 [frame_data['expected_players'] for
                  frame_data in
@@ -152,6 +159,8 @@ if __name__ == '__main__':
                             ]
             if sub_problem_suffix == 'player_detection-extra_players':
                 x_metric = extra_players_in_frame
+            if sub_problem_suffix == 'player_detection-not_detected_players':
+                x_metric = not_detected_players_in_frame
 
             fig.add_trace(
                 go.Box(
