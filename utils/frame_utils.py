@@ -514,8 +514,8 @@ def color_mask_hsv(original_frame, params):
     color_label = params.get('label', '')
     color = params.get(color_label)
 
-    lower = color.get_hsv_lower()
-    upper = color.get_hsv_upper()
+    lower = color.get_hsv_lower(params)
+    upper = color.get_hsv_upper(params)
 
     if lower[0] > upper[0]:
         # wrap around
@@ -523,7 +523,7 @@ def color_mask_hsv(original_frame, params):
         mask2 = cv2.inRange(hsv, np.array([lower[0], lower[1], lower[2]]), np.array([180, upper[1], upper[2]]))
         mask = cv2.bitwise_or(mask1, mask2)
     else:
-        mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
+        mask = cv2.inRange(hsv, np.array(lower), np.array(upper))
 
     return mask
 

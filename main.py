@@ -35,8 +35,7 @@ def save_comparison_results(video_name, results):
 
 
 if __name__ == '__main__':
-    video_name = constants.VideoConstants.video_3_Inter_Roma_55_67
-
+    video_name = constants.VideoConstants.video_7_Psg_Angers_103_110
 
     video_path = './test/videos' + '/' + video_name
     dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"

@@ -27,7 +27,6 @@ class ByColor:
         clicks = self.params.get('clicks', [])
 
         while len(clicks) < 2:
-            save_clicks = True
             cv2.imshow(image_name, original_frame)
             cv2.setMouseCallback(image_name, on_click, clicks)
             cv2.waitKey(0)
@@ -129,7 +128,7 @@ class ByColor:
         return [
             Step(
                 "get color {}".format(name),
-                color_mask_hsv, {'label': 'color'},
+                color_mask_hsv, self.params | {'label': 'color'},
                 debug=self.debug
             ),
             Step(

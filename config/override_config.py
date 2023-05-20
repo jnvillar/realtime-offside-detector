@@ -28,7 +28,14 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(519, 694), (686, 644)]
-            }
+            },
+            'background_subtraction': {
+                'history': 500,
+                'detect_shadows': False,
+                'var_threshold': 100,
+                'ignore_contours_smaller_than': 0.01,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller
+            },
         }
     },
     VideoConstants.video_2_Boca_Lanus_383_392: {
@@ -59,13 +66,6 @@ override_config = {
                 'ignore_contours_smaller_than': 0.005,
                 'ignore_contours_bigger_than': 1,
             },
-            'otsu': {
-
-                'ignore_contours_smaller_than': 0.02,
-                'ignore_contours_bigger_than': 1,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                # 'filter_contour_inside_other': True
-            },
             'tophat': {
                 'debug': True
             },
@@ -77,7 +77,6 @@ override_config = {
                 'filter_contour_inside_other': True
             },
             'adhoc': {
-
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.1,
@@ -86,7 +85,6 @@ override_config = {
                 'filter_contour_inside_other': True
             },
             'background_subtraction': {
-
                 'history': 1,
                 'detect_shadows': False,
                 'var_threshold': 50,
@@ -190,7 +188,9 @@ override_config = {
                 'klusters': 10,
             },
             'by_color': {
-                'clicks': [(457, 740), (242, 497)]
+                'tolerance': 20,
+                'ignore_contours_smaller_than': 0.02,
+                'clicks': [(738, 468), (463, 755)]
             }
         },
         'vanishing_point_finder': {
@@ -215,6 +215,8 @@ override_config = {
                 'ignore_contours_bigger_than': 1,
             },
             'by_color': {
+                'tolerance': 20,
+                'ignore_contours_smaller_than': 0.02,
                 'clicks': [(322, 496), (632, 498)]
             }
         },
@@ -283,6 +285,7 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(378, 579), (709, 513)],
+                'ignore_contours_smaller_than': 0.02,
             }
         },
         'vanishing_point_finder': {
@@ -322,7 +325,8 @@ override_config = {
         },
         'player_detector': {
             'by_color': {
-                'clicks': [(187, 682), (516, 519)],
+                'clicks': [(597, 392), (187, 684)],
+                'ignore_contours_smaller_than': 0.02,
             }
         },
     },
@@ -461,8 +465,8 @@ override_config = {
                 'debug': True
             },
             'by_color': {
-                'clicks': [(501, 327), (446, 419)],
-                'ignore_contours_smaller_than': 0.05,
+                'clicks': [(715, 328), (936, 581)],
+                'ignore_contours_smaller_than': 0.02,
                 'ignore_contours_bigger_than': 0.5,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
                 'filter_contour_inside_other': True
@@ -562,8 +566,8 @@ override_config = {
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
-                'threshold1': 50,
-                'threshold2': 70,
+                'threshold1': 10,
+                'threshold2': 20,
                 'ignore_contours_smaller_than': 0.04,
                 'ignore_contours_bigger_than': 0.5,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
