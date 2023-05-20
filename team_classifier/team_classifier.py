@@ -22,5 +22,3 @@ class TeamClassifier:
         elapsed_time = Timer.stop('classifying teams')
         self.log.log("teams classified", {'cost': elapsed_time})
         return players
-
-

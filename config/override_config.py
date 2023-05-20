@@ -135,6 +135,11 @@ override_config = {
             },
         },
         'player_detector': {
+            'edges': {
+                'parent_contour_only': False,
+                'threshold1': 50,
+                'threshold2': 70,
+            },
             'by_color': {
                 'clicks': [(167, 430), (423, 455)]
             }
@@ -176,7 +181,22 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(1276, 660), (663, 672)],
-            }
+            },
+            'kmeans': {
+                #'min_length_line_in_video_percentage': 0.02,
+                'debug_lines': False,
+                'debug': False,
+                'color_percentage': (2 / 100),  # 5%
+                'klusters': 8,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'ignore_contours_smaller_than': 0.01,
+                'ignore_contours_bigger_than': 1,
+            },
+            'edges': {
+                'parent_contour_only': False,
+                'threshold1': 50,
+                'threshold2': 70,
+            },
         }
     },
     VideoConstants.video_7_Psg_Angers_103_110: {
@@ -376,6 +396,11 @@ override_config = {
             }
         },
         'player_detector': {
+            'edges': {
+                'parent_contour_only': False,
+                'threshold1': 50,
+                'threshold2': 70,
+            },
             'by_color': {
                 'clicks': [(396, 690), (383, 570)]
             }
@@ -446,12 +471,13 @@ override_config = {
             # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
             'detect_every_amount_of_frames': 1,
             'kmeans': {
-                'min_length_line_in_video_percentage': 0.015,
+                'green_background': False,
+                'min_length_line_in_video_percentage': 0.020,
                 'debug_lines': False,
                 'color_percentage': (2 / 100),  # 5%
                 'klusters': 10,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'ignore_contours_smaller_than': 0.005,
+                'ignore_contours_smaller_than': 0.007,
                 'ignore_contours_bigger_than': 1,
             },
             'otsu': {
@@ -489,6 +515,7 @@ override_config = {
                 'keep_contours_by_aspect_ratio': AspectRatio.taller
             },
             'edges': {
+                'parent_contour_only': False,
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.04,
@@ -571,6 +598,7 @@ override_config = {
                 'ignore_contours_smaller_than': 0.04,
                 'ignore_contours_bigger_than': 0.5,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'parent_contour_only': False,
             }
         },
         'vanishing_point_finder': {

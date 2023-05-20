@@ -84,8 +84,8 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
-    method = "by_color"  # background_subtraction, hough_transform, hough_transform_with_background_subtraction, hough_transform_with_background_subtraction_and_field_detection
+    sub_problem_suffix = "player_detection-not_detected_players"  # field_detection, intertia, player_sorter, player_detection
+    method = "kmeans"  # background_subtraction, hough_transform, hough_transform_with_background_subtraction, hough_transform_with_background_subtraction_and_field_detection
 
     export_html_file = True
 

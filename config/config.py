@@ -51,7 +51,7 @@ default_config = {
             'debug': False
         },
         'kmeans': {
-            'debug': False,
+            'debug': True,
             'only_unclassified_players': True,
             'median': False,
             'focused': False,
@@ -66,11 +66,11 @@ default_config = {
     },
     'player_detector': {
         # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-        'method': 'by_color',
+        'method': 'kmeans',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
-            'debug_lines': True,
-            'debug': True,
+            'debug_lines': False,
+            'debug': False,
             'color_percentage': (2 / 100),  # 5%
             'klusters': 8,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,

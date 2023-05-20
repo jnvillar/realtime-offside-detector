@@ -381,9 +381,8 @@ def detect_contours(original_frame, params):
         x, y, w, h = cv2.boundingRect(c)
         valid_contour = True
 
-        if params.get('filter_contour_inside_other', False):
+        if params.get('filter_contour_inside_other', False) and hierarchy[0, idx, 3] != -1:
             # If hierarchy[0, idx, 3] is different from -1, then your contour is inside another.
-            if params['filter_contour_inside_other'] and hierarchy[0, idx, 3] != -1:
                 valid_contour = False
 
         contour_percentage_of_frame = None

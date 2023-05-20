@@ -80,12 +80,12 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 if __name__ == '__main__':
-    debug = False
+    debug = True
     override_experiment = True
     strategy = ComparisonStrategy.player_detector
 
     videos = [
-       VideoConstants.video_7_Psg_Angers_156_167
+       VideoConstants.video_3_Inter_Roma_55_67
     ]
 
     if len(videos) == 0:
