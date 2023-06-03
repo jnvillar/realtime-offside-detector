@@ -78,7 +78,7 @@ default_config = {
             'ignore_contours_bigger_than': 1,
         },
         'otsu': {
-            'debug': True,
+            'debug': False,
             'ignore_contours_smaller_than': 0.02,
             'ignore_contours_bigger_than': 1,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -105,7 +105,7 @@ default_config = {
         },
         'background_subtraction': {
             'debug_lines': False,
-            'debug': True,
+            'debug': False,
             'history': 1,
             'detect_shadows': False,
             'var_threshold': 100,

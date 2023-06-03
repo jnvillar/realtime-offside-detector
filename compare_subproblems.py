@@ -83,13 +83,23 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
     return video_frame_data
 
 
+methods_for_strategy = {
+    'player_detection': [
+        'edges',
+        'otsu',
+        'by_color',
+        'background_subtraction',
+        'kmeans',
+    ],
+}
+
 if __name__ == '__main__':
-    debug = True
+    debug = False
     override_experiment = True
     strategy = ComparisonStrategy.player_detector
 
     videos = [
-       VideoConstants.video_3_Inter_Roma_55_67
+        #VideoConstants.video_14_Psg_Olympique_40_47
     ]
 
     if len(videos) == 0:
@@ -100,28 +110,35 @@ if __name__ == '__main__':
     Logger.initialize(configuration['logger'])
     ScreenManager.initialize(configuration['screen_manager'])
 
-    for video_name in videos:
-        print("processing video: {}".format(video_name))
+    for method in methods_for_strategy[strategy.value]:
+        print("processing method: {}".format(method))
+        for video_name in videos:
+            print("processing video: {}".format(video_name))
 
-        configuration = config_provider.get_config_for_video(video_name)
-        comparator = strategy.get_strategy_comparator(configuration)
-        method_name = configuration.get(strategy.name, {}).get('method', "")
+            configuration = config_provider.get_config_for_video(video_name)
+            configuration[strategy.name]['method'] = method
 
-        save_result_path = get_result_path(video_name, strategy, method_name)
+            comparator = strategy.get_strategy_comparator(configuration)
 
-        if os.path.exists(save_result_path) and not override_experiment:
-            print("skipping result for {} already exists".format(video_name))
-            continue
+            save_result_path = get_result_path(video_name, strategy, method)
 
-        video_path = './test/videos' + '/' + video_name
-        dataset_path = './datasets' + '/' + video_name.split(".")[0]
+            if os.path.exists(save_result_path) and not override_experiment:
+                print("skipping result for {} already exists".format(video_name))
+                continue
 
-        try:
-            video_data = get_video_frame_data(dataset_path + ".json")
-            video = VideoRepository.get_video(video_path)
-        except Exception as e:
-            print('Error opening video {}'.format(video_name))
-            continue
+            video_path = './test/videos' + '/' + video_name
+            dataset_path = './datasets' + '/' + video_name.split(".")[0]
 
-        results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-        save_comparison_results(save_result_path, results)
+            try:
+                if not os.path.exists(video_path):
+                    continue
+
+                video_data = get_video_frame_data(dataset_path + ".json")
+                video = VideoRepository.get_video(video_path)
+
+            except Exception as e:
+                print('Error opening video {}'.format(video_name))
+                continue
+
+            results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
+            save_comparison_results(save_result_path, results)
