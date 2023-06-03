@@ -91,21 +91,41 @@ if __name__ == '__main__':
 
     videos_to_consider = scan_videos_from_path("./test/videos")
 
+    font_size = 22
     fig = go.Figure()
     fig.update_layout(
         title=config[sub_problem_suffix].get('chart_title', None),
-        xaxis_title=config[sub_problem_suffix]['label_x'],
-        xaxis_range=config[sub_problem_suffix].get('x_range', None),
-        yaxis_title=config[sub_problem_suffix].get('label_y', None),
-        xaxis=dict(dtick=config[sub_problem_suffix]['tick']),
+        xaxis=dict(
+            title=config[sub_problem_suffix]['label_x'],
+            titlefont=dict(size=font_size),
+            dtick=config[sub_problem_suffix]['tick'],
+            range=config[sub_problem_suffix].get('x_range', None),
+            tickfont=dict(size=font_size)
+        ),
+        yaxis=dict(
+            title=config[sub_problem_suffix].get('label_y', None),
+            titlefont=dict(size=font_size),
+            tickfont=dict(size=font_size)
+        ),
         showlegend=config[sub_problem_suffix]['showlegend']
     )
     fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
 
+    # to know which videos have more than one fragment
+    fragments_per_video = {}
+    for video_name in videos_to_consider:
+        video_id = video_name.split("_")[0]
+        fragments_per_video[video_id] = fragments_per_video.get(video_id, 0) + 1
+
+    # to keep track of which is the next fragment for a video
+    next_fragment_per_video = fragments_per_video.copy()
     video_idx = len(videos_to_consider)
     for video_name in videos_to_consider:
+        video_id = video_name.split("_")[0]
         video_name_without_extesion = video_name.split(".")[0]
         results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix.split("-")[0]
+        video_name_in_chart = "{} {}{} ".format("Video", video_id, "" if fragments_per_video[video_id] == 1 else "." + chr(ord('A') - 1 + next_fragment_per_video.get(video_id, 1)))
+        next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
         if method != "":
             results_file_path = results_file_path + "-" + method
@@ -125,7 +145,7 @@ if __name__ == '__main__':
                 go.Scatter(
                     x=frame_results['k'],
                     y=frame_results['inertias'],
-                    name=video_name_without_extesion,
+                    name=video_name_in_chart,
                     hoverinfo="x",
                     mode="lines",
                     legendrank=video_idx
@@ -165,7 +185,7 @@ if __name__ == '__main__':
             fig.add_trace(
                 go.Box(
                     x=x_metric,
-                    name=video_name_without_extesion,
+                    name=video_name_in_chart,
                     boxpoints="all",
                     hoverinfo="x",
                     boxmean=True,
@@ -185,7 +205,7 @@ if __name__ == '__main__':
             fig.add_trace(
                 go.Box(
                     x=good_percentage,
-                    name=video_name_without_extesion,
+                    name=video_name_in_chart,
                     boxpoints="all",
                     hoverinfo="x",
                     boxmean=True,
@@ -200,7 +220,7 @@ if __name__ == '__main__':
             fig.add_trace(
                 go.Box(
                     x=metric_values,
-                    name=video_name_without_extesion,
+                    name=video_name_in_chart,
                     customdata=frame_numbers,
                     hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
                     boxpoints="all",
@@ -216,7 +236,7 @@ if __name__ == '__main__':
             fig.add_trace(
                 go.Box(
                     x=metric_values,
-                    name=video_name_without_extesion,
+                    name=video_name_in_chart,
                     customdata=frame_numbers,
                     hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
                     boxpoints="all",
