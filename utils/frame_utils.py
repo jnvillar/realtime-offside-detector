@@ -1,5 +1,8 @@
 from utils.utils import ScreenManager
 from sklearn.cluster import KMeans
+from skimage.segmentation import felzenszwalb
+from skimage.segmentation import mark_boundaries
+
 from PIL import Image, ImageOps
 from random import random
 from domain.aspec_ratio import *
@@ -362,6 +365,15 @@ def join_close_contours(contours):
 def detect_contours(original_frame, params):
     #  cv2.RETR_TREE tells if one contour it's inside other
     #  cv2.RETR_EXTERNAL keeps only parent contours
+
+    # another form of detecting contours
+    # segments_fz = felzenszwalb(original_frame, scale=1, sigma=0.000001, min_size=1)
+    # marked = mark_boundaries(original_frame, segments_fz, color=(255, 255, 255), mode='outer')
+    # iy, ix, _ = np.where(marked == (255, 255, 255))
+    # new = np.zeros((original_frame.shape[:2]))
+    # new[iy, ix] = 255
+    # ScreenManager.get_manager().show_frame(new, 'contours NEW')
+
     parent_contour_only = params.get('parent_contour_only', True)
     if parent_contour_only:
         retr = cv2.RETR_EXTERNAL
