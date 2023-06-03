@@ -7,7 +7,7 @@ import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
     PlayerDetectorComparisonStrategy, PlayerSorterComparisonStrategy, IntertiaComparisonStrategy, \
-    VanishingPointFinderComparisonStrategy
+    VanishingPointFinderComparisonStrategy, PlayerTrackerComparisonStrategy
 from test.dataset_generator.domain import FrameData
 from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from utils.utils import ScreenManager
@@ -23,8 +23,12 @@ class ComparisonStrategy(Enum):
     player_sorter = 'player_sorter'
     vanishing_point_finder = 'vanishing_point_finder'
     intertia = 'intertia'
+    player_tracker = 'player_tracker'
 
     def get_strategy_comparator(self, conf):
+        if self == ComparisonStrategy.player_tracker:
+            return PlayerTrackerComparisonStrategy(conf)
+
         if self == ComparisonStrategy.field_detector:
             return FieldDetectorComparisonStrategy(conf)
 

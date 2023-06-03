@@ -131,8 +131,8 @@ default_config = {
         },
     },
     'player_tracker': {
-        # opencv, distance
-        'method': 'distance',
+        # opencv, distance, off
+        'method': 'off',
         'opencv': {  # params used in by opencv method
             'tracker': 'kcf'
         },

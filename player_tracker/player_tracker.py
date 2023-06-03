@@ -1,4 +1,5 @@
 from player_tracker.imp_tracker_by_distance import *
+from player_tracker.imp_tracker_off import *
 from player_tracker.imp_opencv_tracker import *
 from domain.video import *
 from timer.timer import *
@@ -13,6 +14,7 @@ class PlayerTracker:
         methods = {
             'opencv': OpenCVTracker(**kwargs['opencv']),
             'distance': DistanceTracker(**kwargs['distance']),
+            'off': OffTracker()
         }
 
         self.method = methods[kwargs['method']]

@@ -401,6 +401,53 @@ class PlayerDetectorComparisonStrategy:
             .build()
 
 
+class PlayerTrackerComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.field_detector = FieldDetector(None, **config['field_detector'])
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        # nothing to do here
+        return
+
+    def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+        return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def detect_only(self, video):
+        video, field_mask = self.field_detector.detect_field(video)
+        detected_frame_data = self._build_frame_data(video, field_mask)
+        return detected_frame_data
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False,
+                                                       False)
+        self.screen_manager.show_frame(detected_frame, "Detected (mask) vs Expected (lines)")
+
+    def calculate_aggregations(self, results):
+        average = {}
+        for frame_result in results:
+            for metric, value in frame_result.items():
+                average[metric + "_avg"] = average.get(metric + "_avg", 0) + value
+
+        for avg_metric in average:
+            average[avg_metric] = average[avg_metric] / len(results)
+
+        return average
+
+    def _build_frame_data(self, video, field_mask):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_field_mask(field_mask) \
+            .build()
+
+
 class FieldDetectorComparisonStrategy:
 
     def __init__(self, config):
@@ -463,15 +510,18 @@ class VanishingPointFinderComparisonStrategy:
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video)
-        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data), detected_frame_data
+        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data,
+                                                                  detected_frame_data), detected_frame_data
 
     def detect_only(self, video):
         vanishing_point, vanishing_point_segments = self.vanishing_point_finder.find_vanishing_point(video)
         return self._build_frame_data(video, vanishing_point, vanishing_point_segments)
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
-        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, False, True, False)
-        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, False, True, False)
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, False, True,
+                                                       False)
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, False, True,
+                                                       False)
         self.screen_manager.show_frame(expected_frame, "Expected vanishing point")
         self.screen_manager.show_frame(detected_frame, "Detected vanishing point")
 
