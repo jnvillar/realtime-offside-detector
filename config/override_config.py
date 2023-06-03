@@ -171,7 +171,7 @@ override_config = {
             }
         }
     },
-    VideoConstants.video_6_Napoli_Fiorentina_91_98: {
+    VideoConstants.video_5_Napoli_Fiorentina_91_98: {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
@@ -198,6 +198,20 @@ override_config = {
                 'threshold2': 70,
             },
         }
+    },
+    VideoConstants.video_6_ManchesterCity_Brighton_539_547: {
+        'vanishing_point_finder': {
+            'method': 'hough',
+            'hough': {
+                'vp_segments_first_frame': [[(426, 963), (1116, 85)], [(1028, 938), (1396, 52)]]
+                # Not detecting very well on this video. Tweak other parameters
+            }
+        },
+        'player_detector': {
+            'by_color': {
+                'clicks': [(765, 213), (657, 225)]
+            }
+        },
     },
     VideoConstants.video_7_Psg_Angers_103_110: {
         'player_detector': {
@@ -266,6 +280,53 @@ override_config = {
                 'vp_segments_first_frame': [[(1392, 1037), (1107, 375)], [(1778, 1018), (1280, 394)]]
             }
         }
+    },
+    VideoConstants.video_8_Roma_Ludogrets_503_510: {
+        'vanishing_point_finder': {
+            'method': 'hough',
+            'hough': {
+                'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]]
+                # Not detecting anything on this video. Tweak other parameters
+            }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
+        'player_detector': {
+            'by_color': {
+                'clicks': [(305, 385), (554, 398)]
+            }
+        },
+    },
+    VideoConstants.video_9_BayernMunich_ViktoriaPlzen_515_524: {
+        'vanishing_point_finder': {
+            'method': 'hough',
+            'hough': {
+                'vp_segments_first_frame': [[(821, 1047), (489, 149)], [(308, 1061), (257, 134)]]
+            }
+        },
+        'player_detector': {
+            'by_color': {
+                'clicks': [(149, 414), (545, 394)]
+            }
+        },
     },
     VideoConstants.video_10_Italia_Alemania_78_94: {
         'player_detector': {
@@ -446,6 +507,123 @@ override_config = {
             }
         },
     },
+    VideoConstants.video_16_RealMadrid_Shakhtar_20_29: {
+        'player_detector': {
+            # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
+            'detect_every_amount_of_frames': 1,
+            'kmeans': {
+                'debug_lines': False,
+
+                'color_percentage': (2 / 100),  # 5%
+                'klusters': 10,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'ignore_contours_smaller_than': 0.008,
+                'ignore_contours_bigger_than': 1,
+            },
+            'otsu': {
+
+                'ignore_contours_smaller_than': 0.02,
+                'ignore_contours_bigger_than': 1,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                # 'filter_contour_inside_other': True
+            },
+            'tophat': {
+                'debug': True
+            },
+            'by_color': {
+                'clicks': [(38, 412), (261, 400)],
+                'ignore_contours_smaller_than': 0.05,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
+            },
+            'adhoc': {
+
+                'threshold1': 50,
+                'threshold2': 70,
+                'ignore_contours_smaller_than': 0.1,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'filter_contour_inside_other': True
+            },
+            'background_subtraction': {
+
+                'history': 1,
+                'detect_shadows': False,
+                'var_threshold': 50,
+                'ignore_contours_smaller_than': 0.02,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller
+            },
+            'edges': {
+                'threshold1': 10,
+                'threshold2': 20,
+                'ignore_contours_smaller_than': 0.04,
+                'ignore_contours_bigger_than': 0.5,
+                'keep_contours_by_aspect_ratio': AspectRatio.taller,
+                'parent_contour_only': False,
+            }
+        },
+        'vanishing_point_finder': {
+            'method': 'hough',
+            'hough': {
+                'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]]
+            }
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+        },
+    },
+    VideoConstants.video_16_RealMadrid_Shakhtar_245_253: {
+        'vanishing_point_finder': {
+            'method': 'hough',
+            'hough': {
+                'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]]
+            }
+        },
+        'player_detector': {
+            'by_color': {
+                'clicks': [(86, 432), (580, 470)]
+            },
+        },
+        'player_sorter': {
+            # bsas, automatic_by_color, by_color, kmeans
+            'method': 'kmeans',
+            'kmeans': {
+                'only_unclassified_players': True,
+                'median': False,
+                'focused': False,
+                'klusters': 2,
+                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'klusters_team': [team_two, team_one]
+                # smallest cluster = team 3, 2dn smallest = team 2 ...
+            },
+            'bsas': {
+                'threshold': 0,
+                'clusters': 2,
+                'team_one': team_two,
+                'team_two': team_one,
+                'debug': False
+            },
+
+        },
+    }
     VideoConstants.video_17_Celta_RealMadrid_112_122: {
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -544,183 +722,5 @@ override_config = {
                 'clicks': [(153, 445), (637, 621)]
             }
         },
-    },
-    VideoConstants.video_19_RealMadrid_Shakhtar_20_29: {
-        'player_detector': {
-            # background_subtraction, edges, adhoc, by_color, kmeans, posta=otsu
-            'detect_every_amount_of_frames': 1,
-            'kmeans': {
-                'debug_lines': False,
-
-                'color_percentage': (2 / 100),  # 5%
-                'klusters': 10,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'ignore_contours_smaller_than': 0.008,
-                'ignore_contours_bigger_than': 1,
-            },
-            'otsu': {
-
-                'ignore_contours_smaller_than': 0.02,
-                'ignore_contours_bigger_than': 1,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                # 'filter_contour_inside_other': True
-            },
-            'tophat': {
-                'debug': True
-            },
-            'by_color': {
-                'clicks': [(38, 412), (261, 400)],
-                'ignore_contours_smaller_than': 0.05,
-                'ignore_contours_bigger_than': 0.5,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'filter_contour_inside_other': True
-            },
-            'adhoc': {
-
-                'threshold1': 50,
-                'threshold2': 70,
-                'ignore_contours_smaller_than': 0.1,
-                'ignore_contours_bigger_than': 0.5,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'filter_contour_inside_other': True
-            },
-            'background_subtraction': {
-
-                'history': 1,
-                'detect_shadows': False,
-                'var_threshold': 50,
-                'ignore_contours_smaller_than': 0.02,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller
-            },
-            'edges': {
-                'threshold1': 10,
-                'threshold2': 20,
-                'ignore_contours_smaller_than': 0.04,
-                'ignore_contours_bigger_than': 0.5,
-                'keep_contours_by_aspect_ratio': AspectRatio.taller,
-                'parent_contour_only': False,
-            }
-        },
-        'vanishing_point_finder': {
-            'method': 'hough',
-            'hough': {
-                'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]]
-            }
-        },
-        'player_sorter': {
-            # bsas, automatic_by_color, by_color, kmeans
-            'method': 'kmeans',
-            'kmeans': {
-                'only_unclassified_players': True,
-                'median': False,
-                'focused': False,
-                'klusters': 2,
-                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
-                # smallest cluster = team 3, 2dn smallest = team 2 ...
-            },
-            'bsas': {
-                'threshold': 0,
-                'clusters': 2,
-                'team_one': team_two,
-                'team_two': team_one,
-                'debug': False
-            },
-        },
-    },
-    VideoConstants.video_19_RealMadrid_Shakhtar_245_253: {
-        'vanishing_point_finder': {
-            'method': 'hough',
-            'hough': {
-                'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]]
-            }
-        },
-        'player_detector': {
-            'by_color': {
-                'clicks': [(86, 432), (580, 470)]
-            },
-        },
-        'player_sorter': {
-            # bsas, automatic_by_color, by_color, kmeans
-            'method': 'kmeans',
-            'kmeans': {
-                'only_unclassified_players': True,
-                'median': False,
-                'focused': False,
-                'klusters': 2,
-                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
-                # smallest cluster = team 3, 2dn smallest = team 2 ...
-            },
-            'bsas': {
-                'threshold': 0,
-                'clusters': 2,
-                'team_one': team_two,
-                'team_two': team_one,
-                'debug': False
-            },
-
-        },
-    },
-    VideoConstants.video_20_BayernMunich_ViktoriaPlzen_515_524: {
-        'vanishing_point_finder': {
-            'method': 'hough',
-            'hough': {
-                'vp_segments_first_frame': [[(821, 1047), (489, 149)], [(308, 1061), (257, 134)]]
-            }
-        },
-        'player_detector': {
-            'by_color': {
-                'clicks': [(149, 414), (545, 394)]
-            }
-        },
-    },
-    VideoConstants.video_21_Roma_Ludogrets_503_510: {
-        'vanishing_point_finder': {
-            'method': 'hough',
-            'hough': {
-                'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]]
-                # Not detecting anything on this video. Tweak other parameters
-            }
-        },
-        'player_sorter': {
-            # bsas, automatic_by_color, by_color, kmeans
-            'method': 'kmeans',
-            'kmeans': {
-                'only_unclassified_players': True,
-                'median': False,
-                'focused': False,
-                'klusters': 2,
-                # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
-                # smallest cluster = team 3, 2dn smallest = team 2 ...
-            },
-            'bsas': {
-                'threshold': 0,
-                'clusters': 2,
-                'team_one': team_two,
-                'team_two': team_one,
-                'debug': False
-            },
-        },
-        'player_detector': {
-            'by_color': {
-                'clicks': [(305, 385), (554, 398)]
-            }
-        },
-    },
-    VideoConstants.video_22_ManchesterCity_Brighton_539_547: {
-        'vanishing_point_finder': {
-            'method': 'hough',
-            'hough': {
-                'vp_segments_first_frame': [[(426, 963), (1116, 85)], [(1028, 938), (1396, 52)]]
-                # Not detecting very well on this video. Tweak other parameters
-            }
-        },
-        'player_detector': {
-            'by_color': {
-                'clicks': [(765, 213), (657, 225)]
-            }
-        },
-    },
+    }
 }
