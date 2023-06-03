@@ -61,7 +61,7 @@ class OffsideLineDrawer:
     def _get_offside_line(self, frame, players: [Player], orientation: Orientation, vanishing_point):
         last_defending_player = get_last_defending_player(players)
         if last_defending_player is None or vanishing_point is None:
-            return
+            return None
 
         player_point = self._get_player_point(last_defending_player, orientation)
         offside_line = self._calculate_offside_line(frame, player_point, vanishing_point)
