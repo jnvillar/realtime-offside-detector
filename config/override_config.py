@@ -623,7 +623,7 @@ override_config = {
             },
 
         },
-    }
+    },
     VideoConstants.video_17_Celta_RealMadrid_112_122: {
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
