@@ -44,19 +44,19 @@ class Color:
     def is_white(self):
         return self.luminence > 170
 
-    def get_hsv_lower(self):
+    def get_hsv_lower(self, params={}):
         if self.is_black():
             return [0, 0, 0]
         if self.is_white():
             return [0, 0, 255 - self.white_sensitivity]
 
         h, s, v = self.hsv
-        h -= 10
+        h -= params.get('tolerance', 10)
         if h < 0:
             h = 180 + h
         return [h, 0, 0]
 
-    def get_hsv_upper(self):
+    def get_hsv_upper(self, params={}):
         if self.is_black():
             return [255, 255, 70]
         if self.is_white():
@@ -64,7 +64,7 @@ class Color:
 
         h, s, v = self.hsv
 
-        h += 10
+        h += params.get('tolerance', 10)
         if h > 180:
             h = h - 180
         return [h, 255, 255]

@@ -37,7 +37,6 @@ def save_comparison_results(video_name, results):
 if __name__ == '__main__':
     video_name = constants.VideoConstants.video_3_Inter_Roma_55_67
 
-
     video_path = './test/videos' + '/' + video_name
     dataset_path = './datasets' + '/' + video_name.split(".")[0] + ".json"
     config = ConfigProvider().get_config_for_video(video_name)

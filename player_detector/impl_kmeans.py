@@ -24,9 +24,23 @@ class KmeansPlayerDetector:
         )
 
     def find_players(self, original_frame):
-        ScreenManager.get_manager().show_frame(original_frame, 'original') if self.debug else None
+        # get (i, j) positions of all RGB pixels that are black (i.e. [0, 0, 0])
 
-        image = original_frame
+        if self.params.get('green_background', False):
+            black_pixels = np.where(
+                (original_frame[:, :, 0] == 0) &
+                (original_frame[:, :, 1] == 0) &
+                (original_frame[:, :, 2] == 0)
+            )
+
+            # set those pixels to white
+            original_frame[black_pixels] = [17, 92, 71]
+
+
+
+        image = apply_blur(original_frame, params={'element_size': (5, 5)})
+
+        ScreenManager.get_manager().show_frame(image, 'original') if self.debug else None
 
         lines = get_lines_lsd(image, self.params)
         ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None

@@ -381,9 +381,8 @@ def detect_contours(original_frame, params):
         x, y, w, h = cv2.boundingRect(c)
         valid_contour = True
 
-        if params.get('filter_contour_inside_other', False):
+        if params.get('filter_contour_inside_other', False) and hierarchy[0, idx, 3] != -1:
             # If hierarchy[0, idx, 3] is different from -1, then your contour is inside another.
-            if params['filter_contour_inside_other'] and hierarchy[0, idx, 3] != -1:
                 valid_contour = False
 
         contour_percentage_of_frame = None
@@ -514,8 +513,8 @@ def color_mask_hsv(original_frame, params):
     color_label = params.get('label', '')
     color = params.get(color_label)
 
-    lower = color.get_hsv_lower()
-    upper = color.get_hsv_upper()
+    lower = color.get_hsv_lower(params)
+    upper = color.get_hsv_upper(params)
 
     if lower[0] > upper[0]:
         # wrap around
@@ -523,7 +522,7 @@ def color_mask_hsv(original_frame, params):
         mask2 = cv2.inRange(hsv, np.array([lower[0], lower[1], lower[2]]), np.array([180, upper[1], upper[2]]))
         mask = cv2.bitwise_or(mask1, mask2)
     else:
-        mask = cv2.inRange(hsv, np.array(color.get_hsv_lower()), np.array(color.get_hsv_upper()))
+        mask = cv2.inRange(hsv, np.array(lower), np.array(upper))
 
     return mask
 
