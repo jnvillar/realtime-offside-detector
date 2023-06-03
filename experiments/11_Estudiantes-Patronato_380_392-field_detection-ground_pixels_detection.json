@@ -1,0 +1,328 @@
+{
+  "frame_results": [
+    {
+      "frame_number": 1,
+      "missing_field_pixels": 10814,
+      "missing_field_percentage": 0.007210530281360039,
+      "extra_field_pixels": 33079,
+      "extra_field_percentage": 0.02205632801711751,
+      "total_difference_percentage": 0.029266858298477548,
+      "jaccard_index": 0.971364730596348
+    },
+    {
+      "frame_number": 10,
+      "missing_field_pixels": 6156,
+      "missing_field_percentage": 0.0041655163453887005,
+      "extra_field_pixels": 64568,
+      "extra_field_percentage": 0.043690555456312154,
+      "total_difference_percentage": 0.04785607180170085,
+      "jaccard_index": 0.9541472598831963
+    },
+    {
+      "frame_number": 20,
+      "missing_field_pixels": 5602,
+      "missing_field_percentage": 0.003861959423918641,
+      "extra_field_pixels": 67031,
+      "extra_field_percentage": 0.04621046093264734,
+      "total_difference_percentage": 0.050072420356565985,
+      "jaccard_index": 0.9521392470957242
+    },
+    {
+      "frame_number": 30,
+      "missing_field_pixels": 5930,
+      "missing_field_percentage": 0.004169077537108657,
+      "extra_field_pixels": 59059,
+      "extra_field_percentage": 0.04152134068534573,
+      "total_difference_percentage": 0.045690418222454385,
+      "jaccard_index": 0.9561310782241015
+    },
+    {
+      "frame_number": 40,
+      "missing_field_pixels": 7635,
+      "missing_field_percentage": 0.005487772007690787,
+      "extra_field_pixels": 55404,
+      "extra_field_percentage": 0.0398224650051212,
+      "total_difference_percentage": 0.04531023701281199,
+      "jaccard_index": 0.9564250258695951
+    },
+    {
+      "frame_number": 50,
+      "missing_field_pixels": 7872,
+      "missing_field_percentage": 0.0057169209093913065,
+      "extra_field_pixels": 55113,
+      "extra_field_percentage": 0.04002498247958372,
+      "total_difference_percentage": 0.045741903388975026,
+      "jaccard_index": 0.956018457095214
+    },
+    {
+      "frame_number": 60,
+      "missing_field_pixels": 9256,
+      "missing_field_percentage": 0.00670258370988298,
+      "extra_field_pixels": 27422,
+      "extra_field_percentage": 0.019857200787857722,
+      "total_difference_percentage": 0.026559784497740702,
+      "jaccard_index": 0.9739573496395154
+    },
+    {
+      "frame_number": 70,
+      "missing_field_pixels": 8927,
+      "missing_field_percentage": 0.006372122836997286,
+      "extra_field_pixels": 27719,
+      "extra_field_percentage": 0.019785916088129022,
+      "total_difference_percentage": 0.026158038925126307,
+      "jaccard_index": 0.9743494801090529
+    },
+    {
+      "frame_number": 80,
+      "missing_field_pixels": 9419,
+      "missing_field_percentage": 0.006691602993780127,
+      "extra_field_pixels": 28530,
+      "extra_field_percentage": 0.02026875819222285,
+      "total_difference_percentage": 0.02696036118600298,
+      "jaccard_index": 0.973575235966479
+    },
+    {
+      "frame_number": 90,
+      "missing_field_pixels": 9439,
+      "missing_field_percentage": 0.006658338159493969,
+      "extra_field_pixels": 30840,
+      "extra_field_percentage": 0.021754756736814707,
+      "total_difference_percentage": 0.028413094896308676,
+      "jaccard_index": 0.972191864330486
+    },
+    {
+      "frame_number": 100,
+      "missing_field_pixels": 8491,
+      "missing_field_percentage": 0.006004241366118711,
+      "extra_field_pixels": 26686,
+      "extra_field_percentage": 0.01887047286494452,
+      "total_difference_percentage": 0.024874714231063234,
+      "jaccard_index": 0.9755859896880529
+    },
+    {
+      "frame_number": 110,
+      "missing_field_pixels": 11404,
+      "missing_field_percentage": 0.00802123051753255,
+      "extra_field_pixels": 28113,
+      "extra_field_percentage": 0.019773838437337127,
+      "total_difference_percentage": 0.027795068954869676,
+      "jaccard_index": 0.9727438889808531
+    },
+    {
+      "frame_number": 120,
+      "missing_field_pixels": 10438,
+      "missing_field_percentage": 0.007258758250248438,
+      "extra_field_pixels": 30683,
+      "extra_field_percentage": 0.02133746688947814,
+      "total_difference_percentage": 0.028596225139726577,
+      "jaccard_index": 0.9720011983631449
+    },
+    {
+      "frame_number": 130,
+      "missing_field_pixels": 10335,
+      "missing_field_percentage": 0.007144861990440334,
+      "extra_field_pixels": 31309,
+      "extra_field_percentage": 0.021644749304179624,
+      "total_difference_percentage": 0.028789611294619957,
+      "jaccard_index": 0.9718203305853351
+    },
+    {
+      "frame_number": 140,
+      "missing_field_pixels": 9748,
+      "missing_field_percentage": 0.006746949925975965,
+      "extra_field_pixels": 25591,
+      "extra_field_percentage": 0.017712473897789384,
+      "total_difference_percentage": 0.02445942382376535,
+      "jaccard_index": 0.975966272939461
+    },
+    {
+      "frame_number": 150,
+      "missing_field_pixels": 10542,
+      "missing_field_percentage": 0.007317748698985913,
+      "extra_field_pixels": 27797,
+      "extra_field_percentage": 0.01929533870097813,
+      "total_difference_percentage": 0.02661308739996404,
+      "jaccard_index": 0.9738907003794596
+    },
+    {
+      "frame_number": 160,
+      "missing_field_pixels": 8788,
+      "missing_field_percentage": 0.006129034732824161,
+      "extra_field_pixels": 25205,
+      "extra_field_percentage": 0.01757878020491955,
+      "total_difference_percentage": 0.02370781493774371,
+      "jaccard_index": 0.9767017400530214
+    },
+    {
+      "frame_number": 170,
+      "missing_field_pixels": 8735,
+      "missing_field_percentage": 0.006122790871118581,
+      "extra_field_pixels": 29102,
+      "extra_field_percentage": 0.020399022316118256,
+      "total_difference_percentage": 0.026521813187236835,
+      "jaccard_index": 0.9740083902402834
+    },
+    {
+      "frame_number": 180,
+      "missing_field_pixels": 7263,
+      "missing_field_percentage": 0.005097646996894247,
+      "extra_field_pixels": 28784,
+      "extra_field_percentage": 0.02020248811215806,
+      "total_difference_percentage": 0.02530013510905231,
+      "jaccard_index": 0.9752008690393716
+    },
+    {
+      "frame_number": 190,
+      "missing_field_pixels": 7293,
+      "missing_field_percentage": 0.005137185318342774,
+      "extra_field_pixels": 28638,
+      "extra_field_percentage": 0.020172591957589518,
+      "total_difference_percentage": 0.025309777275932293,
+      "jaccard_index": 0.9751906907954018
+    },
+    {
+      "frame_number": 200,
+      "missing_field_pixels": 8632,
+      "missing_field_percentage": 0.006070844334042724,
+      "extra_field_pixels": 25546,
+      "extra_field_percentage": 0.017966379675330796,
+      "total_difference_percentage": 0.02403722400937352,
+      "jaccard_index": 0.9763870158295013
+    },
+    {
+      "frame_number": 210,
+      "missing_field_pixels": 7789,
+      "missing_field_percentage": 0.005490105967714878,
+      "extra_field_pixels": 27589,
+      "extra_field_percentage": 0.01944621049470866,
+      "total_difference_percentage": 0.02493631646242354,
+      "jaccard_index": 0.9755393504770373
+    },
+    {
+      "frame_number": 220,
+      "missing_field_pixels": 7281,
+      "missing_field_percentage": 0.00507143613375608,
+      "extra_field_pixels": 26975,
+      "extra_field_percentage": 0.018788901209733592,
+      "total_difference_percentage": 0.023860337343489673,
+      "jaccard_index": 0.9765797042791128
+    },
+    {
+      "frame_number": 230,
+      "missing_field_pixels": 10095,
+      "missing_field_percentage": 0.00686079418025233,
+      "extra_field_pixels": 30433,
+      "extra_field_percentage": 0.02068296674468739,
+      "total_difference_percentage": 0.02754376092493972,
+      "jaccard_index": 0.9730143817205196
+    },
+    {
+      "frame_number": 240,
+      "missing_field_pixels": 9016,
+      "missing_field_percentage": 0.006040587711129126,
+      "extra_field_pixels": 27344,
+      "extra_field_percentage": 0.018320078790274492,
+      "total_difference_percentage": 0.024360666501403616,
+      "jaccard_index": 0.9760775938638634
+    },
+    {
+      "frame_number": 250,
+      "missing_field_pixels": 10964,
+      "missing_field_percentage": 0.007273315873129595,
+      "extra_field_pixels": 27088,
+      "extra_field_percentage": 0.017969680807308874,
+      "total_difference_percentage": 0.02524299668043847,
+      "jaccard_index": 0.9752026045997565
+    },
+    {
+      "frame_number": 260,
+      "missing_field_pixels": 9666,
+      "missing_field_percentage": 0.006362106959220909,
+      "extra_field_pixels": 27928,
+      "extra_field_percentage": 0.018382052881969948,
+      "total_difference_percentage": 0.024744159841190855,
+      "jaccard_index": 0.9757024784842131
+    },
+    {
+      "frame_number": 270,
+      "missing_field_pixels": 10347,
+      "missing_field_percentage": 0.006673348399479908,
+      "extra_field_pixels": 18104,
+      "extra_field_percentage": 0.011676263595649392,
+      "total_difference_percentage": 0.0183496119951293,
+      "jaccard_index": 0.9818621700879765
+    },
+    {
+      "frame_number": 280,
+      "missing_field_pixels": 12810,
+      "missing_field_percentage": 0.008038171588922508,
+      "extra_field_pixels": 16718,
+      "extra_field_percentage": 0.010490410040874825,
+      "total_difference_percentage": 0.018528581629797335,
+      "jaccard_index": 0.9816637729109692
+    },
+    {
+      "frame_number": 290,
+      "missing_field_pixels": 11220,
+      "missing_field_percentage": 0.006937565619353953,
+      "extra_field_pixels": 26344,
+      "extra_field_percentage": 0.01628905781428347,
+      "total_difference_percentage": 0.023226623433637423,
+      "jaccard_index": 0.9771456523564364
+    },
+    {
+      "frame_number": 300,
+      "missing_field_pixels": 10474,
+      "missing_field_percentage": 0.006362852701235696,
+      "extra_field_pixels": 24418,
+      "extra_field_percentage": 0.01483369651124434,
+      "total_difference_percentage": 0.021196549212480036,
+      "jaccard_index": 0.9791132780815727
+    },
+    {
+      "frame_number": 310,
+      "missing_field_pixels": 7070,
+      "missing_field_percentage": 0.004240805789089792,
+      "extra_field_pixels": 24838,
+      "extra_field_percentage": 0.014898604552957887,
+      "total_difference_percentage": 0.019139410342047677,
+      "jaccard_index": 0.9811415541846388
+    },
+    {
+      "frame_number": 320,
+      "missing_field_pixels": 8824,
+      "missing_field_percentage": 0.005231113983033263,
+      "extra_field_pixels": 21928,
+      "extra_field_percentage": 0.01299953166590587,
+      "total_difference_percentage": 0.018230645648939135,
+      "jaccard_index": 0.9820033029838046
+    },
+    {
+      "frame_number": 330,
+      "missing_field_pixels": 12259,
+      "missing_field_percentage": 0.007222128616219184,
+      "extra_field_pixels": 22788,
+      "extra_field_percentage": 0.013425064597960907,
+      "total_difference_percentage": 0.02064719321418009,
+      "jaccard_index": 0.9796263246929154
+    },
+    {
+      "frame_number": 340,
+      "missing_field_pixels": 10208,
+      "missing_field_percentage": 0.006063871432619328,
+      "extra_field_pixels": 18687,
+      "extra_field_percentage": 0.011100662760712908,
+      "total_difference_percentage": 0.017164534193332234,
+      "jaccard_index": 0.9830239116385642
+    }
+  ],
+  "aggregations": {
+    "frame_number_avg": 170.02857142857144,
+    "missing_field_pixels_avg": 9164.057142857142,
+    "missing_field_percentage_avg": 0.006170169204648383,
+    "extra_field_pixels_avg": 31354.314285714285,
+    "extra_field_percentage_avg": 0.021407129977435643,
+    "total_difference_percentage_avg": 0.027577299182084028,
+    "jaccard_index_avg": 0.9730712256018568
+  }
+}
