@@ -248,6 +248,9 @@ def print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_id
 
 config = {
     "intertia": {
+        'methods': [
+            'intertia',
+        ],
         'label_x': 'K',
         'label_y': 'Inercia',
         'tick': None,
@@ -273,6 +276,10 @@ config = {
         'x_range': None
     },
     "player_sorter": {
+        'methods': [
+            'kmeans',
+            'bsas'
+        ],
         'chart_title': None,
         'label_x': 'Ok percentage',
         'tick': None,
@@ -337,6 +344,13 @@ config = {
             'distance_edges', 'distance_otsu', 'distance_background_subtraction', 'distance_kmeans', 'distance_by_color'
         ],
         'label_x': 'Porcentaje de jugadores detectados correctamente',
+        'label_by_method': {
+            'distance_edges': 'utilizando detección por bordes',
+            'distance_otsu': 'utilizando detección por Otsu',
+            'distance_background_subtraction': 'utilizando etección por substracción de fondo',
+            'distance_kmeans': 'utilizando detección por K-Means',
+            'distance_by_color': 'utilizando detección por color'
+        },
         'tick': None,
         'showlegend': False,
         'x_range': [0, 100]
@@ -345,12 +359,10 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "field_detection"  # field_detection, intertia, player_sorter, player_detection
-    # methods
-    # player_detection: edges, otsu, background_subtraction, kmeans, by_color
-    # player_tracker: distance_edges, distance_otsu, distance_background_subtraction
+    sub_problem_suffix = "player_tracker"  # field_detection, intertia, player_sorter, player_detection
+
     sub_problem_config = config[sub_problem_suffix]
-    methods = sub_problem_config['methods']  # background_subtraction,
+    methods = sub_problem_config['methods']
 
     export_html_file = True
     videos_to_consider = scan_videos_from_path("./test/videos")
