@@ -60,8 +60,8 @@ def configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title):
     fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
 
 
-def get_video_fragment_character(fragments_per_video, next_fragment_per_video):
-    "" if fragments_per_video[video_id] == 1 else "." + chr(ord('A') - 1 + next_fragment_per_video.get(video_id, 1))
+def get_video_fragment_character(num_fragments_for_video, next_fragment_for_video):
+    "" if num_fragments_for_video == 1 else "." + chr(ord('A') - 1 + next_fragment_for_video)
 
 
 def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
@@ -447,8 +447,7 @@ if __name__ == '__main__':
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
             results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix.split("-")[0]
-            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video,
-                                                                                                    next_fragment_per_video))
+            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video[video_id], next_fragment_per_video.get(video_id, 1)))
             next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
             if method != "":
