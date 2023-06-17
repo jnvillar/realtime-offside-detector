@@ -317,7 +317,6 @@ config = {
     "player_detection-not_detected_players": {
         'chart_title': None,
         'label_x': 'Cantidad de jugadores no detectados',
-        'label_x': 'Cantidad de jugadores detectados de más',
         'methods': [
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
         ],
