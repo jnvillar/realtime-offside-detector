@@ -61,7 +61,7 @@ def configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title):
 
 
 def get_video_fragment_character(num_fragments_for_video, next_fragment_for_video):
-    "" if num_fragments_for_video == 1 else "." + chr(ord('A') - 1 + next_fragment_for_video)
+    return "" if num_fragments_for_video == 1 else "." + chr(ord('A') - 1 + next_fragment_for_video)
 
 
 def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
