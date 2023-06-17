@@ -79,7 +79,6 @@ def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
 
 def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path,
                               sub_problem_suffix):
-
     method_player_detection = "_".join(method.split("_")[1:])
     no_tracking_file = "-".join(
         results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
@@ -380,6 +379,40 @@ config = {
         'showlegend': False,
         'x_range': [0, 100]
     },
+    "player_tracker-extra_players": {
+        'chart_title': None,
+        'methods': [
+            'distance_edges', 'distance_otsu', 'distance_background_subtraction', 'distance_kmeans', 'distance_by_color'
+        ],
+        'label_x': 'Cantidad de jugadores detectados de más',
+        'label_by_method': {
+            'distance_edges': 'utilizando detección por bordes',
+            'distance_otsu': 'utilizando detección por Otsu',
+            'distance_background_subtraction': 'utilizando etección por substracción de fondo',
+            'distance_kmeans': 'utilizando detección por K-Means',
+            'distance_by_color': 'utilizando detección por color'
+        },
+        'tick': None,
+        'showlegend': False,
+        'x_range': [0, 20]
+    },
+    "player_tracker-not_detected_players": {
+        'chart_title': None,
+        'methods': [
+            'distance_edges', 'distance_otsu', 'distance_background_subtraction', 'distance_kmeans', 'distance_by_color'
+        ],
+        'label_x': 'Cantidad de jugadores no detectados',
+        'label_by_method': {
+            'distance_edges': 'utilizando detección por bordes',
+            'distance_otsu': 'utilizando detección por Otsu',
+            'distance_background_subtraction': 'utilizando etección por substracción de fondo',
+            'distance_kmeans': 'utilizando detección por K-Means',
+            'distance_by_color': 'utilizando detección por color'
+        },
+        'tick': None,
+        'showlegend': False,
+        'x_range': [0, 20]
+    },
 }
 
 if __name__ == '__main__':
@@ -396,7 +429,8 @@ if __name__ == '__main__':
 
     for method in methods:
         fig = go.Figure()
-        x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][method] if 'label_by_method' in sub_problem_config else x_axis_title
+        x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][
+            method] if 'label_by_method' in sub_problem_config else x_axis_title
         configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title_by_method)
 
         # to know which videos have more than one fragment
@@ -413,7 +447,8 @@ if __name__ == '__main__':
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
             results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix.split("-")[0]
-            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video, next_fragment_per_video))
+            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video,
+                                                                                                    next_fragment_per_video))
             next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
             if method != "":
