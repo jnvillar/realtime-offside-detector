@@ -61,202 +61,329 @@ config = {
     },
     "player_detection": {
         'chart_title': None,
-        'label_x': 'Ok percentage',
+        'methods': [
+            'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
+        ],
+        'label_by_method':
+            {
+                'edges': 'utilizando detección por bordes',
+                'otsu': 'utilizando detección por Otsu',
+                'background_subtraction': 'utilizando etección por substracción de fondo',
+                'kmeans': 'utilizando detección por K-Means',
+                'by_color': 'utilizando detección por color'
+            },
+        'label_x': 'Porcentaje de jugadores detectados correctamente',
         'tick': None,
         'showlegend': False,
         'x_range': [0, 100]
     },
     "player_detection-extra_players": {
         'chart_title': None,
-        'label_x': 'Extra detected players',
+        'label_x': 'Cantidad de jugadores detectados de más',
         'tick': None,
         'showlegend': False,
         'x_range': [0, 20]
     },
     "player_detection-not_detected_players": {
         'chart_title': None,
-        'label_x': 'Not detected players',
+        'label_x': 'Cantidad de jugadores no detectados',
         'tick': None,
         'showlegend': False,
         'x_range': [0, 20]
+    },
+    "player_tracker": {
+        'chart_title': None,
+        'methods': [
+            'distance_edges', 'distance_otsu', 'distance_background_subtraction', 'distance_kmeans', 'distance_by_color'
+        ],
+        'label_x': 'Porcentaje de jugadores detectados correctamente',
+        'tick': None,
+        'showlegend': False,
+        'x_range': [0, 100]
     },
 }
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection-not_detected_players"  # field_detection, intertia, player_sorter, player_detection
-    method = "kmeans"  # background_subtraction, hough_transform, hough_transform_with_background_subtraction, hough_transform_with_background_subtraction_and_field_detection
+    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
+    # methods
+    # player_detection: edges, otsu, background_subtraction, kmeans, by_color
+    # player_tracker: distance_edges, distance_otsu, distance_background_subtraction
+    methods = config[sub_problem_suffix]['methods']  # background_subtraction,
 
-    export_html_file = True
+    for method in methods:
 
-    videos_to_consider = scan_videos_from_path("./test/videos")
+        export_html_file = True
 
-    font_size = 22
-    fig = go.Figure()
-    fig.update_layout(
-        title=config[sub_problem_suffix].get('chart_title', None),
-        xaxis=dict(
-            title=config[sub_problem_suffix]['label_x'],
-            titlefont=dict(size=font_size),
-            dtick=config[sub_problem_suffix]['tick'],
-            range=config[sub_problem_suffix].get('x_range', None),
-            tickfont=dict(size=font_size)
-        ),
-        yaxis=dict(
-            title=config[sub_problem_suffix].get('label_y', None),
-            titlefont=dict(size=font_size),
-            tickfont=dict(size=font_size)
-        ),
-        showlegend=config[sub_problem_suffix]['showlegend']
-    )
-    fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
+        videos_to_consider = scan_videos_from_path("./test/videos")
 
-    # to know which videos have more than one fragment
-    fragments_per_video = {}
-    for video_name in videos_to_consider:
-        video_id = video_name.split("_")[0]
-        fragments_per_video[video_id] = fragments_per_video.get(video_id, 0) + 1
+        font_size = 22
+        fig = go.Figure()
 
-    # to keep track of which is the next fragment for a video
-    next_fragment_per_video = fragments_per_video.copy()
-    video_idx = len(videos_to_consider)
-    for video_name in videos_to_consider:
-        video_id = video_name.split("_")[0]
-        video_name_without_extesion = video_name.split(".")[0]
-        results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix.split("-")[0]
-        video_name_in_chart = "{} {}{} ".format("Video", video_id, "" if fragments_per_video[video_id] == 1 else "." + chr(ord('A') - 1 + next_fragment_per_video.get(video_id, 1)))
-        next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
+        title = config[sub_problem_suffix]['label_x']
+        if config[sub_problem_suffix]['label_by_method'] is not None:
+            title = title + ' ' + config[sub_problem_suffix]['label_by_method'][method]
 
-        if method != "":
-            results_file_path = results_file_path + "-" + method
+        fig.update_layout(
+            title=config[sub_problem_suffix].get('chart_title', None),
+            xaxis=dict(
+                title=title,
+                titlefont=dict(size=font_size),
+                dtick=config[sub_problem_suffix]['tick'],
+                range=config[sub_problem_suffix].get('x_range', None),
+                tickfont=dict(size=font_size)
+            ),
+            yaxis=dict(
+                title=config[sub_problem_suffix].get('label_y', None),
+                titlefont=dict(size=font_size),
+                tickfont=dict(size=font_size)
+            ),
+            showlegend=config[sub_problem_suffix]['showlegend']
+        )
+        fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
 
-        results_file_path += ".json"
+        # to know which videos have more than one fragment
+        fragments_per_video = {}
+        for video_name in videos_to_consider:
+            video_id = video_name.split("_")[0]
+            fragments_per_video[video_id] = fragments_per_video.get(video_id, 0) + 1
 
-        results = get_results_json(results_file_path)
+        # to keep track of which is the next fragment for a video
+        next_fragment_per_video = fragments_per_video.copy()
+        video_idx = len(videos_to_consider)
+        for video_name in videos_to_consider:
+            video_id = video_name.split("_")[0]
+            video_name_without_extesion = video_name.split(".")[0]
+            results_file_path = './experiments/' + video_name_without_extesion + "-" + sub_problem_suffix.split("-")[0]
+            video_name_in_chart = "{} {}{} ".format("Video", video_id,
+                                                    "" if fragments_per_video[video_id] == 1 else "." + chr(
+                                                        ord('A') - 1 + next_fragment_per_video.get(video_id, 1)))
+            next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
-        if not "frame_results" in results:
-            continue
+            if method != "":
+                results_file_path = results_file_path + "-" + method
 
-        frame_results = results["frame_results"]
+            results_file_path += ".json"
 
-        if sub_problem_suffix == 'intertia' and len(results["frame_results"]) > 0:
-            frame_results = results["frame_results"][0]
-            fig.add_trace(
-                go.Scatter(
-                    x=frame_results['k'],
-                    y=frame_results['inertias'],
-                    name=video_name_in_chart,
-                    hoverinfo="x",
-                    mode="lines",
-                    legendrank=video_idx
-                ))
+            results = get_results_json(results_file_path)
 
-        if sub_problem_suffix.split("-")[0] == 'player_detection':
-            total_players_in_frame = \
-                [frame_data['expected_players'] for
-                 frame_data in
-                 frame_results]
+            if not "frame_results" in results:
+                continue
 
-            good_detected_players_in_frame = \
-                [frame_data['correctly_detected_players'] for
-                 frame_data in
-                 frame_results]
+            frame_results = results["frame_results"]
 
-            extra_players_in_frame = \
-                [frame_data['extra_detected_players'] for
-                 frame_data in
-                 frame_results]
+            if sub_problem_suffix == 'intertia' and len(results["frame_results"]) > 0:
+                frame_results = results["frame_results"][0]
+                fig.add_trace(
+                    go.Scatter(
+                        x=frame_results['k'],
+                        y=frame_results['inertias'],
+                        name=video_name_in_chart,
+                        hoverinfo="x",
+                        mode="lines",
+                        legendrank=video_idx
+                    ))
 
-            not_detected_players_in_frame = \
-                [frame_data['not_detected_players'] for
-                 frame_data in
-                 frame_results]
+                # check if sub_problem_suffix contains substring 'player_tracker'
+            if 'player_tracker' in sub_problem_suffix:
+                method_player_detection = "_".join(method.split("_")[1:])
+                no_tracking_file = "-".join(
+                    results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
+                no_tracker_results = get_results_json(no_tracking_file)
+                frame_no_tracking_results = no_tracker_results["frame_results"]
 
-            x_metric = None
-            if sub_problem_suffix == 'player_detection':
-                x_metric = [good / total * 100 for good, total
-                            in zip(good_detected_players_in_frame, total_players_in_frame)
-                            ]
-            if sub_problem_suffix == 'player_detection-extra_players':
-                x_metric = extra_players_in_frame
-            if sub_problem_suffix == 'player_detection-not_detected_players':
-                x_metric = not_detected_players_in_frame
+                total_players_in_frame_no_tracking = \
+                    [frame_data['expected_players'] for
+                     frame_data in
+                     frame_no_tracking_results]
 
-            fig.add_trace(
-                go.Box(
+                good_detected_players_in_frame_no_tracking = \
+                    [frame_data['correctly_detected_players'] for
+                     frame_data in
+                     frame_no_tracking_results]
+
+                extra_players_in_frame_no_tracking = \
+                    [frame_data['extra_detected_players'] for
+                     frame_data in
+                     frame_no_tracking_results]
+
+                not_detected_players_in_frame_no_tracking = \
+                    [frame_data['not_detected_players'] for
+                     frame_data in
+                     frame_no_tracking_results]
+
+                x_metric = None
+                if sub_problem_suffix == 'player_tracker':
+                    x_metric = [good / total * 100 for good, total
+                                in zip(good_detected_players_in_frame_no_tracking, total_players_in_frame_no_tracking)
+                                ]
+                if sub_problem_suffix == 'player_tracker-extra_players':
+                    x_metric = extra_players_in_frame_no_tracking
+                if sub_problem_suffix == 'player_tracker-not_detected_players':
+                    x_metric = not_detected_players_in_frame_no_tracking
+
+                box = go.Box(
                     x=x_metric,
                     name=video_name_in_chart,
-                    boxpoints="all",
+                    boxpoints=False,
                     hoverinfo="x",
                     boxmean=True,
-                    legendrank=video_idx
+                    legendrank=video_idx,
+                    marker_color='indianred',
                 )
-            )
 
-        if sub_problem_suffix == 'player_sorter' and len(results["frame_results"]) > 0:
-            good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
-                           frame_results]
-            badly_values = [frame_data[config[sub_problem_suffix]['badly_sorted_players']] for frame_data in
-                            frame_results]
+                fig.add_trace(box)
 
-            totals = [x + y for x, y in zip(good_values, badly_values)]
-            good_percentage = [good / total * 100 for good, total in zip(good_values, totals)]
+                # ----------------
 
-            fig.add_trace(
-                go.Box(
-                    x=good_percentage,
-                    name=video_name_in_chart,
-                    boxpoints="all",
-                    hoverinfo="x",
-                    boxmean=True,
-                    legendrank=video_idx
+                total_players_in_frame = \
+                    [frame_data['expected_players'] for
+                     frame_data in
+                     frame_results]
+
+                good_detected_players_in_frame = \
+                    [frame_data['correctly_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                extra_players_in_frame = \
+                    [frame_data['extra_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                not_detected_players_in_frame = \
+                    [frame_data['not_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                x_metric = None
+                if sub_problem_suffix == 'player_tracker':
+                    x_metric = [good / total * 100 for good, total
+                                in zip(good_detected_players_in_frame, total_players_in_frame)
+                                ]
+                if sub_problem_suffix == 'player_tracker-extra_players':
+                    x_metric = extra_players_in_frame
+                if sub_problem_suffix == 'player_tracker-not_detected_players':
+                    x_metric = not_detected_players_in_frame
+
+                fig.add_trace(
+                    go.Box(
+                        x=x_metric,
+                        name=video_name_in_chart,
+                        boxpoints=False,
+                        hoverinfo="x",
+                        boxmean=True,
+                        legendrank=video_idx,
+                        marker_color='forestgreen',
+                    )
                 )
-            )
 
-        if sub_problem_suffix == 'field_detection':
-            metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
-            frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
+            if sub_problem_suffix.split("-")[0] == 'player_detection':
+                total_players_in_frame = \
+                    [frame_data['expected_players'] for
+                     frame_data in
+                     frame_results]
 
-            fig.add_trace(
-                go.Box(
-                    x=metric_values,
-                    name=video_name_in_chart,
-                    customdata=frame_numbers,
-                    hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
-                    boxpoints="all",
-                    boxmean=True,
-                    legendrank=video_idx
+                good_detected_players_in_frame = \
+                    [frame_data['correctly_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                extra_players_in_frame = \
+                    [frame_data['extra_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                not_detected_players_in_frame = \
+                    [frame_data['not_detected_players'] for
+                     frame_data in
+                     frame_results]
+
+                x_metric = None
+                if sub_problem_suffix == 'player_detection':
+                    x_metric = [good / total * 100 for good, total
+                                in zip(good_detected_players_in_frame, total_players_in_frame)
+                                ]
+                if sub_problem_suffix == 'player_detection-extra_players':
+                    x_metric = extra_players_in_frame
+                if sub_problem_suffix == 'player_detection-not_detected_players':
+                    x_metric = not_detected_players_in_frame
+
+                fig.add_trace(
+                    go.Box(
+                        x=x_metric,
+                        name=video_name_in_chart,
+                        boxpoints="all",
+                        hoverinfo="x",
+                        boxmean=True,
+                        legendrank=video_idx
+                    )
                 )
-            )
 
-        if sub_problem_suffix == 'vanishing-point-finder':
-            metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
-            frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
+            if sub_problem_suffix == 'player_sorter' and len(results["frame_results"]) > 0:
+                good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
+                               frame_results]
+                badly_values = [frame_data[config[sub_problem_suffix]['badly_sorted_players']] for frame_data in
+                                frame_results]
 
-            fig.add_trace(
-                go.Box(
-                    x=metric_values,
-                    name=video_name_in_chart,
-                    customdata=frame_numbers,
-                    hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
-                    boxpoints="all",
-                    boxmean=True,
-                    legendrank=video_idx
+                totals = [x + y for x, y in zip(good_values, badly_values)]
+                good_percentage = [good / total * 100 for good, total in zip(good_values, totals)]
+
+                fig.add_trace(
+                    go.Box(
+                        x=good_percentage,
+                        name=video_name_in_chart,
+                        boxpoints="all",
+                        hoverinfo="x",
+                        boxmean=True,
+                        legendrank=video_idx
+                    )
                 )
-            )
 
-        video_idx -= 1
+            if sub_problem_suffix == 'field_detection':
+                metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+                frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
-    if export_html_file:
-        export_file_name = "plots/" + sub_problem_suffix
-        if method != "":
-            export_file_name += "-" + method
+                fig.add_trace(
+                    go.Box(
+                        x=metric_values,
+                        name=video_name_in_chart,
+                        customdata=frame_numbers,
+                        hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
+                        boxpoints="all",
+                        boxmean=True,
+                        legendrank=video_idx
+                    )
+                )
 
-        metric_name = config[sub_problem_suffix.split("-")[0]].get('metric_name', '')
-        if metric_name != "":
-            export_file_name += "-" + metric_name
+            if sub_problem_suffix == 'vanishing-point-finder':
+                metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+                frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
-        export_file_name += ".html"
-        fig.write_html(export_file_name)
+                fig.add_trace(
+                    go.Box(
+                        x=metric_values,
+                        name=video_name_in_chart,
+                        customdata=frame_numbers,
+                        hovertemplate='Value: %{x}<br>Frame: %{customdata} <extra></extra>',
+                        boxpoints="all",
+                        boxmean=True,
+                        legendrank=video_idx
+                    )
+                )
 
-    fig.show()
+            video_idx -= 1
+
+        if export_html_file:
+            export_file_name = "plots/" + sub_problem_suffix
+            if method != "":
+                export_file_name += "-" + method
+
+            metric_name = config[sub_problem_suffix.split("-")[0]].get('metric_name', '')
+            if metric_name != "":
+                export_file_name += "-" + metric_name
+
+            export_file_name += ".html"
+            fig.write_html(export_file_name)
+
+        fig.show()

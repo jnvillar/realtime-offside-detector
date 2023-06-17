@@ -395,7 +395,7 @@ def detect_contours(original_frame, params):
 
         if params.get('filter_contour_inside_other', False) and hierarchy[0, idx, 3] != -1:
             # If hierarchy[0, idx, 3] is different from -1, then your contour is inside another.
-                valid_contour = False
+            valid_contour = False
 
         contour_percentage_of_frame = None
         if 'ignore_contours_smaller_than' in params:

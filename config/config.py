@@ -70,7 +70,7 @@ default_config = {
         'detect_every_amount_of_frames': 1,
         'kmeans': {
             'debug_lines': False,
-            'debug': False,
+            'debug': True,
             'color_percentage': (2 / 100),  # 5%
             'klusters': 8,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -113,7 +113,7 @@ default_config = {
             'keep_contours_by_aspect_ratio': AspectRatio.taller
         },
         'edges': {
-            'parent_contour_only': True,
+            'parent_contour_only': False,
             'debug': False,
             'threshold1': 10,
             'threshold2': 20,

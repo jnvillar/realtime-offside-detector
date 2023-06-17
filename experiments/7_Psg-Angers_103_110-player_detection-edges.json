@@ -37,10 +37,10 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 0,
-      "correctly_detected_players": 0,
-      "extra_detected_players": 0,
-      "not_detected_players": 19
+      "detected_players": 15,
+      "correctly_detected_players": 14,
+      "extra_detected_players": 1,
+      "not_detected_players": 5
     },
     {
       "expected_players": 19,
@@ -65,10 +65,10 @@
     },
     {
       "expected_players": 21,
-      "detected_players": 0,
-      "correctly_detected_players": 0,
+      "detected_players": 13,
+      "correctly_detected_players": 13,
       "extra_detected_players": 0,
-      "not_detected_players": 21
+      "not_detected_players": 8
     },
     {
       "expected_players": 21,
@@ -107,10 +107,10 @@
     },
     {
       "expected_players": 13,
-      "detected_players": 0,
-      "correctly_detected_players": 0,
-      "extra_detected_players": 0,
-      "not_detected_players": 13
+      "detected_players": 9,
+      "correctly_detected_players": 8,
+      "extra_detected_players": 1,
+      "not_detected_players": 5
     },
     {
       "expected_players": 11,

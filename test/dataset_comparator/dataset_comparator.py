@@ -2,6 +2,7 @@ import cv2
 
 from field_detector.field_detector import FieldDetector
 from player_detector.player_detector import PlayerDetector
+from player_tracker.player_tracker import PlayerTracker
 from player_sorter.player_sorter import PlayerSorter
 from test.dataset_generator.domain import *
 from domain.player import *
@@ -359,6 +360,7 @@ class PlayerDetectorComparisonStrategy:
         self.screen_manager = ScreenManager.get_manager()
         self.player_detector = PlayerDetector(None, **config['player_detector'])
         self.field_detector = FieldDetector(None, **config['field_detector'])
+        self.player_tracker = PlayerTracker(None, **config['player_tracker'])
 
     def prepare_for_detection(self, video, expected_frame_data):
         # apply detected field from dataset
@@ -376,6 +378,8 @@ class PlayerDetectorComparisonStrategy:
             video, _ = self.field_detector.detect_field(video)
 
         players = self.player_detector.detect_players(video)
+        players = self.player_tracker.track_players(video, players=players)
+
         detected_frame_data = self._build_frame_data(video, players)
         return detected_frame_data
 
@@ -399,54 +403,6 @@ class PlayerDetectorComparisonStrategy:
             .set_frame_width(width) \
             .set_players_from_domain_players(players) \
             .build()
-
-
-class PlayerTrackerComparisonStrategy:
-
-    def __init__(self, config):
-        self.frame_data_printer = FrameDataPrinter()
-        self.frame_data_comparator = FrameDataComparator()
-        self.screen_manager = ScreenManager.get_manager()
-        self.field_detector = FieldDetector(None, **config['field_detector'])
-
-    def prepare_for_detection(self, video, expected_frame_data):
-        # nothing to do here
-        return
-
-    def detect_and_compare(self, video, expected_frame_data):
-        detected_frame_data = self.detect_only(video)
-        return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
-
-    def detect_only(self, video):
-        video, field_mask = self.field_detector.detect_field(video)
-        detected_frame_data = self._build_frame_data(video, field_mask)
-        return detected_frame_data
-
-    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
-        detected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), True, False, False,
-                                                       False)
-        self.screen_manager.show_frame(detected_frame, "Detected (mask) vs Expected (lines)")
-
-    def calculate_aggregations(self, results):
-        average = {}
-        for frame_result in results:
-            for metric, value in frame_result.items():
-                average[metric + "_avg"] = average.get(metric + "_avg", 0) + value
-
-        for avg_metric in average:
-            average[avg_metric] = average[avg_metric] / len(results)
-
-        return average
-
-    def _build_frame_data(self, video, field_mask):
-        height, width = video.get_current_frame().shape[:2]
-        return FrameDataBuilder() \
-            .set_frame_number(video.get_current_frame_number()) \
-            .set_frame_height(height) \
-            .set_frame_width(width) \
-            .set_field_mask(field_mask) \
-            .build()
-
 
 class FieldDetectorComparisonStrategy:
 

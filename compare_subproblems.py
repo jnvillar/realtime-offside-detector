@@ -7,7 +7,7 @@ import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
     PlayerDetectorComparisonStrategy, PlayerSorterComparisonStrategy, IntertiaComparisonStrategy, \
-    VanishingPointFinderComparisonStrategy, PlayerTrackerComparisonStrategy
+    VanishingPointFinderComparisonStrategy
 from test.dataset_generator.domain import FrameData
 from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from utils.utils import ScreenManager
@@ -27,7 +27,7 @@ class ComparisonStrategy(Enum):
 
     def get_strategy_comparator(self, conf):
         if self == ComparisonStrategy.player_tracker:
-            return PlayerTrackerComparisonStrategy(conf)
+            return PlayerDetectorComparisonStrategy(conf)
 
         if self == ComparisonStrategy.field_detector:
             return FieldDetectorComparisonStrategy(conf)
@@ -84,22 +84,99 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 methods_for_strategy = {
-    'player_detection': [
-        'edges',
-        'otsu',
-        'by_color',
-        'background_subtraction',
-        'kmeans',
-    ],
+    'player_detection': {
+        # 'edges': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'edges',
+        #     },
+        # },
+        # 'otsu': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'otsu',
+        #     },
+        # },
+        # 'by_color': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'by_color',
+        #     },
+        # },
+        # 'background_subtraction': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'background_subtraction',
+        #     }
+        # },
+        'kmeans': {
+            'player_tracker': {
+                'method': 'off',
+            },
+            'player_detector': {
+                'method': 'kmeans',
+            },
+        },
+    },
+    'player_tracker': {
+        'distance_edges': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'edges',
+            },
+        },
+        'distance_otsu': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'otsu',
+            },
+        },
+        'distance_by_color': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'by_color',
+            },
+        },
+        'distance_background_subtraction': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'background_subtraction',
+            }
+        },
+        'distance_kmeans': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'kmeans',
+            },
+        },
+    }
 }
 
 if __name__ == '__main__':
-    debug = False
+    debug = True
     override_experiment = True
     strategy = ComparisonStrategy.player_detector
 
     videos = [
-        #VideoConstants.video_14_Psg_Olympique_40_47
+        VideoConstants.video_1_Arsenal_Chelsea_107_122,
     ]
 
     if len(videos) == 0:
@@ -110,14 +187,12 @@ if __name__ == '__main__':
     Logger.initialize(configuration['logger'])
     ScreenManager.initialize(configuration['screen_manager'])
 
-    for method in methods_for_strategy[strategy.value]:
+    for method, config in methods_for_strategy[strategy.value].items():
         print("processing method: {}".format(method))
         for video_name in videos:
             print("processing video: {}".format(video_name))
 
-            configuration = config_provider.get_config_for_video(video_name)
-            configuration[strategy.name]['method'] = method
-
+            configuration = config_provider.get_config_for_video(video_name, merge_config=config)
             comparator = strategy.get_strategy_comparator(configuration)
 
             save_result_path = get_result_path(video_name, strategy, method)
