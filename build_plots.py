@@ -52,7 +52,9 @@ def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
             legendrank=video_idx
         ))
 
-def print_player_tracker_plot(results, fig, video_name_in_chart, video_idx, method, results_file_path, sub_problem_suffix):
+
+def print_player_tracker_plot(results, fig, video_name_in_chart, video_idx, method, results_file_path,
+                              sub_problem_suffix):
     method_player_detection = "_".join(method.split("_")[1:])
     no_tracking_file = "-".join(
         results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
@@ -243,6 +245,7 @@ def print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_id
         )
     )
 
+
 config = {
     "intertia": {
         'label_x': 'K',
@@ -282,14 +285,13 @@ config = {
         'methods': [
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
         ],
-        'label_by_method':
-            {
-                'edges': 'utilizando detección por bordes',
-                'otsu': 'utilizando detección por Otsu',
-                'background_subtraction': 'utilizando etección por substracción de fondo',
-                'kmeans': 'utilizando detección por K-Means',
-                'by_color': 'utilizando detección por color'
-            },
+        'label_by_method': {
+            'edges': 'utilizando detección por bordes',
+            'otsu': 'utilizando detección por Otsu',
+            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'kmeans': 'utilizando detección por K-Means',
+            'by_color': 'utilizando detección por color'
+        },
         'label_x': 'Porcentaje de jugadores detectados correctamente',
         'tick': None,
         'showlegend': False,
@@ -298,6 +300,16 @@ config = {
     "player_detection-extra_players": {
         'chart_title': None,
         'label_x': 'Cantidad de jugadores detectados de más',
+        'methods': [
+            'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
+        ],
+        'label_by_method': {
+            'edges': 'utilizando detección por bordes',
+            'otsu': 'utilizando detección por Otsu',
+            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'kmeans': 'utilizando detección por K-Means',
+            'by_color': 'utilizando detección por color'
+        },
         'tick': None,
         'showlegend': False,
         'x_range': [0, 20]
@@ -305,6 +317,17 @@ config = {
     "player_detection-not_detected_players": {
         'chart_title': None,
         'label_x': 'Cantidad de jugadores no detectados',
+        'label_x': 'Cantidad de jugadores detectados de más',
+        'methods': [
+            'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
+        ],
+        'label_by_method': {
+            'edges': 'utilizando detección por bordes',
+            'otsu': 'utilizando detección por Otsu',
+            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'kmeans': 'utilizando detección por K-Means',
+            'by_color': 'utilizando detección por color'
+        },
         'tick': None,
         'showlegend': False,
         'x_range': [0, 20]
@@ -393,7 +416,8 @@ if __name__ == '__main__':
                 print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx)
 
             if 'player_tracker' in sub_problem_suffix:
-                print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path, sub_problem_suffix)
+                print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path,
+                                          sub_problem_suffix)
 
             if sub_problem_suffix.split("-")[0] == 'player_detection':
                 print_player_detection_plot(frame_results, fig, video_name_in_chart, video_idx)
