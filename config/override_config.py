@@ -14,6 +14,9 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(122, 494), (373, 392)]
+            },
+            'kmeans': {
+                'blur': False,
             }
         }
     },
@@ -49,6 +52,9 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(224, 580), (199, 605)]
+            },
+            'kmeans': {
+                'blur': False,
             }
         }
     },
@@ -168,6 +174,9 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(183, 520), (564, 570)]
+            },
+            'kmeans': {
+                'blur': False,
             }
         }
     },
@@ -183,7 +192,7 @@ override_config = {
                 'clicks': [(1276, 660), (663, 672)],
             },
             'kmeans': {
-                #'min_length_line_in_video_percentage': 0.02,
+                # 'min_length_line_in_video_percentage': 0.02,
                 'debug_lines': False,
                 'debug': False,
                 'color_percentage': (2 / 100),  # 5%
@@ -220,6 +229,7 @@ override_config = {
             'kmeans': {
                 'ignore_contours_smaller_than': 0.007,
                 'klusters': 10,
+                'blur': False,
             },
             'by_color': {
                 'tolerance': 20,
@@ -241,7 +251,7 @@ override_config = {
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.01,
                 'debug_lines': False,
-
+                'blur': False,
                 'color_percentage': (2 / 100),  # 5%
                 'klusters': 9,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -344,7 +354,7 @@ override_config = {
             # bsas, automatic_by_color, by_color, kmeans
             'method': 'kmeans',
             'kmeans': {
-
+                'blur': False,
                 'only_unclassified_players': True,
                 'median': False,
                 'focused': False,
@@ -367,7 +377,10 @@ override_config = {
             'by_color': {
                 'clicks': [(378, 579), (709, 513)],
                 'ignore_contours_smaller_than': 0.02,
-            }
+            },
+            'kmeans': {
+                'blur': False,
+            },
         },
         'vanishing_point_finder': {
             'method': 'hough',
@@ -464,7 +477,7 @@ override_config = {
             },
             'by_color': {
                 'clicks': [(396, 690), (383, 570)]
-            }
+            },
         },
     },
     VideoConstants.video_13_Chelsea_Milan_38_44: {
@@ -477,7 +490,10 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(318, 409), (728, 404)]
-            }
+            },
+            'kmeans': {
+                'blur': False,
+            },
         },
     },
     VideoConstants.video_14_Psg_Olympique_156_164: {
@@ -490,7 +506,10 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(339, 467), (824, 494)]
-            }
+            },
+            'kmeans': {
+                'blur': False,
+            },
         },
     },
     VideoConstants.video_15_Valencia_Getafe_38_52: {
@@ -634,8 +653,9 @@ override_config = {
                 'focused': False,
                 'klusters': 2,
                 # 'klusters_team': [team_three, team_two, team_one]  # smallest cluster = team 3, 2dn smallest = team 2 ...
-                'klusters_team': [team_two, team_one]
+                'klusters_team': [team_two, team_one],
                 # smallest cluster = team 3, 2dn smallest = team 2 ...
+                'blur': False,
             },
             'bsas': {
                 'threshold': 0,
@@ -720,7 +740,10 @@ override_config = {
         'player_detector': {
             'by_color': {
                 'clicks': [(153, 445), (637, 621)]
-            }
+            },
+            'kmeans': {
+                'blur': False,
+            },
         },
     }
 }
