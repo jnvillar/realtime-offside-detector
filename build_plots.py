@@ -40,6 +40,30 @@ def export_to_html_file(method, sub_problem_suffix, config):
     fig.write_html(export_file_name)
 
 
+def configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title):
+    fig.update_layout(
+        title=sub_problem_config.get('chart_title', None),
+        xaxis=dict(
+            title=x_axis_title,
+            titlefont=dict(size=font_size),
+            dtick=sub_problem_config['tick'],
+            range=sub_problem_config.get('x_range', None),
+            tickfont=dict(size=font_size)
+        ),
+        yaxis=dict(
+            title=sub_problem_config.get('label_y', None),
+            titlefont=dict(size=font_size),
+            tickfont=dict(size=font_size)
+        ),
+        showlegend=sub_problem_config['showlegend']
+    )
+    fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
+
+
+def get_video_fragment_character(fragments_per_video, next_fragment_per_video):
+    "" if fragments_per_video[video_id] == 1 else "." + chr(ord('A') - 1 + next_fragment_per_video.get(video_id, 1))
+
+
 def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
     frame_results = frame_results[0]
     fig.add_trace(
@@ -53,8 +77,9 @@ def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
         ))
 
 
-def print_player_tracker_plot(results, fig, video_name_in_chart, video_idx, method, results_file_path,
+def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path,
                               sub_problem_suffix):
+
     method_player_detection = "_".join(method.split("_")[1:])
     no_tracking_file = "-".join(
         results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
@@ -371,27 +396,8 @@ if __name__ == '__main__':
 
     for method in methods:
         fig = go.Figure()
-        x_axis_title_by_method = x_axis_title
-        if sub_problem_config.get('label_by_method') is not None:
-            x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][method]
-
-        fig.update_layout(
-            title=sub_problem_config.get('chart_title', None),
-            xaxis=dict(
-                title=x_axis_title_by_method,
-                titlefont=dict(size=font_size),
-                dtick=sub_problem_config['tick'],
-                range=sub_problem_config.get('x_range', None),
-                tickfont=dict(size=font_size)
-            ),
-            yaxis=dict(
-                title=sub_problem_config.get('label_y', None),
-                titlefont=dict(size=font_size),
-                tickfont=dict(size=font_size)
-            ),
-            showlegend=sub_problem_config['showlegend']
-        )
-        fig.update_xaxes(showline=True, linewidth=1, gridcolor='lightgrey')
+        x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][method] if 'label_by_method' in sub_problem_config else x_axis_title
+        configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title_by_method)
 
         # to know which videos have more than one fragment
         fragments_per_video = {}
@@ -401,14 +407,13 @@ if __name__ == '__main__':
 
         # to keep track of which is the next fragment for a video
         next_fragment_per_video = fragments_per_video.copy()
+
         video_idx = len(videos_to_consider)
         for video_name in videos_to_consider:
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
             results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix.split("-")[0]
-            video_name_in_chart = "{} {}{} ".format("Video", video_id,
-                                                    "" if fragments_per_video[video_id] == 1 else "." + chr(
-                                                        ord('A') - 1 + next_fragment_per_video.get(video_id, 1)))
+            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video, next_fragment_per_video))
             next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
             if method != "":
@@ -423,7 +428,7 @@ if __name__ == '__main__':
 
             frame_results = results["frame_results"]
 
-            if sub_problem_suffix == 'intertia' and len(results["frame_results"]) > 0:
+            if sub_problem_suffix == 'intertia' and len(frame_results) > 0:
                 print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx)
 
             if 'player_tracker' in sub_problem_suffix:
@@ -433,7 +438,7 @@ if __name__ == '__main__':
             if sub_problem_suffix.split("-")[0] == 'player_detection':
                 print_player_detection_plot(frame_results, fig, video_name_in_chart, video_idx)
 
-            if sub_problem_suffix == 'player_sorter' and len(results["frame_results"]) > 0:
+            if sub_problem_suffix == 'player_sorter' and len(frame_results) > 0:
                 print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix)
 
             if sub_problem_suffix == 'field_detection':
