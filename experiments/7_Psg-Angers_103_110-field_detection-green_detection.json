@@ -1,0 +1,175 @@
+{
+  "frame_results": [
+    {
+      "frame_number": 1,
+      "missing_field_pixels": 48,
+      "missing_field_percentage": 3.494568857567198e-05,
+      "extra_field_pixels": 379903,
+      "extra_field_percentage": 0.27658274847840647,
+      "total_difference_percentage": 0.2766176941669821,
+      "jaccard_index": 0.783313933627342
+    },
+    {
+      "frame_number": 10,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 362722,
+      "extra_field_percentage": 0.2619742866201878,
+      "total_difference_percentage": 0.2619742866201878,
+      "jaccard_index": 0.7924091723597588
+    },
+    {
+      "frame_number": 20,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 343788,
+      "extra_field_percentage": 0.2458183326242631,
+      "total_difference_percentage": 0.2458183326242631,
+      "jaccard_index": 0.8026852501789268
+    },
+    {
+      "frame_number": 30,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 361564,
+      "extra_field_percentage": 0.2584091389887878,
+      "total_difference_percentage": 0.2584091389887878,
+      "jaccard_index": 0.7946541144826427
+    },
+    {
+      "frame_number": 40,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 352909,
+      "extra_field_percentage": 0.25233993018463463,
+      "total_difference_percentage": 0.25233993018463463,
+      "jaccard_index": 0.7985052427838568
+    },
+    {
+      "frame_number": 50,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 388298,
+      "extra_field_percentage": 0.2817737250271942,
+      "total_difference_percentage": 0.2817737250271942,
+      "jaccard_index": 0.7801689022598617
+    },
+    {
+      "frame_number": 60,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 381390,
+      "extra_field_percentage": 0.27778020556565514,
+      "total_difference_percentage": 0.27778020556565514,
+      "jaccard_index": 0.7826072086922916
+    },
+    {
+      "frame_number": 70,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 428698,
+      "extra_field_percentage": 0.3158470959908524,
+      "total_difference_percentage": 0.3158470959908524,
+      "jaccard_index": 0.7599667188131651
+    },
+    {
+      "frame_number": 80,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 429307,
+      "extra_field_percentage": 0.32000986923266717,
+      "total_difference_percentage": 0.32000986923266717,
+      "jaccard_index": 0.7575700934579439
+    },
+    {
+      "frame_number": 90,
+      "missing_field_pixels": 35,
+      "missing_field_percentage": 2.625583535940863e-05,
+      "extra_field_pixels": 435814,
+      "extra_field_percentage": 0.3269331608950089,
+      "total_difference_percentage": 0.3269594167303683,
+      "jaccard_index": 0.7535976744225489
+    },
+    {
+      "frame_number": 100,
+      "missing_field_pixels": 0,
+      "missing_field_percentage": 0.0,
+      "extra_field_pixels": 458157,
+      "extra_field_percentage": 0.3439642940262314,
+      "total_difference_percentage": 0.3439642940262314,
+      "jaccard_index": 0.7440673866447839
+    },
+    {
+      "frame_number": 110,
+      "missing_field_pixels": 11,
+      "missing_field_percentage": 8.21915556395736e-06,
+      "extra_field_pixels": 405458,
+      "extra_field_percentage": 0.3029565796955475,
+      "total_difference_percentage": 0.3029647988511115,
+      "jaccard_index": 0.7674789754529632
+    },
+    {
+      "frame_number": 120,
+      "missing_field_pixels": 34,
+      "missing_field_percentage": 2.5474232813509137e-05,
+      "extra_field_pixels": 231800,
+      "extra_field_percentage": 0.1736743284168064,
+      "total_difference_percentage": 0.17369980264961993,
+      "jaccard_index": 0.8520034063589623
+    },
+    {
+      "frame_number": 130,
+      "missing_field_pixels": 503,
+      "missing_field_percentage": 0.00037080367088262333,
+      "extra_field_pixels": 380016,
+      "extra_field_percentage": 0.28014180475970374,
+      "total_difference_percentage": 0.28051260843058634,
+      "jaccard_index": 0.7808738005527117
+    },
+    {
+      "frame_number": 140,
+      "missing_field_pixels": 419,
+      "missing_field_percentage": 0.0003025952416717701,
+      "extra_field_pixels": 323594,
+      "extra_field_percentage": 0.23369452179841235,
+      "total_difference_percentage": 0.23399711704008413,
+      "jaccard_index": 0.810328154250879
+    },
+    {
+      "frame_number": 150,
+      "missing_field_pixels": 637,
+      "missing_field_percentage": 0.00045696724398535695,
+      "extra_field_pixels": 272220,
+      "extra_field_percentage": 0.19528355283782398,
+      "total_difference_percentage": 0.19574052008180934,
+      "jaccard_index": 0.8362392591974639
+    },
+    {
+      "frame_number": 160,
+      "missing_field_pixels": 849,
+      "missing_field_percentage": 0.0006112236207332235,
+      "extra_field_pixels": 192160,
+      "extra_field_percentage": 0.13834243929339957,
+      "total_difference_percentage": 0.1389536629141328,
+      "jaccard_index": 0.8779333370014869
+    },
+    {
+      "frame_number": 170,
+      "missing_field_pixels": 754,
+      "missing_field_percentage": 0.0005533879969115959,
+      "extra_field_pixels": 187292,
+      "extra_field_percentage": 0.13746040413470373,
+      "total_difference_percentage": 0.13801379213161533,
+      "jaccard_index": 0.8786649701124268
+    }
+  ],
+  "aggregations": {
+    "frame_number_avg": 85.05555555555556,
+    "missing_field_pixels_avg": 182.77777777777777,
+    "missing_field_percentage_avg": 0.0001327707048053954,
+    "extra_field_pixels_avg": 350838.3333333333,
+    "extra_field_percentage_avg": 0.25683257880946037,
+    "total_difference_percentage_avg": 0.2569653495142658,
+    "jaccard_index_avg": 0.7973926444805565
+  }
+}
