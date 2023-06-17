@@ -127,38 +127,38 @@ methods_for_strategy = {
         },
     },
     'player_tracker': {
-        'distance_edges': {
-            'player_tracker': {
-                'method': 'distance',
-            },
-            'player_detector': {
-                'method': 'edges',
-            },
-        },
-        'distance_otsu': {
-            'player_tracker': {
-                'method': 'distance',
-            },
-            'player_detector': {
-                'method': 'otsu',
-            },
-        },
-        'distance_by_color': {
-            'player_tracker': {
-                'method': 'distance',
-            },
-            'player_detector': {
-                'method': 'by_color',
-            },
-        },
-        'distance_background_subtraction': {
-            'player_tracker': {
-                'method': 'distance',
-            },
-            'player_detector': {
-                'method': 'background_subtraction',
-            }
-        },
+        # 'distance_edges': {
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'edges',
+        #     },
+        # },
+        # 'distance_otsu': {
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'otsu',
+        #     },
+        # },
+        # 'distance_by_color': {
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'by_color',
+        #     },
+        # },
+        # 'distance_background_subtraction': {
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'background_subtraction',
+        #     }
+        # },
         'distance_kmeans': {
             'player_tracker': {
                 'method': 'distance',
@@ -173,10 +173,10 @@ methods_for_strategy = {
 if __name__ == '__main__':
     debug = False
     override_experiment = True
-    strategy = ComparisonStrategy.player_detector
+    strategy = ComparisonStrategy.player_tracker
 
     videos = [
-        #VideoConstants.video_12_ManchesterCity_Sevilla_66_74
+        # VideoConstants.video_12_ManchesterCity_Sevilla_66_74
     ]
 
     if len(videos) == 0:

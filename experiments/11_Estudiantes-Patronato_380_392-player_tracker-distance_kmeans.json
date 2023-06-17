@@ -9,6 +9,13 @@
     },
     {
       "expected_players": 16,
+      "detected_players": 25,
+      "correctly_detected_players": 14,
+      "extra_detected_players": 11,
+      "not_detected_players": 2
+    },
+    {
+      "expected_players": 16,
       "detected_players": 24,
       "correctly_detected_players": 14,
       "extra_detected_players": 10,
@@ -16,16 +23,9 @@
     },
     {
       "expected_players": 16,
-      "detected_players": 23,
-      "correctly_detected_players": 14,
-      "extra_detected_players": 9,
-      "not_detected_players": 2
-    },
-    {
-      "expected_players": 16,
-      "detected_players": 24,
+      "detected_players": 25,
       "correctly_detected_players": 13,
-      "extra_detected_players": 11,
+      "extra_detected_players": 12,
       "not_detected_players": 3
     },
     {
@@ -51,16 +51,9 @@
     },
     {
       "expected_players": 16,
-      "detected_players": 20,
+      "detected_players": 21,
       "correctly_detected_players": 14,
-      "extra_detected_players": 6,
-      "not_detected_players": 2
-    },
-    {
-      "expected_players": 17,
-      "detected_players": 24,
-      "correctly_detected_players": 15,
-      "extra_detected_players": 9,
+      "extra_detected_players": 7,
       "not_detected_players": 2
     },
     {
@@ -72,9 +65,16 @@
     },
     {
       "expected_players": 17,
-      "detected_players": 24,
+      "detected_players": 25,
       "correctly_detected_players": 15,
-      "extra_detected_players": 9,
+      "extra_detected_players": 10,
+      "not_detected_players": 2
+    },
+    {
+      "expected_players": 17,
+      "detected_players": 25,
+      "correctly_detected_players": 15,
+      "extra_detected_players": 10,
       "not_detected_players": 2
     },
     {
@@ -114,9 +114,9 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 24,
+      "detected_players": 25,
       "correctly_detected_players": 15,
-      "extra_detected_players": 9,
+      "extra_detected_players": 10,
       "not_detected_players": 4
     },
     {
@@ -128,37 +128,30 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 22,
+      "detected_players": 23,
       "correctly_detected_players": 17,
-      "extra_detected_players": 5,
+      "extra_detected_players": 6,
       "not_detected_players": 2
     },
     {
       "expected_players": 19,
-      "detected_players": 21,
+      "detected_players": 22,
       "correctly_detected_players": 16,
-      "extra_detected_players": 5,
+      "extra_detected_players": 6,
       "not_detected_players": 3
     },
     {
       "expected_players": 19,
-      "detected_players": 20,
+      "detected_players": 21,
       "correctly_detected_players": 15,
-      "extra_detected_players": 5,
+      "extra_detected_players": 6,
       "not_detected_players": 4
     },
     {
       "expected_players": 19,
-      "detected_players": 21,
+      "detected_players": 22,
       "correctly_detected_players": 16,
-      "extra_detected_players": 5,
-      "not_detected_players": 3
-    },
-    {
-      "expected_players": 19,
-      "detected_players": 21,
-      "correctly_detected_players": 16,
-      "extra_detected_players": 5,
+      "extra_detected_players": 6,
       "not_detected_players": 3
     },
     {
@@ -170,16 +163,23 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 23,
+      "detected_players": 22,
       "correctly_detected_players": 16,
+      "extra_detected_players": 6,
+      "not_detected_players": 3
+    },
+    {
+      "expected_players": 19,
+      "detected_players": 24,
+      "correctly_detected_players": 16,
+      "extra_detected_players": 8,
+      "not_detected_players": 3
+    },
+    {
+      "expected_players": 19,
+      "detected_players": 24,
+      "correctly_detected_players": 17,
       "extra_detected_players": 7,
-      "not_detected_players": 3
-    },
-    {
-      "expected_players": 19,
-      "detected_players": 23,
-      "correctly_detected_players": 17,
-      "extra_detected_players": 6,
       "not_detected_players": 2
     },
     {
@@ -191,13 +191,20 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 22,
+      "detected_players": 23,
       "correctly_detected_players": 17,
-      "extra_detected_players": 5,
+      "extra_detected_players": 6,
       "not_detected_players": 2
     },
     {
       "expected_players": 19,
+      "detected_players": 25,
+      "correctly_detected_players": 18,
+      "extra_detected_players": 7,
+      "not_detected_players": 1
+    },
+    {
+      "expected_players": 19,
       "detected_players": 24,
       "correctly_detected_players": 18,
       "extra_detected_players": 6,
@@ -212,16 +219,9 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 23,
+      "detected_players": 25,
       "correctly_detected_players": 18,
-      "extra_detected_players": 5,
-      "not_detected_players": 1
-    },
-    {
-      "expected_players": 19,
-      "detected_players": 24,
-      "correctly_detected_players": 18,
-      "extra_detected_players": 6,
+      "extra_detected_players": 7,
       "not_detected_players": 1
     },
     {
@@ -233,9 +233,9 @@
     },
     {
       "expected_players": 19,
-      "detected_players": 24,
+      "detected_players": 26,
       "correctly_detected_players": 18,
-      "extra_detected_players": 6,
+      "extra_detected_players": 8,
       "not_detected_players": 1
     },
     {
