@@ -417,7 +417,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_tracker"  # field_detection, intertia, player_sorter, player_detection
+    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
