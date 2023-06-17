@@ -216,10 +216,10 @@ def print_player_detection_plot(frame_results, fig, video_name_in_chart, video_i
     )
 
 
-def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix):
-    good_values = [frame_data[config[sub_problem_suffix]['correctly_sorted_players']] for frame_data in
+def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    good_values = [frame_data[sub_problem_config['correctly_sorted_players']] for frame_data in
                    frame_results]
-    badly_values = [frame_data[config[sub_problem_suffix]['badly_sorted_players']] for frame_data in
+    badly_values = [frame_data[sub_problem_config['badly_sorted_players']] for frame_data in
                     frame_results]
 
     totals = [x + y for x, y in zip(good_values, badly_values)]
@@ -237,8 +237,8 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
-def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix):
-    metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    metric_values = [frame_data[sub_problem_config['metric_name']] for frame_data in frame_results]
     frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
     fig.add_trace(
@@ -254,8 +254,8 @@ def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_id
     )
 
 
-def print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix):
-    metric_values = [frame_data[config[sub_problem_suffix]['metric_name']] for frame_data in frame_results]
+def print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    metric_values = [frame_data[sub_problem_config['metric_name']] for frame_data in frame_results]
     frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
     fig.add_trace(
@@ -411,7 +411,7 @@ if __name__ == '__main__':
 
             results = get_results_json(results_file_path)
 
-            if not "frame_results" in results:
+            if "frame_results" not in results:
                 continue
 
             frame_results = results["frame_results"]
@@ -427,13 +427,13 @@ if __name__ == '__main__':
                 print_player_detection_plot(frame_results, fig, video_name_in_chart, video_idx)
 
             if sub_problem_suffix == 'player_sorter' and len(frame_results) > 0:
-                print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix)
+                print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             if sub_problem_suffix == 'field_detection':
-                print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix)
+                print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             if sub_problem_suffix == 'vanishing-point-finder':
-                print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_suffix)
+                print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             video_idx -= 1
 
