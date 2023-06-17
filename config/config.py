@@ -69,8 +69,9 @@ default_config = {
         'method': 'kmeans',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
+            'parent_contour_only': False,
             'debug_lines': False,
-            'debug': True,
+            'debug': False,
             'color_percentage': (2 / 100),  # 5%
             'klusters': 8,
             'keep_contours_by_aspect_ratio': AspectRatio.taller,

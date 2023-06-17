@@ -36,9 +36,10 @@ class KmeansPlayerDetector:
             # set those pixels to white
             original_frame[black_pixels] = [17, 92, 71]
 
+        image = original_frame
 
-
-        image = apply_blur(original_frame, params={'element_size': (5, 5)})
+        if self.params.get('blur', True):
+            image = apply_blur(original_frame, params={'element_size': (5, 5)})
 
         ScreenManager.get_manager().show_frame(image, 'original') if self.debug else None
 
