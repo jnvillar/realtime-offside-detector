@@ -77,8 +77,15 @@ def print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx):
         ))
 
 
-def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path,
-                              sub_problem_suffix):
+def print_player_tracker_plot(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        method,
+        results_file_path,
+        sub_problem_suffix
+):
     method_player_detection = "_".join(method.split("_")[1:])
     no_tracking_file = "-".join(
         results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
@@ -110,22 +117,25 @@ def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx
         x_metric = [good / total * 100 for good, total
                     in zip(good_detected_players_in_frame_no_tracking, total_players_in_frame_no_tracking)
                     ]
+        if 'background_subtraction' in method and x_metric[0] <= 0.1:
+            x_metric.pop(0)
     if sub_problem_suffix == 'player_tracker-extra_players':
         x_metric = extra_players_in_frame_no_tracking
     if sub_problem_suffix == 'player_tracker-not_detected_players':
         x_metric = not_detected_players_in_frame_no_tracking
 
-    box = go.Box(
-        x=x_metric,
-        name=video_name_in_chart,
-        boxpoints=False,
-        hoverinfo="x",
-        boxmean=True,
-        legendrank=video_idx,
-        marker_color='indianred',
+    fig.add_trace(
+        go.Box(
+            x=x_metric,
+            name=video_name_in_chart,
+            boxpoints=False,
+            hoverinfo="x",
+            boxmean=True,
+            legendrank=video_idx,
+            showlegend=False,
+            marker_color='indianred',
+        )
     )
-
-    fig.add_trace(box)
 
     # ----------------
 
@@ -154,6 +164,8 @@ def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx
         x_metric = [good / total * 100 for good, total
                     in zip(good_detected_players_in_frame, total_players_in_frame)
                     ]
+        if 'background_subtraction' in method and x_metric[0] <= 0.1:
+            x_metric.pop(0)
     if sub_problem_suffix == 'player_tracker-extra_players':
         x_metric = extra_players_in_frame
     if sub_problem_suffix == 'player_tracker-not_detected_players':
@@ -166,10 +178,45 @@ def print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx
             boxpoints=False,
             hoverinfo="x",
             boxmean=True,
-            legendrank=video_idx,
+            showlegend=False,
             marker_color='forestgreen',
         )
     )
+
+    ## find if any object in fig.data contains the attribute name == "Con tracking"
+    legend_exists = False
+    for data in fig.data:
+        if data.name == "Con tracking":
+            legend_exists = True
+
+    if not legend_exists:
+        fig.update_layout(
+            showlegend=True,
+            legend=dict(
+                x=0.03,
+                y=0.97,
+            )
+        )
+
+        fig.add_trace(
+            go.Box(
+                x=[None],
+                y=[None],
+                name="Con tracking",
+                showlegend=True,
+                marker_color='forestgreen',
+            )
+        )
+
+        fig.add_trace(
+            go.Box(
+                x=[None],
+                y=[None],
+                name="Sin tracking",
+                showlegend=True,
+                marker_color='indianred',
+            )
+        )
 
 
 def print_player_detection_plot(frame_results, fig, video_name_in_chart, video_idx):
@@ -198,6 +245,8 @@ def print_player_detection_plot(frame_results, fig, video_name_in_chart, video_i
         x_metric = [good / total * 100 for good, total
                     in zip(good_detected_players_in_frame, total_players_in_frame)
                     ]
+        if 'background_subtraction' in method and x_metric[0] <= 0.1:
+            x_metric.pop(0)
     if sub_problem_suffix == 'player_detection-extra_players':
         x_metric = extra_players_in_frame
     if sub_problem_suffix == 'player_detection-not_detected_players':
@@ -377,7 +426,7 @@ config = {
         },
         'tick': None,
         'showlegend': False,
-        'x_range': [0, 100]
+        'x_range': [0, 101]
     },
     "player_tracker-extra_players": {
         'chart_title': None,
@@ -417,7 +466,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection"  # field_detection, intertia, player_sorter, player_detection
+    sub_problem_suffix = "player_tracker"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -447,7 +496,10 @@ if __name__ == '__main__':
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
             results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix.split("-")[0]
-            video_name_in_chart = "{} {}{} ".format("Video", video_id, get_video_fragment_character(fragments_per_video[video_id], next_fragment_per_video.get(video_id, 1)))
+            video_name_in_chart = "{} {}{} ".format("Video", video_id,
+                                                    get_video_fragment_character(fragments_per_video[video_id],
+                                                                                 next_fragment_per_video.get(video_id,
+                                                                                                             1)))
             next_fragment_per_video[video_id] = next_fragment_per_video.get(video_id, 1) - 1
 
             if method != "":
@@ -482,6 +534,7 @@ if __name__ == '__main__':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             video_idx -= 1
+
 
         if export_html_file:
             export_to_html_file(method, sub_problem_suffix, config)
