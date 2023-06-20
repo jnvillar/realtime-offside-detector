@@ -69,7 +69,7 @@ default_config = {
         'method': 'kmeans',
         'detect_every_amount_of_frames': 1,
         'kmeans': {
-            'parent_contour_only': False,
+            'parent_contour_only': True,
             'debug_lines': False,
             'debug': False,
             'color_percentage': (2 / 100),  # 5%

@@ -128,7 +128,7 @@ def print_player_tracker_plot(
         go.Box(
             x=x_metric,
             name=video_name_in_chart,
-            boxpoints=False,
+            boxpoints='outliers',
             hoverinfo="x",
             boxmean=True,
             legendrank=video_idx,
@@ -175,7 +175,7 @@ def print_player_tracker_plot(
         go.Box(
             x=x_metric,
             name=video_name_in_chart,
-            boxpoints=False,
+            boxpoints='outliers',
             hoverinfo="x",
             boxmean=True,
             showlegend=False,
@@ -189,13 +189,21 @@ def print_player_tracker_plot(
         if data.name == "Con tracking":
             legend_exists = True
 
+    legend = dict(
+        x=0.03,
+        y=0.97,
+    )
+
+    if 'extra_players' in sub_problem_suffix or 'not_detected_players' in sub_problem_suffix:
+        legend = dict(
+            x=0.93,
+            y=0.97,
+        )
+
     if not legend_exists:
         fig.update_layout(
             showlegend=True,
-            legend=dict(
-                x=0.03,
-                y=0.97,
-            )
+            legend=legend
         )
 
         fig.add_trace(
@@ -466,7 +474,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_tracker"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_tracker-extra_players"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']

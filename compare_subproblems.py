@@ -171,12 +171,12 @@ methods_for_strategy = {
 }
 
 if __name__ == '__main__':
-    debug = False
+    debug = True
     override_experiment = True
     strategy = ComparisonStrategy.player_tracker
 
     videos = [
-        # VideoConstants.video_12_ManchesterCity_Sevilla_66_74
+        VideoConstants.video_4_Liverpool_Benfica_422_432
     ]
 
     if len(videos) == 0:
