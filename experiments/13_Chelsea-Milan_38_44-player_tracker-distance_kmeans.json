@@ -2,9 +2,9 @@
   "frame_results": [
     {
       "expected_players": 17,
-      "detected_players": 17,
+      "detected_players": 16,
       "correctly_detected_players": 15,
-      "extra_detected_players": 2,
+      "extra_detected_players": 1,
       "not_detected_players": 2
     },
     {
@@ -93,9 +93,9 @@
     },
     {
       "expected_players": 10,
-      "detected_players": 13,
+      "detected_players": 10,
       "correctly_detected_players": 10,
-      "extra_detected_players": 3,
+      "extra_detected_players": 0,
       "not_detected_players": 0
     },
     {

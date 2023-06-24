@@ -142,50 +142,50 @@ methods_for_strategy = {
         },
     },
     'player_tracker': {
-        # 'distance_edges': {
-        #     'player_tracker': {
-        #         'method': 'distance',
-        #     },
-        #     'player_detector': {
-        #         'method': 'edges',
-        #     },
-        #     'field_detector': {
-        #         'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'distance_otsu': {
-        #     'player_tracker': {
-        #         'method': 'distance',
-        #     },
-        #     'player_detector': {
-        #         'method': 'otsu',
-        #     },
-        #     'field_detector': {
-        #          'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'distance_by_color': {
-        #     'player_tracker': {
-        #         'method': 'distance',
-        #     },
-        #     'player_detector': {
-        #         'method': 'by_color',
-        #     },
-        #     'field_detector': {
-        #         'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'distance_background_subtraction': {
-        #     'player_tracker': {
-        #         'method': 'distance',
-        #     },
-        #     'player_detector': {
-        #         'method': 'background_subtraction',
-        #     },
-        #      'field_detector': {
-        #          'method': 'ground_pixels_detection',
-        #     },
-        # },
+        'distance_edges': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'edges',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+        'distance_otsu': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'otsu',
+            },
+            'field_detector': {
+                 'method': 'ground_pixels_detection',
+            },
+        },
+        'distance_by_color': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'by_color',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+        'distance_background_subtraction': {
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'background_subtraction',
+            },
+             'field_detector': {
+                 'method': 'ground_pixels_detection',
+            },
+        },
         'distance_kmeans': {
             'player_tracker': {
                 'method': 'distance',
@@ -201,12 +201,12 @@ methods_for_strategy = {
 }
 
 if __name__ == '__main__':
-    debug = True
+    debug = False
     override_experiment = True
-    strategy = ComparisonStrategy.player_detector
+    strategy = ComparisonStrategy.player_tracker
 
     videos = [
-        VideoConstants.video_1_Arsenal_Chelsea_107_122
+        VideoConstants.video_3_Inter_Roma_55_67
     ]
 
     if len(videos) == 0:
