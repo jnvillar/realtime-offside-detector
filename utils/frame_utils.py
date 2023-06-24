@@ -1,7 +1,5 @@
 from utils.utils import ScreenManager
 from sklearn.cluster import KMeans
-from skimage.segmentation import felzenszwalb
-from skimage.segmentation import mark_boundaries
 
 from PIL import Image, ImageOps
 from random import random
