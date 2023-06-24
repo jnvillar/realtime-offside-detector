@@ -54,8 +54,7 @@ class OffsideLineDetector:
         # detect field
         soccer_video, field_mask = self.field_detector.detect_field(soccer_video)
         # get vanishing point
-        # vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
-        vanishing_point = (0, 0)
+        vanishing_point, vanishing_point_segments = self.vanishing_point_finder.find_vanishing_point(soccer_video)
         # find players
         players = self.player_detector.detect_players(soccer_video)
         # track players
@@ -66,7 +65,7 @@ class OffsideLineDetector:
         players = self.team_classifier.classify_teams(soccer_video, players)
         # detect orientation
         orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
-        # # mark last defending player
+        # mark last defending player
         self.player_finder.find_last_defending_player(players, orientation)
         # detect offside line
         offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
