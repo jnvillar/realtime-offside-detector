@@ -246,11 +246,11 @@ def sum_black_pixels(frame, box: Box):
     return black_pixels
 
 
-def is_area_black(frame, box: Box):
+def is_area_black(frame, box: Box, percentage=0.48):
     black_pixels = sum_black_pixels(frame, box)
     box_pixels = box.w * box.h
 
-    if black_pixels > (box_pixels * 0.48):
+    if black_pixels > (box_pixels * percentage):
         return True
     return False
 
@@ -570,9 +570,9 @@ def remove_mask(frame, params):
 def transform_matrix_gray_range(original_frame, params=None):
     old_min, old_max, new_min, new_max = \
         params.get('old_min'), \
-        params.get('old_max'), \
-        params.get('new_min', 0), \
-        params.get('new_max', 255)
+            params.get('old_max'), \
+            params.get('new_min', 0), \
+            params.get('new_max', 255)
 
     scale = (new_max - new_min) / (old_max - old_min)
     res = (original_frame - old_min) * scale

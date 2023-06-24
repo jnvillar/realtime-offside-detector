@@ -265,12 +265,12 @@ class IntertiaComparisonStrategy:
 
         inertias, k = calculate_optimal_k(video.get_current_frame())
         return {
-                   'inertias': inertias,
-                   'k': k
-               }, {
-                   'inertias': inertias,
-                   'k': k
-               }
+            'inertias': inertias,
+            'k': k
+        }, {
+            'inertias': inertias,
+            'k': k
+        }
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
         return
@@ -371,6 +371,7 @@ class PlayerDetectorComparisonStrategy:
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video, detect_field=False)
+
         return self.frame_data_comparator.compare_players(expected_frame_data, detected_frame_data), detected_frame_data
 
     def detect_only(self, video, detect_field=True):
@@ -379,6 +380,11 @@ class PlayerDetectorComparisonStrategy:
 
         players = self.player_detector.detect_players(video)
         players = self.player_tracker.track_players(video, players=players)
+
+        # filter players whose pixels are all black because tracking failed because of bad field detection in the middle frames
+        players = [
+            player for player in players if not is_area_black(video.get_current_frame(), player.get_box(), percentage=0.5)
+        ]
 
         detected_frame_data = self._build_frame_data(video, players)
         return detected_frame_data
@@ -403,6 +409,7 @@ class PlayerDetectorComparisonStrategy:
             .set_frame_width(width) \
             .set_players_from_domain_players(players) \
             .build()
+
 
 class FieldDetectorComparisonStrategy:
 
