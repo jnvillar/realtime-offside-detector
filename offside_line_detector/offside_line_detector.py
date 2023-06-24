@@ -54,35 +54,34 @@ class OffsideLineDetector:
         # detect field
         soccer_video, field_mask = self.field_detector.detect_field(soccer_video)
         # get vanishing point
-        # vanishing_point = self.vanishing_point_finder.find_vanishing_point(soccer_video)
-        vanishing_point = (0, 0)
+        vanishing_point, vanishing_point_segments = self.vanishing_point_finder.find_vanishing_point(soccer_video)
         # find players
-        # players = self.player_detector.detect_players(soccer_video)
-        # # track players
-        # players = self.player_tracker.track_players(soccer_video, players)
-        # # classify players in teams
-        # players = self.player_sorter.sort_players(soccer_video, players)
-        # # detect and attacking team
-        # players = self.team_classifier.classify_teams(soccer_video, players)
-        # # detect orientation
-        # orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
-        # # # mark last defending player
-        # self.player_finder.find_last_defending_player(players, orientation)
-        # # detect offside line
-        # offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
-        # # dray offside line
-        # soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
-        #
-        # if self.params.get('show_players', False):
-        #     # draw players
-        #     soccer_video = frame_utils.draw_players(soccer_video, players)
+        players = self.player_detector.detect_players(soccer_video)
+        # track players
+        players = self.player_tracker.track_players(soccer_video, players)
+        # classify players in teams
+        players = self.player_sorter.sort_players(soccer_video, players)
+        # detect and attacking team
+        players = self.team_classifier.classify_teams(soccer_video, players)
+        # detect orientation
+        orientation = self.orientation_detector.detect_orientation(soccer_video, vanishing_point)
+        # mark last defending player
+        self.player_finder.find_last_defending_player(players, orientation)
+        # detect offside line
+        offside_line = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
+        # dray offside line
+        soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
+
+        if self.params.get('show_players', False):
+            # draw players
+            soccer_video = frame_utils.draw_players(soccer_video, players)
 
         return OffsideLineDetectorResult(
             video=soccer_video,
-            players=[],
+            players=players,
             vanishing_point=vanishing_point,
             field_mask=field_mask,
-            play_orientation=None
+            play_orientation=orientation
         )
 
     def detect_and_draw_offside_line(self, soccer_video: Video, video_data: [FrameData]):
