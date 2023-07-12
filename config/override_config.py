@@ -9,7 +9,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(109, 606), (963, 369)], [(495, 851), (1562, 410)]]
-            }
+            },
+            'central_circle_axis': [[(894, 440), (1378, 440)], [(894, 440), (894, 347)]]
         },
         'player_detector': {
             'by_color': {
@@ -26,7 +27,8 @@ override_config = {
             'hough': {
                 'hough_lines_threshold': 400,
                 'vp_segments_first_frame': [[(376, 1043), (894, 295)], [(753, 1076), (1096, 301)]]
-            }
+            },
+            'central_circle_axis': [[(919, 722), (1532, 722)], [(919, 722), (919, 571)]]
         },
         'player_detector': {
             'by_color': {
@@ -47,7 +49,8 @@ override_config = {
             'hough': {
                 'hough_lines_threshold': 400,
                 'vp_segments_first_frame': [[(542, 1055), (1115, 482)], [(980, 1069), (1434, 474)]]
-            }
+            },
+            'central_circle_axis': [[(919, 722), (1532, 722)], [(919, 722), (919, 571)]]
         },
         'player_detector': {
             'by_color': {
@@ -110,7 +113,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(132, 586), (800, 330)], [(456, 867), (1345, 341)]]
-            }
+            },
+            'central_circle_axis': [[(861, 557), (1392, 557)], [(861, 557), (861, 460)]]
         }
     },
     VideoConstants.video_3_Inter_Roma_147_158: {
@@ -118,7 +122,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(308, 1031), (599, 296)], [(1466, 1036), (1185, 306)]]
-            }
+            },
+            'central_circle_axis': [[(861, 557), (1392, 557)], [(861, 557), (861, 460)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -156,7 +161,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1102, 987), (828, 266)], [(1606, 989), (1100, 306)]]
-            }
+            },
+            'central_circle_axis': [[(585, 579), (1147, 579)], [(585, 579), (585, 467)]]
         },
         'player_detector': {
             'by_color': {
@@ -169,7 +175,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(826, 979), (557, 286)], [(1378, 989), (848, 289)]]
-            }
+            },
+            'central_circle_axis': [[(585, 579), (1147, 579)], [(585, 579), (585, 467)]]
         },
         'player_detector': {
             'by_color': {
@@ -185,7 +192,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1317, 1011), (846, 263)], [(1857, 968), (1181, 260)]]
-            }
+            },
+            'central_circle_axis': [[(143, 652), (848, 652)], [(143, 652), (143, 524)]]
         },
         'player_detector': {
             'by_color': {
@@ -214,7 +222,8 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(426, 963), (1116, 85)], [(1028, 938), (1396, 52)]]
                 # Not detecting very well on this video. Tweak other parameters
-            }
+            },
+            'central_circle_axis': [[(1638, 296), (1163, 278)], [(1638, 296), (1647, 194)]]
         },
         'player_detector': {
             'by_color': {
@@ -241,7 +250,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(706, 996), (898, 399)], [(1511, 997), (1253, 405)]]
-            }
+            },
+            'central_circle_axis': [[(446, 612), (815, 590)], [(446, 612), (437, 536)]]
         }
     },
     VideoConstants.video_7_Psg_Angers_156_167: {
@@ -288,7 +298,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1392, 1037), (1107, 375)], [(1778, 1018), (1280, 394)]]
-            }
+            },
+            'central_circle_axis': [[(475, 597), (886, 581)], [(475, 597), (466, 512)]]
         }
     },
     VideoConstants.video_8_Roma_Ludogrets_503_510: {
@@ -297,7 +308,8 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]]
                 # Not detecting anything on this video. Tweak other parameters
-            }
+            },
+            'central_circle_axis': [[(1712, 474), (1112, 462)], [(1712, 474), (1713, 379)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -330,7 +342,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(821, 1047), (489, 149)], [(308, 1061), (257, 134)]]
-            }
+            },
+            'central_circle_axis': [[(389, 389), (847, 379)], [(389, 389), (384, 284)]]
         },
         'player_detector': {
             'by_color': {
@@ -348,7 +361,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1124, 1039), (453, 405)], [(1549, 992), (718, 391)]]
-            }
+            },
+            'central_circle_axis': [[(389, 701), (998, 687)], [(389, 701), (386, 576)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -386,7 +400,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(604, 1041), (1299, 362)], [(1095, 1057), (1584, 360)]]
-            }
+            },
+            'central_circle_axis': [[(713, 552), (1179, 550)], [(713, 552), (712, 456)]]
         }
     },
     VideoConstants.video_10_Italia_Alemania_548_555: {
@@ -394,7 +409,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1141, 1007), (264, 419)], [(1392, 702), (643, 358)]]
-            }
+            },
+            'central_circle_axis': [[(713, 552), (1179, 550)], [(713, 552), (712, 456)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -437,7 +453,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(163, 1053), (1068, 444)], [(13, 532), (657, 246)]]
-            }
+            },
+            'central_circle_axis': [[(1905, 601), (1476, 567)], [(1905, 601), (1916, 471)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -467,7 +484,8 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(411, 1039), (1305, 306)], [(1148, 1075), (1641, 323)]]
                 # Not detecting anything on this video. Tweak other parameters
-            }
+            },
+            'central_circle_axis': [[(1918, 665), (1176, 626)], [(1918, 665), (1916, 510)]]
         },
         'player_detector': {
             'edges': {
@@ -485,7 +503,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(648, 1061), (622, 244)], [(11, 1007), (361, 302)]]
-            }
+            },
+            'central_circle_axis': [[(634, 481), (1171, 474)], [(634, 481), (630, 388)]]
         },
         'player_detector': {
             'by_color': {
@@ -501,7 +520,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(1567, 1052), (670, 289)], [(1884, 703), (1200, 318)]]
-            }
+            },
+            'central_circle_axis': [[(29, 590), (507, 566)], [(29, 590), (22, 474)]]
         },
         'player_detector': {
             'by_color': {
@@ -518,7 +538,8 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(944, 1046), (930, 276)], [(1561, 1044), (1262, 491)]]
                 # Not detecting anything on this video. Tweak other parameters
-            }
+            },
+            'central_circle_axis': [[(931, 486), (1434, 486)], [(931, 486), (931, 394)]]
         },
         'player_detector': {
             'by_color': {
@@ -586,7 +607,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]]
-            }
+            },
+            'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -614,7 +636,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]]
-            }
+            },
+            'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
         },
         'player_detector': {
             'by_color': {
@@ -726,7 +749,8 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(890, 779), (1785, 253)], [(1543, 1071), (1917, 656)]]
-            }
+            },
+            'central_circle_axis': [[(710, 485), (1072, 486)], [(710, 485), (710, 406)]]
         }
     },
     VideoConstants.video_18_Sevilla_Valladolid_29_38: {
@@ -735,7 +759,8 @@ override_config = {
             'hough': {
                 'vp_segments_first_frame': [[(750, 1043), (737, 365)], [(174, 1029), (527, 400)]]
                 # Not detecting anything on this video. Tweak other parameters
-            }
+            },
+            'central_circle_axis': [[(936, 510), (1436, 510)], [(936, 510), (936, 429)]]
         },
         'player_detector': {
             'by_color': {

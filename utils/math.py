@@ -71,3 +71,18 @@ def is_point_above_line(point, line: Line):
 # Unit conversion function that converts degrees to radians
 def degrees_to_radians(degrees):
     return degrees * np.pi / 180
+
+
+# Calculates the angle between the given vector and the vector given by the x-axis (i.e (1, 0) vector). The
+# given vector is expected to be a 2d vector, i.e an (x, y) vector
+# Reference: https://www.omnicalculator.com/math/angle-between-two-vectors
+def calculate_angle_from_vector(vector):
+    numerator = vector[0]
+    denominator = math.sqrt(pow(vector[0], 2) + pow(vector[1], 2))
+    return math.acos(numerator / denominator)
+
+
+# Calculates the location in an ellipse border from the given angle (in radians). The ellipse is defined by the given
+# major and minor radius, with centroid in (0, 0)
+def get_ellipse_point_from_angle(major_radius, minor_radius, angle):
+    return major_radius * math.cos(angle), minor_radius * math.sin(angle)

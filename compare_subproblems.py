@@ -84,6 +84,9 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 methods_for_strategy = {
+    'vanishing_point_finder': {
+        'hough' : {}
+    },
     'player_detection': {
         # 'edges': {
         #     'player_tracker': {
@@ -203,7 +206,7 @@ methods_for_strategy = {
 if __name__ == '__main__':
     debug = True
     override_experiment = True
-    strategy = ComparisonStrategy.player_tracker
+    strategy = ComparisonStrategy.vanishing_point_finder
 
     videos = [
         VideoConstants.video_10_Italia_Alemania_78_94
