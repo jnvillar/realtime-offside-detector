@@ -7,7 +7,49 @@
       "extra_field_pixels": 1343,
       "extra_field_percentage": 0.0010291408551294588,
       "total_difference_percentage": 0.019572833746624448,
-      "jaccard_index": 0.9804472887473542
+      "jaccard_index": 0.9804472887473542,
+      "type": "detect_and_compare",
+      "time": "34.11ms"
+    },
+    {
+      "frame_number": 2,
+      "type": "detect_only",
+      "time": "33.0ms"
+    },
+    {
+      "frame_number": 3,
+      "type": "detect_only",
+      "time": "32.39ms"
+    },
+    {
+      "frame_number": 4,
+      "type": "detect_only",
+      "time": "34.16ms"
+    },
+    {
+      "frame_number": 5,
+      "type": "detect_only",
+      "time": "32.41ms"
+    },
+    {
+      "frame_number": 6,
+      "type": "detect_only",
+      "time": "32.58ms"
+    },
+    {
+      "frame_number": 7,
+      "type": "detect_only",
+      "time": "33.01ms"
+    },
+    {
+      "frame_number": 8,
+      "type": "detect_only",
+      "time": "32.58ms"
+    },
+    {
+      "frame_number": 9,
+      "type": "detect_only",
+      "time": "33.15ms"
     },
     {
       "frame_number": 10,
@@ -16,7 +58,54 @@
       "extra_field_pixels": 2242,
       "extra_field_percentage": 0.0017279303525378688,
       "total_difference_percentage": 0.018853862718168548,
-      "jaccard_index": 0.9811786592477927
+      "jaccard_index": 0.9811786592477927,
+      "type": "detect_and_compare",
+      "time": "32.57ms"
+    },
+    {
+      "frame_number": 11,
+      "type": "detect_only",
+      "time": "31.97ms"
+    },
+    {
+      "frame_number": 12,
+      "type": "detect_only",
+      "time": "31.78ms"
+    },
+    {
+      "frame_number": 13,
+      "type": "detect_only",
+      "time": "33.18ms"
+    },
+    {
+      "frame_number": 14,
+      "type": "detect_only",
+      "time": "32.73ms"
+    },
+    {
+      "frame_number": 15,
+      "type": "detect_only",
+      "time": "32.23ms"
+    },
+    {
+      "frame_number": 16,
+      "type": "detect_only",
+      "time": "31.79ms"
+    },
+    {
+      "frame_number": 17,
+      "type": "detect_only",
+      "time": "32.51ms"
+    },
+    {
+      "frame_number": 18,
+      "type": "detect_only",
+      "time": "33.14ms"
+    },
+    {
+      "frame_number": 19,
+      "type": "detect_only",
+      "time": "31.53ms"
     },
     {
       "frame_number": 20,
@@ -25,7 +114,54 @@
       "extra_field_pixels": 32239,
       "extra_field_percentage": 0.024853334566787698,
       "total_difference_percentage": 0.03831803079010461,
-      "jaccard_index": 0.9626112054303829
+      "jaccard_index": 0.9626112054303829,
+      "type": "detect_and_compare",
+      "time": "32.09ms"
+    },
+    {
+      "frame_number": 21,
+      "type": "detect_only",
+      "time": "35.32ms"
+    },
+    {
+      "frame_number": 22,
+      "type": "detect_only",
+      "time": "32.89ms"
+    },
+    {
+      "frame_number": 23,
+      "type": "detect_only",
+      "time": "32.42ms"
+    },
+    {
+      "frame_number": 24,
+      "type": "detect_only",
+      "time": "33.22ms"
+    },
+    {
+      "frame_number": 25,
+      "type": "detect_only",
+      "time": "33.9ms"
+    },
+    {
+      "frame_number": 26,
+      "type": "detect_only",
+      "time": "31.62ms"
+    },
+    {
+      "frame_number": 27,
+      "type": "detect_only",
+      "time": "31.81ms"
+    },
+    {
+      "frame_number": 28,
+      "type": "detect_only",
+      "time": "32.68ms"
+    },
+    {
+      "frame_number": 29,
+      "type": "detect_only",
+      "time": "31.91ms"
     },
     {
       "frame_number": 30,
@@ -34,7 +170,54 @@
       "extra_field_pixels": 33360,
       "extra_field_percentage": 0.02579366153241875,
       "total_difference_percentage": 0.037755704025465825,
-      "jaccard_index": 0.9631936660935659
+      "jaccard_index": 0.9631936660935659,
+      "type": "detect_and_compare",
+      "time": "34.49ms"
+    },
+    {
+      "frame_number": 31,
+      "type": "detect_only",
+      "time": "32.38ms"
+    },
+    {
+      "frame_number": 32,
+      "type": "detect_only",
+      "time": "32.83ms"
+    },
+    {
+      "frame_number": 33,
+      "type": "detect_only",
+      "time": "32.84ms"
+    },
+    {
+      "frame_number": 34,
+      "type": "detect_only",
+      "time": "32.27ms"
+    },
+    {
+      "frame_number": 35,
+      "type": "detect_only",
+      "time": "32.99ms"
+    },
+    {
+      "frame_number": 36,
+      "type": "detect_only",
+      "time": "31.82ms"
+    },
+    {
+      "frame_number": 37,
+      "type": "detect_only",
+      "time": "32.95ms"
+    },
+    {
+      "frame_number": 38,
+      "type": "detect_only",
+      "time": "32.7ms"
+    },
+    {
+      "frame_number": 39,
+      "type": "detect_only",
+      "time": "33.84ms"
     },
     {
       "frame_number": 40,
@@ -43,7 +226,54 @@
       "extra_field_pixels": 25713,
       "extra_field_percentage": 0.01982765600601469,
       "total_difference_percentage": 0.03227883484664469,
-      "jaccard_index": 0.9683487355372775
+      "jaccard_index": 0.9683487355372775,
+      "type": "detect_and_compare",
+      "time": "31.91ms"
+    },
+    {
+      "frame_number": 41,
+      "type": "detect_only",
+      "time": "35.43ms"
+    },
+    {
+      "frame_number": 42,
+      "type": "detect_only",
+      "time": "34.0ms"
+    },
+    {
+      "frame_number": 43,
+      "type": "detect_only",
+      "time": "32.72ms"
+    },
+    {
+      "frame_number": 44,
+      "type": "detect_only",
+      "time": "32.11ms"
+    },
+    {
+      "frame_number": 45,
+      "type": "detect_only",
+      "time": "32.3ms"
+    },
+    {
+      "frame_number": 46,
+      "type": "detect_only",
+      "time": "32.15ms"
+    },
+    {
+      "frame_number": 47,
+      "type": "detect_only",
+      "time": "33.24ms"
+    },
+    {
+      "frame_number": 48,
+      "type": "detect_only",
+      "time": "32.26ms"
+    },
+    {
+      "frame_number": 49,
+      "type": "detect_only",
+      "time": "33.57ms"
     },
     {
       "frame_number": 50,
@@ -52,7 +282,54 @@
       "extra_field_pixels": 22502,
       "extra_field_percentage": 0.017058225541247293,
       "total_difference_percentage": 0.031870271974916785,
-      "jaccard_index": 0.9686642601430647
+      "jaccard_index": 0.9686642601430647,
+      "type": "detect_and_compare",
+      "time": "32.68ms"
+    },
+    {
+      "frame_number": 51,
+      "type": "detect_only",
+      "time": "31.66ms"
+    },
+    {
+      "frame_number": 52,
+      "type": "detect_only",
+      "time": "33.46ms"
+    },
+    {
+      "frame_number": 53,
+      "type": "detect_only",
+      "time": "32.34ms"
+    },
+    {
+      "frame_number": 54,
+      "type": "detect_only",
+      "time": "31.91ms"
+    },
+    {
+      "frame_number": 55,
+      "type": "detect_only",
+      "time": "33.85ms"
+    },
+    {
+      "frame_number": 56,
+      "type": "detect_only",
+      "time": "33.52ms"
+    },
+    {
+      "frame_number": 57,
+      "type": "detect_only",
+      "time": "31.89ms"
+    },
+    {
+      "frame_number": 58,
+      "type": "detect_only",
+      "time": "33.2ms"
+    },
+    {
+      "frame_number": 59,
+      "type": "detect_only",
+      "time": "32.99ms"
     },
     {
       "frame_number": 60,
@@ -61,7 +338,54 @@
       "extra_field_pixels": 8473,
       "extra_field_percentage": 0.006230774717747302,
       "total_difference_percentage": 0.02629823739597298,
-      "jaccard_index": 0.973864606353995
+      "jaccard_index": 0.973864606353995,
+      "type": "detect_and_compare",
+      "time": "33.7ms"
+    },
+    {
+      "frame_number": 61,
+      "type": "detect_only",
+      "time": "34.25ms"
+    },
+    {
+      "frame_number": 62,
+      "type": "detect_only",
+      "time": "32.91ms"
+    },
+    {
+      "frame_number": 63,
+      "type": "detect_only",
+      "time": "33.7ms"
+    },
+    {
+      "frame_number": 64,
+      "type": "detect_only",
+      "time": "34.2ms"
+    },
+    {
+      "frame_number": 65,
+      "type": "detect_only",
+      "time": "33.64ms"
+    },
+    {
+      "frame_number": 66,
+      "type": "detect_only",
+      "time": "32.97ms"
+    },
+    {
+      "frame_number": 67,
+      "type": "detect_only",
+      "time": "34.72ms"
+    },
+    {
+      "frame_number": 68,
+      "type": "detect_only",
+      "time": "33.17ms"
+    },
+    {
+      "frame_number": 69,
+      "type": "detect_only",
+      "time": "35.02ms"
     },
     {
       "frame_number": 70,
@@ -70,7 +394,54 @@
       "extra_field_pixels": 18814,
       "extra_field_percentage": 0.013467015689567178,
       "total_difference_percentage": 0.027931137409514237,
-      "jaccard_index": 0.9724400133629314
+      "jaccard_index": 0.9724400133629314,
+      "type": "detect_and_compare",
+      "time": "34.18ms"
+    },
+    {
+      "frame_number": 71,
+      "type": "detect_only",
+      "time": "32.92ms"
+    },
+    {
+      "frame_number": 72,
+      "type": "detect_only",
+      "time": "33.52ms"
+    },
+    {
+      "frame_number": 73,
+      "type": "detect_only",
+      "time": "33.19ms"
+    },
+    {
+      "frame_number": 74,
+      "type": "detect_only",
+      "time": "33.95ms"
+    },
+    {
+      "frame_number": 75,
+      "type": "detect_only",
+      "time": "34.32ms"
+    },
+    {
+      "frame_number": 76,
+      "type": "detect_only",
+      "time": "34.13ms"
+    },
+    {
+      "frame_number": 77,
+      "type": "detect_only",
+      "time": "34.65ms"
+    },
+    {
+      "frame_number": 78,
+      "type": "detect_only",
+      "time": "32.54ms"
+    },
+    {
+      "frame_number": 79,
+      "type": "detect_only",
+      "time": "36.0ms"
     },
     {
       "frame_number": 80,
@@ -79,7 +450,54 @@
       "extra_field_pixels": 10430,
       "extra_field_percentage": 0.0073471141620380315,
       "total_difference_percentage": 0.021689131835968455,
-      "jaccard_index": 0.9784690584496184
+      "jaccard_index": 0.9784690584496184,
+      "type": "detect_and_compare",
+      "time": "33.45ms"
+    },
+    {
+      "frame_number": 81,
+      "type": "detect_only",
+      "time": "33.76ms"
+    },
+    {
+      "frame_number": 82,
+      "type": "detect_only",
+      "time": "33.84ms"
+    },
+    {
+      "frame_number": 83,
+      "type": "detect_only",
+      "time": "34.31ms"
+    },
+    {
+      "frame_number": 84,
+      "type": "detect_only",
+      "time": "34.16ms"
+    },
+    {
+      "frame_number": 85,
+      "type": "detect_only",
+      "time": "34.33ms"
+    },
+    {
+      "frame_number": 86,
+      "type": "detect_only",
+      "time": "33.56ms"
+    },
+    {
+      "frame_number": 87,
+      "type": "detect_only",
+      "time": "37.81ms"
+    },
+    {
+      "frame_number": 88,
+      "type": "detect_only",
+      "time": "33.49ms"
+    },
+    {
+      "frame_number": 89,
+      "type": "detect_only",
+      "time": "33.12ms"
     },
     {
       "frame_number": 90,
@@ -88,7 +506,54 @@
       "extra_field_pixels": 5435,
       "extra_field_percentage": 0.0038145169214356903,
       "total_difference_percentage": 0.01892449572577589,
-      "jaccard_index": 0.9811474177681602
+      "jaccard_index": 0.9811474177681602,
+      "type": "detect_and_compare",
+      "time": "33.75ms"
+    },
+    {
+      "frame_number": 91,
+      "type": "detect_only",
+      "time": "33.68ms"
+    },
+    {
+      "frame_number": 92,
+      "type": "detect_only",
+      "time": "33.72ms"
+    },
+    {
+      "frame_number": 93,
+      "type": "detect_only",
+      "time": "33.51ms"
+    },
+    {
+      "frame_number": 94,
+      "type": "detect_only",
+      "time": "33.88ms"
+    },
+    {
+      "frame_number": 95,
+      "type": "detect_only",
+      "time": "33.34ms"
+    },
+    {
+      "frame_number": 96,
+      "type": "detect_only",
+      "time": "33.5ms"
+    },
+    {
+      "frame_number": 97,
+      "type": "detect_only",
+      "time": "36.0ms"
+    },
+    {
+      "frame_number": 98,
+      "type": "detect_only",
+      "time": "33.59ms"
+    },
+    {
+      "frame_number": 99,
+      "type": "detect_only",
+      "time": "32.67ms"
     },
     {
       "frame_number": 100,
@@ -97,7 +562,54 @@
       "extra_field_pixels": 6348,
       "extra_field_percentage": 0.00441990796732276,
       "total_difference_percentage": 0.021051656804033342,
-      "jaccard_index": 0.9790409801348559
+      "jaccard_index": 0.9790409801348559,
+      "type": "detect_and_compare",
+      "time": "33.03ms"
+    },
+    {
+      "frame_number": 101,
+      "type": "detect_only",
+      "time": "34.31ms"
+    },
+    {
+      "frame_number": 102,
+      "type": "detect_only",
+      "time": "33.61ms"
+    },
+    {
+      "frame_number": 103,
+      "type": "detect_only",
+      "time": "34.97ms"
+    },
+    {
+      "frame_number": 104,
+      "type": "detect_only",
+      "time": "34.36ms"
+    },
+    {
+      "frame_number": 105,
+      "type": "detect_only",
+      "time": "34.26ms"
+    },
+    {
+      "frame_number": 106,
+      "type": "detect_only",
+      "time": "33.5ms"
+    },
+    {
+      "frame_number": 107,
+      "type": "detect_only",
+      "time": "33.14ms"
+    },
+    {
+      "frame_number": 108,
+      "type": "detect_only",
+      "time": "32.83ms"
+    },
+    {
+      "frame_number": 109,
+      "type": "detect_only",
+      "time": "34.75ms"
     },
     {
       "frame_number": 110,
@@ -106,7 +618,54 @@
       "extra_field_pixels": 13434,
       "extra_field_percentage": 0.009289691927151223,
       "total_difference_percentage": 0.020595123914421982,
-      "jaccard_index": 0.9795944374750352
+      "jaccard_index": 0.9795944374750352,
+      "type": "detect_and_compare",
+      "time": "33.4ms"
+    },
+    {
+      "frame_number": 111,
+      "type": "detect_only",
+      "time": "34.98ms"
+    },
+    {
+      "frame_number": 112,
+      "type": "detect_only",
+      "time": "33.81ms"
+    },
+    {
+      "frame_number": 113,
+      "type": "detect_only",
+      "time": "33.08ms"
+    },
+    {
+      "frame_number": 114,
+      "type": "detect_only",
+      "time": "33.49ms"
+    },
+    {
+      "frame_number": 115,
+      "type": "detect_only",
+      "time": "34.2ms"
+    },
+    {
+      "frame_number": 116,
+      "type": "detect_only",
+      "time": "33.02ms"
+    },
+    {
+      "frame_number": 117,
+      "type": "detect_only",
+      "time": "34.03ms"
+    },
+    {
+      "frame_number": 118,
+      "type": "detect_only",
+      "time": "34.25ms"
+    },
+    {
+      "frame_number": 119,
+      "type": "detect_only",
+      "time": "34.32ms"
     },
     {
       "frame_number": 120,
@@ -115,7 +674,54 @@
       "extra_field_pixels": 9875,
       "extra_field_percentage": 0.006781693342471737,
       "total_difference_percentage": 0.01755892003851315,
-      "jaccard_index": 0.9825593570536446
+      "jaccard_index": 0.9825593570536446,
+      "type": "detect_and_compare",
+      "time": "32.81ms"
+    },
+    {
+      "frame_number": 121,
+      "type": "detect_only",
+      "time": "33.27ms"
+    },
+    {
+      "frame_number": 122,
+      "type": "detect_only",
+      "time": "32.45ms"
+    },
+    {
+      "frame_number": 123,
+      "type": "detect_only",
+      "time": "34.08ms"
+    },
+    {
+      "frame_number": 124,
+      "type": "detect_only",
+      "time": "32.85ms"
+    },
+    {
+      "frame_number": 125,
+      "type": "detect_only",
+      "time": "34.0ms"
+    },
+    {
+      "frame_number": 126,
+      "type": "detect_only",
+      "time": "32.95ms"
+    },
+    {
+      "frame_number": 127,
+      "type": "detect_only",
+      "time": "33.16ms"
+    },
+    {
+      "frame_number": 128,
+      "type": "detect_only",
+      "time": "33.41ms"
+    },
+    {
+      "frame_number": 129,
+      "type": "detect_only",
+      "time": "33.52ms"
     },
     {
       "frame_number": 130,
@@ -124,7 +730,54 @@
       "extra_field_pixels": 11114,
       "extra_field_percentage": 0.007556519214595219,
       "total_difference_percentage": 0.020124654690732758,
-      "jaccard_index": 0.980026277129922
+      "jaccard_index": 0.980026277129922,
+      "type": "detect_and_compare",
+      "time": "33.42ms"
+    },
+    {
+      "frame_number": 131,
+      "type": "detect_only",
+      "time": "32.61ms"
+    },
+    {
+      "frame_number": 132,
+      "type": "detect_only",
+      "time": "34.29ms"
+    },
+    {
+      "frame_number": 133,
+      "type": "detect_only",
+      "time": "32.82ms"
+    },
+    {
+      "frame_number": 134,
+      "type": "detect_only",
+      "time": "32.41ms"
+    },
+    {
+      "frame_number": 135,
+      "type": "detect_only",
+      "time": "33.05ms"
+    },
+    {
+      "frame_number": 136,
+      "type": "detect_only",
+      "time": "32.36ms"
+    },
+    {
+      "frame_number": 137,
+      "type": "detect_only",
+      "time": "33.19ms"
+    },
+    {
+      "frame_number": 138,
+      "type": "detect_only",
+      "time": "32.29ms"
+    },
+    {
+      "frame_number": 139,
+      "type": "detect_only",
+      "time": "32.49ms"
     },
     {
       "frame_number": 140,
@@ -133,7 +786,54 @@
       "extra_field_pixels": 7040,
       "extra_field_percentage": 0.004759043026751365,
       "total_difference_percentage": 0.02099724935425059,
-      "jaccard_index": 0.9791022041553384
+      "jaccard_index": 0.9791022041553384,
+      "type": "detect_and_compare",
+      "time": "33.31ms"
+    },
+    {
+      "frame_number": 141,
+      "type": "detect_only",
+      "time": "32.77ms"
+    },
+    {
+      "frame_number": 142,
+      "type": "detect_only",
+      "time": "32.77ms"
+    },
+    {
+      "frame_number": 143,
+      "type": "detect_only",
+      "time": "35.08ms"
+    },
+    {
+      "frame_number": 144,
+      "type": "detect_only",
+      "time": "33.96ms"
+    },
+    {
+      "frame_number": 145,
+      "type": "detect_only",
+      "time": "32.14ms"
+    },
+    {
+      "frame_number": 146,
+      "type": "detect_only",
+      "time": "33.44ms"
+    },
+    {
+      "frame_number": 147,
+      "type": "detect_only",
+      "time": "33.05ms"
+    },
+    {
+      "frame_number": 148,
+      "type": "detect_only",
+      "time": "32.7ms"
+    },
+    {
+      "frame_number": 149,
+      "type": "detect_only",
+      "time": "32.87ms"
     },
     {
       "frame_number": 150,
@@ -142,7 +842,54 @@
       "extra_field_pixels": 8560,
       "extra_field_percentage": 0.00578634854367882,
       "total_difference_percentage": 0.02608791464324728,
-      "jaccard_index": 0.9740621706776781
+      "jaccard_index": 0.9740621706776781,
+      "type": "detect_and_compare",
+      "time": "32.37ms"
+    },
+    {
+      "frame_number": 151,
+      "type": "detect_only",
+      "time": "34.45ms"
+    },
+    {
+      "frame_number": 152,
+      "type": "detect_only",
+      "time": "33.8ms"
+    },
+    {
+      "frame_number": 153,
+      "type": "detect_only",
+      "time": "32.16ms"
+    },
+    {
+      "frame_number": 154,
+      "type": "detect_only",
+      "time": "32.39ms"
+    },
+    {
+      "frame_number": 155,
+      "type": "detect_only",
+      "time": "34.71ms"
+    },
+    {
+      "frame_number": 156,
+      "type": "detect_only",
+      "time": "32.99ms"
+    },
+    {
+      "frame_number": 157,
+      "type": "detect_only",
+      "time": "34.19ms"
+    },
+    {
+      "frame_number": 158,
+      "type": "detect_only",
+      "time": "35.42ms"
+    },
+    {
+      "frame_number": 159,
+      "type": "detect_only",
+      "time": "32.47ms"
     },
     {
       "frame_number": 160,
@@ -151,7 +898,54 @@
       "extra_field_pixels": 13432,
       "extra_field_percentage": 0.009227556263911406,
       "total_difference_percentage": 0.02682600093429694,
-      "jaccard_index": 0.97341927420848
+      "jaccard_index": 0.97341927420848,
+      "type": "detect_and_compare",
+      "time": "34.18ms"
+    },
+    {
+      "frame_number": 161,
+      "type": "detect_only",
+      "time": "33.31ms"
+    },
+    {
+      "frame_number": 162,
+      "type": "detect_only",
+      "time": "33.13ms"
+    },
+    {
+      "frame_number": 163,
+      "type": "detect_only",
+      "time": "36.55ms"
+    },
+    {
+      "frame_number": 164,
+      "type": "detect_only",
+      "time": "33.32ms"
+    },
+    {
+      "frame_number": 165,
+      "type": "detect_only",
+      "time": "31.61ms"
+    },
+    {
+      "frame_number": 166,
+      "type": "detect_only",
+      "time": "38.84ms"
+    },
+    {
+      "frame_number": 167,
+      "type": "detect_only",
+      "time": "34.71ms"
+    },
+    {
+      "frame_number": 168,
+      "type": "detect_only",
+      "time": "36.16ms"
+    },
+    {
+      "frame_number": 169,
+      "type": "detect_only",
+      "time": "38.83ms"
     },
     {
       "frame_number": 170,
@@ -160,16 +954,533 @@
       "extra_field_pixels": 7669,
       "extra_field_percentage": 0.005370403049834315,
       "total_difference_percentage": 0.026543894589121098,
-      "jaccard_index": 0.9735978953541908
+      "jaccard_index": 0.9735978953541908,
+      "type": "detect_and_compare",
+      "time": "34.16ms"
+    },
+    {
+      "frame_number": 171,
+      "type": "detect_only",
+      "time": "33.71ms"
+    },
+    {
+      "frame_number": 172,
+      "type": "detect_only",
+      "time": "32.6ms"
+    },
+    {
+      "frame_number": 173,
+      "type": "detect_only",
+      "time": "32.17ms"
+    },
+    {
+      "frame_number": 174,
+      "type": "detect_only",
+      "time": "33.08ms"
+    },
+    {
+      "frame_number": 175,
+      "type": "detect_only",
+      "time": "40.77ms"
+    },
+    {
+      "frame_number": 176,
+      "type": "detect_only",
+      "time": "35.75ms"
+    },
+    {
+      "frame_number": 177,
+      "type": "detect_only",
+      "time": "36.12ms"
+    },
+    {
+      "frame_number": 178,
+      "type": "detect_only",
+      "time": "36.96ms"
+    },
+    {
+      "frame_number": 179,
+      "type": "detect_only",
+      "time": "33.59ms"
+    },
+    {
+      "frame_number": 180,
+      "type": "detect_only",
+      "time": "35.25ms"
+    },
+    {
+      "frame_number": 181,
+      "type": "detect_only",
+      "time": "33.52ms"
+    },
+    {
+      "frame_number": 182,
+      "type": "detect_only",
+      "time": "33.24ms"
+    },
+    {
+      "frame_number": 183,
+      "type": "detect_only",
+      "time": "32.92ms"
+    },
+    {
+      "frame_number": 184,
+      "type": "detect_only",
+      "time": "32.77ms"
+    },
+    {
+      "frame_number": 185,
+      "type": "detect_only",
+      "time": "33.36ms"
+    },
+    {
+      "frame_number": 186,
+      "type": "detect_only",
+      "time": "34.39ms"
+    },
+    {
+      "frame_number": 187,
+      "type": "detect_only",
+      "time": "33.12ms"
+    },
+    {
+      "frame_number": 188,
+      "type": "detect_only",
+      "time": "32.59ms"
+    },
+    {
+      "frame_number": 189,
+      "type": "detect_only",
+      "time": "31.61ms"
+    },
+    {
+      "frame_number": 190,
+      "type": "detect_only",
+      "time": "31.98ms"
+    },
+    {
+      "frame_number": 191,
+      "type": "detect_only",
+      "time": "32.59ms"
+    },
+    {
+      "frame_number": 192,
+      "type": "detect_only",
+      "time": "33.16ms"
+    },
+    {
+      "frame_number": 193,
+      "type": "detect_only",
+      "time": "33.26ms"
+    },
+    {
+      "frame_number": 194,
+      "type": "detect_only",
+      "time": "33.18ms"
+    },
+    {
+      "frame_number": 195,
+      "type": "detect_only",
+      "time": "31.41ms"
+    },
+    {
+      "frame_number": 196,
+      "type": "detect_only",
+      "time": "32.38ms"
+    },
+    {
+      "frame_number": 197,
+      "type": "detect_only",
+      "time": "31.25ms"
+    },
+    {
+      "frame_number": 198,
+      "type": "detect_only",
+      "time": "33.5ms"
+    },
+    {
+      "frame_number": 199,
+      "type": "detect_only",
+      "time": "32.31ms"
+    },
+    {
+      "frame_number": 200,
+      "type": "detect_only",
+      "time": "32.76ms"
+    },
+    {
+      "frame_number": 201,
+      "type": "detect_only",
+      "time": "35.26ms"
+    },
+    {
+      "frame_number": 202,
+      "type": "detect_only",
+      "time": "34.76ms"
+    },
+    {
+      "frame_number": 203,
+      "type": "detect_only",
+      "time": "34.23ms"
+    },
+    {
+      "frame_number": 204,
+      "type": "detect_only",
+      "time": "33.79ms"
+    },
+    {
+      "frame_number": 205,
+      "type": "detect_only",
+      "time": "33.63ms"
+    },
+    {
+      "frame_number": 206,
+      "type": "detect_only",
+      "time": "33.48ms"
+    },
+    {
+      "frame_number": 207,
+      "type": "detect_only",
+      "time": "31.97ms"
+    },
+    {
+      "frame_number": 208,
+      "type": "detect_only",
+      "time": "34.1ms"
+    },
+    {
+      "frame_number": 209,
+      "type": "detect_only",
+      "time": "33.09ms"
+    },
+    {
+      "frame_number": 210,
+      "type": "detect_only",
+      "time": "31.85ms"
+    },
+    {
+      "frame_number": 211,
+      "type": "detect_only",
+      "time": "32.92ms"
+    },
+    {
+      "frame_number": 212,
+      "type": "detect_only",
+      "time": "32.99ms"
+    },
+    {
+      "frame_number": 213,
+      "type": "detect_only",
+      "time": "34.47ms"
+    },
+    {
+      "frame_number": 214,
+      "type": "detect_only",
+      "time": "33.17ms"
+    },
+    {
+      "frame_number": 215,
+      "type": "detect_only",
+      "time": "33.21ms"
+    },
+    {
+      "frame_number": 216,
+      "type": "detect_only",
+      "time": "33.15ms"
+    },
+    {
+      "frame_number": 217,
+      "type": "detect_only",
+      "time": "33.77ms"
+    },
+    {
+      "frame_number": 218,
+      "type": "detect_only",
+      "time": "34.43ms"
+    },
+    {
+      "frame_number": 219,
+      "type": "detect_only",
+      "time": "32.43ms"
+    },
+    {
+      "frame_number": 220,
+      "type": "detect_only",
+      "time": "32.44ms"
+    },
+    {
+      "frame_number": 221,
+      "type": "detect_only",
+      "time": "32.48ms"
+    },
+    {
+      "frame_number": 222,
+      "type": "detect_only",
+      "time": "32.65ms"
+    },
+    {
+      "frame_number": 223,
+      "type": "detect_only",
+      "time": "32.18ms"
+    },
+    {
+      "frame_number": 224,
+      "type": "detect_only",
+      "time": "33.51ms"
+    },
+    {
+      "frame_number": 225,
+      "type": "detect_only",
+      "time": "32.56ms"
+    },
+    {
+      "frame_number": 226,
+      "type": "detect_only",
+      "time": "31.99ms"
+    },
+    {
+      "frame_number": 227,
+      "type": "detect_only",
+      "time": "31.87ms"
+    },
+    {
+      "frame_number": 228,
+      "type": "detect_only",
+      "time": "34.7ms"
+    },
+    {
+      "frame_number": 229,
+      "type": "detect_only",
+      "time": "32.92ms"
+    },
+    {
+      "frame_number": 230,
+      "type": "detect_only",
+      "time": "32.09ms"
+    },
+    {
+      "frame_number": 231,
+      "type": "detect_only",
+      "time": "31.84ms"
+    },
+    {
+      "frame_number": 232,
+      "type": "detect_only",
+      "time": "32.31ms"
+    },
+    {
+      "frame_number": 233,
+      "type": "detect_only",
+      "time": "32.13ms"
+    },
+    {
+      "frame_number": 234,
+      "type": "detect_only",
+      "time": "33.22ms"
+    },
+    {
+      "frame_number": 235,
+      "type": "detect_only",
+      "time": "34.9ms"
+    },
+    {
+      "frame_number": 236,
+      "type": "detect_only",
+      "time": "34.07ms"
+    },
+    {
+      "frame_number": 237,
+      "type": "detect_only",
+      "time": "31.95ms"
+    },
+    {
+      "frame_number": 238,
+      "type": "detect_only",
+      "time": "34.12ms"
+    },
+    {
+      "frame_number": 239,
+      "type": "detect_only",
+      "time": "33.08ms"
+    },
+    {
+      "frame_number": 240,
+      "type": "detect_only",
+      "time": "32.69ms"
+    },
+    {
+      "frame_number": 241,
+      "type": "detect_only",
+      "time": "32.85ms"
+    },
+    {
+      "frame_number": 242,
+      "type": "detect_only",
+      "time": "35.15ms"
+    },
+    {
+      "frame_number": 243,
+      "type": "detect_only",
+      "time": "32.37ms"
+    },
+    {
+      "frame_number": 244,
+      "type": "detect_only",
+      "time": "32.25ms"
+    },
+    {
+      "frame_number": 245,
+      "type": "detect_only",
+      "time": "31.92ms"
+    },
+    {
+      "frame_number": 246,
+      "type": "detect_only",
+      "time": "32.34ms"
+    },
+    {
+      "frame_number": 247,
+      "type": "detect_only",
+      "time": "32.75ms"
+    },
+    {
+      "frame_number": 248,
+      "type": "detect_only",
+      "time": "32.07ms"
+    },
+    {
+      "frame_number": 249,
+      "type": "detect_only",
+      "time": "33.48ms"
+    },
+    {
+      "frame_number": 250,
+      "type": "detect_only",
+      "time": "33.89ms"
+    },
+    {
+      "frame_number": 251,
+      "type": "detect_only",
+      "time": "33.01ms"
+    },
+    {
+      "frame_number": 252,
+      "type": "detect_only",
+      "time": "32.33ms"
+    },
+    {
+      "frame_number": 253,
+      "type": "detect_only",
+      "time": "33.7ms"
+    },
+    {
+      "frame_number": 254,
+      "type": "detect_only",
+      "time": "32.21ms"
+    },
+    {
+      "frame_number": 255,
+      "type": "detect_only",
+      "time": "31.69ms"
+    },
+    {
+      "frame_number": 256,
+      "type": "detect_only",
+      "time": "32.69ms"
+    },
+    {
+      "frame_number": 257,
+      "type": "detect_only",
+      "time": "36.47ms"
+    },
+    {
+      "frame_number": 258,
+      "type": "detect_only",
+      "time": "32.67ms"
+    },
+    {
+      "frame_number": 259,
+      "type": "detect_only",
+      "time": "33.11ms"
+    },
+    {
+      "frame_number": 260,
+      "type": "detect_only",
+      "time": "34.2ms"
+    },
+    {
+      "frame_number": 261,
+      "type": "detect_only",
+      "time": "32.9ms"
+    },
+    {
+      "frame_number": 262,
+      "type": "detect_only",
+      "time": "33.37ms"
+    },
+    {
+      "frame_number": 263,
+      "type": "detect_only",
+      "time": "32.77ms"
+    },
+    {
+      "frame_number": 264,
+      "type": "detect_only",
+      "time": "32.69ms"
+    },
+    {
+      "frame_number": 265,
+      "type": "detect_only",
+      "time": "32.96ms"
+    },
+    {
+      "frame_number": 266,
+      "type": "detect_only",
+      "time": "32.04ms"
+    },
+    {
+      "frame_number": 267,
+      "type": "detect_only",
+      "time": "32.53ms"
+    },
+    {
+      "frame_number": 268,
+      "type": "detect_only",
+      "time": "31.74ms"
+    },
+    {
+      "frame_number": 269,
+      "type": "detect_only",
+      "time": "32.76ms"
+    },
+    {
+      "frame_number": 270,
+      "type": "detect_only",
+      "time": "32.21ms"
+    },
+    {
+      "frame_number": 271,
+      "type": "detect_only",
+      "time": "35.01ms"
+    },
+    {
+      "frame_number": 272,
+      "type": "detect_only",
+      "time": "32.29ms"
+    },
+    {
+      "frame_number": 273,
+      "type": "detect_only",
+      "time": "32.25ms"
     }
   ],
   "aggregations": {
-    "frame_number_avg": 85.05555555555556,
-    "missing_field_pixels_avg": 21597.166666666668,
-    "missing_field_percentage_avg": 0.015496523430951823,
-    "extra_field_pixels_avg": 13223.5,
-    "extra_field_percentage_avg": 0.009685585204480048,
-    "total_difference_percentage_avg": 0.02518210863543187,
-    "jaccard_index_avg": 0.9750981948512939
+    "frame_number_avg": 137.0,
+    "missing_field_pixels_avg": 1547.2710622710622,
+    "missing_field_percentage_avg": 0.001114308507510678,
+    "extra_field_pixels_avg": 371.9230769230769,
+    "extra_field_percentage_avg": 0.0002600948535186117,
+    "total_difference_percentage_avg": 0.00137440336102929,
+    "jaccard_index_avg": 0.0645652044024597
   }
 }

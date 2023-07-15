@@ -41,10 +41,10 @@ class FieldDetector:
     def detect_field(self, video: Video):
         Timer.start('detecting field')
         self.video = video
-        res = self.method_implementations[self.method]()
+        result_video, mask = self.method_implementations[self.method]()
         elapsed_time = Timer.stop('detecting field')
         self.log.log("detecting field", {"cost": elapsed_time})
-        return res, elapsed_time
+        return result_video, mask, elapsed_time
 
     def by_green_detection(self):
         return self.run_steps_pipeline(self.by_green_detection_pipeline())
@@ -186,7 +186,8 @@ class FieldDetector:
             self.screen_manager.show_frame(edges_v, "Canny V")
             self.screen_manager.show_frame(edges_v_non_dilated, "Canny V non dilated")
 
-        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=math.radians(85), max_theta=math.radians(95))
+        lines = cv2.HoughLines(edges_v_non_dilated, 1, np.pi / 180, 450, min_theta=math.radians(85),
+                               max_theta=math.radians(95))
         max_rho = -1
         theta_to_draw = -1
         if lines is not None:
@@ -226,7 +227,7 @@ class FieldDetector:
         self.video.set_frame(img)
         return self.video, img
 
-    #deprecated
+    # deprecated
     def by_green_detection2(self):
         # green color range in HSV
         COLOR_MIN = np.array([0, int(0.12 * 255), int(0.27 * 255)])
@@ -252,7 +253,8 @@ class FieldDetector:
         if self.debug:
             self.screen_manager.show_frame(biggest_component_mask, "Biggest green component mask")
 
-        eroded_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_ERODE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)))
+        eroded_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_ERODE,
+                                             cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)))
 
         if self.debug:
             self.screen_manager.show_frame(eroded_label_mask, "After erosion")
@@ -270,8 +272,10 @@ class FieldDetector:
 
         # apply close operation to remove players from the mask, and then dilate to avoid covering players
         # which are near the field borders
-        closed_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
-        dilated_label_mask = cv2.morphologyEx(closed_label_mask, cv2.MORPH_DILATE, cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
+        closed_label_mask = cv2.morphologyEx(biggest_component_mask, cv2.MORPH_CLOSE,
+                                             cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
+        dilated_label_mask = cv2.morphologyEx(closed_label_mask, cv2.MORPH_DILATE,
+                                              cv2.getStructuringElement(cv2.MORPH_RECT, (50, 50)), iterations=3)
 
         if self.debug:
             self.screen_manager.show_frame(dilated_label_mask, "After closing and then dilatation")
