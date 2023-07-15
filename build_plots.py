@@ -1,7 +1,9 @@
 import json
 import os
 import plotly.graph_objects as go
+import plotly.express as px
 from natsort import natsorted
+import numpy as np
 
 
 def get_results_json(results_file_path):
@@ -300,6 +302,29 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
+def print_field_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path, sub_problem_config):
+
+    all_results = []
+    y = []
+    for method in sub_problem_config['time_methods']:
+        file = "-".join(
+            results_file_path.split("-")[0:3]) + "-" + method + ".json"
+        results = get_results_json(file)
+        results = [d["time"] for d in results["frame_results"]]
+        all_results.append(np.mean(results))
+        y.append(video_name_in_chart)
+
+
+    fig.add_trace(
+        go.Bar(
+            x=y,
+            y=all_results,
+            name=video_name_in_chart,
+            legendrank=video_idx
+        )
+    )
+
+
 def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
     frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
 
@@ -358,6 +383,20 @@ config = {
         'methods': [
             'green_detection', 'ground_pixels_detection'
         ],
+    },
+    "field_detection_time": {
+        'chart_title': None,
+        'metric_name': "time",
+        'label_x': 'Tiempo (ms)',
+        'tick': None,
+        'showlegend': False,
+        'x_range': None,
+        'methods': [
+            'green_detection'
+        ],
+        'time_methods': [
+            'green_detection', 'ground_pixels_detection'
+        ]
     },
     "vanishing-point-finder": {
         'chart_title': None,
@@ -485,7 +524,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_tracker-extra_players"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "field_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -497,6 +536,7 @@ if __name__ == '__main__':
 
     for method in methods:
         fig = go.Figure()
+
         x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][
             method] if 'label_by_method' in sub_problem_config else x_axis_title
         configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title_by_method)
@@ -514,7 +554,8 @@ if __name__ == '__main__':
         for video_name in videos_to_consider:
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
-            results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix.split("-")[0]
+            sub_problem_suffix_without_time = sub_problem_suffix.replace("_time", "")
+            results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix_without_time.split("-")[0]
             video_name_in_chart = "{} {}{} ".format("Video", video_id,
                                                     get_video_fragment_character(fragments_per_video[video_id],
                                                                                  next_fragment_per_video.get(video_id,
@@ -548,6 +589,10 @@ if __name__ == '__main__':
 
             if sub_problem_suffix == 'field_detection':
                 print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
+
+            if sub_problem_suffix == 'field_detection_time':
+                print_field_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                                                sub_problem_config)
 
             if sub_problem_suffix == 'vanishing-point-finder':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)

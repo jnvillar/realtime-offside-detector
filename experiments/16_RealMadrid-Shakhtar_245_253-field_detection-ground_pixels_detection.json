@@ -7,7 +7,49 @@
       "extra_field_pixels": 3592,
       "extra_field_percentage": 0.002259895536454657,
       "total_difference_percentage": 0.005390530333057766,
-      "jaccard_index": 0.9946216242343284
+      "jaccard_index": 0.9946216242343284,
+      "type": "detect_and_compare",
+      "time": 0.03066086769104004
+    },
+    {
+      "frame_number": 2,
+      "type": "detect_only",
+      "time": 0.03173089027404785
+    },
+    {
+      "frame_number": 3,
+      "type": "detect_only",
+      "time": 0.030755043029785156
+    },
+    {
+      "frame_number": 4,
+      "type": "detect_only",
+      "time": 0.030786752700805664
+    },
+    {
+      "frame_number": 5,
+      "type": "detect_only",
+      "time": 0.03068685531616211
+    },
+    {
+      "frame_number": 6,
+      "type": "detect_only",
+      "time": 0.030924081802368164
+    },
+    {
+      "frame_number": 7,
+      "type": "detect_only",
+      "time": 0.03138589859008789
+    },
+    {
+      "frame_number": 8,
+      "type": "detect_only",
+      "time": 0.030881166458129883
+    },
+    {
+      "frame_number": 9,
+      "type": "detect_only",
+      "time": 0.030646085739135742
     },
     {
       "frame_number": 10,
@@ -16,7 +58,54 @@
       "extra_field_pixels": 5895,
       "extra_field_percentage": 0.0037229047372147116,
       "total_difference_percentage": 0.003955309986289354,
-      "jaccard_index": 0.9960593606386566
+      "jaccard_index": 0.9960593606386566,
+      "type": "detect_and_compare",
+      "time": 0.030776023864746094
+    },
+    {
+      "frame_number": 11,
+      "type": "detect_only",
+      "time": 0.030968189239501953
+    },
+    {
+      "frame_number": 12,
+      "type": "detect_only",
+      "time": 0.030632972717285156
+    },
+    {
+      "frame_number": 13,
+      "type": "detect_only",
+      "time": 0.031232833862304688
+    },
+    {
+      "frame_number": 14,
+      "type": "detect_only",
+      "time": 0.03087329864501953
+    },
+    {
+      "frame_number": 15,
+      "type": "detect_only",
+      "time": 0.031088829040527344
+    },
+    {
+      "frame_number": 16,
+      "type": "detect_only",
+      "time": 0.030831098556518555
+    },
+    {
+      "frame_number": 17,
+      "type": "detect_only",
+      "time": 0.030888080596923828
+    },
+    {
+      "frame_number": 18,
+      "type": "detect_only",
+      "time": 0.03091597557067871
+    },
+    {
+      "frame_number": 19,
+      "type": "detect_only",
+      "time": 0.03060770034790039
     },
     {
       "frame_number": 20,
@@ -25,7 +114,54 @@
       "extra_field_pixels": 3667,
       "extra_field_percentage": 0.0023087316267901012,
       "total_difference_percentage": 0.004251037890397263,
-      "jaccard_index": 0.9957587540083607
+      "jaccard_index": 0.9957587540083607,
+      "type": "detect_and_compare",
+      "time": 0.031408071517944336
+    },
+    {
+      "frame_number": 21,
+      "type": "detect_only",
+      "time": 0.03086996078491211
+    },
+    {
+      "frame_number": 22,
+      "type": "detect_only",
+      "time": 0.030740022659301758
+    },
+    {
+      "frame_number": 23,
+      "type": "detect_only",
+      "time": 0.030759096145629883
+    },
+    {
+      "frame_number": 24,
+      "type": "detect_only",
+      "time": 0.03084278106689453
+    },
+    {
+      "frame_number": 25,
+      "type": "detect_only",
+      "time": 0.031178951263427734
+    },
+    {
+      "frame_number": 26,
+      "type": "detect_only",
+      "time": 0.03091883659362793
+    },
+    {
+      "frame_number": 27,
+      "type": "detect_only",
+      "time": 0.030671119689941406
+    },
+    {
+      "frame_number": 28,
+      "type": "detect_only",
+      "time": 0.030825138092041016
+    },
+    {
+      "frame_number": 29,
+      "type": "detect_only",
+      "time": 0.0309293270111084
     },
     {
       "frame_number": 30,
@@ -34,7 +170,54 @@
       "extra_field_pixels": 3885,
       "extra_field_percentage": 0.0024511876114391277,
       "total_difference_percentage": 0.0032316558419025,
-      "jaccard_index": 0.9967762461835148
+      "jaccard_index": 0.9967762461835148,
+      "type": "detect_and_compare",
+      "time": 0.0309140682220459
+    },
+    {
+      "frame_number": 31,
+      "type": "detect_only",
+      "time": 0.031139135360717773
+    },
+    {
+      "frame_number": 32,
+      "type": "detect_only",
+      "time": 0.03084087371826172
+    },
+    {
+      "frame_number": 33,
+      "type": "detect_only",
+      "time": 0.030807018280029297
+    },
+    {
+      "frame_number": 34,
+      "type": "detect_only",
+      "time": 0.030737876892089844
+    },
+    {
+      "frame_number": 35,
+      "type": "detect_only",
+      "time": 0.030776262283325195
+    },
+    {
+      "frame_number": 36,
+      "type": "detect_only",
+      "time": 0.030794143676757812
+    },
+    {
+      "frame_number": 37,
+      "type": "detect_only",
+      "time": 0.03069591522216797
+    },
+    {
+      "frame_number": 38,
+      "type": "detect_only",
+      "time": 0.031167030334472656
+    },
+    {
+      "frame_number": 39,
+      "type": "detect_only",
+      "time": 0.03081798553466797
     },
     {
       "frame_number": 40,
@@ -43,7 +226,54 @@
       "extra_field_pixels": 2596,
       "extra_field_percentage": 0.0016340794958273062,
       "total_difference_percentage": 0.004185912421899686,
-      "jaccard_index": 0.9958209165327055
+      "jaccard_index": 0.9958209165327055,
+      "type": "detect_and_compare",
+      "time": 0.030837059020996094
+    },
+    {
+      "frame_number": 41,
+      "type": "detect_only",
+      "time": 0.030765056610107422
+    },
+    {
+      "frame_number": 42,
+      "type": "detect_only",
+      "time": 0.030632972717285156
+    },
+    {
+      "frame_number": 43,
+      "type": "detect_only",
+      "time": 0.031331777572631836
+    },
+    {
+      "frame_number": 44,
+      "type": "detect_only",
+      "time": 0.031145095825195312
+    },
+    {
+      "frame_number": 45,
+      "type": "detect_only",
+      "time": 0.030855178833007812
+    },
+    {
+      "frame_number": 46,
+      "type": "detect_only",
+      "time": 0.031103134155273438
+    },
+    {
+      "frame_number": 47,
+      "type": "detect_only",
+      "time": 0.031005144119262695
+    },
+    {
+      "frame_number": 48,
+      "type": "detect_only",
+      "time": 0.031358957290649414
+    },
+    {
+      "frame_number": 49,
+      "type": "detect_only",
+      "time": 0.030698299407958984
     },
     {
       "frame_number": 50,
@@ -52,7 +282,54 @@
       "extra_field_pixels": 1103,
       "extra_field_percentage": 0.0006941691053840587,
       "total_difference_percentage": 0.0017911199219610434,
-      "jaccard_index": 0.9982101225556632
+      "jaccard_index": 0.9982101225556632,
+      "type": "detect_and_compare",
+      "time": 0.030704975128173828
+    },
+    {
+      "frame_number": 51,
+      "type": "detect_only",
+      "time": 0.030800342559814453
+    },
+    {
+      "frame_number": 52,
+      "type": "detect_only",
+      "time": 0.030933856964111328
+    },
+    {
+      "frame_number": 53,
+      "type": "detect_only",
+      "time": 0.030720949172973633
+    },
+    {
+      "frame_number": 54,
+      "type": "detect_only",
+      "time": 0.03082585334777832
+    },
+    {
+      "frame_number": 55,
+      "type": "detect_only",
+      "time": 0.03063488006591797
+    },
+    {
+      "frame_number": 56,
+      "type": "detect_only",
+      "time": 0.03186631202697754
+    },
+    {
+      "frame_number": 57,
+      "type": "detect_only",
+      "time": 0.03071904182434082
+    },
+    {
+      "frame_number": 58,
+      "type": "detect_only",
+      "time": 0.030736207962036133
+    },
+    {
+      "frame_number": 59,
+      "type": "detect_only",
+      "time": 0.030838966369628906
     },
     {
       "frame_number": 60,
@@ -61,7 +338,54 @@
       "extra_field_pixels": 3038,
       "extra_field_percentage": 0.0019151605318069205,
       "total_difference_percentage": 0.0025644743394965613,
-      "jaccard_index": 0.9974404276524418
+      "jaccard_index": 0.9974404276524418,
+      "type": "detect_and_compare",
+      "time": 0.030987024307250977
+    },
+    {
+      "frame_number": 61,
+      "type": "detect_only",
+      "time": 0.03067803382873535
+    },
+    {
+      "frame_number": 62,
+      "type": "detect_only",
+      "time": 0.03088521957397461
+    },
+    {
+      "frame_number": 63,
+      "type": "detect_only",
+      "time": 0.030932188034057617
+    },
+    {
+      "frame_number": 64,
+      "type": "detect_only",
+      "time": 0.030719995498657227
+    },
+    {
+      "frame_number": 65,
+      "type": "detect_only",
+      "time": 0.0308380126953125
+    },
+    {
+      "frame_number": 66,
+      "type": "detect_only",
+      "time": 0.030832767486572266
+    },
+    {
+      "frame_number": 67,
+      "type": "detect_only",
+      "time": 0.030675888061523438
+    },
+    {
+      "frame_number": 68,
+      "type": "detect_only",
+      "time": 0.0308229923248291
+    },
+    {
+      "frame_number": 69,
+      "type": "detect_only",
+      "time": 0.03223013877868652
     },
     {
       "frame_number": 70,
@@ -70,7 +394,54 @@
       "extra_field_pixels": 2261,
       "extra_field_percentage": 0.001428527201723078,
       "total_difference_percentage": 0.0031028293178514093,
-      "jaccard_index": 0.9969015968353512
+      "jaccard_index": 0.9969015968353512,
+      "type": "detect_and_compare",
+      "time": 0.03082418441772461
+    },
+    {
+      "frame_number": 71,
+      "type": "detect_only",
+      "time": 0.03068399429321289
+    },
+    {
+      "frame_number": 72,
+      "type": "detect_only",
+      "time": 0.030761003494262695
+    },
+    {
+      "frame_number": 73,
+      "type": "detect_only",
+      "time": 0.030629873275756836
+    },
+    {
+      "frame_number": 74,
+      "type": "detect_only",
+      "time": 0.03095412254333496
+    },
+    {
+      "frame_number": 75,
+      "type": "detect_only",
+      "time": 0.030827045440673828
+    },
+    {
+      "frame_number": 76,
+      "type": "detect_only",
+      "time": 0.030906200408935547
+    },
+    {
+      "frame_number": 77,
+      "type": "detect_only",
+      "time": 0.0308380126953125
+    },
+    {
+      "frame_number": 78,
+      "type": "detect_only",
+      "time": 0.030496835708618164
+    },
+    {
+      "frame_number": 79,
+      "type": "detect_only",
+      "time": 0.031273841857910156
     },
     {
       "frame_number": 80,
@@ -79,7 +450,54 @@
       "extra_field_pixels": 4921,
       "extra_field_percentage": 0.003147822271178396,
       "total_difference_percentage": 0.004185369055135185,
-      "jaccard_index": 0.995827764401004
+      "jaccard_index": 0.995827764401004,
+      "type": "detect_and_compare",
+      "time": 0.03117203712463379
+    },
+    {
+      "frame_number": 81,
+      "type": "detect_only",
+      "time": 0.031517982482910156
+    },
+    {
+      "frame_number": 82,
+      "type": "detect_only",
+      "time": 0.030838727951049805
+    },
+    {
+      "frame_number": 83,
+      "type": "detect_only",
+      "time": 0.030756711959838867
+    },
+    {
+      "frame_number": 84,
+      "type": "detect_only",
+      "time": 0.031260013580322266
+    },
+    {
+      "frame_number": 85,
+      "type": "detect_only",
+      "time": 0.030504226684570312
+    },
+    {
+      "frame_number": 86,
+      "type": "detect_only",
+      "time": 0.031223058700561523
+    },
+    {
+      "frame_number": 87,
+      "type": "detect_only",
+      "time": 0.030827760696411133
+    },
+    {
+      "frame_number": 88,
+      "type": "detect_only",
+      "time": 0.030824899673461914
+    },
+    {
+      "frame_number": 89,
+      "type": "detect_only",
+      "time": 0.03080892562866211
     },
     {
       "frame_number": 90,
@@ -88,7 +506,54 @@
       "extra_field_pixels": 2763,
       "extra_field_percentage": 0.0017868564196519283,
       "total_difference_percentage": 0.003469592722197827,
-      "jaccard_index": 0.9965365958836813
+      "jaccard_index": 0.9965365958836813,
+      "type": "detect_and_compare",
+      "time": 0.030713796615600586
+    },
+    {
+      "frame_number": 91,
+      "type": "detect_only",
+      "time": 0.03127431869506836
+    },
+    {
+      "frame_number": 92,
+      "type": "detect_only",
+      "time": 0.030824899673461914
+    },
+    {
+      "frame_number": 93,
+      "type": "detect_only",
+      "time": 0.030954837799072266
+    },
+    {
+      "frame_number": 94,
+      "type": "detect_only",
+      "time": 0.03088521957397461
+    },
+    {
+      "frame_number": 95,
+      "type": "detect_only",
+      "time": 0.03129220008850098
+    },
+    {
+      "frame_number": 96,
+      "type": "detect_only",
+      "time": 0.032174110412597656
+    },
+    {
+      "frame_number": 97,
+      "type": "detect_only",
+      "time": 0.0312650203704834
+    },
+    {
+      "frame_number": 98,
+      "type": "detect_only",
+      "time": 0.03259897232055664
+    },
+    {
+      "frame_number": 99,
+      "type": "detect_only",
+      "time": 0.031116962432861328
     },
     {
       "frame_number": 100,
@@ -97,7 +562,54 @@
       "extra_field_pixels": 3876,
       "extra_field_percentage": 0.0025352256390063694,
       "total_difference_percentage": 0.006416554055379898,
-      "jaccard_index": 0.9935996722197068
+      "jaccard_index": 0.9935996722197068,
+      "type": "detect_and_compare",
+      "time": 0.0317530632019043
+    },
+    {
+      "frame_number": 101,
+      "type": "detect_only",
+      "time": 0.0317840576171875
+    },
+    {
+      "frame_number": 102,
+      "type": "detect_only",
+      "time": 0.030894041061401367
+    },
+    {
+      "frame_number": 103,
+      "type": "detect_only",
+      "time": 0.03203701972961426
+    },
+    {
+      "frame_number": 104,
+      "type": "detect_only",
+      "time": 0.033104896545410156
+    },
+    {
+      "frame_number": 105,
+      "type": "detect_only",
+      "time": 0.032015323638916016
+    },
+    {
+      "frame_number": 106,
+      "type": "detect_only",
+      "time": 0.03198695182800293
+    },
+    {
+      "frame_number": 107,
+      "type": "detect_only",
+      "time": 0.0321040153503418
+    },
+    {
+      "frame_number": 108,
+      "type": "detect_only",
+      "time": 0.031077861785888672
+    },
+    {
+      "frame_number": 109,
+      "type": "detect_only",
+      "time": 0.031199932098388672
     },
     {
       "frame_number": 110,
@@ -106,7 +618,54 @@
       "extra_field_pixels": 5994,
       "extra_field_percentage": 0.003958332507855249,
       "total_difference_percentage": 0.005156266303192157,
-      "jaccard_index": 0.9948640634414458
+      "jaccard_index": 0.9948640634414458,
+      "type": "detect_and_compare",
+      "time": 0.032627105712890625
+    },
+    {
+      "frame_number": 111,
+      "type": "detect_only",
+      "time": 0.031243085861206055
+    },
+    {
+      "frame_number": 112,
+      "type": "detect_only",
+      "time": 0.03140687942504883
+    },
+    {
+      "frame_number": 113,
+      "type": "detect_only",
+      "time": 0.031286001205444336
+    },
+    {
+      "frame_number": 114,
+      "type": "detect_only",
+      "time": 0.03132486343383789
+    },
+    {
+      "frame_number": 115,
+      "type": "detect_only",
+      "time": 0.030557870864868164
+    },
+    {
+      "frame_number": 116,
+      "type": "detect_only",
+      "time": 0.032289981842041016
+    },
+    {
+      "frame_number": 117,
+      "type": "detect_only",
+      "time": 0.030670166015625
+    },
+    {
+      "frame_number": 118,
+      "type": "detect_only",
+      "time": 0.030987024307250977
+    },
+    {
+      "frame_number": 119,
+      "type": "detect_only",
+      "time": 0.0303647518157959
     },
     {
       "frame_number": 120,
@@ -115,7 +674,54 @@
       "extra_field_pixels": 2110,
       "extra_field_percentage": 0.0013830868794872484,
       "total_difference_percentage": 0.0032951553285224633,
-      "jaccard_index": 0.9967093958628852
+      "jaccard_index": 0.9967093958628852,
+      "type": "detect_and_compare",
+      "time": 0.03079390525817871
+    },
+    {
+      "frame_number": 121,
+      "type": "detect_only",
+      "time": 0.031503915786743164
+    },
+    {
+      "frame_number": 122,
+      "type": "detect_only",
+      "time": 0.03158283233642578
+    },
+    {
+      "frame_number": 123,
+      "type": "detect_only",
+      "time": 0.030580997467041016
+    },
+    {
+      "frame_number": 124,
+      "type": "detect_only",
+      "time": 0.032009124755859375
+    },
+    {
+      "frame_number": 125,
+      "type": "detect_only",
+      "time": 0.03153491020202637
+    },
+    {
+      "frame_number": 126,
+      "type": "detect_only",
+      "time": 0.030737876892089844
+    },
+    {
+      "frame_number": 127,
+      "type": "detect_only",
+      "time": 0.03270125389099121
+    },
+    {
+      "frame_number": 128,
+      "type": "detect_only",
+      "time": 0.03282499313354492
+    },
+    {
+      "frame_number": 129,
+      "type": "detect_only",
+      "time": 0.031139850616455078
     },
     {
       "frame_number": 130,
@@ -124,7 +730,54 @@
       "extra_field_pixels": 2612,
       "extra_field_percentage": 0.0017031598440291598,
       "total_difference_percentage": 0.004328321226901057,
-      "jaccard_index": 0.9956790380619593
+      "jaccard_index": 0.9956790380619593,
+      "type": "detect_and_compare",
+      "time": 0.03177666664123535
+    },
+    {
+      "frame_number": 131,
+      "type": "detect_only",
+      "time": 0.0310823917388916
+    },
+    {
+      "frame_number": 132,
+      "type": "detect_only",
+      "time": 0.031443119049072266
+    },
+    {
+      "frame_number": 133,
+      "type": "detect_only",
+      "time": 0.03146219253540039
+    },
+    {
+      "frame_number": 134,
+      "type": "detect_only",
+      "time": 0.03203892707824707
+    },
+    {
+      "frame_number": 135,
+      "type": "detect_only",
+      "time": 0.03146815299987793
+    },
+    {
+      "frame_number": 136,
+      "type": "detect_only",
+      "time": 0.0316770076751709
+    },
+    {
+      "frame_number": 137,
+      "type": "detect_only",
+      "time": 0.03277015686035156
+    },
+    {
+      "frame_number": 138,
+      "type": "detect_only",
+      "time": 0.03209519386291504
+    },
+    {
+      "frame_number": 139,
+      "type": "detect_only",
+      "time": 0.033168792724609375
     },
     {
       "frame_number": 140,
@@ -133,7 +786,54 @@
       "extra_field_pixels": 2098,
       "extra_field_percentage": 0.001373774783440579,
       "total_difference_percentage": 0.00365968887733527,
-      "jaccard_index": 0.9963453318136609
+      "jaccard_index": 0.9963453318136609,
+      "type": "detect_and_compare",
+      "time": 0.03260493278503418
+    },
+    {
+      "frame_number": 141,
+      "type": "detect_only",
+      "time": 0.03136587142944336
+    },
+    {
+      "frame_number": 142,
+      "type": "detect_only",
+      "time": 0.03137707710266113
+    },
+    {
+      "frame_number": 143,
+      "type": "detect_only",
+      "time": 0.031145095825195312
+    },
+    {
+      "frame_number": 144,
+      "type": "detect_only",
+      "time": 0.03072214126586914
+    },
+    {
+      "frame_number": 145,
+      "type": "detect_only",
+      "time": 0.03180885314941406
+    },
+    {
+      "frame_number": 146,
+      "type": "detect_only",
+      "time": 0.03203773498535156
+    },
+    {
+      "frame_number": 147,
+      "type": "detect_only",
+      "time": 0.03147125244140625
+    },
+    {
+      "frame_number": 148,
+      "type": "detect_only",
+      "time": 0.031363725662231445
+    },
+    {
+      "frame_number": 149,
+      "type": "detect_only",
+      "time": 0.03171896934509277
     },
     {
       "frame_number": 150,
@@ -142,7 +842,54 @@
       "extra_field_pixels": 3785,
       "extra_field_percentage": 0.0024827747254188904,
       "total_difference_percentage": 0.0049235685836180165,
-      "jaccard_index": 0.9950886252534697
+      "jaccard_index": 0.9950886252534697,
+      "type": "detect_and_compare",
+      "time": 0.0329279899597168
+    },
+    {
+      "frame_number": 151,
+      "type": "detect_only",
+      "time": 0.03223109245300293
+    },
+    {
+      "frame_number": 152,
+      "type": "detect_only",
+      "time": 0.03361320495605469
+    },
+    {
+      "frame_number": 153,
+      "type": "detect_only",
+      "time": 0.031152963638305664
+    },
+    {
+      "frame_number": 154,
+      "type": "detect_only",
+      "time": 0.03196597099304199
+    },
+    {
+      "frame_number": 155,
+      "type": "detect_only",
+      "time": 0.032228708267211914
+    },
+    {
+      "frame_number": 156,
+      "type": "detect_only",
+      "time": 0.03170299530029297
+    },
+    {
+      "frame_number": 157,
+      "type": "detect_only",
+      "time": 0.031440019607543945
+    },
+    {
+      "frame_number": 158,
+      "type": "detect_only",
+      "time": 0.03167891502380371
+    },
+    {
+      "frame_number": 159,
+      "type": "detect_only",
+      "time": 0.031129121780395508
     },
     {
       "frame_number": 160,
@@ -151,7 +898,54 @@
       "extra_field_pixels": 2608,
       "extra_field_percentage": 0.0017188381497709095,
       "total_difference_percentage": 0.005728581747626052,
-      "jaccard_index": 0.9942812478617183
+      "jaccard_index": 0.9942812478617183,
+      "type": "detect_and_compare",
+      "time": 0.03123617172241211
+    },
+    {
+      "frame_number": 161,
+      "type": "detect_only",
+      "time": 0.03131604194641113
+    },
+    {
+      "frame_number": 162,
+      "type": "detect_only",
+      "time": 0.03110814094543457
+    },
+    {
+      "frame_number": 163,
+      "type": "detect_only",
+      "time": 0.03141307830810547
+    },
+    {
+      "frame_number": 164,
+      "type": "detect_only",
+      "time": 0.031932830810546875
+    },
+    {
+      "frame_number": 165,
+      "type": "detect_only",
+      "time": 0.031684160232543945
+    },
+    {
+      "frame_number": 166,
+      "type": "detect_only",
+      "time": 0.03271341323852539
+    },
+    {
+      "frame_number": 167,
+      "type": "detect_only",
+      "time": 0.03378415107727051
+    },
+    {
+      "frame_number": 168,
+      "type": "detect_only",
+      "time": 0.032570838928222656
+    },
+    {
+      "frame_number": 169,
+      "type": "detect_only",
+      "time": 0.03430676460266113
     },
     {
       "frame_number": 170,
@@ -160,7 +954,54 @@
       "extra_field_pixels": 5001,
       "extra_field_percentage": 0.0033773106315388543,
       "total_difference_percentage": 0.0060536317738680845,
-      "jaccard_index": 0.9939667444043977
+      "jaccard_index": 0.9939667444043977,
+      "type": "detect_and_compare",
+      "time": 0.03644990921020508
+    },
+    {
+      "frame_number": 171,
+      "type": "detect_only",
+      "time": 0.034924983978271484
+    },
+    {
+      "frame_number": 172,
+      "type": "detect_only",
+      "time": 0.031510114669799805
+    },
+    {
+      "frame_number": 173,
+      "type": "detect_only",
+      "time": 0.031033039093017578
+    },
+    {
+      "frame_number": 174,
+      "type": "detect_only",
+      "time": 0.0312349796295166
+    },
+    {
+      "frame_number": 175,
+      "type": "detect_only",
+      "time": 0.031458139419555664
+    },
+    {
+      "frame_number": 176,
+      "type": "detect_only",
+      "time": 0.03174901008605957
+    },
+    {
+      "frame_number": 177,
+      "type": "detect_only",
+      "time": 0.031638145446777344
+    },
+    {
+      "frame_number": 178,
+      "type": "detect_only",
+      "time": 0.03204703330993652
+    },
+    {
+      "frame_number": 179,
+      "type": "detect_only",
+      "time": 0.03336906433105469
     },
     {
       "frame_number": 180,
@@ -169,7 +1010,54 @@
       "extra_field_pixels": 2241,
       "extra_field_percentage": 0.0015566629480876176,
       "total_difference_percentage": 0.004103866442347901,
-      "jaccard_index": 0.9959025119654558
+      "jaccard_index": 0.9959025119654558,
+      "type": "detect_and_compare",
+      "time": 0.031167984008789062
+    },
+    {
+      "frame_number": 181,
+      "type": "detect_only",
+      "time": 0.03113412857055664
+    },
+    {
+      "frame_number": 182,
+      "type": "detect_only",
+      "time": 0.03253793716430664
+    },
+    {
+      "frame_number": 183,
+      "type": "detect_only",
+      "time": 0.0316472053527832
+    },
+    {
+      "frame_number": 184,
+      "type": "detect_only",
+      "time": 0.03097224235534668
+    },
+    {
+      "frame_number": 185,
+      "type": "detect_only",
+      "time": 0.030901670455932617
+    },
+    {
+      "frame_number": 186,
+      "type": "detect_only",
+      "time": 0.030877113342285156
+    },
+    {
+      "frame_number": 187,
+      "type": "detect_only",
+      "time": 0.03192877769470215
+    },
+    {
+      "frame_number": 188,
+      "type": "detect_only",
+      "time": 0.03276801109313965
+    },
+    {
+      "frame_number": 189,
+      "type": "detect_only",
+      "time": 0.03245711326599121
     },
     {
       "frame_number": 190,
@@ -178,7 +1066,54 @@
       "extra_field_pixels": 8835,
       "extra_field_percentage": 0.006384367080512397,
       "total_difference_percentage": 0.008702539077601676,
-      "jaccard_index": 0.9913526686599401
+      "jaccard_index": 0.9913526686599401,
+      "type": "detect_and_compare",
+      "time": 0.03145408630371094
+    },
+    {
+      "frame_number": 191,
+      "type": "detect_only",
+      "time": 0.03175020217895508
+    },
+    {
+      "frame_number": 192,
+      "type": "detect_only",
+      "time": 0.03109121322631836
+    },
+    {
+      "frame_number": 193,
+      "type": "detect_only",
+      "time": 0.03166794776916504
+    },
+    {
+      "frame_number": 194,
+      "type": "detect_only",
+      "time": 0.031665802001953125
+    },
+    {
+      "frame_number": 195,
+      "type": "detect_only",
+      "time": 0.033315181732177734
+    },
+    {
+      "frame_number": 196,
+      "type": "detect_only",
+      "time": 0.03176712989807129
+    },
+    {
+      "frame_number": 197,
+      "type": "detect_only",
+      "time": 0.03150582313537598
+    },
+    {
+      "frame_number": 198,
+      "type": "detect_only",
+      "time": 0.031664133071899414
+    },
+    {
+      "frame_number": 199,
+      "type": "detect_only",
+      "time": 0.033583879470825195
     },
     {
       "frame_number": 200,
@@ -187,7 +1122,54 @@
       "extra_field_pixels": 7129,
       "extra_field_percentage": 0.005411313737024878,
       "total_difference_percentage": 0.007413704764977133,
-      "jaccard_index": 0.9926261971954333
+      "jaccard_index": 0.9926261971954333,
+      "type": "detect_and_compare",
+      "time": 0.03097391128540039
+    },
+    {
+      "frame_number": 201,
+      "type": "detect_only",
+      "time": 0.03172492980957031
+    },
+    {
+      "frame_number": 202,
+      "type": "detect_only",
+      "time": 0.03202223777770996
+    },
+    {
+      "frame_number": 203,
+      "type": "detect_only",
+      "time": 0.03181791305541992
+    },
+    {
+      "frame_number": 204,
+      "type": "detect_only",
+      "time": 0.031241893768310547
+    },
+    {
+      "frame_number": 205,
+      "type": "detect_only",
+      "time": 0.032318830490112305
+    },
+    {
+      "frame_number": 206,
+      "type": "detect_only",
+      "time": 0.032865047454833984
+    },
+    {
+      "frame_number": 207,
+      "type": "detect_only",
+      "time": 0.031664133071899414
+    },
+    {
+      "frame_number": 208,
+      "type": "detect_only",
+      "time": 0.03119373321533203
+    },
+    {
+      "frame_number": 209,
+      "type": "detect_only",
+      "time": 0.03103184700012207
     },
     {
       "frame_number": 210,
@@ -196,7 +1178,54 @@
       "extra_field_pixels": 2705,
       "extra_field_percentage": 0.002169353965587069,
       "total_difference_percentage": 0.005497567997818616,
-      "jaccard_index": 0.9945143323570366
+      "jaccard_index": 0.9945143323570366,
+      "type": "detect_and_compare",
+      "time": 0.03233599662780762
+    },
+    {
+      "frame_number": 211,
+      "type": "detect_only",
+      "time": 0.030969858169555664
+    },
+    {
+      "frame_number": 212,
+      "type": "detect_only",
+      "time": 0.030862092971801758
+    },
+    {
+      "frame_number": 213,
+      "type": "detect_only",
+      "time": 0.032301902770996094
+    },
+    {
+      "frame_number": 214,
+      "type": "detect_only",
+      "time": 0.031610965728759766
+    },
+    {
+      "frame_number": 215,
+      "type": "detect_only",
+      "time": 0.0323939323425293
+    },
+    {
+      "frame_number": 216,
+      "type": "detect_only",
+      "time": 0.031857967376708984
+    },
+    {
+      "frame_number": 217,
+      "type": "detect_only",
+      "time": 0.031055688858032227
+    },
+    {
+      "frame_number": 218,
+      "type": "detect_only",
+      "time": 0.03224802017211914
+    },
+    {
+      "frame_number": 219,
+      "type": "detect_only",
+      "time": 0.03267693519592285
     },
     {
       "frame_number": 220,
@@ -205,16 +1234,124 @@
       "extra_field_pixels": 5358,
       "extra_field_percentage": 0.0046522370331265675,
       "total_difference_percentage": 0.0062255579558636595,
-      "jaccard_index": 0.9938032706976808
+      "jaccard_index": 0.9938032706976808,
+      "type": "detect_and_compare",
+      "time": 0.03127908706665039
+    },
+    {
+      "frame_number": 221,
+      "type": "detect_only",
+      "time": 0.032124996185302734
+    },
+    {
+      "frame_number": 222,
+      "type": "detect_only",
+      "time": 0.03207993507385254
+    },
+    {
+      "frame_number": 223,
+      "type": "detect_only",
+      "time": 0.03121781349182129
+    },
+    {
+      "frame_number": 224,
+      "type": "detect_only",
+      "time": 0.03191399574279785
+    },
+    {
+      "frame_number": 225,
+      "type": "detect_only",
+      "time": 0.0318608283996582
+    },
+    {
+      "frame_number": 226,
+      "type": "detect_only",
+      "time": 0.031126022338867188
+    },
+    {
+      "frame_number": 227,
+      "type": "detect_only",
+      "time": 0.030895709991455078
+    },
+    {
+      "frame_number": 228,
+      "type": "detect_only",
+      "time": 0.03314399719238281
+    },
+    {
+      "frame_number": 229,
+      "type": "detect_only",
+      "time": 0.03161191940307617
+    },
+    {
+      "frame_number": 230,
+      "type": "detect_only",
+      "time": 0.03376007080078125
+    },
+    {
+      "frame_number": 231,
+      "type": "detect_only",
+      "time": 0.03225588798522949
+    },
+    {
+      "frame_number": 232,
+      "type": "detect_only",
+      "time": 0.03159189224243164
+    },
+    {
+      "frame_number": 233,
+      "type": "detect_only",
+      "time": 0.03176116943359375
+    },
+    {
+      "frame_number": 234,
+      "type": "detect_only",
+      "time": 0.03206586837768555
+    },
+    {
+      "frame_number": 235,
+      "type": "detect_only",
+      "time": 0.031128883361816406
+    },
+    {
+      "frame_number": 236,
+      "type": "detect_only",
+      "time": 0.031056880950927734
+    },
+    {
+      "frame_number": 237,
+      "type": "detect_only",
+      "time": 0.0315241813659668
+    },
+    {
+      "frame_number": 238,
+      "type": "detect_only",
+      "time": 0.03185915946960449
+    },
+    {
+      "frame_number": 239,
+      "type": "detect_only",
+      "time": 0.03157687187194824
+    },
+    {
+      "frame_number": 240,
+      "type": "detect_only",
+      "time": 0.03105306625366211
+    },
+    {
+      "frame_number": 241,
+      "type": "detect_only",
+      "time": 0.03348398208618164
     }
   ],
   "aggregations": {
-    "frame_number_avg": 110.04347826086956,
-    "missing_field_pixels_avg": 3077.913043478261,
-    "missing_field_percentage_avg": 0.0020685679783862825,
-    "extra_field_pixels_avg": 3829.2608695652175,
-    "extra_field_percentage_avg": 0.0026111205418415688,
-    "total_difference_percentage_avg": 0.004679688520227851,
-    "jaccard_index_avg": 0.9953341960313257
+    "frame_number_avg": 121.0,
+    "missing_field_pixels_avg": 242.30705394190872,
+    "missing_field_percentage_avg": 0.00016335805390729757,
+    "extra_field_pixels_avg": 375.12033195020746,
+    "extra_field_percentage_avg": 0.000255771692243337,
+    "total_difference_percentage_avg": 0.0004191297461506346,
+    "jaccard_index_avg": 0.09501784752549466,
+    "time_avg": 0.03146856355469257
   }
 }

@@ -24,5 +24,5 @@ class OrientationDetector:
         Timer.start('detecting orientation')
         orientation = self.method.detect_orientation(frame.get_current_frame(), vanishing_point)
         elapsed_time = Timer.stop('detecting orientation')
-        self.log.log("orientation detected", {"cost": elapsed_time, "orientation": str(orientation)})
+        self.log.log("orientation detected", {"cost": Timer.format_time(elapsed_time), "orientation": str(orientation)})
         return orientation, elapsed_time

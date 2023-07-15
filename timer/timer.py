@@ -30,7 +30,7 @@ class Timer:
             exit()
 
         del Timer.TIME[id]
-        return Timer.format_time(elapsed_time)
+        return elapsed_time
 
     def stop_and_log(id: str):
 

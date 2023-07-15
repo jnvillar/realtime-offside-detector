@@ -37,7 +37,7 @@ class Step:
             "number": number,
             "name": self.name,
             "params": self.params,
-            "cost": elapsed_time
+            "cost": Timer.format_time(elapsed_time)
         }) if self.debug else None
 
         if self.modify_original_frame:

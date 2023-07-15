@@ -252,7 +252,7 @@ def merge_results(old_results, new_results):
     for k, v in new_results.items():
         if k in old_results and isinstance(v, dict):
             merged_config[k] = merge_results(old_results[k], v)
-        elif k in old_results:
+        elif k in old_results and k != "time":
             continue
         else:
             merged_config[k] = v

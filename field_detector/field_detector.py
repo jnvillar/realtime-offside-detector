@@ -43,7 +43,7 @@ class FieldDetector:
         self.video = video
         result_video, mask = self.method_implementations[self.method]()
         elapsed_time = Timer.stop('detecting field')
-        self.log.log("detecting field", {"cost": elapsed_time})
+        self.log.log("detecting field", {"cost": Timer.format_time(elapsed_time)})
         return result_video, mask, elapsed_time
 
     def by_green_detection(self):
