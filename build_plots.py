@@ -400,11 +400,13 @@ config = {
     },
     "vanishing-point-finder": {
         'chart_title': None,
-        'metric_name': "x_axis_distance_percentage",
-        'label_x': 'Distancia',
+        'metric_name': "distance_meters",
+        'label_x': 'Distancia (metros)',
         'tick': None,
-        'showlegend': True,
-        'x_range': None
+        'showlegend': False,
+        'x_range': None,
+        'methods': ['hough'],
+        'x_range': [0, 65]
     },
     "player_sorter": {
         'methods': [
