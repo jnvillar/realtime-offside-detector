@@ -60,14 +60,16 @@ class FrameDataComparator:
             'jaccard_index': jaccard_index
         }
 
-    def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData, central_circle_radius):
+    def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData,
+                                central_circle_radius):
         expected_vp = expected_frame_data.get_vanishing_point()
         actual_vp = actual_frame_data.get_vanishing_point()
         distance_pixels = math_utils.distance_between_points(expected_vp, actual_vp)
         # the segment given by the distance between the expected vp and the actual vp, has a direction which can be
         # described by an angle. We use that angle to calculate the pixels:meters ratio in that specific direction
         distance_direction_vector = (expected_vp[0] - actual_vp[0], expected_vp[1] - actual_vp[1])
-        distance_meters = self._calculate_distance_in_meters(distance_pixels, distance_direction_vector, central_circle_radius)
+        distance_meters = self._calculate_distance_in_meters(distance_pixels, distance_direction_vector,
+                                                             central_circle_radius)
         x_axis_distance_percentage = distance_pixels / actual_frame_data.get_frame_width()
         y_axis_distance_percentage = distance_pixels / actual_frame_data.get_frame_height()
 
@@ -262,6 +264,7 @@ class ComparatorByStrategy:
                 detected_frame_data = self.comparison_strategy.detect_only(video)
                 results.append(
                     {
+                        "frame_number": detected_frame_data.get_frame_number(),
                         "type": "detect_only",
                         "time": detected_frame_data.get_time(),
                     }
@@ -477,7 +480,8 @@ class FieldDetectorComparisonStrategy:
         average = {}
         for frame_result in results:
             for metric, value in frame_result.items():
-                average[metric + "_avg"] = average.get(metric + "_avg", 0) + value
+                if value.__class__.__name__ != 'str':
+                    average[metric + "_avg"] = average.get(metric + "_avg", 0) + value
 
         for avg_metric in average:
             average[avg_metric] = average[avg_metric] / len(results)
@@ -502,7 +506,8 @@ class VanishingPointFinderComparisonStrategy:
         self.frame_data_comparator = FrameDataComparator()
         self.screen_manager = ScreenManager.get_manager()
         self.vanishing_point_finder = VanishingPointFinder(None, **config['vanishing_point_finder'])
-        self.major_radius, self.minor_radius = self._calculate_central_circle_radius(config['vanishing_point_finder']['central_circle_axis'])
+        self.major_radius, self.minor_radius = self._calculate_central_circle_radius(
+            config['vanishing_point_finder']['central_circle_axis'])
 
     def prepare_for_detection(self, video, expected_frame_data):
         frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
@@ -511,7 +516,9 @@ class VanishingPointFinderComparisonStrategy:
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video)
-        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data, [self.major_radius, self.minor_radius]), detected_frame_data
+        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data,
+                                                                  [self.major_radius,
+                                                                   self.minor_radius]), detected_frame_data
 
     def detect_only(self, video):
         vanishing_point, vanishing_point_segments, elapsed_time = self.vanishing_point_finder.find_vanishing_point(

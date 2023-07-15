@@ -66,7 +66,26 @@ def get_result_path(video_name, comparison_strategy, method):
     return result_path
 
 
-def save_comparison_results(path, results):
+def save_comparison_results(path, results, merge=False):
+    if os.path.exists(save_result_path) and merge:
+        print("merging result for {}".format(video_name))
+        previous_results = get_results_json(save_result_path)
+
+        old_results = previous_results["frame_results"]
+        new_results = results["frame_results"]
+
+        merged_results = []
+        for new_result in new_results:
+            new = True
+            for old_result in old_results:
+                if old_result['frame_number'] == new_result['frame_number']:
+                    new = False
+                    merged_results.append(merge_results(old_result, new_result))
+            if new:
+                merged_results.append(new_result)
+
+        results["frame_results"] = merged_results
+
     with open(path, 'w') as file:
         json.dump(results, file, indent=2, cls=NpEncoder)
 
@@ -84,8 +103,20 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 methods_for_strategy = {
+    'field_detection': {
+        'green_detection': {
+            'field_detector': {
+                'method': 'green_detection',
+            },
+        },
+        'ground_pixels_detection': {
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+    },
     'vanishing_point_finder': {
-        'hough' : {}
+        'hough': {}
     },
     'player_detection': {
         # 'edges': {
@@ -203,13 +234,39 @@ methods_for_strategy = {
     }
 }
 
+
+def get_results_json(results_file_path):
+    json_data = {}
+    if os.path.isfile(results_file_path):
+        with open(results_file_path, 'r') as file:
+            json_data = json.load(file)
+    else:
+        print('File {} does not exist. No results loaded.'.format(results_file_path))
+
+    return json_data
+
+
+def merge_results(old_results, new_results):
+    merged_config = old_results.copy()
+
+    for k, v in new_results.items():
+        if k in old_results and isinstance(v, dict):
+            merged_config[k] = merge_results(old_results[k], v)
+        elif k in old_results:
+            continue
+        else:
+            merged_config[k] = v
+    return merged_config
+
+
 if __name__ == '__main__':
-    debug = True
+    debug = False
     override_experiment = True
+    merge_experiments = True
     strategy = ComparisonStrategy.field_detector
 
     videos = [
-        #VideoConstants.video_10_Italia_Alemania_78_94
+        # VideoConstants.video_10_Italia_Alemania_78_94
     ]
 
     if len(videos) == 0:
@@ -249,4 +306,5 @@ if __name__ == '__main__':
                 continue
 
             results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-            save_comparison_results(save_result_path, results)
+
+            save_comparison_results(save_result_path, results, merge=merge_experiments)
