@@ -359,13 +359,15 @@ config = {
             'green_detection', 'ground_pixels_detection'
         ],
     },
-    "vanishing-point-finder": {
+    "vanishing_point_finder": {
         'chart_title': None,
-        'metric_name': "x_axis_distance_percentage",
-        'label_x': 'Distancia',
+        'metric_name': "distance_meters",
+        'label_x': 'Distancia (metros)',
         'tick': None,
-        'showlegend': True,
-        'x_range': None
+        'showlegend': False,
+        'x_range': None,
+        'methods': ['hough'],
+        'x_range': [0, 65]
     },
     "player_sorter": {
         'methods': [
@@ -485,7 +487,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_tracker-extra_players"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "vanishing_point_finder"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -549,7 +551,7 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'field_detection':
                 print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
-            if sub_problem_suffix == 'vanishing-point-finder':
+            if sub_problem_suffix == 'vanishing_point_finder':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             video_idx -= 1
