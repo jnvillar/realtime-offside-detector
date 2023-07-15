@@ -21,4 +21,4 @@ class TeamClassifier:
         self.method.classify_teams(video, players)
         elapsed_time = Timer.stop('classifying teams')
         self.log.log("teams classified", {'cost': elapsed_time})
-        return players
+        return players, elapsed_time

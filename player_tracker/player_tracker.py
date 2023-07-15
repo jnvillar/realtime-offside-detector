@@ -25,4 +25,4 @@ class PlayerTracker:
         players = self.method.track_players(frame.get_current_frame(), players)
         elapsed_time = Timer.stop('tracking players')
         self.log.log("players tracked", {'cost': elapsed_time})
-        return players
+        return players, elapsed_time

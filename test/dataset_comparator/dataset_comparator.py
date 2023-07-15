@@ -220,6 +220,9 @@ class ComparatorByStrategy:
                     video, expected_frame_data
                 )
 
+                comparison_results["type"] = "detect_and_compare"
+                comparison_results["time"] = detected_frame_data.get_time()
+
                 print("Frame {}: {}".format(frame_number, comparison_results))
                 results.append(comparison_results)
 
@@ -237,7 +240,13 @@ class ComparatorByStrategy:
             else:
                 # some of the sub-problems require to perform detection over all frames to work properly, given that
                 # results for one frame depend on results from previous frames
-                self.comparison_strategy.detect_only(video)
+                detected_frame_data = self.comparison_strategy.detect_only(video)
+                results.append(
+                    {
+                        "type": "detect_only",
+                        "time": detected_frame_data.get_time(),
+                    }
+                )
 
         aggregations = self.comparison_strategy.calculate_aggregations(results)
 
@@ -308,8 +317,8 @@ class PlayerSorterComparisonStrategy:
                     id=None
                 ))
 
-        sorted_players = self.player_sorter.sort_players(video, playersD)
-        detected_frame_data = self._build_frame_data(video, sorted_players)
+        sorted_players, elapsed_time = self.player_sorter.sort_players(video, playersD)
+        detected_frame_data = self._build_frame_data(video, sorted_players, elapsed_time)
         return detected_frame_data
 
     def detect_and_compare(self, video, expected_frame_data):
@@ -342,13 +351,14 @@ class PlayerSorterComparisonStrategy:
         # TODO: add calculation for aggregations of interest for this subproblem (e.g. mean, average, std. dev.)
         return {}
 
-    def _build_frame_data(self, video, players):
+    def _build_frame_data(self, video, players, elapsed_time):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
             .set_frame_number(video.get_current_frame_number()) \
             .set_frame_height(height) \
             .set_frame_width(width) \
             .set_players_from_domain_players(players) \
+            .set_time(elapsed_time) \
             .build()
 
 
@@ -378,15 +388,21 @@ class PlayerDetectorComparisonStrategy:
         if detect_field:
             video, _ = self.field_detector.detect_field(video)
 
-        players = self.player_detector.detect_players(video)
-        players = self.player_tracker.track_players(video, players=players)
+        players, elapsed_time_players = self.player_detector.detect_players(video)
+        players, elapsed_time_tracker = self.player_tracker.track_players(video, players=players)
+
+        if self.player_tracker.__class__.__name__ == 'OffTracker':
+            elapsed_time = elapsed_time_players
+        else:
+            elapsed_time = elapsed_time_tracker
 
         # filter players whose pixels are all black because tracking failed because of bad field detection in the middle frames
         players = [
-            player for player in players if not is_area_black(video.get_current_frame(), player.get_box(), percentage=0.5)
+            player for player in players if
+            not is_area_black(video.get_current_frame(), player.get_box(), percentage=0.5)
         ]
 
-        detected_frame_data = self._build_frame_data(video, players)
+        detected_frame_data = self._build_frame_data(video, players, elapsed_time)
         return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
@@ -401,13 +417,14 @@ class PlayerDetectorComparisonStrategy:
         # TODO: add calculation for aggregations of interest for this subproblem (e.g. mean, average, std. dev.)
         return {}
 
-    def _build_frame_data(self, video, players):
+    def _build_frame_data(self, video, players, elapsed_time):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
             .set_frame_number(video.get_current_frame_number()) \
             .set_frame_height(height) \
             .set_frame_width(width) \
             .set_players_from_domain_players(players) \
+            .set_time(elapsed_time) \
             .build()
 
 
@@ -428,8 +445,8 @@ class FieldDetectorComparisonStrategy:
         return self.frame_data_comparator.compare_field(expected_frame_data, detected_frame_data), detected_frame_data
 
     def detect_only(self, video):
-        video, field_mask = self.field_detector.detect_field(video)
-        detected_frame_data = self._build_frame_data(video, field_mask)
+        video, field_mask, elapsed_time = self.field_detector.detect_field(video)
+        detected_frame_data = self._build_frame_data(video, field_mask, elapsed_time)
         return detected_frame_data
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
@@ -448,13 +465,14 @@ class FieldDetectorComparisonStrategy:
 
         return average
 
-    def _build_frame_data(self, video, field_mask):
+    def _build_frame_data(self, video, field_mask, elapsed_time):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
             .set_frame_number(video.get_current_frame_number()) \
             .set_frame_height(height) \
             .set_frame_width(width) \
             .set_field_mask(field_mask) \
+            .set_time(elapsed_time) \
             .build()
 
 
@@ -477,8 +495,9 @@ class VanishingPointFinderComparisonStrategy:
                                                                   detected_frame_data), detected_frame_data
 
     def detect_only(self, video):
-        vanishing_point, vanishing_point_segments = self.vanishing_point_finder.find_vanishing_point(video)
-        return self._build_frame_data(video, vanishing_point, vanishing_point_segments)
+        vanishing_point, vanishing_point_segments, elapsed_time = self.vanishing_point_finder.find_vanishing_point(
+            video)
+        return self._build_frame_data(video, vanishing_point, vanishing_point_segments, elapsed_time)
 
     def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
         expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, False, True,
@@ -491,7 +510,7 @@ class VanishingPointFinderComparisonStrategy:
     def calculate_aggregations(self, results):
         return {}
 
-    def _build_frame_data(self, video, vanishing_point, vanishing_point_segments):
+    def _build_frame_data(self, video, vanishing_point, vanishing_point_segments, elapsed_time):
         height, width = video.get_current_frame().shape[:2]
         return FrameDataBuilder() \
             .set_frame_number(video.get_current_frame_number()) \
@@ -499,4 +518,5 @@ class VanishingPointFinderComparisonStrategy:
             .set_frame_width(width) \
             .set_vanishing_point(vanishing_point) \
             .set_vanishing_point_segments(vanishing_point_segments) \
+            .set_time(elapsed_time) \
             .build()

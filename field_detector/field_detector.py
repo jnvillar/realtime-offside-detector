@@ -44,7 +44,7 @@ class FieldDetector:
         res = self.method_implementations[self.method]()
         elapsed_time = Timer.stop('detecting field')
         self.log.log("detecting field", {"cost": elapsed_time})
-        return res
+        return res, elapsed_time
 
     def by_green_detection(self):
         return self.run_steps_pipeline(self.by_green_detection_pipeline())

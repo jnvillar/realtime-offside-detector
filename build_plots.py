@@ -86,11 +86,14 @@ def print_player_tracker_plot(
         results_file_path,
         sub_problem_suffix
 ):
+    frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
+
     method_player_detection = "_".join(method.split("_")[1:])
     no_tracking_file = "-".join(
         results_file_path.split("-")[0:2]) + "-player_detection-" + method_player_detection + ".json"
     no_tracker_results = get_results_json(no_tracking_file)
     frame_no_tracking_results = no_tracker_results["frame_results"]
+    frame_no_tracking_results = [d for d in frame_no_tracking_results if d.get('type') == 'detect_and_compare']
 
     total_players_in_frame_no_tracking = \
         [frame_data['expected_players'] for
@@ -228,6 +231,8 @@ def print_player_tracker_plot(
 
 
 def print_player_detection_plot(frame_results, fig, video_name_in_chart, video_idx):
+    frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
+
     total_players_in_frame = \
         [frame_data['expected_players'] for
          frame_data in
@@ -273,6 +278,8 @@ def print_player_detection_plot(frame_results, fig, video_name_in_chart, video_i
 
 
 def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
+
     good_values = [frame_data[sub_problem_config['correctly_sorted_players']] for frame_data in
                    frame_results]
     badly_values = [frame_data[sub_problem_config['badly_sorted_players']] for frame_data in
@@ -294,6 +301,8 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
 
 
 def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
+
     metric_values = [frame_data[sub_problem_config['metric_name']] for frame_data in frame_results]
     frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
@@ -311,6 +320,8 @@ def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_id
 
 
 def print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
+    frame_results = [d for d in frame_results if d.get('type') == 'detect_and_compare']
+
     metric_values = [frame_data[sub_problem_config['metric_name']] for frame_data in frame_results]
     frame_numbers = [frame_data['frame_number'] for frame_data in frame_results]
 
@@ -542,7 +553,6 @@ if __name__ == '__main__':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             video_idx -= 1
-
 
         if export_html_file:
             export_to_html_file(method, sub_problem_suffix, config)

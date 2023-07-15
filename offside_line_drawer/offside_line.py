@@ -25,7 +25,7 @@ class OffsideLineDrawer:
         elapsed_time = Timer.stop('get_offside_line')
 
         self.log.log("offside line", {"cost": elapsed_time, "offside_line": str(offside_line)})
-        return offside_line
+        return offside_line, elapsed_time
 
     def _get_player_point(self, last_defending_player: Player, orientation: Orientation):
         player_box = last_defending_player.get_box()

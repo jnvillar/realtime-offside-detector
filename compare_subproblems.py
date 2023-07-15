@@ -203,10 +203,10 @@ methods_for_strategy = {
 if __name__ == '__main__':
     debug = True
     override_experiment = True
-    strategy = ComparisonStrategy.player_tracker
+    strategy = ComparisonStrategy.field_detector
 
     videos = [
-        VideoConstants.video_10_Italia_Alemania_78_94
+        #VideoConstants.video_10_Italia_Alemania_78_94
     ]
 
     if len(videos) == 0:

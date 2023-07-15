@@ -51,6 +51,7 @@ class Team(Enum):
     def is_referee(self):
         return self == Team.REFEREE
 
+
 #######################################################################################################################
 
 
@@ -82,7 +83,8 @@ class FrameData:
             field_mask,
             last_defense_player_index,
             vanishing_point_segments=None,
-            vanishing_point=None
+            vanishing_point=None,
+            time=None
     ):
         self.frame_number = self._validate_frame_number(frame_number)
         self.frame_width = frame_width
@@ -94,9 +96,13 @@ class FrameData:
         self.last_defense_player_index = last_defense_player_index
         self.vanishing_point_segments = vanishing_point_segments
         self.vanishing_point = vanishing_point
+        self.time = time
 
     def get_frame_number(self):
         return self.frame_number
+
+    def get_time(self):
+        return self.time
 
     def get_field(self):
         return self.field
@@ -182,9 +188,14 @@ class FrameDataBuilder:
         self.last_defense_player_index = None
         self.vanishing_point_segments = None
         self.vanishing_point = None
+        self.time = None
 
     def set_frame_number(self, frame_number):
         self.frame_number = frame_number
+        return self
+
+    def set_time(self, time):
+        self.time = time
         return self
 
     def set_frame_width(self, frame_width):
@@ -283,6 +294,9 @@ class FrameDataBuilder:
             if self.vanishing_point_segments is None and self.vanishing_point is None:
                 raise Exception("vanishing_point_segments not set")
 
+            if self.time is None:
+                raise Exception("time is not set")
+
         return FrameData(
             frame_number=self.frame_number,
             frame_width=self.frame_width,
@@ -293,7 +307,8 @@ class FrameDataBuilder:
             field_mask=self.field_mask,
             last_defense_player_index=self.last_defense_player_index,
             vanishing_point=self.vanishing_point,
-            vanishing_point_segments=self.vanishing_point_segments
+            vanishing_point_segments=self.vanishing_point_segments,
+            time=self.time,
         )
 
 

@@ -21,4 +21,4 @@ class VanishingPointFinder:
         vanishing_point, vanishing_point_segments = self.method.find_vanishing_point(frame)
         elapsed_time = Timer.stop('finding vanishing point')
         self.log.log("vanishing point found", {'cost': elapsed_time, 'vanishing_point': vanishing_point})
-        return vanishing_point, vanishing_point_segments
+        return vanishing_point, vanishing_point_segments, elapsed_time

@@ -28,4 +28,4 @@ class PlayerSorter:
         sorted_players = self.method.sort_players(video.get_current_frame(), players)
         elapsed_time = Timer.stop('sorting players')
         self.log.log("sorted players", {"cost": elapsed_time, "players": sorted_players})
-        return sorted_players
+        return sorted_players, elapsed_time

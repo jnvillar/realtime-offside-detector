@@ -17,7 +17,7 @@ class PlayerFinder:
         player = self._find_last_defending_player(players, orientation)
         elapsed_time = Timer.stop('finding leftmost player')
         self.log.log("player found", {"cost": elapsed_time, "player": players})
-        return player
+        return player, elapsed_time
 
     def _find_last_defending_player(self, players: [Player], orientation: Orientation):
         if not players or len(players) == 0:

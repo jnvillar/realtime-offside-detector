@@ -41,4 +41,4 @@ class PlayerDetector:
             players = []
         elapsed_time = Timer.stop('finding players')
         self.log.log("detected players", {"cost": elapsed_time, "amount": len(players), "players": players})
-        return players
+        return players, elapsed_time
