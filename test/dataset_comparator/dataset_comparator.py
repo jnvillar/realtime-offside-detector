@@ -60,15 +60,22 @@ class FrameDataComparator:
             'jaccard_index': jaccard_index
         }
 
-    def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
-        distance = math_utils.distance_between_points(expected_frame_data.get_vanishing_point(),
-                                                      actual_frame_data.get_vanishing_point())
-        x_axis_distance_percentage = distance / actual_frame_data.get_frame_width()
-        y_axis_distance_percentage = distance / actual_frame_data.get_frame_height()
+    def compare_vanishing_point(self, expected_frame_data: FrameData, actual_frame_data: FrameData, central_circle_radius):
+        expected_vp = expected_frame_data.get_vanishing_point()
+        actual_vp = actual_frame_data.get_vanishing_point()
+        distance_pixels = math_utils.distance_between_points(expected_vp, actual_vp)
+        # the segment given by the distance between the expected vp and the actual vp, has a direction which can be
+        # described by an angle. We use that angle to calculate the pixels:meters ratio in that specific direction
+        distance_direction_vector = (expected_vp[0] - actual_vp[0], expected_vp[1] - actual_vp[1])
+        distance_meters = self._calculate_distance_in_meters(distance_pixels, distance_direction_vector, central_circle_radius)
+        x_axis_distance_percentage = distance_pixels / actual_frame_data.get_frame_width()
+        y_axis_distance_percentage = distance_pixels / actual_frame_data.get_frame_height()
 
         return {
             'frame_number': actual_frame_data.get_frame_number(),
-            'distance': distance,
+            'distance_pixels': distance_pixels,
+            'distance_meters': distance_meters,
+            'distance_direction': distance_direction_vector,
             'x_axis_distance_percentage': x_axis_distance_percentage,
             'y_axis_distance_percentage': y_axis_distance_percentage
         }
@@ -106,7 +113,7 @@ class FrameDataComparator:
             match = False
 
             for idx, expected_player in enumerate(expected_players):
-                if self.point_inside_bounding_box(detected_center, expected_player.get_position()):
+                if self._point_inside_bounding_box(detected_center, expected_player.get_position()):
                     correctly_detected_players.append(detected_player)
                     expected_players.pop(idx)
                     match = True
@@ -166,7 +173,7 @@ class FrameDataComparator:
             "badly_sorted_players": badly_sorted_players
         }
 
-    def point_inside_bounding_box(self, point, box):
+    def _point_inside_bounding_box(self, point, box):
         x, y = point
         point_1, point_2 = box
 
@@ -189,6 +196,18 @@ class FrameDataComparator:
     # Line slope given two points:
     def _slope(self, x1, y1, x2, y2):
         return (y2 - y1) / (x2 - x1)
+
+    def _calculate_distance_in_meters(self, distance_pixels, distance_direction_vector, central_circle_radius):
+        # the segment given by the distance between the expected vp and the actual vp, has a direction which can be
+        # described by an angle. We use that angle to calculate the pixels:meters ratio in that specific direction
+        direction_angle_radians = math_utils.calculate_angle_from_vector(distance_direction_vector)
+        major_radius = central_circle_radius[0]
+        minor_radius = central_circle_radius[1]
+        ellipse_point = math_utils.get_ellipse_point_from_angle(major_radius, minor_radius, direction_angle_radians)
+        ellipse_radius_on_point = math.dist(ellipse_point, (0, 0))
+
+        # 9.15m is the radius of the central circle of a professional soccer field (according to FIFA rules)
+        return distance_pixels * 9.15 / ellipse_radius_on_point
 
 
 class ComparatorByStrategy:
@@ -483,6 +502,7 @@ class VanishingPointFinderComparisonStrategy:
         self.frame_data_comparator = FrameDataComparator()
         self.screen_manager = ScreenManager.get_manager()
         self.vanishing_point_finder = VanishingPointFinder(None, **config['vanishing_point_finder'])
+        self.major_radius, self.minor_radius = self._calculate_central_circle_radius(config['vanishing_point_finder']['central_circle_axis'])
 
     def prepare_for_detection(self, video, expected_frame_data):
         frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
@@ -491,8 +511,7 @@ class VanishingPointFinderComparisonStrategy:
 
     def detect_and_compare(self, video, expected_frame_data):
         detected_frame_data = self.detect_only(video)
-        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data,
-                                                                  detected_frame_data), detected_frame_data
+        return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data, [self.major_radius, self.minor_radius]), detected_frame_data
 
     def detect_only(self, video):
         vanishing_point, vanishing_point_segments, elapsed_time = self.vanishing_point_finder.find_vanishing_point(
@@ -520,3 +539,13 @@ class VanishingPointFinderComparisonStrategy:
             .set_vanishing_point_segments(vanishing_point_segments) \
             .set_time(elapsed_time) \
             .build()
+
+    def _calculate_central_circle_radius(self, central_circle_axis):
+        # central_circle_axis is a list of two segments (each segment given by two points)
+        central_circle_x_axis_points = central_circle_axis[0]
+        central_circle_y_axis_points = central_circle_axis[1]
+
+        major_radius = math.dist(central_circle_x_axis_points[0], central_circle_x_axis_points[1])
+        minor_radius = math.dist(central_circle_y_axis_points[0], central_circle_y_axis_points[1])
+
+        return major_radius, minor_radius

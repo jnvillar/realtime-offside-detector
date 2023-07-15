@@ -84,6 +84,9 @@ def get_video_frame_data(video_data_path) -> [FrameData]:
 
 
 methods_for_strategy = {
+    'vanishing_point_finder': {
+        'hough' : {}
+    },
     'player_detection': {
         # 'edges': {
         #     'player_tracker': {
