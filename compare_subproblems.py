@@ -75,14 +75,14 @@ def save_comparison_results(path, results, merge=False):
         new_results = results["frame_results"]
 
         merged_results = []
-        for new_result in new_results:
-            new = True
-            for old_result in old_results:
-                if old_result['frame_number'] == new_result['frame_number']:
-                    new = False
-                    merged_results.append(merge_results(old_result, new_result))
-            if new:
+        count = 0
+        for idx, new_result in enumerate(new_results):
+            if new_result['type'] == 'detect_and_compare':
+                merged_results.append(merge_results(old_results[count], new_result))
+                count += 1
+            else:
                 merged_results.append(new_result)
+
 
         results["frame_results"] = merged_results
 
@@ -119,50 +119,50 @@ methods_for_strategy = {
         'hough': {}
     },
     'player_detection': {
-        # 'edges': {
-        #     'player_tracker': {
-        #         'method': 'off',
-        #     },
-        #     'player_detector': {
-        #         'method': 'edges',
-        #     },
-        #     'field_detector': {
-        #         'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'otsu': {
-        #     'player_tracker': {
-        #         'method': 'off',
-        #     },
-        #     'player_detector': {
-        #         'method': 'otsu',
-        #     },
-        #     'field_detector': {
-        #         'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'by_color': {
-        #     'player_tracker': {
-        #         'method': 'off',
-        #     },
-        #     'player_detector': {
-        #         'method': 'by_color',
-        #     },
-        #    'field_detector': {
-        #        'method': 'ground_pixels_detection',
-        #     },
-        # },
-        # 'background_subtraction': {
-        #     'player_tracker': {
-        #         'method': 'off',
-        #     },
-        #     'player_detector': {
-        #         'method': 'background_subtraction',
-        #     }
-        #    'field_detector': {
-        #        'method': 'ground_pixels_detection',
-        #     },
-        # },
+        'edges': {
+            'player_tracker': {
+                'method': 'off',
+            },
+            'player_detector': {
+                'method': 'edges',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+        'otsu': {
+            'player_tracker': {
+                'method': 'off',
+            },
+            'player_detector': {
+                'method': 'otsu',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+        'by_color': {
+            'player_tracker': {
+                'method': 'off',
+            },
+            'player_detector': {
+                'method': 'by_color',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
+        'background_subtraction': {
+            'player_tracker': {
+                'method': 'off',
+            },
+            'player_detector': {
+                'method': 'background_subtraction',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        },
         'kmeans': {
             'player_tracker': {
                 'method': 'off',
@@ -263,7 +263,7 @@ if __name__ == '__main__':
     debug = False
     override_experiment = True
     merge_experiments = True
-    strategy = ComparisonStrategy.field_detector
+    strategy = ComparisonStrategy.player_detector
 
     videos = [
         # VideoConstants.video_10_Italia_Alemania_78_94

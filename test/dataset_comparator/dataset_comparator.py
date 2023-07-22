@@ -24,7 +24,6 @@ class FrameDataComparator:
                     expected_frame_data.get_frame_number(), actual_frame_data.get_frame_number()))
 
         comparison_results = {
-            'frame_number': actual_frame_data.get_frame_number(),
             'field': self.compare_field(expected_frame_data, actual_frame_data),
             # 'vanishing_point': self.compare_vanishing_point(expected_frame_data, actual_frame_data),
             # 'defending_team': self.compare_defending_team(expected_frame_data, actual_frame_data),
@@ -51,7 +50,6 @@ class FrameDataComparator:
         jaccard_index = intersection_area / union_area
 
         return {
-            'frame_number': actual_frame_data.get_frame_number(),
             'missing_field_pixels': false_negatives_area,
             'missing_field_percentage': false_negative_percentage,
             'extra_field_pixels': false_positives_area,
@@ -74,7 +72,6 @@ class FrameDataComparator:
         y_axis_distance_percentage = distance_pixels / actual_frame_data.get_frame_height()
 
         return {
-            'frame_number': actual_frame_data.get_frame_number(),
             'distance_pixels': distance_pixels,
             'distance_meters': distance_meters,
             'distance_direction': distance_direction_vector,
@@ -245,6 +242,7 @@ class ComparatorByStrategy:
 
                 comparison_results["type"] = "detect_and_compare"
                 comparison_results["time"] = detected_frame_data.get_time()
+                comparison_results["frame_number"] = detected_frame_data.get_frame_number()
 
                 print("Frame {}: {}".format(frame_number, comparison_results))
                 results.append(comparison_results)
