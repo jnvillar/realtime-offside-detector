@@ -20,6 +20,8 @@ class ByHough:
         self.calculate_every_x_amount_of_frames = kwargs.get('calculate_every_x_amount_of_frames', 1)
         self.max_number_of_candidate_lines = kwargs.get('max_number_of_candidate_lines', 10000)
         self.hough_lines_threshold = kwargs.get('hough_lines_threshold', 500)
+        self.max_neighbour_distance = kwargs.get('max_neighbour_distance', 1000)
+        self.line_detection_angular_range = kwargs.get('line_detection_angular_range', 70)
         self.frame_printer = FramePrinter()
         self.vanishing_point = None
         self.lines = None
@@ -73,7 +75,7 @@ class ByHough:
         lines = []
         width = frame.shape[1]
         if self.vanishing_point[0] < width * (1 / 3):
-            lines = cv2.HoughLines(frame, rho, theta, threshold, min_theta=math.radians(110),
+            lines = cv2.HoughLines(frame, rho, theta, threshold, min_theta=math.radians(180 - self.line_detection_angular_range),
                                    max_theta=math.radians(180))
         elif width * (1 / 3) <= self.vanishing_point[0] < width * (2 / 3):
             part1 = cv2.HoughLines(frame, rho, theta, threshold, min_theta=math.radians(135),
@@ -89,7 +91,7 @@ class ByHough:
                 lines = np.concatenate([part1, part2])
 
         else:  # self.vanishing_point[0] >= width * (2/3):
-            lines = cv2.HoughLines(frame, rho, theta, threshold, min_theta=math.radians(0), max_theta=math.radians(70))
+            lines = cv2.HoughLines(frame, rho, theta, threshold, min_theta=math.radians(0), max_theta=math.radians(self.line_detection_angular_range))
 
         if lines is None:
             lines = []
@@ -170,14 +172,13 @@ class ByHough:
             if len(candidate_vanishing_points) == 0:
                 self.log.log('Could not find two parallel lines')
             else:
-                max_neighbour_distance = 10000
                 min_distance = sys.maxsize
                 new_vanishing_point = None
                 new_vanishing_point_lines = None
                 for candidate_idx, candidate in enumerate(candidate_vanishing_points):
                     candidate_distance = math.dist([candidate[0], candidate[1]],
                                                    [self.vanishing_point[0], self.vanishing_point[1]])
-                    if candidate_distance < max_neighbour_distance and candidate_distance < min_distance:
+                    if candidate_distance < self.max_neighbour_distance and candidate_distance < min_distance:
                         new_vanishing_point = candidate
                         new_vanishing_point_lines = candidate_lines[candidate_idx]
                         min_distance = candidate_distance
