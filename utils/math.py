@@ -53,10 +53,35 @@ def get_line_points(rho, theta):
     return (x1, y1), (x2, y2)
 
 
+def convert_line(line):
+    rho, theta = line
+
+    # Convert rho to positive if it's negative
+    if rho < 0:
+        rho = -rho
+        theta += np.pi
+
+    # Normalize theta to be between 0 and 2*pi
+    theta = theta % (2 * np.pi)
+
+    return rho, theta
+
+
+def circular_distance(theta1, theta2):
+    diff = abs(theta1 - theta2)
+    return min(diff, 2 * np.pi - diff)
+
+
 def same_lines(line1, line2):
-    rho1, theta1 = line1
-    rho2, theta2 = line2
-    return abs(rho1 - rho2) < 20 and abs(theta1 - theta2) < 0.1
+    # lines in polar coordinates can have negative rho values according to hough lines implementation, so we need to
+    # convert them to properly compare. Check: https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
+    rho1, theta1 = convert_line(line1)
+    rho2, theta2 = convert_line(line2)
+
+    rho_diff = abs(rho1 - rho2)
+    theta_diff = circular_distance(theta1, theta2)
+
+    return rho_diff <= 30 and theta_diff <= 0.2
 
 
 #  If the line equation is y = ax + b and the coordinates of a point is (x0, y0)

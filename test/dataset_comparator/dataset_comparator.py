@@ -200,6 +200,8 @@ class FrameDataComparator:
         return (y2 - y1) / (x2 - x1)
 
     def _calculate_distance_in_meters(self, distance_pixels, distance_direction_vector, central_circle_radius):
+        if distance_pixels == 0:
+            return 0
         # the segment given by the distance between the expected vp and the actual vp, has a direction which can be
         # described by an angle. We use that angle to calculate the pixels:meters ratio in that specific direction
         direction_angle_radians = math_utils.calculate_angle_from_vector(distance_direction_vector)
@@ -408,7 +410,7 @@ class PlayerDetectorComparisonStrategy:
 
     def detect_only(self, video, detect_field=True):
         if detect_field:
-            video, _ = self.field_detector.detect_field(video)
+            video, _, _ = self.field_detector.detect_field(video)
 
         players, elapsed_time_players = self.player_detector.detect_players(video)
         players, elapsed_time_tracker = self.player_tracker.track_players(video, players=players)
@@ -505,6 +507,7 @@ class VanishingPointFinderComparisonStrategy:
         self.frame_data_printer = FrameDataPrinter()
         self.frame_data_comparator = FrameDataComparator()
         self.screen_manager = ScreenManager.get_manager()
+        self.field_detector = FieldDetector(None, **config['field_detector'])
         self.vanishing_point_finder = VanishingPointFinder(None, **config['vanishing_point_finder'])
         self.major_radius, self.minor_radius = self._calculate_central_circle_radius(
             config['vanishing_point_finder']['central_circle_axis'])
@@ -515,12 +518,15 @@ class VanishingPointFinderComparisonStrategy:
         video.set_frame(frame_with_field_detected)
 
     def detect_and_compare(self, video, expected_frame_data):
-        detected_frame_data = self.detect_only(video)
+        detected_frame_data = self.detect_only(video, detect_field=False)
         return self.frame_data_comparator.compare_vanishing_point(expected_frame_data, detected_frame_data,
                                                                   [self.major_radius,
                                                                    self.minor_radius]), detected_frame_data
 
-    def detect_only(self, video):
+    def detect_only(self, video, detect_field=True):
+        if detect_field:
+            video, _, _ = self.field_detector.detect_field(video)
+
         vanishing_point, vanishing_point_segments, elapsed_time = self.vanishing_point_finder.find_vanishing_point(
             video)
         return self._build_frame_data(video, vanishing_point, vanishing_point_segments, elapsed_time)
