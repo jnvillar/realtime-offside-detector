@@ -55,7 +55,8 @@ def configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title):
         yaxis=dict(
             title=sub_problem_config.get('label_y', None),
             titlefont=dict(size=font_size),
-            tickfont=dict(size=font_size)
+            tickfont=dict(size=font_size),
+            range=sub_problem_config.get('y_range', None),
         ),
         showlegend=sub_problem_config['showlegend']
     )
@@ -302,27 +303,93 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
-def print_field_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path, sub_problem_config):
+def print_player_detection_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+):
+    aux_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+    )
 
-    all_results = []
-    y = []
-    for method in sub_problem_config['time_methods']:
+
+def print_field_detection_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+):
+    aux_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config)
+
+
+def aux_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+):
+    if sub_problem_config.get('results', None) is None:
+        sub_problem_config['results'] = {
+            'metrics': {},
+            'video_name': {},
+            'color': {}
+        }
+
+    colors = ['indianred', 'forestgreen']
+
+    for idx, method in enumerate(sub_problem_config['time_methods']):
         file = "-".join(
             results_file_path.split("-")[0:3]) + "-" + method + ".json"
         results = get_results_json(file)
-        results = [d["time"] for d in results["frame_results"]]
-        all_results.append(np.mean(results))
-        y.append(video_name_in_chart)
+        results = [d["time"] * 1000 for d in results["frame_results"]]
 
+        metrics = sub_problem_config['results']['metrics'].get(method, [])
+        metrics.append(np.mean(results))
+        sub_problem_config['results']['metrics'][method] = metrics
 
-    fig.add_trace(
-        go.Bar(
-            x=y,
-            y=all_results,
-            name=video_name_in_chart,
-            legendrank=video_idx
-        )
-    )
+        video_name = sub_problem_config['results']['video_name'].get(method, [])
+        video_name.append(video_name_in_chart)
+        sub_problem_config['results']['video_name'][method] = video_name
+
+        sub_problem_config['results']['color'][method] = colors[idx]
+
+    if video_idx == 1:
+        for k, v in sub_problem_config['results']['metrics'].items():
+            fig.add_trace(
+                go.Bar(
+                    name=k,
+                    y=sub_problem_config['results']['metrics'][k],
+                    x=sub_problem_config['results']['video_name'][k],
+                    # orientation='h',  # Hori
+                    marker=dict(
+                        color=sub_problem_config['results']['color'][k]  # Assign colors based on the method
+                    ),
+                    text=sub_problem_config['results']['metrics'][k],
+                    textposition='auto',  # 'auto' places the labels inside the bars
+                    texttemplate='%{text:.2f} ms',
+                )
+            )
+
+        fig.update_layout(barmode='group')
+        fig.update_layout(legend=dict(x=0.99, y=0.99, xanchor='right', yanchor='top'))
 
 
 def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
@@ -387,15 +454,31 @@ config = {
     "field_detection_time": {
         'chart_title': None,
         'metric_name': "time",
-        'label_x': 'Tiempo (ms)',
+        'label_y': 'Tiempo (ms)',
         'tick': None,
-        'showlegend': False,
+        'showlegend': True,
         'x_range': None,
+        'y_range': [0, 40],
         'methods': [
             'green_detection'
         ],
         'time_methods': [
             'green_detection', 'ground_pixels_detection'
+        ]
+    },
+    "player_detection_time": {
+        'chart_title': None,
+        'metric_name': "time",
+        'label_y': 'Tiempo (ms)',
+        'tick': None,
+        'showlegend': True,
+        'x_range': None,
+        'y_range': [0, 40],
+        'methods': [
+            'green_detection'
+        ],
+        'time_methods': [
+            'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
         ]
     },
     "vanishing-point-finder": {
@@ -534,7 +617,7 @@ if __name__ == '__main__':
     export_html_file = True
     videos_to_consider = scan_videos_from_path("./test/videos")
     font_size = 22
-    x_axis_title = sub_problem_config['label_x']
+    x_axis_title = sub_problem_config.get('label_x', None)
 
     for method in methods:
         fig = go.Figure()
@@ -557,7 +640,8 @@ if __name__ == '__main__':
             video_id = video_name.split("_")[0]
             video_name_without_extension = video_name.split(".")[0]
             sub_problem_suffix_without_time = sub_problem_suffix.replace("_time", "")
-            results_file_path = './experiments/' + video_name_without_extension + "-" + sub_problem_suffix_without_time.split("-")[0]
+            results_file_path = './experiments/' + video_name_without_extension + "-" + \
+                                sub_problem_suffix_without_time.split("-")[0]
             video_name_in_chart = "{} {}{} ".format("Video", video_id,
                                                     get_video_fragment_character(fragments_per_video[video_id],
                                                                                  next_fragment_per_video.get(video_id,
@@ -592,12 +676,16 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'field_detection':
                 print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
+            if sub_problem_suffix == 'vanishing-point-finder':
+                print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
+
             if sub_problem_suffix == 'field_detection_time':
                 print_field_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
                                                 sub_problem_config)
 
-            if sub_problem_suffix == 'vanishing-point-finder':
-                print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
+            if sub_problem_suffix == 'player_detection_time':
+                print_player_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                                                 sub_problem_config)
 
             video_idx -= 1
 
