@@ -8,7 +8,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(109, 606), (963, 369)], [(495, 851), (1562, 410)]]
+                'vp_segments_first_frame': [[(109, 606), (963, 369)], [(495, 851), (1562, 410)]],
+                'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(894, 440), (1378, 440)], [(894, 440), (894, 347)]]
         },
@@ -25,7 +26,6 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'hough_lines_threshold': 400,
                 'vp_segments_first_frame': [[(376, 1043), (894, 295)], [(753, 1076), (1096, 301)]]
             },
             'central_circle_axis': [[(919, 722), (1532, 722)], [(919, 722), (919, 571)]]
@@ -68,7 +68,6 @@ override_config = {
             'kmeans': {
                 'min_length_line_in_video_percentage': 0.015,
                 'debug_lines': False,
-
                 'color_percentage': (2 / 100),  # 5%
                 'klusters': 10,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -129,7 +128,6 @@ override_config = {
             # bsas, automatic_by_color, by_color, kmeans
             'method': 'kmeans',
             'kmeans': {
-
                 'only_unclassified_players': True,
                 'median': False,
                 'focused': False,
@@ -221,7 +219,6 @@ override_config = {
             'method': 'hough',
             'hough': {
                 'vp_segments_first_frame': [[(426, 963), (1116, 85)], [(1028, 938), (1396, 52)]]
-                # Not detecting very well on this video. Tweak other parameters
             },
             'central_circle_axis': [[(1638, 296), (1163, 278)], [(1638, 296), (1647, 194)]]
         },
@@ -297,7 +294,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(1392, 1037), (1107, 375)], [(1778, 1018), (1280, 394)]]
+                'vp_segments_first_frame': [[(1392, 1037), (1107, 375)], [(1778, 1018), (1280, 394)]],
+                'line_detection_angular_range': 90,
             },
             'central_circle_axis': [[(475, 597), (886, 581)], [(475, 597), (466, 512)]]
         }
@@ -306,7 +304,9 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]]
+                'vp_segments_first_frame': [[(896, 998), (1165, 200)], [(1461, 1026), (1469, 202)]],
+                'hough_lines_threshold': 400,
+                'line_detection_angular_range': 90,
                 # Not detecting anything on this video. Tweak other parameters
             },
             'central_circle_axis': [[(1712, 474), (1112, 462)], [(1712, 474), (1713, 379)]]
@@ -360,7 +360,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(1124, 1039), (453, 405)], [(1549, 992), (718, 391)]]
+                'vp_segments_first_frame': [[(1124, 1039), (453, 405)], [(1549, 992), (718, 391)]],
+                'line_detection_angular_range': 90,
             },
             'central_circle_axis': [[(389, 701), (998, 687)], [(389, 701), (386, 576)]]
         },
@@ -399,7 +400,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(604, 1041), (1299, 362)], [(1095, 1057), (1584, 360)]]
+                'vp_segments_first_frame': [[(604, 1041), (1299, 362)], [(1095, 1057), (1584, 360)]],
+                'hough_lines_threshold': 400,
             },
             'central_circle_axis': [[(713, 552), (1179, 550)], [(713, 552), (712, 456)]]
         }
@@ -416,7 +418,6 @@ override_config = {
             # bsas, automatic_by_color, by_color, kmeans
             'method': 'kmeans',
             'kmeans': {
-
                 'only_unclassified_players': True,
                 'median': False,
                 'focused': False,
@@ -482,8 +483,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(411, 1039), (1305, 306)], [(1148, 1075), (1641, 323)]]
-                # Not detecting anything on this video. Tweak other parameters
+                'vp_segments_first_frame': [[(411, 1039), (1305, 306)], [(1148, 1075), (1641, 323)]],
+                'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(1918, 665), (1176, 626)], [(1918, 665), (1916, 510)]]
         },
@@ -502,7 +503,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(648, 1061), (622, 244)], [(11, 1007), (361, 302)]]
+                'vp_segments_first_frame': [[(648, 1061), (622, 244)], [(11, 1007), (361, 302)]],
+                'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(634, 481), (1171, 474)], [(634, 481), (630, 388)]]
         },
@@ -536,8 +538,9 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(944, 1046), (930, 276)], [(1561, 1044), (1262, 491)]]
+                'vp_segments_first_frame': [[(944, 1046), (930, 276)], [(1561, 1044), (1262, 491)]],
                 # Not detecting anything on this video. Tweak other parameters
+                'hough_lines_threshold': 300
             },
             'central_circle_axis': [[(931, 486), (1434, 486)], [(931, 486), (931, 394)]]
         },
@@ -553,7 +556,6 @@ override_config = {
             'detect_every_amount_of_frames': 1,
             'kmeans': {
                 'debug_lines': False,
-
                 'color_percentage': (2 / 100),  # 5%
                 'klusters': 10,
                 'keep_contours_by_aspect_ratio': AspectRatio.taller,
@@ -578,7 +580,6 @@ override_config = {
                 'filter_contour_inside_other': True
             },
             'adhoc': {
-
                 'threshold1': 50,
                 'threshold2': 70,
                 'ignore_contours_smaller_than': 0.1,
@@ -606,7 +607,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]]
+                'vp_segments_first_frame': [[(874, 1018), (157, 449)], [(1149, 911), (365, 433)]],
+                'hough_lines_threshold': 400
             },
             'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
         },
@@ -635,7 +637,8 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]]
+                'vp_segments_first_frame': [[(439, 1052), (416, 304)], [(921, 1043), (647, 301)]],
+                'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
         },
@@ -757,8 +760,9 @@ override_config = {
         'vanishing_point_finder': {
             'method': 'hough',
             'hough': {
-                'vp_segments_first_frame': [[(750, 1043), (737, 365)], [(174, 1029), (527, 400)]]
-                # Not detecting anything on this video. Tweak other parameters
+                'vp_segments_first_frame': [[(750, 1043), (737, 365)], [(174, 1029), (527, 400)]],
+                'hough_lines_threshold': 400,
+                'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(936, 510), (1436, 510)], [(936, 510), (936, 429)]]
         },
