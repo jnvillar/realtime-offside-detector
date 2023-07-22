@@ -481,15 +481,14 @@ config = {
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
         ]
     },
-    "vanishing-point-finder": {
+    "vanishing_point_finder": {
         'chart_title': None,
         'metric_name': "distance_meters",
         'label_x': 'Distancia (metros)',
         'tick': None,
         'showlegend': False,
-        'x_range': None,
-        'methods': ['hough'],
-        'x_range': [0, 65]
+        'x_range': [0, 35],
+        'methods': ['hough']
     },
     "player_sorter": {
         'methods': [
@@ -676,7 +675,7 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'field_detection':
                 print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
-            if sub_problem_suffix == 'vanishing-point-finder':
+            if sub_problem_suffix == 'vanishing_point_finder':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             if sub_problem_suffix == 'field_detection_time':
