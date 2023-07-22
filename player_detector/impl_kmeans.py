@@ -17,12 +17,6 @@ class KmeansPlayerDetector:
             n_clusters=self.params.get('klusters', 3)
         )
 
-        self.main_colors_2 = None
-        self.k_means_2 = KMeans(
-            random_state=0,
-            n_clusters=3
-        )
-
     def find_players(self, original_frame):
         # get (i, j) positions of all RGB pixels that are black (i.e. [0, 0, 0])
 
@@ -268,19 +262,3 @@ class KmeansPlayerDetector:
             return k_means_result.labels_
         else:
             return self.k_means.predict(image)
-
-    def get_pixel_labels_2(self, image):
-        # to rgb
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-        # reshape
-        image = image.reshape((-1, 3))
-
-        if self.main_colors_2 is None:
-            k_means_result = self.k_means_2.fit(image)
-
-            # cluster_centers are floats, convert back to int
-            self.main_colors_2 = np.uint8(k_means_result.cluster_centers_)
-            return k_means_result.labels_
-        else:
-            return self.k_means_2.predict(image)

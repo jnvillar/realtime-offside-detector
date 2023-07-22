@@ -129,50 +129,50 @@ methods_for_strategy = {
         'hough': {}
     },
     'player_detection': {
-        'edges': {
-            'player_tracker': {
-                'method': 'off',
-            },
-            'player_detector': {
-                'method': 'edges',
-            },
-            'field_detector': {
-                'method': 'ground_pixels_detection',
-            },
-        },
-        'otsu': {
-            'player_tracker': {
-                'method': 'off',
-            },
-            'player_detector': {
-                'method': 'otsu',
-            },
-            'field_detector': {
-                'method': 'ground_pixels_detection',
-            },
-        },
-        'by_color': {
-            'player_tracker': {
-                'method': 'off',
-            },
-            'player_detector': {
-                'method': 'by_color',
-            },
-            'field_detector': {
-                'method': 'ground_pixels_detection',
-            },
-        },
-        'background_subtraction': {
-            'player_tracker': {
-                'method': 'off',
-            },
-            'player_detector': {
-                'method': 'background_subtraction',
-            },
-            'field_detector': {
-                'method': 'ground_pixels_detection',
-            },
-        },
+        # 'edges': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'edges',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
+        # 'otsu': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'otsu',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
+        # 'by_color': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'by_color',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
+        # 'background_subtraction': {
+        #     'player_tracker': {
+        #         'method': 'off',
+        #     },
+        #     'player_detector': {
+        #         'method': 'background_subtraction',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
         'kmeans': {
             'player_tracker': {
                 'method': 'off',
@@ -276,6 +276,16 @@ if __name__ == '__main__':
     strategy = ComparisonStrategy.player_detector
 
     videos = [
+        VideoConstants.video_10_Italia_Alemania_162_173,
+        VideoConstants.video_10_Italia_Alemania_548_555,
+        VideoConstants.video_11_Estudiantes_Patronato_380_392,
+        VideoConstants.video_12_ManchesterCity_Sevilla_66_74,
+        VideoConstants.video_13_Chelsea_Milan_38_44,
+        VideoConstants.video_14_Psg_Olympique_156_164,
+        VideoConstants.video_15_Valencia_Getafe_38_52,
+        VideoConstants.video_16_RealMadrid_Shakhtar_245_253,
+        VideoConstants.video_17_Celta_RealMadrid_112_122,
+        VideoConstants.video_18_Sevilla_Valladolid_29_38,
 
     ]
 

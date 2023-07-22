@@ -350,10 +350,12 @@ def aux_plot_time(
         sub_problem_config['results'] = {
             'metrics': {},
             'video_name': {},
-            'color': {}
+            'color': {},
+            'max_y': 0
         }
 
     colors = ['indianred', 'forestgreen', 'royalblue', 'darkorange', 'darkviolet', 'darkturquoise']
+    max_y = 0
 
     for idx, method in enumerate(sub_problem_config['time_methods']):
         file = "-".join(
@@ -362,7 +364,11 @@ def aux_plot_time(
         results = [d["time"] * 1000 for d in results["frame_results"]]
 
         metrics = sub_problem_config['results']['metrics'].get(method, [])
-        metrics.append(np.mean(results))
+        mean = np.mean(results)
+        metrics.append(mean)
+        if mean > sub_problem_config['results']['max_y']:
+            sub_problem_config['results']['max_y'] = mean
+
         sub_problem_config['results']['metrics'][method] = metrics
 
         video_name = sub_problem_config['results']['video_name'].get(method, [])
@@ -388,6 +394,7 @@ def aux_plot_time(
                 )
             )
 
+        fig.update_layout(yaxis=dict(range=[0, sub_problem_config['results']['max_y'] * 1.05]))
         fig.update_layout(barmode='group')
         fig.update_layout(legend=dict(x=0.99, y=0.99, xanchor='right', yanchor='top'))
 
@@ -458,7 +465,6 @@ config = {
         'tick': None,
         'showlegend': True,
         'x_range': None,
-        'y_range': [0, 40],
         'methods': [
             'green_detection'
         ],
@@ -473,7 +479,6 @@ config = {
         'tick': None,
         'showlegend': True,
         'x_range': None,
-        'y_range': [0, 0.4],
         'methods': [
             'kmeans'
         ],
