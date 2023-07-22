@@ -353,7 +353,7 @@ def aux_plot_time(
             'color': {}
         }
 
-    colors = ['indianred', 'forestgreen']
+    colors = ['indianred', 'forestgreen', 'royalblue', 'darkorange', 'darkviolet', 'darkturquoise']
 
     for idx, method in enumerate(sub_problem_config['time_methods']):
         file = "-".join(
@@ -473,9 +473,9 @@ config = {
         'tick': None,
         'showlegend': True,
         'x_range': None,
-        'y_range': [0, 40],
+        'y_range': [0, 0.4],
         'methods': [
-            'green_detection'
+            'kmeans'
         ],
         'time_methods': [
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
@@ -609,7 +609,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "field_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']

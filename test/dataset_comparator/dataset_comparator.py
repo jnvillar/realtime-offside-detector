@@ -413,7 +413,7 @@ class PlayerDetectorComparisonStrategy:
         players, elapsed_time_players = self.player_detector.detect_players(video)
         players, elapsed_time_tracker = self.player_tracker.track_players(video, players=players)
 
-        if self.player_tracker.__class__.__name__ == 'OffTracker':
+        if self.player_tracker.method.__class__.__name__ == 'OffTracker':
             elapsed_time = elapsed_time_players
         else:
             elapsed_time = elapsed_time_tracker

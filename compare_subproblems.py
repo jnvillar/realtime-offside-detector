@@ -77,12 +77,22 @@ def save_comparison_results(path, results, merge=False):
         merged_results = []
         count = 0
         for idx, new_result in enumerate(new_results):
-            if new_result['type'] == 'detect_and_compare':
-                merged_results.append(merge_results(old_results[count], new_result))
-                count += 1
-            else:
-                merged_results.append(new_result)
+            try:
+                new = True
+                for old_result in old_results:
+                    if old_result['frame_number'] == new_result['frame_number']:
+                        new = False
+                        merged_results.append(merge_results(old_result, new_result))
+                if new:
+                    merged_results.append(new_result)
 
+            # old files do not have key frame_number
+            except:
+                if new_result['type'] == 'detect_and_compare':
+                    merged_results.append(merge_results(old_results[count], new_result))
+                    count += 1
+                else:
+                    merged_results.append(new_result)
 
         results["frame_results"] = merged_results
 
@@ -266,7 +276,7 @@ if __name__ == '__main__':
     strategy = ComparisonStrategy.player_detector
 
     videos = [
-        # VideoConstants.video_10_Italia_Alemania_78_94
+
     ]
 
     if len(videos) == 0:
