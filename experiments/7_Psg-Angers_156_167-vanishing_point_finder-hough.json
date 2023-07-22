@@ -9,18 +9,107 @@
         8
       ],
       "x_axis_distance_percentage": 0.004199092577238828,
-      "y_axis_distance_percentage": 0.007465053470646805
+      "y_axis_distance_percentage": 0.007465053470646805,
+      "type": "detect_and_compare",
+      "time": 0.050076961517333984
+    },
+    {
+      "frame_number": 2,
+      "type": "detect_only",
+      "time": 0.058122873306274414
+    },
+    {
+      "frame_number": 3,
+      "type": "detect_only",
+      "time": 0.046170949935913086
+    },
+    {
+      "frame_number": 4,
+      "type": "detect_only",
+      "time": 0.06461691856384277
+    },
+    {
+      "frame_number": 5,
+      "type": "detect_only",
+      "time": 0.05333518981933594
+    },
+    {
+      "frame_number": 6,
+      "type": "detect_only",
+      "time": 0.051419734954833984
+    },
+    {
+      "frame_number": 7,
+      "type": "detect_only",
+      "time": 0.05025887489318848
+    },
+    {
+      "frame_number": 8,
+      "type": "detect_only",
+      "time": 0.049176931381225586
+    },
+    {
+      "frame_number": 9,
+      "type": "detect_only",
+      "time": 0.06322622299194336
     },
     {
       "frame_number": 10,
-      "distance_pixels": 11.045361017187261,
-      "distance_meters": 0.24668349491857383,
+      "distance_pixels": 12.165525060596439,
+      "distance_meters": 0.27420196982601136,
       "distance_direction": [
-        -11,
-        1
+        -12,
+        -2
       ],
-      "x_axis_distance_percentage": 0.005752792196451698,
-      "y_axis_distance_percentage": 0.010227186127025242
+      "x_axis_distance_percentage": 0.006336210969060645,
+      "y_axis_distance_percentage": 0.011264375056107813,
+      "type": "detect_and_compare",
+      "time": 0.04626178741455078
+    },
+    {
+      "frame_number": 11,
+      "type": "detect_only",
+      "time": 0.05425095558166504
+    },
+    {
+      "frame_number": 12,
+      "type": "detect_only",
+      "time": 0.05467391014099121
+    },
+    {
+      "frame_number": 13,
+      "type": "detect_only",
+      "time": 0.05077195167541504
+    },
+    {
+      "frame_number": 14,
+      "type": "detect_only",
+      "time": 0.057303667068481445
+    },
+    {
+      "frame_number": 15,
+      "type": "detect_only",
+      "time": 0.04877209663391113
+    },
+    {
+      "frame_number": 16,
+      "type": "detect_only",
+      "time": 0.06747293472290039
+    },
+    {
+      "frame_number": 17,
+      "type": "detect_only",
+      "time": 0.04689216613769531
+    },
+    {
+      "frame_number": 18,
+      "type": "detect_only",
+      "time": 0.0583040714263916
+    },
+    {
+      "frame_number": 19,
+      "type": "detect_only",
+      "time": 0.03922104835510254
     },
     {
       "frame_number": 20,
@@ -31,18 +120,112 @@
         70
       ],
       "x_axis_distance_percentage": 0.04480377743251369,
-      "y_axis_distance_percentage": 0.07965115988002433
+      "y_axis_distance_percentage": 0.07965115988002433,
+      "type": "detect_and_compare",
+      "time": 0.03981518745422363
+    },
+    {
+      "frame_number": 21,
+      "type": "detect_only",
+      "time": 0.05815768241882324
+    },
+    {
+      "frame_number": 22,
+      "type": "detect_only",
+      "time": 0.03658175468444824
+    },
+    {
+      "frame_number": 23,
+      "type": "detect_only",
+      "time": 0.049262046813964844
+    },
+    {
+      "frame_number": 24,
+      "type": "detect_only",
+      "time": 0.0530087947845459
+    },
+    {
+      "frame_number": 25,
+      "type": "detect_only",
+      "time": 0.04523897171020508
+    },
+    {
+      "frame_number": 26,
+      "type": "detect_only",
+      "time": 0.05564999580383301
+    },
+    {
+      "frame_number": 27,
+      "type": "detect_only",
+      "time": 0.038526058197021484
+    },
+    {
+      "frame_number": 28,
+      "type": "detect_only",
+      "time": 0.06000089645385742
+    },
+    {
+      "frame_number": 29,
+      "type": "detect_only",
+      "time": 0.045310020446777344
     },
     {
       "frame_number": 30,
-      "distance_pixels": 138.6001443000692,
-      "distance_meters": 4.2298178258188575,
+      "distance_pixels": 105.11898020814318,
+      "distance_meters": 2.7978404241451242,
       "distance_direction": [
-        -99,
-        -97
+        -87,
+        -59
       ],
-      "x_axis_distance_percentage": 0.07218757515628603,
-      "y_axis_distance_percentage": 0.1283334669445085
+      "x_axis_distance_percentage": 0.05474946885840791,
+      "y_axis_distance_percentage": 0.09733238908161405,
+      "type": "detect_and_compare",
+      "time": 0.0384061336517334
+    },
+    {
+      "frame_number": 31,
+      "type": "detect_only",
+      "time": 0.05810809135437012
+    },
+    {
+      "frame_number": 32,
+      "type": "detect_only",
+      "time": 0.043621063232421875
+    },
+    {
+      "frame_number": 33,
+      "type": "detect_only",
+      "time": 0.05751800537109375
+    },
+    {
+      "frame_number": 34,
+      "type": "detect_only",
+      "time": 0.04087710380554199
+    },
+    {
+      "frame_number": 35,
+      "type": "detect_only",
+      "time": 0.05382728576660156
+    },
+    {
+      "frame_number": 36,
+      "type": "detect_only",
+      "time": 0.042243003845214844
+    },
+    {
+      "frame_number": 37,
+      "type": "detect_only",
+      "time": 0.04227018356323242
+    },
+    {
+      "frame_number": 38,
+      "type": "detect_only",
+      "time": 0.05894613265991211
+    },
+    {
+      "frame_number": 39,
+      "type": "detect_only",
+      "time": 0.038172245025634766
     },
     {
       "frame_number": 40,
@@ -53,7 +236,54 @@
         22
       ],
       "x_axis_distance_percentage": 0.012810806121092545,
-      "y_axis_distance_percentage": 0.02277476643749786
+      "y_axis_distance_percentage": 0.02277476643749786,
+      "type": "detect_and_compare",
+      "time": 0.03703880310058594
+    },
+    {
+      "frame_number": 41,
+      "type": "detect_only",
+      "time": 0.05952167510986328
+    },
+    {
+      "frame_number": 42,
+      "type": "detect_only",
+      "time": 0.04630875587463379
+    },
+    {
+      "frame_number": 43,
+      "type": "detect_only",
+      "time": 0.06931114196777344
+    },
+    {
+      "frame_number": 44,
+      "type": "detect_only",
+      "time": 0.04323983192443848
+    },
+    {
+      "frame_number": 45,
+      "type": "detect_only",
+      "time": 0.062255144119262695
+    },
+    {
+      "frame_number": 46,
+      "type": "detect_only",
+      "time": 0.04386425018310547
+    },
+    {
+      "frame_number": 47,
+      "type": "detect_only",
+      "time": 0.05484414100646973
+    },
+    {
+      "frame_number": 48,
+      "type": "detect_only",
+      "time": 0.0480959415435791
+    },
+    {
+      "frame_number": 49,
+      "type": "detect_only",
+      "time": 0.048089027404785156
     },
     {
       "frame_number": 50,
@@ -64,7 +294,54 @@
         -51
       ],
       "x_axis_distance_percentage": 0.07662624897024517,
-      "y_axis_distance_percentage": 0.1362244426137692
+      "y_axis_distance_percentage": 0.1362244426137692,
+      "type": "detect_and_compare",
+      "time": 0.05816197395324707
+    },
+    {
+      "frame_number": 51,
+      "type": "detect_only",
+      "time": 0.04695487022399902
+    },
+    {
+      "frame_number": 52,
+      "type": "detect_only",
+      "time": 0.052591800689697266
+    },
+    {
+      "frame_number": 53,
+      "type": "detect_only",
+      "time": 0.04961705207824707
+    },
+    {
+      "frame_number": 54,
+      "type": "detect_only",
+      "time": 0.0430448055267334
+    },
+    {
+      "frame_number": 55,
+      "type": "detect_only",
+      "time": 0.0524141788482666
+    },
+    {
+      "frame_number": 56,
+      "type": "detect_only",
+      "time": 0.03498101234436035
+    },
+    {
+      "frame_number": 57,
+      "type": "detect_only",
+      "time": 0.0400698184967041
+    },
+    {
+      "frame_number": 58,
+      "type": "detect_only",
+      "time": 0.04665112495422363
+    },
+    {
+      "frame_number": 59,
+      "type": "detect_only",
+      "time": 0.03531908988952637
     },
     {
       "frame_number": 60,
@@ -75,7 +352,54 @@
         -61
       ],
       "x_axis_distance_percentage": 0.04914911851391075,
-      "y_axis_distance_percentage": 0.0873762106913969
+      "y_axis_distance_percentage": 0.0873762106913969,
+      "type": "detect_and_compare",
+      "time": 0.048718929290771484
+    },
+    {
+      "frame_number": 61,
+      "type": "detect_only",
+      "time": 0.044384002685546875
+    },
+    {
+      "frame_number": 62,
+      "type": "detect_only",
+      "time": 0.04216289520263672
+    },
+    {
+      "frame_number": 63,
+      "type": "detect_only",
+      "time": 0.05288386344909668
+    },
+    {
+      "frame_number": 64,
+      "type": "detect_only",
+      "time": 0.047312021255493164
+    },
+    {
+      "frame_number": 65,
+      "type": "detect_only",
+      "time": 0.055397748947143555
+    },
+    {
+      "frame_number": 66,
+      "type": "detect_only",
+      "time": 0.03921103477478027
+    },
+    {
+      "frame_number": 67,
+      "type": "detect_only",
+      "time": 0.054360151290893555
+    },
+    {
+      "frame_number": 68,
+      "type": "detect_only",
+      "time": 0.042365074157714844
+    },
+    {
+      "frame_number": 69,
+      "type": "detect_only",
+      "time": 0.03832292556762695
     },
     {
       "frame_number": 70,
@@ -86,7 +410,54 @@
         -20
       ],
       "x_axis_distance_percentage": 0.012147816447594377,
-      "y_axis_distance_percentage": 0.02159611812905667
+      "y_axis_distance_percentage": 0.02159611812905667,
+      "type": "detect_and_compare",
+      "time": 0.04357194900512695
+    },
+    {
+      "frame_number": 71,
+      "type": "detect_only",
+      "time": 0.03993797302246094
+    },
+    {
+      "frame_number": 72,
+      "type": "detect_only",
+      "time": 0.040853023529052734
+    },
+    {
+      "frame_number": 73,
+      "type": "detect_only",
+      "time": 0.055642127990722656
+    },
+    {
+      "frame_number": 74,
+      "type": "detect_only",
+      "time": 0.034538984298706055
+    },
+    {
+      "frame_number": 75,
+      "type": "detect_only",
+      "time": 0.04077005386352539
+    },
+    {
+      "frame_number": 76,
+      "type": "detect_only",
+      "time": 0.04488492012023926
+    },
+    {
+      "frame_number": 77,
+      "type": "detect_only",
+      "time": 0.03345990180969238
+    },
+    {
+      "frame_number": 78,
+      "type": "detect_only",
+      "time": 0.053990840911865234
+    },
+    {
+      "frame_number": 79,
+      "type": "detect_only",
+      "time": 0.0385439395904541
     },
     {
       "frame_number": 80,
@@ -97,7 +468,54 @@
         35
       ],
       "x_axis_distance_percentage": 0.050294812280801994,
-      "y_axis_distance_percentage": 0.08941299961031465
+      "y_axis_distance_percentage": 0.08941299961031465,
+      "type": "detect_and_compare",
+      "time": 0.030050992965698242
+    },
+    {
+      "frame_number": 81,
+      "type": "detect_only",
+      "time": 0.04680132865905762
+    },
+    {
+      "frame_number": 82,
+      "type": "detect_only",
+      "time": 0.048673152923583984
+    },
+    {
+      "frame_number": 83,
+      "type": "detect_only",
+      "time": 0.040726661682128906
+    },
+    {
+      "frame_number": 84,
+      "type": "detect_only",
+      "time": 0.0626068115234375
+    },
+    {
+      "frame_number": 85,
+      "type": "detect_only",
+      "time": 0.034354209899902344
+    },
+    {
+      "frame_number": 86,
+      "type": "detect_only",
+      "time": 0.04787898063659668
+    },
+    {
+      "frame_number": 87,
+      "type": "detect_only",
+      "time": 0.03715705871582031
+    },
+    {
+      "frame_number": 88,
+      "type": "detect_only",
+      "time": 0.03134608268737793
+    },
+    {
+      "frame_number": 89,
+      "type": "detect_only",
+      "time": 0.05124688148498535
     },
     {
       "frame_number": 90,
@@ -108,7 +526,54 @@
         -32
       ],
       "x_axis_distance_percentage": 0.04391091439241248,
-      "y_axis_distance_percentage": 0.0780638478087333
+      "y_axis_distance_percentage": 0.0780638478087333,
+      "type": "detect_and_compare",
+      "time": 0.04156804084777832
+    },
+    {
+      "frame_number": 91,
+      "type": "detect_only",
+      "time": 0.03373599052429199
+    },
+    {
+      "frame_number": 92,
+      "type": "detect_only",
+      "time": 0.04241061210632324
+    },
+    {
+      "frame_number": 93,
+      "type": "detect_only",
+      "time": 0.05479884147644043
+    },
+    {
+      "frame_number": 94,
+      "type": "detect_only",
+      "time": 0.048098087310791016
+    },
+    {
+      "frame_number": 95,
+      "type": "detect_only",
+      "time": 0.058426856994628906
+    },
+    {
+      "frame_number": 96,
+      "type": "detect_only",
+      "time": 0.03739309310913086
+    },
+    {
+      "frame_number": 97,
+      "type": "detect_only",
+      "time": 0.05180478096008301
+    },
+    {
+      "frame_number": 98,
+      "type": "detect_only",
+      "time": 0.04404401779174805
+    },
+    {
+      "frame_number": 99,
+      "type": "detect_only",
+      "time": 0.045648813247680664
     },
     {
       "frame_number": 100,
@@ -119,7 +584,54 @@
         26
       ],
       "x_axis_distance_percentage": 0.014914396940912868,
-      "y_axis_distance_percentage": 0.026514483450511765
+      "y_axis_distance_percentage": 0.026514483450511765,
+      "type": "detect_and_compare",
+      "time": 0.04828190803527832
+    },
+    {
+      "frame_number": 101,
+      "type": "detect_only",
+      "time": 0.04130101203918457
+    },
+    {
+      "frame_number": 102,
+      "type": "detect_only",
+      "time": 0.0385129451751709
+    },
+    {
+      "frame_number": 103,
+      "type": "detect_only",
+      "time": 0.05144762992858887
+    },
+    {
+      "frame_number": 104,
+      "type": "detect_only",
+      "time": 0.03638505935668945
+    },
+    {
+      "frame_number": 105,
+      "type": "detect_only",
+      "time": 0.04335904121398926
+    },
+    {
+      "frame_number": 106,
+      "type": "detect_only",
+      "time": 0.04673290252685547
+    },
+    {
+      "frame_number": 107,
+      "type": "detect_only",
+      "time": 0.03795623779296875
+    },
+    {
+      "frame_number": 108,
+      "type": "detect_only",
+      "time": 0.055906057357788086
+    },
+    {
+      "frame_number": 109,
+      "type": "detect_only",
+      "time": 0.036270856857299805
     },
     {
       "frame_number": 110,
@@ -130,7 +642,54 @@
         94
       ],
       "x_axis_distance_percentage": 0.15087275037446476,
-      "y_axis_distance_percentage": 0.26821822288793734
+      "y_axis_distance_percentage": 0.26821822288793734,
+      "type": "detect_and_compare",
+      "time": 0.034818172454833984
+    },
+    {
+      "frame_number": 111,
+      "type": "detect_only",
+      "time": 0.045713186264038086
+    },
+    {
+      "frame_number": 112,
+      "type": "detect_only",
+      "time": 0.03447127342224121
+    },
+    {
+      "frame_number": 113,
+      "type": "detect_only",
+      "time": 0.05141806602478027
+    },
+    {
+      "frame_number": 114,
+      "type": "detect_only",
+      "time": 0.037178993225097656
+    },
+    {
+      "frame_number": 115,
+      "type": "detect_only",
+      "time": 0.0456390380859375
+    },
+    {
+      "frame_number": 116,
+      "type": "detect_only",
+      "time": 0.04356813430786133
+    },
+    {
+      "frame_number": 117,
+      "type": "detect_only",
+      "time": 0.0331270694732666
+    },
+    {
+      "frame_number": 118,
+      "type": "detect_only",
+      "time": 0.05398297309875488
+    },
+    {
+      "frame_number": 119,
+      "type": "detect_only",
+      "time": 0.034406185150146484
     },
     {
       "frame_number": 120,
@@ -141,128 +700,877 @@
         103
       ],
       "x_axis_distance_percentage": 0.13077999509885124,
-      "y_axis_distance_percentage": 0.23249776906462444
+      "y_axis_distance_percentage": 0.23249776906462444,
+      "type": "detect_and_compare",
+      "time": 0.033026933670043945
+    },
+    {
+      "frame_number": 121,
+      "type": "detect_only",
+      "time": 0.0477292537689209
+    },
+    {
+      "frame_number": 122,
+      "type": "detect_only",
+      "time": 0.03210020065307617
+    },
+    {
+      "frame_number": 123,
+      "type": "detect_only",
+      "time": 0.037944793701171875
+    },
+    {
+      "frame_number": 124,
+      "type": "detect_only",
+      "time": 0.05231618881225586
+    },
+    {
+      "frame_number": 125,
+      "type": "detect_only",
+      "time": 0.03451395034790039
+    },
+    {
+      "frame_number": 126,
+      "type": "detect_only",
+      "time": 0.050736188888549805
+    },
+    {
+      "frame_number": 127,
+      "type": "detect_only",
+      "time": 0.032267093658447266
+    },
+    {
+      "frame_number": 128,
+      "type": "detect_only",
+      "time": 0.0414888858795166
+    },
+    {
+      "frame_number": 129,
+      "type": "detect_only",
+      "time": 0.04290580749511719
     },
     {
       "frame_number": 130,
-      "distance_pixels": 599.9208281098432,
-      "distance_meters": 46.940798348701215,
+      "distance_pixels": 104.69479452198185,
+      "distance_meters": 5.056140628267292,
       "distance_direction": [
-        -119,
-        588
+        44,
+        95
       ],
-      "x_axis_distance_percentage": 0.31245876464054334,
-      "y_axis_distance_percentage": 0.5554822482498548
+      "x_axis_distance_percentage": 0.054528538813532215,
+      "y_axis_distance_percentage": 0.0969396245573906,
+      "type": "detect_and_compare",
+      "time": 0.028771162033081055
+    },
+    {
+      "frame_number": 131,
+      "type": "detect_only",
+      "time": 0.049401044845581055
+    },
+    {
+      "frame_number": 132,
+      "type": "detect_only",
+      "time": 0.03590035438537598
+    },
+    {
+      "frame_number": 133,
+      "type": "detect_only",
+      "time": 0.031417131423950195
+    },
+    {
+      "frame_number": 134,
+      "type": "detect_only",
+      "time": 0.04623293876647949
+    },
+    {
+      "frame_number": 135,
+      "type": "detect_only",
+      "time": 0.033249616622924805
+    },
+    {
+      "frame_number": 136,
+      "type": "detect_only",
+      "time": 0.04734611511230469
+    },
+    {
+      "frame_number": 137,
+      "type": "detect_only",
+      "time": 0.04384899139404297
+    },
+    {
+      "frame_number": 138,
+      "type": "detect_only",
+      "time": 0.0330350399017334
+    },
+    {
+      "frame_number": 139,
+      "type": "detect_only",
+      "time": 0.05203890800476074
     },
     {
       "frame_number": 140,
-      "distance_pixels": 649.2064386618481,
-      "distance_meters": 27.149370158958156,
+      "distance_pixels": 172.6267650163207,
+      "distance_meters": 4.2810816575226625,
       "distance_direction": [
-        -325,
-        562
+        -154,
+        78
       ],
-      "x_axis_distance_percentage": 0.33812835346971254,
-      "y_axis_distance_percentage": 0.6011170728350446
+      "x_axis_distance_percentage": 0.08990977344600036,
+      "y_axis_distance_percentage": 0.15983959723733396,
+      "type": "detect_and_compare",
+      "time": 0.03168797492980957
+    },
+    {
+      "frame_number": 141,
+      "type": "detect_only",
+      "time": 0.03605461120605469
+    },
+    {
+      "frame_number": 142,
+      "type": "detect_only",
+      "time": 0.05564117431640625
+    },
+    {
+      "frame_number": 143,
+      "type": "detect_only",
+      "time": 0.03461623191833496
+    },
+    {
+      "frame_number": 144,
+      "type": "detect_only",
+      "time": 0.04739999771118164
+    },
+    {
+      "frame_number": 145,
+      "type": "detect_only",
+      "time": 0.04231882095336914
+    },
+    {
+      "frame_number": 146,
+      "type": "detect_only",
+      "time": 0.03452801704406738
+    },
+    {
+      "frame_number": 147,
+      "type": "detect_only",
+      "time": 0.04766201972961426
+    },
+    {
+      "frame_number": 148,
+      "type": "detect_only",
+      "time": 0.034632205963134766
+    },
+    {
+      "frame_number": 149,
+      "type": "detect_only",
+      "time": 0.042822837829589844
     },
     {
       "frame_number": 150,
-      "distance_pixels": 738.2628258283089,
-      "distance_meters": 24.826669325941616,
+      "distance_pixels": 295.36756761702867,
+      "distance_meters": 6.709046739492586,
       "distance_direction": [
-        -474,
-        566
+        -289,
+        61
       ],
-      "x_axis_distance_percentage": 0.3845118884522442,
-      "y_axis_distance_percentage": 0.6835766905817675
+      "x_axis_distance_percentage": 0.15383727480053577,
+      "y_axis_distance_percentage": 0.2734884885342858,
+      "type": "detect_and_compare",
+      "time": 0.0416257381439209
+    },
+    {
+      "frame_number": 151,
+      "type": "detect_only",
+      "time": 0.03461098670959473
+    },
+    {
+      "frame_number": 152,
+      "type": "detect_only",
+      "time": 0.051013946533203125
+    },
+    {
+      "frame_number": 153,
+      "type": "detect_only",
+      "time": 0.04494118690490723
+    },
+    {
+      "frame_number": 154,
+      "type": "detect_only",
+      "time": 0.03287315368652344
+    },
+    {
+      "frame_number": 155,
+      "type": "detect_only",
+      "time": 0.05411195755004883
+    },
+    {
+      "frame_number": 156,
+      "type": "detect_only",
+      "time": 0.03530597686767578
+    },
+    {
+      "frame_number": 157,
+      "type": "detect_only",
+      "time": 0.04474210739135742
+    },
+    {
+      "frame_number": 158,
+      "type": "detect_only",
+      "time": 0.04111170768737793
+    },
+    {
+      "frame_number": 159,
+      "type": "detect_only",
+      "time": 0.03239893913269043
     },
     {
       "frame_number": 160,
-      "distance_pixels": 817.7731959412707,
-      "distance_meters": 24.088829892136815,
+      "distance_pixels": 444.8201883907699,
+      "distance_meters": 9.912923813853727,
       "distance_direction": [
-        -607,
-        548
+        -444,
+        27
       ],
-      "x_axis_distance_percentage": 0.42592353955274515,
-      "y_axis_distance_percentage": 0.7571974036493248
+      "x_axis_distance_percentage": 0.23167718145352598,
+      "y_axis_distance_percentage": 0.4118705448062684,
+      "type": "detect_and_compare",
+      "time": 0.04873323440551758
+    },
+    {
+      "frame_number": 161,
+      "type": "detect_only",
+      "time": 0.046508073806762695
+    },
+    {
+      "frame_number": 162,
+      "type": "detect_only",
+      "time": 0.04758620262145996
+    },
+    {
+      "frame_number": 163,
+      "type": "detect_only",
+      "time": 0.043849945068359375
+    },
+    {
+      "frame_number": 164,
+      "type": "detect_only",
+      "time": 0.03642916679382324
+    },
+    {
+      "frame_number": 165,
+      "type": "detect_only",
+      "time": 0.05514097213745117
+    },
+    {
+      "frame_number": 166,
+      "type": "detect_only",
+      "time": 0.034626007080078125
+    },
+    {
+      "frame_number": 167,
+      "type": "detect_only",
+      "time": 0.05142807960510254
+    },
+    {
+      "frame_number": 168,
+      "type": "detect_only",
+      "time": 0.04251503944396973
+    },
+    {
+      "frame_number": 169,
+      "type": "detect_only",
+      "time": 0.039798736572265625
     },
     {
       "frame_number": 170,
-      "distance_pixels": 860.8298321968169,
-      "distance_meters": 24.19841110032816,
+      "distance_pixels": 505.14255413694855,
+      "distance_meters": 11.240397582605581,
       "distance_direction": [
-        -672,
-        538
+        -505,
+        12
       ],
-      "x_axis_distance_percentage": 0.44834887093584214,
-      "y_axis_distance_percentage": 0.7970646594414972
+      "x_axis_distance_percentage": 0.2630950802796607,
+      "y_axis_distance_percentage": 0.46772458716384124,
+      "type": "detect_and_compare",
+      "time": 0.04786205291748047
+    },
+    {
+      "frame_number": 171,
+      "type": "detect_only",
+      "time": 0.03911018371582031
+    },
+    {
+      "frame_number": 172,
+      "type": "detect_only",
+      "time": 0.03743791580200195
+    },
+    {
+      "frame_number": 173,
+      "type": "detect_only",
+      "time": 0.04890894889831543
+    },
+    {
+      "frame_number": 174,
+      "type": "detect_only",
+      "time": 0.03460097312927246
+    },
+    {
+      "frame_number": 175,
+      "type": "detect_only",
+      "time": 0.04114484786987305
+    },
+    {
+      "frame_number": 176,
+      "type": "detect_only",
+      "time": 0.051460981369018555
+    },
+    {
+      "frame_number": 177,
+      "type": "detect_only",
+      "time": 0.037706851959228516
+    },
+    {
+      "frame_number": 178,
+      "type": "detect_only",
+      "time": 0.050839900970458984
+    },
+    {
+      "frame_number": 179,
+      "type": "detect_only",
+      "time": 0.03691720962524414
     },
     {
       "frame_number": 180,
-      "distance_pixels": 930.1053703747764,
-      "distance_meters": 23.487842689645795,
+      "distance_pixels": 639.2824102069444,
+      "distance_meters": 14.227441075154859,
       "distance_direction": [
-        -814,
-        450
+        -639,
+        -19
       ],
-      "x_axis_distance_percentage": 0.48442988040352936,
-      "y_axis_distance_percentage": 0.8612086762729411
+      "x_axis_distance_percentage": 0.3329595886494502,
+      "y_axis_distance_percentage": 0.5919281575990226,
+      "type": "detect_and_compare",
+      "time": 0.03547501564025879
+    },
+    {
+      "frame_number": 181,
+      "type": "detect_only",
+      "time": 0.05240607261657715
+    },
+    {
+      "frame_number": 182,
+      "type": "detect_only",
+      "time": 0.03597903251647949
+    },
+    {
+      "frame_number": 183,
+      "type": "detect_only",
+      "time": 0.0568850040435791
+    },
+    {
+      "frame_number": 184,
+      "type": "detect_only",
+      "time": 0.04432201385498047
+    },
+    {
+      "frame_number": 185,
+      "type": "detect_only",
+      "time": 0.03994178771972656
+    },
+    {
+      "frame_number": 186,
+      "type": "detect_only",
+      "time": 0.053810834884643555
+    },
+    {
+      "frame_number": 187,
+      "type": "detect_only",
+      "time": 0.03570365905761719
+    },
+    {
+      "frame_number": 188,
+      "type": "detect_only",
+      "time": 0.055548906326293945
+    },
+    {
+      "frame_number": 189,
+      "type": "detect_only",
+      "time": 0.050354719161987305
     },
     {
       "frame_number": 190,
-      "distance_pixels": 1024.414466902923,
-      "distance_meters": 25.06441006732007,
+      "distance_pixels": 727.9409316695964,
+      "distance_meters": 16.213770268312402,
       "distance_direction": [
-        -927,
-        436
+        -727,
+        -37
       ],
-      "x_axis_distance_percentage": 0.5335492015119391,
-      "y_axis_distance_percentage": 0.9485319137990028
+      "x_axis_distance_percentage": 0.3791359019112481,
+      "y_axis_distance_percentage": 0.6740193811755522,
+      "type": "detect_and_compare",
+      "time": 0.03235888481140137
+    },
+    {
+      "frame_number": 191,
+      "type": "detect_only",
+      "time": 0.05902266502380371
+    },
+    {
+      "frame_number": 192,
+      "type": "detect_only",
+      "time": 0.040122270584106445
+    },
+    {
+      "frame_number": 193,
+      "type": "detect_only",
+      "time": 0.05901908874511719
+    },
+    {
+      "frame_number": 194,
+      "type": "detect_only",
+      "time": 0.03968691825866699
+    },
+    {
+      "frame_number": 195,
+      "type": "detect_only",
+      "time": 0.04157114028930664
+    },
+    {
+      "frame_number": 196,
+      "type": "detect_only",
+      "time": 0.057897090911865234
+    },
+    {
+      "frame_number": 197,
+      "type": "detect_only",
+      "time": 0.03715801239013672
+    },
+    {
+      "frame_number": 198,
+      "type": "detect_only",
+      "time": 0.056643009185791016
+    },
+    {
+      "frame_number": 199,
+      "type": "detect_only",
+      "time": 0.04393506050109863
     },
     {
       "frame_number": 200,
-      "distance_pixels": 971.1791801722276,
-      "distance_meters": 24.30751555556174,
+      "distance_pixels": 668.6733133601191,
+      "distance_meters": 14.889600334901127,
       "distance_direction": [
-        -858,
-        455
+        -668,
+        -30
       ],
-      "x_axis_distance_percentage": 0.5058224896730352,
-      "y_axis_distance_percentage": 0.8992399816409514
+      "x_axis_distance_percentage": 0.3482673507083954,
+      "y_axis_distance_percentage": 0.6191419568149251,
+      "type": "detect_and_compare",
+      "time": 0.03240776062011719
+    },
+    {
+      "frame_number": 201,
+      "type": "detect_only",
+      "time": 0.05720782279968262
+    },
+    {
+      "frame_number": 202,
+      "type": "detect_only",
+      "time": 0.04067111015319824
+    },
+    {
+      "frame_number": 203,
+      "type": "detect_only",
+      "time": 0.040770769119262695
+    },
+    {
+      "frame_number": 204,
+      "type": "detect_only",
+      "time": 0.06236433982849121
+    },
+    {
+      "frame_number": 205,
+      "type": "detect_only",
+      "time": 0.03742170333862305
+    },
+    {
+      "frame_number": 206,
+      "type": "detect_only",
+      "time": 0.05119800567626953
+    },
+    {
+      "frame_number": 207,
+      "type": "detect_only",
+      "time": 0.039299726486206055
+    },
+    {
+      "frame_number": 208,
+      "type": "detect_only",
+      "time": 0.038909912109375
+    },
+    {
+      "frame_number": 209,
+      "type": "detect_only",
+      "time": 0.05747509002685547
     },
     {
       "frame_number": 210,
-      "distance_pixels": 900.0277773491216,
-      "distance_meters": 23.135176508110547,
+      "distance_pixels": 602.4018592268785,
+      "distance_meters": 13.409544522989398,
       "distance_direction": [
-        -773,
-        461
+        -602,
+        -22
       ],
-      "x_axis_distance_percentage": 0.4687644673693342,
-      "y_axis_distance_percentage": 0.8333590531010385
+      "x_axis_distance_percentage": 0.31375096834733257,
+      "y_axis_distance_percentage": 0.5577794992841467,
+      "type": "detect_and_compare",
+      "time": 0.045246124267578125
+    },
+    {
+      "frame_number": 211,
+      "type": "detect_only",
+      "time": 0.06266021728515625
+    },
+    {
+      "frame_number": 212,
+      "type": "detect_only",
+      "time": 0.04540109634399414
+    },
+    {
+      "frame_number": 213,
+      "type": "detect_only",
+      "time": 0.04372882843017578
+    },
+    {
+      "frame_number": 214,
+      "type": "detect_only",
+      "time": 0.05673694610595703
+    },
+    {
+      "frame_number": 215,
+      "type": "detect_only",
+      "time": 0.041120052337646484
+    },
+    {
+      "frame_number": 216,
+      "type": "detect_only",
+      "time": 0.06086111068725586
+    },
+    {
+      "frame_number": 217,
+      "type": "detect_only",
+      "time": 0.042469024658203125
+    },
+    {
+      "frame_number": 218,
+      "type": "detect_only",
+      "time": 0.04473304748535156
+    },
+    {
+      "frame_number": 219,
+      "type": "detect_only",
+      "time": 0.0595860481262207
     },
     {
       "frame_number": 220,
-      "distance_pixels": 914.8868782532625,
-      "distance_meters": 23.766787159341565,
+      "distance_pixels": 609.4341637945809,
+      "distance_meters": 13.566673061814837,
       "distance_direction": [
-        -777,
-        483
+        -609,
+        -23
       ],
-      "x_axis_distance_percentage": 0.4765035824235742,
-      "y_axis_distance_percentage": 0.8471174798641319
+      "x_axis_distance_percentage": 0.3174136269763442,
+      "y_axis_distance_percentage": 0.5642908924023897,
+      "type": "detect_and_compare",
+      "time": 0.03914499282836914
+    },
+    {
+      "frame_number": 221,
+      "type": "detect_only",
+      "time": 0.05856728553771973
+    },
+    {
+      "frame_number": 222,
+      "type": "detect_only",
+      "time": 0.04016685485839844
+    },
+    {
+      "frame_number": 223,
+      "type": "detect_only",
+      "time": 0.06439781188964844
+    },
+    {
+      "frame_number": 224,
+      "type": "detect_only",
+      "time": 0.041841983795166016
+    },
+    {
+      "frame_number": 225,
+      "type": "detect_only",
+      "time": 0.04144787788391113
+    },
+    {
+      "frame_number": 226,
+      "type": "detect_only",
+      "time": 0.054682016372680664
+    },
+    {
+      "frame_number": 227,
+      "type": "detect_only",
+      "time": 0.03870797157287598
+    },
+    {
+      "frame_number": 228,
+      "type": "detect_only",
+      "time": 0.05407905578613281
+    },
+    {
+      "frame_number": 229,
+      "type": "detect_only",
+      "time": 0.04503583908081055
     },
     {
       "frame_number": 230,
-      "distance_pixels": 952.1607007223098,
-      "distance_meters": 24.49712787815257,
+      "distance_pixels": 661.0930343000144,
+      "distance_meters": 14.729926402208017,
       "distance_direction": [
-        -817,
-        489
+        -660,
+        -38
       ],
-      "x_axis_distance_percentage": 0.49591703162620304,
-      "y_axis_distance_percentage": 0.8816302784465831
+      "x_axis_distance_percentage": 0.34431928869792416,
+      "y_axis_distance_percentage": 0.6121231799074208,
+      "type": "detect_and_compare",
+      "time": 0.03329300880432129
+    },
+    {
+      "frame_number": 231,
+      "type": "detect_only",
+      "time": 0.05090475082397461
+    },
+    {
+      "frame_number": 232,
+      "type": "detect_only",
+      "time": 0.03994607925415039
+    },
+    {
+      "frame_number": 233,
+      "type": "detect_only",
+      "time": 0.06130790710449219
+    },
+    {
+      "frame_number": 234,
+      "type": "detect_only",
+      "time": 0.041471004486083984
+    },
+    {
+      "frame_number": 235,
+      "type": "detect_only",
+      "time": 0.04120135307312012
+    },
+    {
+      "frame_number": 236,
+      "type": "detect_only",
+      "time": 0.05857205390930176
+    },
+    {
+      "frame_number": 237,
+      "type": "detect_only",
+      "time": 0.03681302070617676
+    },
+    {
+      "frame_number": 238,
+      "type": "detect_only",
+      "time": 0.05877232551574707
+    },
+    {
+      "frame_number": 239,
+      "type": "detect_only",
+      "time": 0.04059410095214844
+    },
+    {
+      "frame_number": 240,
+      "type": "detect_only",
+      "time": 0.042243242263793945
+    },
+    {
+      "frame_number": 241,
+      "type": "detect_only",
+      "time": 0.061045169830322266
+    },
+    {
+      "frame_number": 242,
+      "type": "detect_only",
+      "time": 0.044137001037597656
+    },
+    {
+      "frame_number": 243,
+      "type": "detect_only",
+      "time": 0.056030988693237305
+    },
+    {
+      "frame_number": 244,
+      "type": "detect_only",
+      "time": 0.03901815414428711
+    },
+    {
+      "frame_number": 245,
+      "type": "detect_only",
+      "time": 0.05615496635437012
+    },
+    {
+      "frame_number": 246,
+      "type": "detect_only",
+      "time": 0.04593205451965332
+    },
+    {
+      "frame_number": 247,
+      "type": "detect_only",
+      "time": 0.058721065521240234
+    },
+    {
+      "frame_number": 248,
+      "type": "detect_only",
+      "time": 0.048539161682128906
+    },
+    {
+      "frame_number": 249,
+      "type": "detect_only",
+      "time": 0.04686117172241211
+    },
+    {
+      "frame_number": 250,
+      "type": "detect_only",
+      "time": 0.04451322555541992
+    },
+    {
+      "frame_number": 251,
+      "type": "detect_only",
+      "time": 0.033142805099487305
+    },
+    {
+      "frame_number": 252,
+      "type": "detect_only",
+      "time": 0.05731010437011719
+    },
+    {
+      "frame_number": 253,
+      "type": "detect_only",
+      "time": 0.041127920150756836
+    },
+    {
+      "frame_number": 254,
+      "type": "detect_only",
+      "time": 0.051824092864990234
+    },
+    {
+      "frame_number": 255,
+      "type": "detect_only",
+      "time": 0.04196786880493164
+    },
+    {
+      "frame_number": 256,
+      "type": "detect_only",
+      "time": 0.0414888858795166
+    },
+    {
+      "frame_number": 257,
+      "type": "detect_only",
+      "time": 0.05239391326904297
+    },
+    {
+      "frame_number": 258,
+      "type": "detect_only",
+      "time": 0.03682827949523926
+    },
+    {
+      "frame_number": 259,
+      "type": "detect_only",
+      "time": 0.06076693534851074
+    },
+    {
+      "frame_number": 260,
+      "type": "detect_only",
+      "time": 0.03729081153869629
+    },
+    {
+      "frame_number": 261,
+      "type": "detect_only",
+      "time": 0.06235384941101074
+    },
+    {
+      "frame_number": 262,
+      "type": "detect_only",
+      "time": 0.0421907901763916
+    },
+    {
+      "frame_number": 263,
+      "type": "detect_only",
+      "time": 0.0392308235168457
+    },
+    {
+      "frame_number": 264,
+      "type": "detect_only",
+      "time": 0.05834388732910156
+    },
+    {
+      "frame_number": 265,
+      "type": "detect_only",
+      "time": 0.03486490249633789
+    },
+    {
+      "frame_number": 266,
+      "type": "detect_only",
+      "time": 0.05396103858947754
+    },
+    {
+      "frame_number": 267,
+      "type": "detect_only",
+      "time": 0.0437929630279541
+    },
+    {
+      "frame_number": 268,
+      "type": "detect_only",
+      "time": 0.04545426368713379
+    },
+    {
+      "frame_number": 269,
+      "type": "detect_only",
+      "time": 0.05025506019592285
+    },
+    {
+      "frame_number": 270,
+      "type": "detect_only",
+      "time": 0.040715932846069336
+    },
+    {
+      "frame_number": 271,
+      "type": "detect_only",
+      "time": 0.05257105827331543
+    },
+    {
+      "frame_number": 272,
+      "type": "detect_only",
+      "time": 0.04738616943359375
+    },
+    {
+      "frame_number": 273,
+      "type": "detect_only",
+      "time": 0.041105031967163086
+    },
+    {
+      "frame_number": 274,
+      "type": "detect_only",
+      "time": 0.0563807487487793
+    },
+    {
+      "frame_number": 275,
+      "type": "detect_only",
+      "time": 0.036097049713134766
+    },
+    {
+      "frame_number": 276,
+      "type": "detect_only",
+      "time": 0.06768679618835449
     }
   ],
   "aggregations": {}
