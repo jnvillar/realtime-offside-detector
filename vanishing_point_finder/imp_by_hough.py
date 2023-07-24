@@ -59,6 +59,12 @@ class ByHough:
                 debug=self.debug,
                 print_frame_on_debug=False
             ),
+            # Step(
+            #     "filter candidate lines",
+            #     self._filter_candidate_lines_if_necessary,
+            #     debug=self.debug,
+            #     print_frame_on_debug=False
+            # ),
             Step(
                 "find vp lines",
                 self._find_vp_lines,
@@ -99,6 +105,15 @@ class ByHough:
         self.log.log('Found lines', {'lines': len(lines)}) if self.debug else None
         self.lines = lines
 
+        if self.debug:
+            frame_lines = self.video.get_current_frame()
+            for line in self.lines:
+                line_rho = line[0][0]
+                line_theta = line[0][1]
+                line_p1, line_p2 = get_line_points(line_rho, line_theta)
+                cv2.line(frame_lines, line_p1, line_p2, (0, 0, 255), 3)
+            ScreenManager.get_manager().show_frame(frame_lines, "All detected lines")
+
         # to honor the Step contract for the apply method we need to return a frame as result
         return frame
 
@@ -126,8 +141,6 @@ class ByHough:
         if total_detected_lines > self.max_number_of_candidate_lines:
             print("TOTAL DETECTED LINES: " + str(total_detected_lines))
 
-        frame_lines = self.video.get_current_frame()
-
         if total_detected_lines >= 2:
             candidate_vanishing_points = []
             candidate_lines = []
@@ -135,10 +148,6 @@ class ByHough:
                 line1_rho = self.lines[line1_idx][0][0]
                 line1_theta = self.lines[line1_idx][0][1]
                 line1_p1, line1_p2 = get_line_points(line1_rho, line1_theta)
-
-                if self.debug:
-                    cv2.line(frame_lines, line1_p1, line1_p2, (0, 0, 255), 3)
-                    ScreenManager.get_manager().show_frame(frame_lines, "lines detected")
 
                 # discard line if it is in the border
                 if self._is_border_line(line1_p1, line1_p2, frame_width):
@@ -187,6 +196,35 @@ class ByHough:
                 if new_vanishing_point is not None:
                     self.vanishing_point = new_vanishing_point
                     self.vanishing_point_lines = new_vanishing_point_lines
+
+        # to honor the Step contract for the apply method we need to return a frame as result
+        return frame
+
+    def _filter_candidate_lines_if_necessary(self, frame, params):
+        total_detected_lines = len(self.lines)
+        if self.max_number_of_candidate_lines < total_detected_lines:
+            print("TOTAL DETECTED LINES: " + str(total_detected_lines))
+            # Calculate the step size to distribute elements across the array
+            step = total_detected_lines // self.max_number_of_candidate_lines
+
+            # Initialize the result list
+            filtered_lines = []
+
+            # Pick max_number_of_candidate_lines elements with equal distribution
+            for i in range(self.max_number_of_candidate_lines):
+                index = (i * step) % total_detected_lines
+                filtered_lines.append(self.lines[index])
+
+            self.lines = filtered_lines
+
+        if self.debug:
+            frame_lines = self.video.get_current_frame()
+            for line in self.lines:
+                line_rho = line[0][0]
+                line_theta = line[0][1]
+                line_p1, line_p2 = get_line_points(line_rho, line_theta)
+                cv2.line(frame_lines, line_p1, line_p2, (0, 0, 255), 3)
+            ScreenManager.get_manager().show_frame(frame_lines, "Filtered detected lines")
 
         # to honor the Step contract for the apply method we need to return a frame as result
         return frame
