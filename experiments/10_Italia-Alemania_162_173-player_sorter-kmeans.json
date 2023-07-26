@@ -2,95 +2,1704 @@
   "frame_results": [
     {
       "correctly_sorted_players": 13,
-      "badly_sorted_players": 2
+      "badly_sorted_players": 2,
+      "type": "detect_and_compare",
+      "time": 0.07120275497436523,
+      "frame_number": 1
+    },
+    {
+      "frame_number": 2,
+      "type": "detect_only",
+      "time": 0.05003809928894043
+    },
+    {
+      "frame_number": 3,
+      "type": "detect_only",
+      "time": 0.0489649772644043
+    },
+    {
+      "frame_number": 4,
+      "type": "detect_only",
+      "time": 0.05023789405822754
+    },
+    {
+      "frame_number": 5,
+      "type": "detect_only",
+      "time": 0.050623178482055664
+    },
+    {
+      "frame_number": 6,
+      "type": "detect_only",
+      "time": 0.04955697059631348
+    },
+    {
+      "frame_number": 7,
+      "type": "detect_only",
+      "time": 0.05051088333129883
+    },
+    {
+      "frame_number": 8,
+      "type": "detect_only",
+      "time": 0.048915863037109375
+    },
+    {
+      "frame_number": 9,
+      "type": "detect_only",
+      "time": 0.0492551326751709
     },
     {
       "correctly_sorted_players": 13,
-      "badly_sorted_players": 2
+      "badly_sorted_players": 2,
+      "type": "detect_and_compare",
+      "time": 0.04882621765136719,
+      "frame_number": 10
+    },
+    {
+      "frame_number": 11,
+      "type": "detect_only",
+      "time": 0.05534505844116211
+    },
+    {
+      "frame_number": 12,
+      "type": "detect_only",
+      "time": 0.059207916259765625
+    },
+    {
+      "frame_number": 13,
+      "type": "detect_only",
+      "time": 0.05005598068237305
+    },
+    {
+      "frame_number": 14,
+      "type": "detect_only",
+      "time": 0.04944300651550293
+    },
+    {
+      "frame_number": 15,
+      "type": "detect_only",
+      "time": 0.04894280433654785
+    },
+    {
+      "frame_number": 16,
+      "type": "detect_only",
+      "time": 0.048696041107177734
+    },
+    {
+      "frame_number": 17,
+      "type": "detect_only",
+      "time": 0.0488889217376709
+    },
+    {
+      "frame_number": 18,
+      "type": "detect_only",
+      "time": 0.051167964935302734
+    },
+    {
+      "frame_number": 19,
+      "type": "detect_only",
+      "time": 0.049365997314453125
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.04360818862915039,
+      "frame_number": 20
+    },
+    {
+      "frame_number": 21,
+      "type": "detect_only",
+      "time": 0.04416084289550781
+    },
+    {
+      "frame_number": 22,
+      "type": "detect_only",
+      "time": 0.04412698745727539
+    },
+    {
+      "frame_number": 23,
+      "type": "detect_only",
+      "time": 0.049276113510131836
+    },
+    {
+      "frame_number": 24,
+      "type": "detect_only",
+      "time": 0.04329681396484375
+    },
+    {
+      "frame_number": 25,
+      "type": "detect_only",
+      "time": 0.043884992599487305
+    },
+    {
+      "frame_number": 26,
+      "type": "detect_only",
+      "time": 0.04360318183898926
+    },
+    {
+      "frame_number": 27,
+      "type": "detect_only",
+      "time": 0.044774770736694336
+    },
+    {
+      "frame_number": 28,
+      "type": "detect_only",
+      "time": 0.04421281814575195
+    },
+    {
+      "frame_number": 29,
+      "type": "detect_only",
+      "time": 0.043344974517822266
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05377030372619629,
+      "frame_number": 30
+    },
+    {
+      "frame_number": 31,
+      "type": "detect_only",
+      "time": 0.060510873794555664
+    },
+    {
+      "frame_number": 32,
+      "type": "detect_only",
+      "time": 0.0546112060546875
+    },
+    {
+      "frame_number": 33,
+      "type": "detect_only",
+      "time": 0.05423998832702637
+    },
+    {
+      "frame_number": 34,
+      "type": "detect_only",
+      "time": 0.0545351505279541
+    },
+    {
+      "frame_number": 35,
+      "type": "detect_only",
+      "time": 0.05419111251831055
+    },
+    {
+      "frame_number": 36,
+      "type": "detect_only",
+      "time": 0.05547761917114258
+    },
+    {
+      "frame_number": 37,
+      "type": "detect_only",
+      "time": 0.055142879486083984
+    },
+    {
+      "frame_number": 38,
+      "type": "detect_only",
+      "time": 0.05424380302429199
+    },
+    {
+      "frame_number": 39,
+      "type": "detect_only",
+      "time": 0.05501723289489746
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.061998844146728516,
+      "frame_number": 40
+    },
+    {
+      "frame_number": 41,
+      "type": "detect_only",
+      "time": 0.05558013916015625
+    },
+    {
+      "frame_number": 42,
+      "type": "detect_only",
+      "time": 0.05605602264404297
+    },
+    {
+      "frame_number": 43,
+      "type": "detect_only",
+      "time": 0.05525922775268555
+    },
+    {
+      "frame_number": 44,
+      "type": "detect_only",
+      "time": 0.05461931228637695
+    },
+    {
+      "frame_number": 45,
+      "type": "detect_only",
+      "time": 0.05446600914001465
+    },
+    {
+      "frame_number": 46,
+      "type": "detect_only",
+      "time": 0.05467700958251953
+    },
+    {
+      "frame_number": 47,
+      "type": "detect_only",
+      "time": 0.05543017387390137
+    },
+    {
+      "frame_number": 48,
+      "type": "detect_only",
+      "time": 0.05542182922363281
+    },
+    {
+      "frame_number": 49,
+      "type": "detect_only",
+      "time": 0.05468010902404785
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05440402030944824,
+      "frame_number": 50
+    },
+    {
+      "frame_number": 51,
+      "type": "detect_only",
+      "time": 0.0545501708984375
+    },
+    {
+      "frame_number": 52,
+      "type": "detect_only",
+      "time": 0.057161808013916016
+    },
+    {
+      "frame_number": 53,
+      "type": "detect_only",
+      "time": 0.06087088584899902
+    },
+    {
+      "frame_number": 54,
+      "type": "detect_only",
+      "time": 0.06360292434692383
+    },
+    {
+      "frame_number": 55,
+      "type": "detect_only",
+      "time": 0.07322907447814941
+    },
+    {
+      "frame_number": 56,
+      "type": "detect_only",
+      "time": 0.056890010833740234
+    },
+    {
+      "frame_number": 57,
+      "type": "detect_only",
+      "time": 0.05677986145019531
+    },
+    {
+      "frame_number": 58,
+      "type": "detect_only",
+      "time": 0.057028770446777344
+    },
+    {
+      "frame_number": 59,
+      "type": "detect_only",
+      "time": 0.06654191017150879
     },
     {
       "correctly_sorted_players": 15,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05503273010253906,
+      "frame_number": 60
+    },
+    {
+      "frame_number": 61,
+      "type": "detect_only",
+      "time": 0.05649590492248535
+    },
+    {
+      "frame_number": 62,
+      "type": "detect_only",
+      "time": 0.05193924903869629
+    },
+    {
+      "frame_number": 63,
+      "type": "detect_only",
+      "time": 0.05218315124511719
+    },
+    {
+      "frame_number": 64,
+      "type": "detect_only",
+      "time": 0.052635908126831055
+    },
+    {
+      "frame_number": 65,
+      "type": "detect_only",
+      "time": 0.05256295204162598
+    },
+    {
+      "frame_number": 66,
+      "type": "detect_only",
+      "time": 0.05273175239562988
+    },
+    {
+      "frame_number": 67,
+      "type": "detect_only",
+      "time": 0.051915884017944336
+    },
+    {
+      "frame_number": 68,
+      "type": "detect_only",
+      "time": 0.0515589714050293
+    },
+    {
+      "frame_number": 69,
+      "type": "detect_only",
+      "time": 0.05265498161315918
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.061717987060546875,
+      "frame_number": 70
+    },
+    {
+      "frame_number": 71,
+      "type": "detect_only",
+      "time": 0.056433916091918945
+    },
+    {
+      "frame_number": 72,
+      "type": "detect_only",
+      "time": 0.055188894271850586
+    },
+    {
+      "frame_number": 73,
+      "type": "detect_only",
+      "time": 0.05530214309692383
+    },
+    {
+      "frame_number": 74,
+      "type": "detect_only",
+      "time": 0.05533123016357422
+    },
+    {
+      "frame_number": 75,
+      "type": "detect_only",
+      "time": 0.05481100082397461
+    },
+    {
+      "frame_number": 76,
+      "type": "detect_only",
+      "time": 0.0597078800201416
+    },
+    {
+      "frame_number": 77,
+      "type": "detect_only",
+      "time": 0.07142400741577148
+    },
+    {
+      "frame_number": 78,
+      "type": "detect_only",
+      "time": 0.05916094779968262
+    },
+    {
+      "frame_number": 79,
+      "type": "detect_only",
+      "time": 0.05556511878967285
     },
     {
       "correctly_sorted_players": 15,
-      "badly_sorted_players": 2
+      "badly_sorted_players": 2,
+      "type": "detect_and_compare",
+      "time": 0.055548906326293945,
+      "frame_number": 80
+    },
+    {
+      "frame_number": 81,
+      "type": "detect_only",
+      "time": 0.054392099380493164
+    },
+    {
+      "frame_number": 82,
+      "type": "detect_only",
+      "time": 0.05575895309448242
+    },
+    {
+      "frame_number": 83,
+      "type": "detect_only",
+      "time": 0.055677175521850586
+    },
+    {
+      "frame_number": 84,
+      "type": "detect_only",
+      "time": 0.05566120147705078
+    },
+    {
+      "frame_number": 85,
+      "type": "detect_only",
+      "time": 0.05519580841064453
+    },
+    {
+      "frame_number": 86,
+      "type": "detect_only",
+      "time": 0.05504608154296875
+    },
+    {
+      "frame_number": 87,
+      "type": "detect_only",
+      "time": 0.054902076721191406
+    },
+    {
+      "frame_number": 88,
+      "type": "detect_only",
+      "time": 0.05414986610412598
+    },
+    {
+      "frame_number": 89,
+      "type": "detect_only",
+      "time": 0.05484414100646973
+    },
+    {
+      "frame_number": 90,
+      "type": "detect_only",
+      "time": 0.054717302322387695
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05444788932800293,
+      "frame_number": 91
+    },
+    {
+      "frame_number": 92,
+      "type": "detect_only",
+      "time": 0.05481386184692383
+    },
+    {
+      "frame_number": 93,
+      "type": "detect_only",
+      "time": 0.05490827560424805
+    },
+    {
+      "frame_number": 94,
+      "type": "detect_only",
+      "time": 0.05482316017150879
+    },
+    {
+      "frame_number": 95,
+      "type": "detect_only",
+      "time": 0.05625724792480469
+    },
+    {
+      "frame_number": 96,
+      "type": "detect_only",
+      "time": 0.05445671081542969
+    },
+    {
+      "frame_number": 97,
+      "type": "detect_only",
+      "time": 0.05472993850708008
+    },
+    {
+      "frame_number": 98,
+      "type": "detect_only",
+      "time": 0.054085731506347656
+    },
+    {
+      "frame_number": 99,
+      "type": "detect_only",
+      "time": 0.05474400520324707
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05405783653259277,
+      "frame_number": 100
+    },
+    {
+      "frame_number": 101,
+      "type": "detect_only",
+      "time": 0.05529594421386719
+    },
+    {
+      "frame_number": 102,
+      "type": "detect_only",
+      "time": 0.07895922660827637
+    },
+    {
+      "frame_number": 103,
+      "type": "detect_only",
+      "time": 0.11275482177734375
+    },
+    {
+      "frame_number": 104,
+      "type": "detect_only",
+      "time": 0.08666586875915527
+    },
+    {
+      "frame_number": 105,
+      "type": "detect_only",
+      "time": 0.055624961853027344
+    },
+    {
+      "frame_number": 106,
+      "type": "detect_only",
+      "time": 0.05511808395385742
+    },
+    {
+      "frame_number": 107,
+      "type": "detect_only",
+      "time": 0.05525922775268555
+    },
+    {
+      "frame_number": 108,
+      "type": "detect_only",
+      "time": 0.05502796173095703
+    },
+    {
+      "frame_number": 109,
+      "type": "detect_only",
+      "time": 0.05482602119445801
     },
     {
       "correctly_sorted_players": 16,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.05726003646850586,
+      "frame_number": 110
+    },
+    {
+      "frame_number": 111,
+      "type": "detect_only",
+      "time": 0.05532479286193848
+    },
+    {
+      "frame_number": 112,
+      "type": "detect_only",
+      "time": 0.05534815788269043
+    },
+    {
+      "frame_number": 113,
+      "type": "detect_only",
+      "time": 0.05452895164489746
+    },
+    {
+      "frame_number": 114,
+      "type": "detect_only",
+      "time": 0.054583072662353516
+    },
+    {
+      "frame_number": 115,
+      "type": "detect_only",
+      "time": 0.05405616760253906
+    },
+    {
+      "frame_number": 116,
+      "type": "detect_only",
+      "time": 0.05637788772583008
+    },
+    {
+      "frame_number": 117,
+      "type": "detect_only",
+      "time": 0.054611921310424805
+    },
+    {
+      "frame_number": 118,
+      "type": "detect_only",
+      "time": 0.05482172966003418
+    },
+    {
+      "frame_number": 119,
+      "type": "detect_only",
+      "time": 0.05562615394592285
     },
     {
       "correctly_sorted_players": 14,
-      "badly_sorted_players": 2
+      "badly_sorted_players": 2,
+      "type": "detect_and_compare",
+      "time": 0.051714181900024414,
+      "frame_number": 120
+    },
+    {
+      "frame_number": 121,
+      "type": "detect_only",
+      "time": 0.05207490921020508
+    },
+    {
+      "frame_number": 122,
+      "type": "detect_only",
+      "time": 0.052926063537597656
+    },
+    {
+      "frame_number": 123,
+      "type": "detect_only",
+      "time": 0.05455732345581055
+    },
+    {
+      "frame_number": 124,
+      "type": "detect_only",
+      "time": 0.05248093605041504
+    },
+    {
+      "frame_number": 125,
+      "type": "detect_only",
+      "time": 0.053047895431518555
+    },
+    {
+      "frame_number": 126,
+      "type": "detect_only",
+      "time": 0.05330681800842285
+    },
+    {
+      "frame_number": 127,
+      "type": "detect_only",
+      "time": 0.05237102508544922
+    },
+    {
+      "frame_number": 128,
+      "type": "detect_only",
+      "time": 0.05818009376525879
+    },
+    {
+      "frame_number": 129,
+      "type": "detect_only",
+      "time": 0.05226898193359375
     },
     {
       "correctly_sorted_players": 11,
-      "badly_sorted_players": 2
+      "badly_sorted_players": 2,
+      "type": "detect_and_compare",
+      "time": 0.0432429313659668,
+      "frame_number": 130
+    },
+    {
+      "frame_number": 131,
+      "type": "detect_only",
+      "time": 0.044101715087890625
+    },
+    {
+      "frame_number": 132,
+      "type": "detect_only",
+      "time": 0.0439600944519043
+    },
+    {
+      "frame_number": 133,
+      "type": "detect_only",
+      "time": 0.04458785057067871
+    },
+    {
+      "frame_number": 134,
+      "type": "detect_only",
+      "time": 0.04412508010864258
+    },
+    {
+      "frame_number": 135,
+      "type": "detect_only",
+      "time": 0.04433393478393555
+    },
+    {
+      "frame_number": 136,
+      "type": "detect_only",
+      "time": 0.044472694396972656
+    },
+    {
+      "frame_number": 137,
+      "type": "detect_only",
+      "time": 0.047007083892822266
+    },
+    {
+      "frame_number": 138,
+      "type": "detect_only",
+      "time": 0.04414701461791992
+    },
+    {
+      "frame_number": 139,
+      "type": "detect_only",
+      "time": 0.04464006423950195
     },
     {
       "correctly_sorted_players": 13,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.0437932014465332,
+      "frame_number": 140
+    },
+    {
+      "frame_number": 141,
+      "type": "detect_only",
+      "time": 0.04406309127807617
+    },
+    {
+      "frame_number": 142,
+      "type": "detect_only",
+      "time": 0.04413795471191406
+    },
+    {
+      "frame_number": 143,
+      "type": "detect_only",
+      "time": 0.04389500617980957
+    },
+    {
+      "frame_number": 144,
+      "type": "detect_only",
+      "time": 0.04362082481384277
+    },
+    {
+      "frame_number": 145,
+      "type": "detect_only",
+      "time": 0.04431509971618652
+    },
+    {
+      "frame_number": 146,
+      "type": "detect_only",
+      "time": 0.043363094329833984
+    },
+    {
+      "frame_number": 147,
+      "type": "detect_only",
+      "time": 0.05144476890563965
+    },
+    {
+      "frame_number": 148,
+      "type": "detect_only",
+      "time": 0.04422879219055176
+    },
+    {
+      "frame_number": 149,
+      "type": "detect_only",
+      "time": 0.04366612434387207
     },
     {
       "correctly_sorted_players": 13,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.0435638427734375,
+      "frame_number": 150
+    },
+    {
+      "frame_number": 151,
+      "type": "detect_only",
+      "time": 0.04742622375488281
+    },
+    {
+      "frame_number": 152,
+      "type": "detect_only",
+      "time": 0.04435110092163086
+    },
+    {
+      "frame_number": 153,
+      "type": "detect_only",
+      "time": 0.043356895446777344
+    },
+    {
+      "frame_number": 154,
+      "type": "detect_only",
+      "time": 0.04370594024658203
+    },
+    {
+      "frame_number": 155,
+      "type": "detect_only",
+      "time": 0.0445859432220459
+    },
+    {
+      "frame_number": 156,
+      "type": "detect_only",
+      "time": 0.04389500617980957
+    },
+    {
+      "frame_number": 157,
+      "type": "detect_only",
+      "time": 0.044207096099853516
+    },
+    {
+      "frame_number": 158,
+      "type": "detect_only",
+      "time": 0.044161081314086914
+    },
+    {
+      "frame_number": 159,
+      "type": "detect_only",
+      "time": 0.04396200180053711
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 1
+      "badly_sorted_players": 1,
+      "type": "detect_and_compare",
+      "time": 0.04325079917907715,
+      "frame_number": 160
+    },
+    {
+      "frame_number": 161,
+      "type": "detect_only",
+      "time": 0.04385495185852051
+    },
+    {
+      "frame_number": 162,
+      "type": "detect_only",
+      "time": 0.04312610626220703
+    },
+    {
+      "frame_number": 163,
+      "type": "detect_only",
+      "time": 0.04404616355895996
+    },
+    {
+      "frame_number": 164,
+      "type": "detect_only",
+      "time": 0.043195247650146484
+    },
+    {
+      "frame_number": 165,
+      "type": "detect_only",
+      "time": 0.04359102249145508
+    },
+    {
+      "frame_number": 166,
+      "type": "detect_only",
+      "time": 0.04526495933532715
+    },
+    {
+      "frame_number": 167,
+      "type": "detect_only",
+      "time": 0.0460970401763916
+    },
+    {
+      "frame_number": 168,
+      "type": "detect_only",
+      "time": 0.04450798034667969
+    },
+    {
+      "frame_number": 169,
+      "type": "detect_only",
+      "time": 0.04511284828186035
     },
     {
       "correctly_sorted_players": 2,
-      "badly_sorted_players": 10
+      "badly_sorted_players": 10,
+      "type": "detect_and_compare",
+      "time": 0.041745901107788086,
+      "frame_number": 170
+    },
+    {
+      "frame_number": 171,
+      "type": "detect_only",
+      "time": 0.04166293144226074
+    },
+    {
+      "frame_number": 172,
+      "type": "detect_only",
+      "time": 0.04155683517456055
+    },
+    {
+      "frame_number": 173,
+      "type": "detect_only",
+      "time": 0.05164384841918945
+    },
+    {
+      "frame_number": 174,
+      "type": "detect_only",
+      "time": 0.06562089920043945
+    },
+    {
+      "frame_number": 175,
+      "type": "detect_only",
+      "time": 0.09535408020019531
+    },
+    {
+      "frame_number": 176,
+      "type": "detect_only",
+      "time": 0.04404497146606445
+    },
+    {
+      "frame_number": 177,
+      "type": "detect_only",
+      "time": 0.043810129165649414
+    },
+    {
+      "frame_number": 178,
+      "type": "detect_only",
+      "time": 0.04187297821044922
+    },
+    {
+      "frame_number": 179,
+      "type": "detect_only",
+      "time": 0.04155683517456055
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.040756940841674805,
+      "frame_number": 180
+    },
+    {
+      "frame_number": 181,
+      "type": "detect_only",
+      "time": 0.04570794105529785
+    },
+    {
+      "frame_number": 182,
+      "type": "detect_only",
+      "time": 0.04104304313659668
+    },
+    {
+      "frame_number": 183,
+      "type": "detect_only",
+      "time": 0.04140210151672363
+    },
+    {
+      "frame_number": 184,
+      "type": "detect_only",
+      "time": 0.04182004928588867
+    },
+    {
+      "frame_number": 185,
+      "type": "detect_only",
+      "time": 0.04140615463256836
+    },
+    {
+      "frame_number": 186,
+      "type": "detect_only",
+      "time": 0.04129195213317871
+    },
+    {
+      "frame_number": 187,
+      "type": "detect_only",
+      "time": 0.041146278381347656
+    },
+    {
+      "frame_number": 188,
+      "type": "detect_only",
+      "time": 0.041410207748413086
+    },
+    {
+      "frame_number": 189,
+      "type": "detect_only",
+      "time": 0.04115009307861328
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.04042315483093262,
+      "frame_number": 190
+    },
+    {
+      "frame_number": 191,
+      "type": "detect_only",
+      "time": 0.04410886764526367
+    },
+    {
+      "frame_number": 192,
+      "type": "detect_only",
+      "time": 0.041322946548461914
+    },
+    {
+      "frame_number": 193,
+      "type": "detect_only",
+      "time": 0.04157090187072754
+    },
+    {
+      "frame_number": 194,
+      "type": "detect_only",
+      "time": 0.04090380668640137
+    },
+    {
+      "frame_number": 195,
+      "type": "detect_only",
+      "time": 0.040876150131225586
+    },
+    {
+      "frame_number": 196,
+      "type": "detect_only",
+      "time": 0.04099392890930176
+    },
+    {
+      "frame_number": 197,
+      "type": "detect_only",
+      "time": 0.0415959358215332
+    },
+    {
+      "frame_number": 198,
+      "type": "detect_only",
+      "time": 0.040689945220947266
+    },
+    {
+      "frame_number": 199,
+      "type": "detect_only",
+      "time": 0.041574954986572266
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.0414729118347168,
+      "frame_number": 200
+    },
+    {
+      "frame_number": 201,
+      "type": "detect_only",
+      "time": 0.04134798049926758
+    },
+    {
+      "frame_number": 202,
+      "type": "detect_only",
+      "time": 0.04746603965759277
+    },
+    {
+      "frame_number": 203,
+      "type": "detect_only",
+      "time": 0.040634870529174805
+    },
+    {
+      "frame_number": 204,
+      "type": "detect_only",
+      "time": 0.04135394096374512
+    },
+    {
+      "frame_number": 205,
+      "type": "detect_only",
+      "time": 0.041311025619506836
+    },
+    {
+      "frame_number": 206,
+      "type": "detect_only",
+      "time": 0.0412139892578125
+    },
+    {
+      "frame_number": 207,
+      "type": "detect_only",
+      "time": 0.04085707664489746
+    },
+    {
+      "frame_number": 208,
+      "type": "detect_only",
+      "time": 0.04059004783630371
+    },
+    {
+      "frame_number": 209,
+      "type": "detect_only",
+      "time": 0.0460362434387207
     },
     {
       "correctly_sorted_players": 11,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.038289785385131836,
+      "frame_number": 210
+    },
+    {
+      "frame_number": 211,
+      "type": "detect_only",
+      "time": 0.038802146911621094
+    },
+    {
+      "frame_number": 212,
+      "type": "detect_only",
+      "time": 0.03868913650512695
+    },
+    {
+      "frame_number": 213,
+      "type": "detect_only",
+      "time": 0.03837299346923828
+    },
+    {
+      "frame_number": 214,
+      "type": "detect_only",
+      "time": 0.03853011131286621
+    },
+    {
+      "frame_number": 215,
+      "type": "detect_only",
+      "time": 0.0382390022277832
+    },
+    {
+      "frame_number": 216,
+      "type": "detect_only",
+      "time": 0.03838491439819336
+    },
+    {
+      "frame_number": 217,
+      "type": "detect_only",
+      "time": 0.037724971771240234
+    },
+    {
+      "frame_number": 218,
+      "type": "detect_only",
+      "time": 0.03848409652709961
+    },
+    {
+      "frame_number": 219,
+      "type": "detect_only",
+      "time": 0.037902116775512695
     },
     {
       "correctly_sorted_players": 12,
-      "badly_sorted_players": 0
+      "badly_sorted_players": 0,
+      "type": "detect_and_compare",
+      "time": 0.04669690132141113,
+      "frame_number": 220
+    },
+    {
+      "frame_number": 221,
+      "type": "detect_only",
+      "time": 0.046681880950927734
+    },
+    {
+      "frame_number": 222,
+      "type": "detect_only",
+      "time": 0.04531598091125488
+    },
+    {
+      "frame_number": 223,
+      "type": "detect_only",
+      "time": 0.046243906021118164
+    },
+    {
+      "frame_number": 224,
+      "type": "detect_only",
+      "time": 0.04551982879638672
+    },
+    {
+      "frame_number": 225,
+      "type": "detect_only",
+      "time": 0.04302716255187988
+    },
+    {
+      "frame_number": 226,
+      "type": "detect_only",
+      "time": 0.04224705696105957
+    },
+    {
+      "frame_number": 227,
+      "type": "detect_only",
+      "time": 0.0427701473236084
+    },
+    {
+      "frame_number": 228,
+      "type": "detect_only",
+      "time": 0.042243003845214844
+    },
+    {
+      "frame_number": 229,
+      "type": "detect_only",
+      "time": 0.042127132415771484
+    },
+    {
+      "frame_number": 230,
+      "type": "detect_only",
+      "time": 0.04218888282775879
+    },
+    {
+      "frame_number": 231,
+      "type": "detect_only",
+      "time": 0.05563712120056152
+    },
+    {
+      "frame_number": 232,
+      "type": "detect_only",
+      "time": 0.044363975524902344
+    },
+    {
+      "frame_number": 233,
+      "type": "detect_only",
+      "time": 0.0434260368347168
+    },
+    {
+      "frame_number": 234,
+      "type": "detect_only",
+      "time": 0.05128002166748047
+    },
+    {
+      "frame_number": 235,
+      "type": "detect_only",
+      "time": 0.04931211471557617
+    },
+    {
+      "frame_number": 236,
+      "type": "detect_only",
+      "time": 0.04273104667663574
+    },
+    {
+      "frame_number": 237,
+      "type": "detect_only",
+      "time": 0.04692196846008301
+    },
+    {
+      "frame_number": 238,
+      "type": "detect_only",
+      "time": 0.041912078857421875
+    },
+    {
+      "frame_number": 239,
+      "type": "detect_only",
+      "time": 0.046575307846069336
+    },
+    {
+      "frame_number": 240,
+      "type": "detect_only",
+      "time": 0.04434490203857422
+    },
+    {
+      "frame_number": 241,
+      "type": "detect_only",
+      "time": 0.04232192039489746
+    },
+    {
+      "frame_number": 242,
+      "type": "detect_only",
+      "time": 0.04297614097595215
+    },
+    {
+      "frame_number": 243,
+      "type": "detect_only",
+      "time": 0.04141688346862793
+    },
+    {
+      "frame_number": 244,
+      "type": "detect_only",
+      "time": 0.04504990577697754
+    },
+    {
+      "frame_number": 245,
+      "type": "detect_only",
+      "time": 0.04281878471374512
+    },
+    {
+      "frame_number": 246,
+      "type": "detect_only",
+      "time": 0.0432581901550293
+    },
+    {
+      "frame_number": 247,
+      "type": "detect_only",
+      "time": 0.04152202606201172
+    },
+    {
+      "frame_number": 248,
+      "type": "detect_only",
+      "time": 0.057356834411621094
+    },
+    {
+      "frame_number": 249,
+      "type": "detect_only",
+      "time": 0.04144001007080078
+    },
+    {
+      "frame_number": 250,
+      "type": "detect_only",
+      "time": 0.04139113426208496
+    },
+    {
+      "frame_number": 251,
+      "type": "detect_only",
+      "time": 0.04109525680541992
+    },
+    {
+      "frame_number": 252,
+      "type": "detect_only",
+      "time": 0.06925630569458008
+    },
+    {
+      "frame_number": 253,
+      "type": "detect_only",
+      "time": 0.10722732543945312
+    },
+    {
+      "frame_number": 254,
+      "type": "detect_only",
+      "time": 0.07173299789428711
+    },
+    {
+      "frame_number": 255,
+      "type": "detect_only",
+      "time": 0.05289411544799805
+    },
+    {
+      "frame_number": 256,
+      "type": "detect_only",
+      "time": 0.05210614204406738
+    },
+    {
+      "frame_number": 257,
+      "type": "detect_only",
+      "time": 0.04263710975646973
+    },
+    {
+      "frame_number": 258,
+      "type": "detect_only",
+      "time": 0.0408329963684082
+    },
+    {
+      "frame_number": 259,
+      "type": "detect_only",
+      "time": 0.04140877723693848
+    },
+    {
+      "frame_number": 260,
+      "type": "detect_only",
+      "time": 0.04871010780334473
+    },
+    {
+      "frame_number": 261,
+      "type": "detect_only",
+      "time": 0.07055997848510742
+    },
+    {
+      "frame_number": 262,
+      "type": "detect_only",
+      "time": 0.050660133361816406
+    },
+    {
+      "frame_number": 263,
+      "type": "detect_only",
+      "time": 0.04493999481201172
+    },
+    {
+      "frame_number": 264,
+      "type": "detect_only",
+      "time": 0.041140079498291016
+    },
+    {
+      "frame_number": 265,
+      "type": "detect_only",
+      "time": 0.04178595542907715
+    },
+    {
+      "frame_number": 266,
+      "type": "detect_only",
+      "time": 0.04177117347717285
+    },
+    {
+      "frame_number": 267,
+      "type": "detect_only",
+      "time": 0.041460275650024414
+    },
+    {
+      "frame_number": 268,
+      "type": "detect_only",
+      "time": 0.04306292533874512
+    },
+    {
+      "frame_number": 269,
+      "type": "detect_only",
+      "time": 0.04333901405334473
+    },
+    {
+      "frame_number": 270,
+      "type": "detect_only",
+      "time": 0.04196619987487793
+    },
+    {
+      "frame_number": 271,
+      "type": "detect_only",
+      "time": 0.04181027412414551
+    },
+    {
+      "frame_number": 272,
+      "type": "detect_only",
+      "time": 0.04177570343017578
+    },
+    {
+      "frame_number": 273,
+      "type": "detect_only",
+      "time": 0.04831981658935547
+    },
+    {
+      "frame_number": 274,
+      "type": "detect_only",
+      "time": 0.043451786041259766
+    },
+    {
+      "frame_number": 275,
+      "type": "detect_only",
+      "time": 0.04232311248779297
+    },
+    {
+      "frame_number": 276,
+      "type": "detect_only",
+      "time": 0.04187798500061035
+    },
+    {
+      "frame_number": 277,
+      "type": "detect_only",
+      "time": 0.041162967681884766
+    },
+    {
+      "frame_number": 278,
+      "type": "detect_only",
+      "time": 0.04239392280578613
+    },
+    {
+      "frame_number": 279,
+      "type": "detect_only",
+      "time": 0.04163098335266113
+    },
+    {
+      "frame_number": 280,
+      "type": "detect_only",
+      "time": 0.04224896430969238
+    },
+    {
+      "frame_number": 281,
+      "type": "detect_only",
+      "time": 0.04140186309814453
+    },
+    {
+      "frame_number": 282,
+      "type": "detect_only",
+      "time": 0.045603036880493164
+    },
+    {
+      "frame_number": 283,
+      "type": "detect_only",
+      "time": 0.04127788543701172
+    },
+    {
+      "frame_number": 284,
+      "type": "detect_only",
+      "time": 0.04210090637207031
+    },
+    {
+      "frame_number": 285,
+      "type": "detect_only",
+      "time": 0.04179191589355469
+    },
+    {
+      "frame_number": 286,
+      "type": "detect_only",
+      "time": 0.04731011390686035
+    },
+    {
+      "frame_number": 287,
+      "type": "detect_only",
+      "time": 0.04192614555358887
+    },
+    {
+      "frame_number": 288,
+      "type": "detect_only",
+      "time": 0.04101300239562988
+    },
+    {
+      "frame_number": 289,
+      "type": "detect_only",
+      "time": 0.0412898063659668
+    },
+    {
+      "frame_number": 290,
+      "type": "detect_only",
+      "time": 0.04140901565551758
+    },
+    {
+      "frame_number": 291,
+      "type": "detect_only",
+      "time": 0.0413670539855957
+    },
+    {
+      "frame_number": 292,
+      "type": "detect_only",
+      "time": 0.041757822036743164
+    },
+    {
+      "frame_number": 293,
+      "type": "detect_only",
+      "time": 0.041172027587890625
+    },
+    {
+      "frame_number": 294,
+      "type": "detect_only",
+      "time": 0.041120052337646484
+    },
+    {
+      "frame_number": 295,
+      "type": "detect_only",
+      "time": 0.0468442440032959
+    },
+    {
+      "frame_number": 296,
+      "type": "detect_only",
+      "time": 0.04101204872131348
+    },
+    {
+      "frame_number": 297,
+      "type": "detect_only",
+      "time": 0.0418398380279541
+    },
+    {
+      "frame_number": 298,
+      "type": "detect_only",
+      "time": 0.04114723205566406
+    },
+    {
+      "frame_number": 299,
+      "type": "detect_only",
+      "time": 0.041287899017333984
+    },
+    {
+      "frame_number": 300,
+      "type": "detect_only",
+      "time": 0.041097164154052734
+    },
+    {
+      "frame_number": 301,
+      "type": "detect_only",
+      "time": 0.04547715187072754
+    },
+    {
+      "frame_number": 302,
+      "type": "detect_only",
+      "time": 0.04304099082946777
+    },
+    {
+      "frame_number": 303,
+      "type": "detect_only",
+      "time": 0.04189014434814453
+    },
+    {
+      "frame_number": 304,
+      "type": "detect_only",
+      "time": 0.04040884971618652
+    },
+    {
+      "frame_number": 305,
+      "type": "detect_only",
+      "time": 0.04086899757385254
+    },
+    {
+      "frame_number": 306,
+      "type": "detect_only",
+      "time": 0.04123711585998535
+    },
+    {
+      "frame_number": 307,
+      "type": "detect_only",
+      "time": 0.041439056396484375
+    },
+    {
+      "frame_number": 308,
+      "type": "detect_only",
+      "time": 0.041339874267578125
+    },
+    {
+      "frame_number": 309,
+      "type": "detect_only",
+      "time": 0.04128003120422363
+    },
+    {
+      "frame_number": 310,
+      "type": "detect_only",
+      "time": 0.04117298126220703
+    },
+    {
+      "frame_number": 311,
+      "type": "detect_only",
+      "time": 0.04095315933227539
+    },
+    {
+      "frame_number": 312,
+      "type": "detect_only",
+      "time": 0.041346073150634766
+    },
+    {
+      "frame_number": 313,
+      "type": "detect_only",
+      "time": 0.04058098793029785
+    },
+    {
+      "frame_number": 314,
+      "type": "detect_only",
+      "time": 0.04364204406738281
+    },
+    {
+      "frame_number": 315,
+      "type": "detect_only",
+      "time": 0.04090428352355957
+    },
+    {
+      "frame_number": 316,
+      "type": "detect_only",
+      "time": 0.04060506820678711
+    },
+    {
+      "frame_number": 317,
+      "type": "detect_only",
+      "time": 0.04172706604003906
+    },
+    {
+      "frame_number": 318,
+      "type": "detect_only",
+      "time": 0.04065203666687012
+    },
+    {
+      "frame_number": 319,
+      "type": "detect_only",
+      "time": 0.04090595245361328
+    },
+    {
+      "frame_number": 320,
+      "type": "detect_only",
+      "time": 0.04121899604797363
+    },
+    {
+      "frame_number": 321,
+      "type": "detect_only",
+      "time": 0.04135489463806152
+    },
+    {
+      "frame_number": 322,
+      "type": "detect_only",
+      "time": 0.043900251388549805
+    },
+    {
+      "frame_number": 323,
+      "type": "detect_only",
+      "time": 0.041198015213012695
+    },
+    {
+      "frame_number": 324,
+      "type": "detect_only",
+      "time": 0.041153669357299805
+    },
+    {
+      "frame_number": 325,
+      "type": "detect_only",
+      "time": 0.040900230407714844
+    },
+    {
+      "frame_number": 326,
+      "type": "detect_only",
+      "time": 0.04109811782836914
+    },
+    {
+      "frame_number": 327,
+      "type": "detect_only",
+      "time": 0.04129195213317871
+    },
+    {
+      "frame_number": 328,
+      "type": "detect_only",
+      "time": 0.041265010833740234
+    },
+    {
+      "frame_number": 329,
+      "type": "detect_only",
+      "time": 0.04144001007080078
+    },
+    {
+      "frame_number": 330,
+      "type": "detect_only",
+      "time": 0.0414578914642334
+    },
+    {
+      "frame_number": 331,
+      "type": "detect_only",
+      "time": 0.04105997085571289
     }
   ],
   "aggregations": {}

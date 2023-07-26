@@ -1,4 +1,4 @@
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, MiniBatchKMeans
 from player_detector.step import *
 from timer.timer import *
 import matplotlib
@@ -46,7 +46,7 @@ class KmeansPlayerDetector:
         pixel_labels = self.get_pixel_labels(image)
         self.show_pixels_classification(image, pixel_labels) if self.debug else None
 
-        least_predominant_colors, result = self.get_least_predominant_colors(image, pixel_labels, lines)
+        least_predominant_colors, result = self.get_least_predominant_colors(image, pixel_labels)
         if not result:
             return []
 
@@ -85,52 +85,6 @@ class KmeansPlayerDetector:
 
         return players_from_contours(players, self.debug)
 
-    def find_players_2(self, original_frame):
-        image = original_frame
-        lines = get_lines_lsd(image, {'debug': self.debug})
-
-        ScreenManager.get_manager().show_frame(lines, 'lines') if self.debug else None
-
-        image = apply_blur(original_frame, params={'element_size': (5, 5)})
-        ScreenManager.get_manager().show_frame(image, 'blured') if self.debug else None
-
-        # image = change_contrast(image)
-        # ScreenManager.get_manager().show_frame(image, 'contrast') if self.debug else None
-
-        # classify pixels
-        pixel_labels = self.get_pixel_labels(image)
-        pixels = pixel_labels.flatten()
-        self.show_pixels_classification(image, pixels) if self.debug else None
-
-        first_team_main_color, second_team_main_color = self.get_teams_main_colors(pixel_labels)
-
-        segmented_data = first_team_main_color[pixels]
-        team_one = rgb_to_mask(segmented_data.reshape(image.shape))
-        ScreenManager.get_manager().show_frame(team_one, 'team_one') if self.debug else None
-
-        team_one = remove_mask_2(team_one, params={"mask": lines})
-        ScreenManager.get_manager().show_frame(team_one, "team_one_no_lines") if self.debug else None
-
-        segmented_data = second_team_main_color[pixels]
-        team_two = rgb_to_mask(segmented_data.reshape(image.shape))
-        ScreenManager.get_manager().show_frame(team_two, 'team_two') if self.debug else None
-
-        team_two = remove_mask_2(team_two, params={"mask": lines})
-        ScreenManager.get_manager().show_frame(team_two, 'team_two_no_lines') if self.debug else None
-
-        pipeline: [Step] = self.step('team_one')
-        for idx, step in enumerate(pipeline):
-            team_one = step.apply(idx, team_one)
-
-        pipeline: [Step] = self.step('team_two')
-        for idx, step in enumerate(pipeline):
-            team_two = step.apply(idx, team_two)
-
-        players_team_one = detect_contours(team_one, params=self.params)
-        players_team_two = detect_contours(team_two, params=self.params)
-
-        return players_from_contours(players_team_one + players_team_two, self.debug)
-
     def show_pixels_classification(self, image, pixels):
         # show colors
         segmented_data = self.main_colors[pixels]
@@ -138,37 +92,7 @@ class KmeansPlayerDetector:
         ScreenManager.get_manager().show_frame(segmented_image, 'pixels_classification')
         return segmented_image
 
-    def step_final(self, name):
-        return [
-            Step(
-                "close {}".format(name),
-                morphological_closing, {
-                    'element_size': (5, 30)
-                },
-                debug=self.debug
-            )
-        ]
-
-    def step(self, name):
-        return [
-            Step(
-                "open 1 {}".format(name),
-                morphological_opening, {
-                    'percentage_of_frame': 0.6,
-                    'iterations': 1
-                },
-                debug=self.debug
-            ),
-            Step(
-                "close {}".format(name),
-                morphological_closing, {
-                    'element_size': (5, 30)
-                },
-                debug=self.debug
-            )
-        ]
-
-    def get_least_predominant_colors(self, image, pixel_labels, lines):
+    def get_least_predominant_colors(self, image, pixel_labels):
         unique, counts = numpy.unique(pixel_labels, return_counts=True)
         label_count = dict(zip(unique, counts))
         pixels = pixel_labels.flatten()

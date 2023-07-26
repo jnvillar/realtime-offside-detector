@@ -51,7 +51,7 @@ default_config = {
             'debug': False
         },
         'kmeans': {
-            'debug': True,
+            'debug': False,
             'only_unclassified_players': True,
             'median': False,
             'focused': False,

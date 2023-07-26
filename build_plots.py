@@ -303,6 +303,24 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
+def print_player_sorter_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+):
+    aux_plot_time(
+        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+    )
+
+
 def print_player_detection_plot_time(
         frame_results,
         fig,
@@ -355,13 +373,13 @@ def aux_plot_time(
         }
 
     colors = ['indianred', 'forestgreen', 'royalblue', 'darkorange', 'darkviolet', 'darkturquoise']
-    max_y = 0
 
     for idx, method in enumerate(sub_problem_config['time_methods']):
         file = "-".join(
             results_file_path.split("-")[0:3]) + "-" + method + ".json"
         results = get_results_json(file)
-        results = [d["time"] * 1000 for d in results["frame_results"]]
+
+        results = [d.get("time", 0) * 1000 for d in results["frame_results"]]
 
         metrics = sub_problem_config['results']['metrics'].get(method, [])
         mean = np.mean(results)
@@ -484,6 +502,20 @@ config = {
         ],
         'time_methods': [
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
+        ]
+    },
+    "player_sorter_time": {
+        'chart_title': None,
+        'metric_name': "time",
+        'label_y': 'Tiempo (ms)',
+        'tick': None,
+        'showlegend': True,
+        'x_range': None,
+        'methods': [
+            'kmeans'
+        ],
+        'time_methods': [
+            'kmeans', 'bsas'
         ]
     },
     "vanishing_point_finder": {
@@ -613,7 +645,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_sorter_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -690,6 +722,10 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'player_detection_time':
                 print_player_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
                                                  sub_problem_config)
+
+            if sub_problem_suffix == 'player_sorter_time':
+                print_player_sorter_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                                              sub_problem_config)
 
             video_idx -= 1
 
