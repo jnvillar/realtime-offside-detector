@@ -281,7 +281,7 @@ if __name__ == '__main__':
     debug = False
     override_experiment = True
     merge_experiments = True
-    strategy = ComparisonStrategy.player_sorter
+    strategy = ComparisonStrategy.vanishing_point_finder
 
     videos = [
         #VideoConstants.video_16_RealMadrid_Shakhtar_20_29

@@ -518,6 +518,20 @@ config = {
             'kmeans', 'bsas'
         ]
     },
+    "vanishing_point_finder_time": {
+        'chart_title': None,
+        'metric_name': "time",
+        'label_y': 'Tiempo (ms)',
+        'tick': None,
+        'showlegend': True,
+        'x_range': None,
+        'methods': [
+            'hough'
+        ],
+        'time_methods': [
+            'hough'
+        ]
+    },
     "vanishing_point_finder": {
         'chart_title': None,
         'metric_name': "distance_meters",
@@ -645,7 +659,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_sorter_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "vanishing_point_finder_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -724,6 +738,10 @@ if __name__ == '__main__':
                                                  sub_problem_config)
 
             if sub_problem_suffix == 'player_sorter_time':
+                print_player_sorter_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                                              sub_problem_config)
+
+            if sub_problem_suffix == 'vanishing_point_finder_time':
                 print_player_sorter_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
                                               sub_problem_config)
 
