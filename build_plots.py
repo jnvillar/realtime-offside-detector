@@ -615,12 +615,16 @@ config = {
     },
     "vanishing_point_finder_time": {
         'chart_title': None,
-        'label_y': 'Tiempo (ms)',
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
         'tick': None,
         'showlegend': True,
         'x_range': None,
+        'translations': {
+            'hough': 'Calculo de punto de fuga',
+        },
         'methods': [
-            'hough', 'hough'
+            'bar', 'box'
         ],
         'time_methods': [
             'hough'
@@ -775,7 +779,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_tracker_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "vanishing_point_finder_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
