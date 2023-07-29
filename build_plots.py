@@ -42,18 +42,36 @@ def export_to_html_file(method, sub_problem_suffix, config):
     fig.write_html(export_file_name)
 
 
-def configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title):
+def configure_figure_layout(fig, sub_problem_config, method, idx):
+    label_y = sub_problem_config.get('label_y', None)
+    if label_y.__class__.__name__ == 'list':
+        label_y = sub_problem_config['label_y'][idx]
+
+    label_x = sub_problem_config.get('label_x', None)
+    if label_x.__class__.__name__ == 'list':
+        label_x = sub_problem_config['label_x'][idx]
+
+    if label_x is not None:
+        label_x = label_x + ' ' + sub_problem_config['label_by_method'][
+            method] if 'label_by_method' in sub_problem_config else label_x
+
+    font_size = sub_problem_config.get('font_size', 22)
+    if font_size.__class__.__name__ == 'list':
+        font_size = sub_problem_config['font_size'][idx]
+        if font_size is None:
+            font_size = 22
+
     fig.update_layout(
         title=sub_problem_config.get('chart_title', None),
         xaxis=dict(
-            title=x_axis_title,
+            title=label_x,
             titlefont=dict(size=font_size),
             dtick=sub_problem_config['tick'],
             range=sub_problem_config.get('x_range', None),
             tickfont=dict(size=font_size)
         ),
         yaxis=dict(
-            title=sub_problem_config.get('label_y', None),
+            title=label_y,
             titlefont=dict(size=font_size),
             tickfont=dict(size=font_size),
             range=sub_problem_config.get('y_range', None),
@@ -303,8 +321,7 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
-def print_player_sorter_plot_time(
-        frame_results,
+def print_player_tracker_plot_time(
         fig,
         video_name_in_chart,
         video_idx,
@@ -312,7 +329,22 @@ def print_player_sorter_plot_time(
         sub_problem_config
 ):
     aux_plot_time(
-        frame_results,
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+    )
+
+
+def print_player_sorter_plot_time(
+        fig,
+        video_name_in_chart,
+        video_idx,
+        results_file_path,
+        sub_problem_config
+):
+    aux_plot_time(
         fig,
         video_name_in_chart,
         video_idx,
@@ -322,7 +354,6 @@ def print_player_sorter_plot_time(
 
 
 def print_player_detection_plot_time(
-        frame_results,
         fig,
         video_name_in_chart,
         video_idx,
@@ -330,7 +361,6 @@ def print_player_detection_plot_time(
         sub_problem_config
 ):
     aux_plot_time(
-        frame_results,
         fig,
         video_name_in_chart,
         video_idx,
@@ -340,7 +370,6 @@ def print_player_detection_plot_time(
 
 
 def print_field_detection_plot_time(
-        frame_results,
         fig,
         video_name_in_chart,
         video_idx,
@@ -348,7 +377,6 @@ def print_field_detection_plot_time(
         sub_problem_config
 ):
     aux_plot_time(
-        frame_results,
         fig,
         video_name_in_chart,
         video_idx,
@@ -357,13 +385,62 @@ def print_field_detection_plot_time(
 
 
 def aux_plot_time(
-        frame_results,
         fig,
         video_name_in_chart,
         video_idx,
         results_file_path,
         sub_problem_config
 ):
+    if sub_problem_config.get('charts', 0) == 0:
+        bar_plot_time(fig, video_name_in_chart, video_idx, results_file_path, sub_problem_config)
+    else:
+        box_plot_time(fig, video_idx, results_file_path, sub_problem_config)
+
+
+def box_plot_time(fig, video_idx, results_file_path, sub_problem_config):
+    colors = ['indianred', 'forestgreen', 'royalblue', 'darkorange', 'darkviolet', 'darkturquoise']
+
+    if sub_problem_config.get('results', None) is None:
+        sub_problem_config['results'] = {
+            'metrics': {},
+            'color': {}
+        }
+
+    for idx, method in enumerate(sub_problem_config['time_methods']):
+        file = "-".join(
+            results_file_path.split("-")[0:3]) + "-" + method + ".json"
+        results = get_results_json(file)
+
+        results = [d.get("time", 0) * 1000 for d in results["frame_results"]]
+
+        metrics = sub_problem_config['results']['metrics'].get(method, [])
+        mean = np.mean(results)
+        metrics.append(mean)
+
+        sub_problem_config['results']['color'][method] = colors[idx]
+        sub_problem_config['results']['metrics'][method] = metrics
+
+    if video_idx == 1:
+        sub_problem_config['charts'] = 1
+
+        for k, v in sub_problem_config['results']['metrics'].items():
+            fig.add_trace(
+                go.Box(
+                    x=v,
+                    name=sub_problem_config['translations'][k],
+                    boxpoints="all",
+                    boxmean=True,
+                    legendrank=video_idx,
+                    marker=dict(
+                        color=sub_problem_config['results']['color'][k]  # Assign colors based on the method
+                    ),
+                )
+            )
+        fig.update_layout(legend=dict(x=0.99, y=0.99, xanchor='right', yanchor='top'))
+        sub_problem_config['results'] = None
+
+
+def bar_plot_time(fig, video_name_in_chart, video_idx, results_file_path, sub_problem_config):
     if sub_problem_config.get('results', None) is None:
         sub_problem_config['results'] = {
             'metrics': {},
@@ -396,10 +473,12 @@ def aux_plot_time(
         sub_problem_config['results']['color'][method] = colors[idx]
 
     if video_idx == 1:
+        sub_problem_config['charts'] = 1
+
         for k, v in sub_problem_config['results']['metrics'].items():
             fig.add_trace(
                 go.Bar(
-                    name=k,
+                    name=sub_problem_config['translations'][k],
                     y=sub_problem_config['results']['metrics'][k],
                     x=sub_problem_config['results']['video_name'][k],
                     # orientation='h',  # Hori
@@ -412,9 +491,10 @@ def aux_plot_time(
                 )
             )
 
-        fig.update_layout(yaxis=dict(range=[0, sub_problem_config['results']['max_y'] * 1.05]))
+        fig.update_layout(yaxis=dict(range=[0, sub_problem_config['results']['max_y'] * 1.13]))
         fig.update_layout(barmode='group')
         fig.update_layout(legend=dict(x=0.99, y=0.99, xanchor='right', yanchor='top'))
+        sub_problem_config['results'] = None
 
 
 def print_field_detection_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config):
@@ -478,36 +558,47 @@ config = {
     },
     "field_detection_time": {
         'chart_title': None,
-        'metric_name': "time",
-        'label_y': 'Tiempo (ms)',
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
         'tick': None,
         'showlegend': True,
         'x_range': None,
         'methods': [
-            'green_detection'
+            'bar', 'box'
         ],
+        'translations': {
+            'green_detection': 'Detección de verde',
+            'ground_pixels_detection': 'G>R>B',
+        },
         'time_methods': [
             'green_detection', 'ground_pixels_detection'
         ]
     },
     "player_detection_time": {
         'chart_title': None,
-        'metric_name': "time",
-        'label_y': 'Tiempo (ms)',
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
         'tick': None,
         'showlegend': True,
         'x_range': None,
         'methods': [
-            'kmeans'
+            'kmeans', 'kmeans'
         ],
+        'translations': {
+            'edges': 'Bordes',
+            'otsu': 'Otsu',
+            'background_subtraction': 'Substracción de fondo',
+            'kmeans': 'K-Means',
+            'by_color': 'Color'
+        },
         'time_methods': [
             'edges', 'otsu', 'background_subtraction', 'kmeans', 'by_color'
         ]
     },
     "player_sorter_time": {
         'chart_title': None,
-        'metric_name': "time",
-        'label_y': 'Tiempo (ms)',
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
         'tick': None,
         'showlegend': True,
         'x_range': None,
@@ -520,17 +611,38 @@ config = {
     },
     "vanishing_point_finder_time": {
         'chart_title': None,
-        'metric_name': "time",
         'label_y': 'Tiempo (ms)',
         'tick': None,
         'showlegend': True,
         'x_range': None,
         'methods': [
-            'hough'
+            'hough', 'hough'
         ],
         'time_methods': [
             'hough'
         ]
+    },
+    "player_tracker_time": {
+        'chart_title': None,
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
+        'tick': None,
+        'showlegend': True,
+        'x_range': None,
+        'methods': [
+            'distance_edges', 'distance_edges'
+        ],
+        'translations': {
+            'distance_edges': 'Bordes',
+            'distance_otsu': 'Otsu',
+            'distance_background_subtraction': 'Substracción de fondo',
+            'distance_kmeans': 'K-Means',
+            'distance_by_color': 'Color'
+        },
+        'time_methods': [
+            'distance_edges', 'distance_otsu', 'distance_background_subtraction', 'distance_kmeans', 'distance_by_color'
+        ],
+        'font_size': [22, 18]
     },
     "vanishing_point_finder": {
         'chart_title': None,
@@ -659,22 +771,18 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "vanishing_point_finder_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "field_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
 
     export_html_file = True
     videos_to_consider = scan_videos_from_path("./test/videos")
-    font_size = 22
     x_axis_title = sub_problem_config.get('label_x', None)
 
-    for method in methods:
+    for idx, method in enumerate(methods):
         fig = go.Figure()
-
-        x_axis_title_by_method = x_axis_title + ' ' + sub_problem_config['label_by_method'][
-            method] if 'label_by_method' in sub_problem_config else x_axis_title
-        configure_figure_layout(fig, sub_problem_config, font_size, x_axis_title_by_method)
+        configure_figure_layout(fig, sub_problem_config, method, idx)
 
         # to know which videos have more than one fragment
         fragments_per_video = {}
@@ -703,17 +811,17 @@ if __name__ == '__main__':
 
             results_file_path += ".json"
 
-            results = get_results_json(results_file_path)
-
-            if "frame_results" not in results:
-                continue
-
-            frame_results = results["frame_results"]
+            frame_results = None
+            if "time" not in sub_problem_suffix:
+                results = get_results_json(results_file_path)
+                if "frame_results" not in results:
+                    continue
+                frame_results = results["frame_results"]
 
             if sub_problem_suffix == 'intertia' and len(frame_results) > 0:
                 print_intertia_plot(frame_results, fig, video_name_in_chart, video_idx)
 
-            if 'player_tracker' in sub_problem_suffix:
+            if 'player_tracker' in sub_problem_suffix and "time" not in sub_problem_suffix:
                 print_player_tracker_plot(frame_results, fig, video_name_in_chart, video_idx, method, results_file_path,
                                           sub_problem_suffix)
 
@@ -730,20 +838,24 @@ if __name__ == '__main__':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
             if sub_problem_suffix == 'field_detection_time':
-                print_field_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                print_field_detection_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
                                                 sub_problem_config)
 
             if sub_problem_suffix == 'player_detection_time':
-                print_player_detection_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                print_player_detection_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
                                                  sub_problem_config)
 
             if sub_problem_suffix == 'player_sorter_time':
-                print_player_sorter_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                print_player_sorter_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
                                               sub_problem_config)
 
             if sub_problem_suffix == 'vanishing_point_finder_time':
-                print_player_sorter_plot_time(frame_results, fig, video_name_in_chart, video_idx, results_file_path,
+                print_player_sorter_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
                                               sub_problem_config)
+
+            if sub_problem_suffix == 'player_tracker_time':
+                print_player_tracker_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
+                                               sub_problem_config)
 
             video_idx -= 1
 
