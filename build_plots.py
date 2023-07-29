@@ -634,7 +634,7 @@ config = {
         'showlegend': True,
         'x_range': None,
         'methods': [
-            'distance_edges', 'distance_edges'
+            'bar', 'box'
         ],
         'translations': {
             'distance_edges': 'Bordes',
@@ -775,7 +775,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_sorter_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_tracker_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
