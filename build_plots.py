@@ -681,7 +681,7 @@ config = {
         'label_by_method': {
             'edges': 'utilizando detección por bordes',
             'otsu': 'utilizando detección por Otsu',
-            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'background_subtraction': 'utilizando detección por substracción de fondo',
             'kmeans': 'utilizando detección por K-Means',
             'by_color': 'utilizando detección por color'
         },
@@ -699,7 +699,7 @@ config = {
         'label_by_method': {
             'edges': 'utilizando detección por bordes',
             'otsu': 'utilizando detección por Otsu',
-            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'background_subtraction': 'utilizando detección por substracción de fondo',
             'kmeans': 'utilizando detección por K-Means',
             'by_color': 'utilizando detección por color'
         },
@@ -716,7 +716,7 @@ config = {
         'label_by_method': {
             'edges': 'utilizando detección por bordes',
             'otsu': 'utilizando detección por Otsu',
-            'background_subtraction': 'utilizando etección por substracción de fondo',
+            'background_subtraction': 'utilizando detección por substracción de fondo',
             'kmeans': 'utilizando detección por K-Means',
             'by_color': 'utilizando detección por color'
         },
@@ -779,7 +779,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "vanishing_point_finder_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_detection-not_detected_players"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
