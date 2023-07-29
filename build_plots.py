@@ -602,8 +602,12 @@ config = {
         'tick': None,
         'showlegend': True,
         'x_range': None,
+        'translations': {
+            'kmeans': 'K-Means',
+            'bsas': 'BSAS',
+        },
         'methods': [
-            'kmeans'
+            'bar', 'box'
         ],
         'time_methods': [
             'kmeans', 'bsas'
@@ -771,7 +775,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_sorter_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
