@@ -321,69 +321,6 @@ def print_player_sorter_plot(frame_results, fig, video_name_in_chart, video_idx,
     )
 
 
-def print_player_tracker_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-):
-    aux_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-    )
-
-
-def print_player_sorter_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-):
-    aux_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-    )
-
-
-def print_player_detection_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-):
-    aux_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-    )
-
-
-def print_field_detection_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config
-):
-    aux_plot_time(
-        fig,
-        video_name_in_chart,
-        video_idx,
-        results_file_path,
-        sub_problem_config)
-
-
 def aux_plot_time(
         fig,
         video_name_in_chart,
@@ -663,11 +600,12 @@ config = {
             'bar', 'box'
         ],
         'translations': {
-            'otsu': 'Otsu',
-            'kmeans': 'Kmeans'
+            'otsu': 'Otsu en todos los frames',
+            'kmeans': 'Kmeans en todos los frames',
+            'kmeans_two_frames': 'Kmeans cada dos frames',
         },
         'time_methods': [
-            'otsu', 'kmeans'
+            'otsu', 'kmeans', 'kmeans_two_frames'
         ],
         'font_size': [22, 18]
     },

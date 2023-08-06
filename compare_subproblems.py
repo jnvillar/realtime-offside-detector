@@ -273,7 +273,21 @@ methods_for_strategy = {
         #         'method': 'ground_pixels_detection',
         #     },
         # },
-        'kmeans': {
+        # 'kmeans': {
+        #     'player_sorter': {
+        #         'method': 'kmeans',
+        #     },
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'kmeans',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
+        'kmeans_two_frames': {
             'player_sorter': {
                 'method': 'kmeans',
             },
@@ -281,6 +295,7 @@ methods_for_strategy = {
                 'method': 'distance',
             },
             'player_detector': {
+                "detect_every_amount_of_frames": 2,
                 'method': 'kmeans',
             },
             'field_detector': {
