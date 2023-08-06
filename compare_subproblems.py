@@ -7,7 +7,7 @@ import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
     PlayerDetectorComparisonStrategy, PlayerSorterComparisonStrategy, IntertiaComparisonStrategy, \
-    VanishingPointFinderComparisonStrategy, FullPipelineComparisonStrategy
+    VanishingPointFinderComparisonStrategy, FullPipelineComparisonStrategy, TeamClassifierComparisonStrategy
 from test.dataset_generator.domain import FrameData
 from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from utils.utils import ScreenManager
@@ -25,6 +25,7 @@ class ComparisonStrategy(Enum):
     intertia = 'intertia'
     player_tracker = 'player_tracker'
     full_pipeline = 'full_pipeline'
+    team_classifier = 'team_classifier'
 
     def get_strategy_comparator(self, conf):
         if self == ComparisonStrategy.player_tracker:
@@ -47,6 +48,9 @@ class ComparisonStrategy(Enum):
 
         if self == ComparisonStrategy.intertia:
             return IntertiaComparisonStrategy({'amount_of_frames': 1})
+
+        if self == ComparisonStrategy.team_classifier:
+            return TeamClassifierComparisonStrategy(conf)
 
 
 class NpEncoder(json.JSONEncoder):
@@ -128,6 +132,9 @@ methods_for_strategy = {
                 'method': 'ground_pixels_detection',
             },
         },
+    },
+    'team_classifier': {
+        'by_ball_detection': {}
     },
     'vanishing_point_finder': {
         'hough': {}
