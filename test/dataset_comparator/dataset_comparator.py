@@ -4,15 +4,17 @@ from field_detector.field_detector import FieldDetector
 from player_detector.player_detector import PlayerDetector
 from player_tracker.player_tracker import PlayerTracker
 from player_sorter.player_sorter import PlayerSorter
+from team_classifier.team_classifier import TeamClassifier
 from test.dataset_generator.domain import *
 from domain.player import *
 import utils.math as math_utils
 import math
+from utils import utils
 from utils.frame_utils import *
-from analytics.analytics import *
 from offside_line_detector.offside_line_detector import *
 
 from test.dataset_generator.utils import FrameDataPrinter
+from test.dataset_generator.domain import Team
 from utils.utils import ScreenManager, KeyboardManager
 from vanishing_point_finder.vanishing_point_finder import VanishingPointFinder
 
@@ -88,7 +90,7 @@ class FrameDataComparator:
             actual_frame_data.get_last_defense_player_index()].get_team()
 
         defending_team_match = expected_defending_team == actual_defending_team
-        return "Correct" if defending_team_match else "Incorrect"
+        return {'result': "Correct" if defending_team_match else "Incorrect"}
 
     def compare_offside_line(self, expected_frame_data: FrameData, actual_frame_data: FrameData):
         expected_offside_line = expected_frame_data.get_offside_line()
@@ -600,3 +602,106 @@ class VanishingPointFinderComparisonStrategy:
         minor_radius = math.dist(central_circle_y_axis_points[0], central_circle_y_axis_points[1])
 
         return major_radius, minor_radius
+
+
+class TeamClassifierComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_printer = utils.FramePrinter()
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+        self.field_detector = FieldDetector(None, **config['field_detector'])
+        self.team_classifier = TeamClassifier(None, **config['team_classifier'])
+        self.player_detector = PlayerDetector(None, **config['player_detector'])
+        self.player_sorter = PlayerSorter(None, **config['player_sorter'])
+        self.players = None
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        frame_with_field_detected = self.frame_data_printer.print(expected_frame_data, video.get_current_frame(), True,
+                                                                  False, False, False, field_from_mask=True)
+        video.set_frame(frame_with_field_detected)
+        players = expected_frame_data.get_players()
+        playersD = []
+        for p in players:
+            coordinate_1, coordinate_2 = p.position
+            w = abs(coordinate_1[0] - coordinate_2[0])
+            h = abs(coordinate_1[1] - coordinate_2[1])
+            x = min(coordinate_1[0], coordinate_2[0])
+            y = min(coordinate_1[1], coordinate_2[1])
+
+            playersD.append(
+                PlayerD(
+                    contour=(None, (x, y, w, h)),
+                    id=None,
+                    team=self._map_to_domain_team(p.get_team())
+                ))
+        self.players = playersD
+
+    def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video, detect_field_and_players=False)
+        return self.frame_data_comparator.compare_defending_team(expected_frame_data, detected_frame_data), detected_frame_data
+
+    def detect_only(self, video, detect_field_and_players=True):
+        if detect_field_and_players:
+            video, _, _ = self.field_detector.detect_field(video)
+            self.players, _ = self.player_detector.detect_players(video)
+            self.players, _ = self.player_sorter.sort_players(video, self.players)
+
+        players, elapsed_time = self.team_classifier.classify_teams(video, self.players)
+
+        defending_team = None
+        for team in all_teams:
+            if team.is_defending:
+                defending_team = team
+
+        # actually we are just looking for a defense player. It does not matter if it's the last one
+        last_defense_player_index = 0
+        for player in players:
+            if player.team is defending_team:
+                break
+            last_defense_player_index += 1
+
+        return self._build_frame_data(video, players, last_defense_player_index, elapsed_time)
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        expected_frame = self.frame_data_printer.print(expected_frame_data, current_frame.copy(), False, True, False, False)
+        expected_defending_team = expected_frame_data.get_players()[expected_frame_data.get_last_defense_player_index()].get_team()
+        self.frame_printer.print_text(expected_frame, "Defending team: {} ({})".format(expected_defending_team, self._color_name_for_team(expected_defending_team)), (5, 70), constants.BGR_WHITE)
+
+        detected_frame = self.frame_data_printer.print(detected_frame_data, current_frame.copy(), False, True, False, False)
+        detected_defending_team = detected_frame_data.get_players()[detected_frame_data.get_last_defense_player_index()].get_team()
+        self.frame_printer.print_text(detected_frame, "Defending team: {} ({})".format(detected_defending_team, self._color_name_for_team(detected_defending_team)), (5, 70),constants.BGR_WHITE)
+
+        self.screen_manager.show_frame(expected_frame, "Expected defense team")
+        self.screen_manager.show_frame(detected_frame, "Detected defense team")
+
+    def calculate_aggregations(self, results):
+        return {}
+
+    def _build_frame_data(self, video, players, last_defense_player_index, elapsed_time):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
+            .set_players_from_domain_players(players) \
+            .set_last_defense_player_index(last_defense_player_index) \
+            .set_time(elapsed_time) \
+            .build()
+
+    def _map_to_domain_team(self, frame_data_team):
+        domain_team = team_unclassified
+        if frame_data_team is Team.TEAM_ONE:
+            domain_team = team_one
+        if frame_data_team is Team.TEAM_TWO:
+            domain_team = team_two
+        return domain_team
+
+    def _color_name_for_team(self, team):
+        if team is Team.TEAM_ONE:
+            return "RED"
+        elif team is Team.TEAM_TWO:
+            return "BLUE"
+        else:
+            return "YELLOW"

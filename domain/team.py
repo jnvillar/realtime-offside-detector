@@ -43,4 +43,4 @@ team_two = Team("2️⃣", (0, 0, 255), "2")
 team_three = Team("3️⃣", (0, 255, 0), "3")
 team_unclassified = Team("❓", (0, 0, 255), "?")
 
-all_teams = [team_one, team_two, team_unclassified]
+all_teams = [team_one, team_two]
