@@ -259,7 +259,21 @@ methods_for_strategy = {
         },
     },
     'full_pipeline': {
-        'otsu': {
+        # 'otsu': {
+        #     'player_sorter': {
+        #         'method': 'kmeans',
+        #     },
+        #     'player_tracker': {
+        #         'method': 'distance',
+        #     },
+        #     'player_detector': {
+        #         'method': 'otsu',
+        #     },
+        #     'field_detector': {
+        #         'method': 'ground_pixels_detection',
+        #     },
+        # },
+        'kmeans': {
             'player_sorter': {
                 'method': 'kmeans',
             },
@@ -267,7 +281,7 @@ methods_for_strategy = {
                 'method': 'distance',
             },
             'player_detector': {
-                'method': 'otsu',
+                'method': 'kmeans',
             },
             'field_detector': {
                 'method': 'ground_pixels_detection',

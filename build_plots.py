@@ -411,7 +411,7 @@ def box_plot_time(fig, video_idx, results_file_path, sub_problem_config):
             results_file_path.split("-")[0:3]) + "-" + method + ".json"
         results = get_results_json(file)
 
-        results = [d.get("time", 0) * 1000 for d in results["frame_results"]]
+        results = [d.get("time", 0) * 1000 for d in results.get("frame_results", [])]
 
         metrics = sub_problem_config['results']['metrics'].get(method, [])
         mean = np.mean(results)
@@ -456,7 +456,7 @@ def bar_plot_time(fig, video_name_in_chart, video_idx, results_file_path, sub_pr
             results_file_path.split("-")[0:3]) + "-" + method + ".json"
         results = get_results_json(file)
 
-        results = [d.get("time", 0) * 1000 for d in results["frame_results"]]
+        results = [d.get("time", 0) * 1000 for d in results.get("frame_results", [])]
 
         metrics = sub_problem_config['results']['metrics'].get(method, [])
         mean = np.mean(results)
@@ -652,6 +652,25 @@ config = {
         ],
         'font_size': [22, 18]
     },
+    "full_pipeline_time": {
+        'chart_title': None,
+        'label_y': ['Tiempo (ms)', None],
+        'label_x': [None, 'Tiempo (ms)'],
+        'tick': None,
+        'showlegend': True,
+        'x_range': None,
+        'methods': [
+            'bar', 'box'
+        ],
+        'translations': {
+            'otsu': 'Otsu',
+            'kmeans': 'Kmeans'
+        },
+        'time_methods': [
+            'otsu', 'kmeans'
+        ],
+        'font_size': [22, 18]
+    },
     "vanishing_point_finder": {
         'chart_title': None,
         'metric_name': "distance_meters",
@@ -779,7 +798,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "player_detection-not_detected_players"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "full_pipeline_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
@@ -845,25 +864,8 @@ if __name__ == '__main__':
             if sub_problem_suffix == 'vanishing_point_finder':
                 print_vanishing_point_plot(frame_results, fig, video_name_in_chart, video_idx, sub_problem_config)
 
-            if sub_problem_suffix == 'field_detection_time':
-                print_field_detection_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
-                                                sub_problem_config)
-
-            if sub_problem_suffix == 'player_detection_time':
-                print_player_detection_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
-                                                 sub_problem_config)
-
-            if sub_problem_suffix == 'player_sorter_time':
-                print_player_sorter_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
-                                              sub_problem_config)
-
-            if sub_problem_suffix == 'vanishing_point_finder_time':
-                print_player_sorter_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
-                                              sub_problem_config)
-
-            if sub_problem_suffix == 'player_tracker_time':
-                print_player_tracker_plot_time(fig, video_name_in_chart, video_idx, results_file_path,
-                                               sub_problem_config)
+            if "time" in sub_problem_suffix:
+                aux_plot_time(fig, video_name_in_chart, video_idx, results_file_path, sub_problem_config)
 
             video_idx -= 1
 
