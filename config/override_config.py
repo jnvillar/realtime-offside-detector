@@ -13,6 +13,11 @@ override_config = {
             },
             'central_circle_axis': [[(894, 440), (1378, 440)], [(894, 440), (894, 347)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (868, 472)
+            }
+        },
         'player_detector': {
             'by_color': {
                 'clicks': [(122, 494), (373, 392)]
@@ -29,6 +34,11 @@ override_config = {
                 'vp_segments_first_frame': [[(376, 1043), (894, 295)], [(753, 1076), (1096, 301)]]
             },
             'central_circle_axis': [[(919, 722), (1532, 722)], [(919, 722), (919, 571)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (668, 461)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -51,6 +61,11 @@ override_config = {
                 'vp_segments_first_frame': [[(542, 1055), (1115, 482)], [(980, 1069), (1434, 474)]]
             },
             'central_circle_axis': [[(919, 722), (1532, 722)], [(919, 722), (919, 571)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1024, 434)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -114,6 +129,11 @@ override_config = {
                 'vp_segments_first_frame': [[(132, 586), (800, 330)], [(456, 867), (1345, 341)]]
             },
             'central_circle_axis': [[(861, 557), (1392, 557)], [(861, 557), (861, 460)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (888, 294)
+            }
         }
     },
     VideoConstants.video_3_Inter_Roma_147_158: {
@@ -123,6 +143,11 @@ override_config = {
                 'vp_segments_first_frame': [[(308, 1031), (599, 296)], [(1466, 1036), (1185, 306)]]
             },
             'central_circle_axis': [[(861, 557), (1392, 557)], [(861, 557), (861, 460)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (839, 599)
+            }
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -162,6 +187,11 @@ override_config = {
             },
             'central_circle_axis': [[(585, 579), (1147, 579)], [(585, 579), (585, 467)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (960, 445)
+            }
+        },
         'player_detector': {
             'by_color': {
                 'clicks': [(35, 373), (705, 617)]
@@ -175,6 +205,11 @@ override_config = {
                 'vp_segments_first_frame': [[(826, 979), (557, 286)], [(1378, 989), (848, 289)]]
             },
             'central_circle_axis': [[(585, 579), (1147, 579)], [(585, 579), (585, 467)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1538, 530)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -192,6 +227,11 @@ override_config = {
                 'vp_segments_first_frame': [[(1317, 1011), (846, 263)], [(1857, 968), (1181, 260)]]
             },
             'central_circle_axis': [[(143, 652), (848, 652)], [(143, 652), (143, 524)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1438, 319)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -222,6 +262,11 @@ override_config = {
             },
             'central_circle_axis': [[(1638, 296), (1163, 278)], [(1638, 296), (1647, 194)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1175, 685)
+            }
+        },
         'player_detector': {
             'by_color': {
                 'clicks': [(765, 213), (657, 225)]
@@ -249,6 +294,11 @@ override_config = {
                 'vp_segments_first_frame': [[(706, 996), (898, 399)], [(1511, 997), (1253, 405)]]
             },
             'central_circle_axis': [[(446, 612), (815, 590)], [(446, 612), (437, 536)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (768, 499)
+            }
         }
     },
     VideoConstants.video_7_Psg_Angers_156_167: {
@@ -298,6 +348,11 @@ override_config = {
                 'line_detection_angular_range': 90,
             },
             'central_circle_axis': [[(475, 597), (886, 581)], [(475, 597), (466, 512)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1253, 656)
+            }
         }
     },
     VideoConstants.video_8_Roma_Ludogrets_503_510: {
@@ -310,6 +365,11 @@ override_config = {
                 # Not detecting anything on this video. Tweak other parameters
             },
             'central_circle_axis': [[(1712, 474), (1112, 462)], [(1712, 474), (1713, 379)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1269, 445)
+            }
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -345,6 +405,11 @@ override_config = {
             },
             'central_circle_axis': [[(389, 389), (847, 379)], [(389, 389), (384, 284)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (728, 579)
+            }
+        },
         'player_detector': {
             'by_color': {
                 'clicks': [(149, 414), (545, 394)]
@@ -364,6 +429,11 @@ override_config = {
                 'line_detection_angular_range': 90,
             },
             'central_circle_axis': [[(389, 701), (998, 687)], [(389, 701), (386, 576)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (754, 369)
+            }
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -404,6 +474,11 @@ override_config = {
                 'hough_lines_threshold': 400,
             },
             'central_circle_axis': [[(713, 552), (1179, 550)], [(713, 552), (712, 456)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1315, 497)
+            }
         }
     },
     VideoConstants.video_10_Italia_Alemania_548_555: {
@@ -413,6 +488,11 @@ override_config = {
                 'vp_segments_first_frame': [[(1141, 1007), (264, 419)], [(1392, 702), (643, 358)]]
             },
             'central_circle_axis': [[(713, 552), (1179, 550)], [(713, 552), (712, 456)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1149, 840)
+            }
         },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
@@ -457,6 +537,11 @@ override_config = {
             },
             'central_circle_axis': [[(1905, 601), (1476, 567)], [(1905, 601), (1916, 471)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1310, 326)
+            }
+        },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
             'method': 'kmeans',
@@ -488,6 +573,11 @@ override_config = {
             },
             'central_circle_axis': [[(1918, 665), (1176, 626)], [(1918, 665), (1916, 510)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1029, 575)
+            }
+        },
         'player_detector': {
             'edges': {
                 'parent_contour_only': False,
@@ -508,6 +598,11 @@ override_config = {
             },
             'central_circle_axis': [[(634, 481), (1171, 474)], [(634, 481), (630, 388)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (819, 528)
+            }
+        },
         'player_detector': {
             'by_color': {
                 'clicks': [(318, 409), (728, 404)]
@@ -524,6 +619,11 @@ override_config = {
                 'vp_segments_first_frame': [[(1567, 1052), (670, 289)], [(1884, 703), (1200, 318)]]
             },
             'central_circle_axis': [[(29, 590), (507, 566)], [(29, 590), (22, 474)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (685, 340)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -543,6 +643,11 @@ override_config = {
                 'hough_lines_threshold': 300
             },
             'central_circle_axis': [[(931, 486), (1434, 486)], [(931, 486), (931, 394)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1078, 365)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -612,6 +717,11 @@ override_config = {
             },
             'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
         },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (745, 770)
+            }
+        },
         'player_sorter': {
             # bsas, automatic_by_color, by_color, kmeans
             'method': 'kmeans',
@@ -641,6 +751,11 @@ override_config = {
                 'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(424, 567), (886, 550)], [(424, 567), (421, 463)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (469, 445)
+            }
         },
         'player_detector': {
             'by_color': {
@@ -754,6 +869,11 @@ override_config = {
                 'vp_segments_first_frame': [[(890, 779), (1785, 253)], [(1543, 1071), (1917, 656)]]
             },
             'central_circle_axis': [[(710, 485), (1072, 486)], [(710, 485), (710, 406)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (1103, 676)
+            }
         }
     },
     VideoConstants.video_18_Sevilla_Valladolid_29_38: {
@@ -765,6 +885,11 @@ override_config = {
                 'line_detection_angular_range': 90
             },
             'central_circle_axis': [[(936, 510), (1436, 510)], [(936, 510), (936, 429)]]
+        },
+        'team_classifier': {
+            'by_ball_detection': {
+                'ball_position_first_frame': (782, 490)
+            }
         },
         'player_detector': {
             'by_color': {

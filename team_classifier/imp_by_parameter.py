@@ -1,6 +1,7 @@
 from domain.player import *
 from domain.team import *
 from player_detector.step import *
+from utils import constants
 from utils.frame_utils import g_greater_than_r_greater_than_b_mask
 from utils.utils import FramePrinter
 
@@ -25,8 +26,9 @@ class ByBallDetection:
         self.video = None
         self.debug = kwargs['debug']
         self.screen_manager = ScreenManager.get_manager()
-        self.log = Logger(self, LoggingPackage.field_detector)
-        self.ball_position = None
+        self.log = Logger(self, LoggingPackage.team_classifier)
+        self.frame_printer = FramePrinter()
+        self.ball_position = kwargs.get('ball_position_first_frame', None)
         self.ball_histogram = None
         self.latest_ball_histograms = []
         self.consecutive_searches_without_change = 0
@@ -39,8 +41,9 @@ class ByBallDetection:
 
     def run2(self, players):
         # for the first frame, the ball is manually selected
-        if self.ball_position is None:
-            self.ball_position = self._manually_select_ball_postion()
+        if self.ball_histogram is None:
+            if self.ball_position is None:
+                self.ball_position = self._manually_select_ball_postion()
             # self.latest_ball_histograms.append(self._calculate_hist(self.video.get_current_frame(), self.ball_position))
             self.ball_histogram = self._calculate_hist(self.video.get_current_frame(), self.ball_position)
         else:
@@ -52,6 +55,9 @@ class ByBallDetection:
         closest_player = None
         closest_player_distance = None
         for player in players:
+            # if player is not in one of the two teams, continue
+            if player.team not in all_teams:
+                continue
             bounding_box_center = player.get_box().get_center()
             distance = np.sqrt(np.sum(np.square(np.array(self.ball_position, dtype=int) - np.array(bounding_box_center, dtype=int))))
             if closest_player is None or distance < closest_player_distance:
@@ -394,33 +400,32 @@ class ByBallDetection:
         return hist
 
     def _manually_select_ball_postion(self):
-        # temporary hardcode
-        # return 586, 322
-        # return 752, 254 # corto.mp4
-        # return 813, 395  # Liverpool-Benfica_117_126.mp4
-        return 868, 462  # Arsenal-Chelsea_107_122.mp4
-        # return 387, 532
-
-        window_name = "Select ball position (click over the ball)"
+        window_name = "Select ball position"
         frame = self.video.get_current_frame()
-        captured_clicks = []
         arguments = {
-            'captured_clicks': captured_clicks,
+            'captured_click': None,
             'frame': frame,
             'window_name': window_name
         }
-        self.frame_printer.print_text(frame, "Select two parallel lines from the field", (5, 30), constants.BGR_WHITE)
+        self.frame_printer.print_text(frame, "Select ball position (click over the ball)", (5, 30), constants.BGR_WHITE)
         cv2.imshow(window_name, frame)
         cv2.setMouseCallback(window_name, self._click_event, arguments)
 
-        while len(captured_clicks) < 4:
-            cv2.waitKey(0)
+        cv2.waitKey(0)
         cv2.destroyWindow(window_name)
 
-        line1 = Line(captured_clicks[0], captured_clicks[1])
-        line2 = Line(captured_clicks[2], captured_clicks[3])
-        self.vanishing_point = get_lines_intersection(line1, line2)
-        self.vanishing_point_lines = (line1, line2)
+        ball_position = arguments['captured_click']
+        self.log.log("Manually selected ball position: " + str(ball_position))
+
+        return ball_position
+
+    def _click_event(self, event, x, y, flags, arguments):
+        if event == cv2.EVENT_LBUTTONUP:
+            click_coordinates = (x, y)
+            frame = arguments['frame']
+            arguments['captured_click'] = click_coordinates
+            self.frame_printer.print_point(frame, click_coordinates, constants.BGR_RED)
+            cv2.imshow(arguments['window_name'], frame)
 
     def run(self):
         original_frame = self.video.get_current_frame()
