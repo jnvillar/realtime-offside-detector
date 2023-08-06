@@ -1,4 +1,3 @@
-from test.dataset_comparator.dataset_comparator import FrameDataComparator
 from vanishing_point_finder.vanishing_point_finder import *
 from orientation_detector.orientation_detector import *
 from test.dataset_generator.dataset_generator import *
@@ -18,12 +17,14 @@ import cv2
 
 
 class OffsideLineDetectorResult:
-    def __init__(self, video: Video, players: [Player], vanishing_point, field_mask, play_orientation: Orientation):
+    def __init__(self, video: Video, players: [Player], vanishing_point, field_mask, play_orientation: Orientation,
+                 elapsed_time):
         self.video: Video = video
         self.players: [Player] = players
         self.vanishing_point = vanishing_point
         self.field_mask = field_mask
         self.play_orientation = play_orientation
+        self.elapsed_time = elapsed_time
 
 
 class OffsideLineDetector:
@@ -44,13 +45,13 @@ class OffsideLineDetector:
         self.log = Logger(self, LoggingPackage.offside_detector)
         self.frame_dataset_dictionary_mapper = FrameDatasetDictionaryMapper()
         self.set_teams(kwargs['app']['team_names'])
-        self.frame_data_comparator = FrameDataComparator()
 
     def set_teams(self, params):
         team_one.label = params.get(team_one.id, team_one.label)
         team_two.label = params.get(team_two.id, team_two.label)
 
     def detect_offside_line(self, soccer_video: Video):
+        Timer.start('detect_offside_line')
         # detect field
         soccer_video, field_mask, _ = self.field_detector.detect_field(soccer_video)
         # get vanishing point
@@ -69,6 +70,8 @@ class OffsideLineDetector:
         self.player_finder.find_last_defending_player(players, orientation)
         # detect offside line
         offside_line, _ = self.offside_line_drawer.get_offside_line(soccer_video, players, orientation, vanishing_point)
+        elapsed_time = Timer.stop('detect_offside_line')
+
         # dray offside line
         soccer_video = frame_utils.draw_offside_line(soccer_video, offside_line)
 
@@ -81,7 +84,8 @@ class OffsideLineDetector:
             players=players,
             vanishing_point=vanishing_point,
             field_mask=field_mask,
-            play_orientation=orientation
+            play_orientation=orientation,
+            elapsed_time=elapsed_time
         )
 
     def detect_and_draw_offside_line(self, soccer_video: Video, video_data: [FrameData]):

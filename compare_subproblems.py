@@ -7,7 +7,7 @@ import config.config as config
 from log.logger import Logger
 from test.dataset_comparator.dataset_comparator import FieldDetectorComparisonStrategy, ComparatorByStrategy, \
     PlayerDetectorComparisonStrategy, PlayerSorterComparisonStrategy, IntertiaComparisonStrategy, \
-    VanishingPointFinderComparisonStrategy
+    VanishingPointFinderComparisonStrategy, FullPipelineComparisonStrategy
 from test.dataset_generator.domain import FrameData
 from test.dataset_generator.mappers import FrameDatasetDictionaryMapper
 from utils.utils import ScreenManager
@@ -24,6 +24,7 @@ class ComparisonStrategy(Enum):
     vanishing_point_finder = 'vanishing_point_finder'
     intertia = 'intertia'
     player_tracker = 'player_tracker'
+    full_pipeline = 'full_pipeline'
 
     def get_strategy_comparator(self, conf):
         if self == ComparisonStrategy.player_tracker:
@@ -40,6 +41,9 @@ class ComparisonStrategy(Enum):
 
         if self == ComparisonStrategy.vanishing_point_finder:
             return VanishingPointFinderComparisonStrategy(conf)
+
+        if self == ComparisonStrategy.full_pipeline:
+            return FullPipelineComparisonStrategy(conf)
 
         if self == ComparisonStrategy.intertia:
             return IntertiaComparisonStrategy({'amount_of_frames': 1})
@@ -205,7 +209,7 @@ methods_for_strategy = {
                 'method': 'otsu',
             },
             'field_detector': {
-                 'method': 'ground_pixels_detection',
+                'method': 'ground_pixels_detection',
             },
         },
         'distance_by_color': {
@@ -226,8 +230,8 @@ methods_for_strategy = {
             'player_detector': {
                 'method': 'background_subtraction',
             },
-             'field_detector': {
-                 'method': 'ground_pixels_detection',
+            'field_detector': {
+                'method': 'ground_pixels_detection',
             },
         },
         'distance_kmeans': {
@@ -244,11 +248,31 @@ methods_for_strategy = {
     },
     'player_sorter': {
         'kmeans': {
-            'method': 'kmeans',
+            'player_sorter': {
+                'method': 'kmeans',
+            }
         },
         'bsas': {
-            'method': 'bsas',
+            'player_sorter': {
+                'method': 'bsas',
+            },
         },
+    },
+    'full_pipeline': {
+        'otsu': {
+            'player_sorter': {
+                'method': 'kmeans',
+            },
+            'player_tracker': {
+                'method': 'distance',
+            },
+            'player_detector': {
+                'method': 'otsu',
+            },
+            'field_detector': {
+                'method': 'ground_pixels_detection',
+            },
+        }
     }
 }
 
@@ -278,13 +302,13 @@ def merge_results(old_results, new_results):
 
 
 if __name__ == '__main__':
-    debug = False
+    debug = True
     override_experiment = True
     merge_experiments = True
-    strategy = ComparisonStrategy.player_tracker
+    strategy = ComparisonStrategy.full_pipeline
 
     videos = [
-        #VideoConstants.video_16_RealMadrid_Shakhtar_20_29
+        # VideoConstants.video_16_RealMadrid_Shakhtar_20_29
     ]
 
     if len(videos) == 0:

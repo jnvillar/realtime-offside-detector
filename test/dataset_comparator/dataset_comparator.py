@@ -9,6 +9,8 @@ from domain.player import *
 import utils.math as math_utils
 import math
 from utils.frame_utils import *
+from analytics.analytics import *
+from offside_line_detector.offside_line_detector import *
 
 from test.dataset_generator.utils import FrameDataPrinter
 from utils.utils import ScreenManager, KeyboardManager
@@ -380,6 +382,44 @@ class PlayerSorterComparisonStrategy:
             .set_frame_height(height) \
             .set_frame_width(width) \
             .set_players_from_domain_players(players) \
+            .set_time(elapsed_time) \
+            .build()
+
+
+class FullPipelineComparisonStrategy:
+
+    def __init__(self, config):
+        self.frame_data_printer = FrameDataPrinter()
+        self.frame_data_comparator = FrameDataComparator()
+        self.screen_manager = ScreenManager.get_manager()
+
+        self.offside_line_detector = OffsideLineDetector(None, **config)
+
+    def prepare_for_detection(self, video, expected_frame_data):
+        return
+
+    def detect_and_compare(self, video, expected_frame_data):
+        detected_frame_data = self.detect_only(video)
+
+        return {}, detected_frame_data
+
+    def detect_only(self, video):
+        res = self.offside_line_detector.detect_offside_line(video)
+        detected_frame_data = self._build_frame_data(video, res.elapsed_time)
+        return detected_frame_data
+
+    def show_comparison_results(self, detected_frame_data, expected_frame_data, current_frame):
+        return
+
+    def calculate_aggregations(self, results):
+        return {}
+
+    def _build_frame_data(self, video, elapsed_time):
+        height, width = video.get_current_frame().shape[:2]
+        return FrameDataBuilder() \
+            .set_frame_number(video.get_current_frame_number()) \
+            .set_frame_height(height) \
+            .set_frame_width(width) \
             .set_time(elapsed_time) \
             .build()
 
