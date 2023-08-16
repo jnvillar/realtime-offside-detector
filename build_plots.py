@@ -396,7 +396,12 @@ def bar_plot_time(fig, video_name_in_chart, video_idx, results_file_path, sub_pr
         results = [d.get("time", 0) * 1000 for d in results.get("frame_results", [])]
 
         metrics = sub_problem_config['results']['metrics'].get(method, [])
-        mean = np.mean(results)
+
+        if sub_problem_config['time_metric'] == 'median':
+            mean = np.median(results)
+        else:
+            mean = np.mean(results)
+
         metrics.append(mean)
         if mean > sub_problem_config['results']['max_y']:
             sub_problem_config['results']['max_y'] = mean
@@ -590,6 +595,7 @@ config = {
         'font_size': [22, 18]
     },
     "full_pipeline_time": {
+        'time_metric': 'average',
         'chart_title': None,
         'label_y': ['Tiempo (ms)', None],
         'label_x': [None, 'Tiempo (ms)'],
