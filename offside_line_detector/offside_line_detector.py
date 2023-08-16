@@ -100,9 +100,9 @@ class OffsideLineDetector:
             if self.params.get('show_original', False):
                 self.screen_manager.show_frame(soccer_video.get_current_frame(), 'original')
 
-            Timer.start('detect_offside_line')
+            Timer.start('offside_line')
             result = self.detect_offside_line(soccer_video)
-            elapsed_time = Timer.stop('detect_offside_line')
+            elapsed_time = Timer.stop('offside_line')
             self.log.log('offside line detected', {'cost': elapsed_time})
 
             if self.params.get('show_result', False):
