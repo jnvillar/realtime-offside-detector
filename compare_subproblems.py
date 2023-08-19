@@ -337,6 +337,32 @@ def merge_results(old_results, new_results):
     return merged_config
 
 
+def print_video_data_info(path, video_data):
+    id = path.split("/")[3].split("_")[0]
+    frames = len(video_data)
+
+    players = 0
+    goalkeepers = 0
+    referee = 0
+    for frame_data in video_data:
+        for player in frame_data.players:
+            if player.team.value == 1 or player.team.value == 2:
+                if player.player_type.name == 'FIELD_PLAYER':
+                    players += 1
+                elif player.player_type.name == 'GOALKEEPER':
+                    goalkeepers += 1
+                else:
+                    exit(player.player_type.name)
+                    exit("unknown player type")
+            elif player.team.value == 3:
+                referee += 1
+            else:
+                print(player.team.value)
+                exit("unknown team")
+    print("\hline")
+    print("{} & {} & {} & {} & {} \\\\".format(id, frames, players, goalkeepers, referee))
+
+
 if __name__ == '__main__':
     debug = True
     override_experiment = True
@@ -383,6 +409,6 @@ if __name__ == '__main__':
                 print('Error opening video {}'.format(video_name))
                 continue
 
+            print_video_data_info(video_path, video_data)
             results = ComparatorByStrategy(comparator, debug).compare(video, video_data)
-
             save_comparison_results(save_result_path, results, merge=merge_experiments)
