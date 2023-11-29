@@ -742,7 +742,7 @@ config = {
 
 if __name__ == '__main__':
 
-    sub_problem_suffix = "full_pipeline_time"  # field_detection, intertia, player_sorter, player_detection, player_tracker
+    sub_problem_suffix = "player_sorter"  # field_detection, intertia, player_sorter, player_detection, player_tracker
 
     sub_problem_config = config[sub_problem_suffix]
     methods = sub_problem_config['methods']
